@@ -7,6 +7,9 @@ namespace WatiN
     public Button(DomContainer ie, HTMLInputElement inputButtonElement) : base(ie, (IHTMLElement) inputButtonElement)
     {}
 
+    /// <summary>
+    /// The text displayed at the button
+    /// </summary>
     public string Value
     {
       get { return inputButtonElement.value; }
