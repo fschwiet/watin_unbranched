@@ -1,0 +1,278 @@
+using System;
+using System.Threading;
+
+using mshtml;
+
+using WatiN.Exceptions;
+
+namespace WatiN
+{
+  /// <summary>
+  /// Summary description for SubElements.
+  /// </summary>
+  public class SubElementsSupport
+  {
+    public static Button Button(DomContainer ie, AttributeValue findBy, IHTMLElementCollection elements)
+    {
+      return new Button(ie, (HTMLInputElement)FindElementByAttribute("input", findBy, "button submit image reset", elements));
+    }
+
+    public static ButtonCollection Buttons(DomContainer ie, IHTMLElementCollection elements)
+    {
+       return new ButtonCollection(ie, elements);
+    }
+
+    public static CheckBox CheckBox(DomContainer ie, AttributeValue findBy, IHTMLElementCollection elements)
+    {
+      return new CheckBox(ie, (IHTMLInputElement) FindElementByAttribute("input", findBy, "checkbox", elements));
+    }
+
+    public static CheckBoxCollection Checkboxes(DomContainer ie, IHTMLElementCollection elements)
+    {
+      return new CheckBoxCollection(ie, elements); 
+    }
+
+    public static Form Form(DomContainer ie, AttributeValue findBy, IHTMLElementCollection elements)
+    {
+      return new Form(ie, (HTMLFormElement) FindElementByAttribute("form", findBy, null, elements));
+    }
+
+    public static FormCollection Forms(DomContainer ie, IHTMLElementCollection elements)
+    {
+      return new FormCollection(ie, elements);
+    }
+
+    public static Link Link(DomContainer ie, AttributeValue findBy, IHTMLElementCollection elements)
+    {
+      return new Link(ie, (HTMLAnchorElement) FindElementByAttribute("A", findBy, null, elements));
+    }
+
+    public static LinkCollection Links(DomContainer ie, IHTMLElementCollection elements)
+    {
+      return new LinkCollection(ie, elements);
+    }
+
+    public static Para Para(DomContainer ie, AttributeValue findBy, IHTMLElementCollection elements)
+    {
+      return new Para(ie, (HTMLParaElement) FindElementByAttribute("p", findBy, null, elements));
+    }
+
+    public static ParaCollection Paras(DomContainer ie, IHTMLElementCollection elements)
+    {
+      return new ParaCollection(ie, elements); 
+    }
+
+    public static RadioButton RadioButton(DomContainer ie, AttributeValue findBy, IHTMLElementCollection elements)
+    {
+      return new RadioButton(ie, (IHTMLInputElement) FindElementByAttribute("input", findBy, "radio", elements));
+    }
+
+    public static RadioButtonCollection RadioButtons(DomContainer ie, IHTMLElementCollection elements)
+    {
+      return new RadioButtonCollection(ie, elements); 
+    }
+
+    public static SelectList SelectList(DomContainer ie, AttributeValue findBy, IHTMLElementCollection elements)
+    {
+      return new SelectList(ie, FindElementByAttribute("select", findBy, null, elements));
+    }
+
+    public static SelectListCollection SelectLists(DomContainer ie, IHTMLElementCollection elements)
+    {
+      return new SelectListCollection(ie, elements);
+    }
+
+    public static Table Table(DomContainer ie, AttributeValue findBy, IHTMLElementCollection elements)
+    {
+      return new Table(ie, (HTMLTable) FindElementByAttribute("table", findBy, null, elements));
+    }
+
+    public static TableCollection Tables(DomContainer ie, IHTMLElementCollection elements)
+    {
+      return new TableCollection(ie, elements); 
+    }
+
+//    public static TableSectionCollection TableSections(IDomContainer ie, IHTMLElementCollection elements)
+//    {
+//      return new TableSectionCollection(ie, elements);
+//    }
+
+    public static TableCell TableCell(DomContainer ie, AttributeValue findBy, IHTMLElementCollection elements)
+    {
+      return new TableCell(ie, (HTMLTableCell) FindElementByAttribute("TD", findBy, null, elements));
+    }
+
+    public static TableCell TableCell(DomContainer ie, string elementId, int occurence, IHTMLElementCollection elementCollection)
+    {
+      int nr = -1;
+      IHTMLElementCollection elements = (IHTMLElementCollection)elementCollection.tags("TD");
+      foreach (IHTMLElement e in elements)
+      {
+        if (e.id == elementId)
+        {
+          ++nr;
+          if (nr == occurence)
+          {
+            return new TableCell(ie, (HTMLTableCell) e);
+          }
+        }
+      }
+      return null;
+    }
+
+    public static TableCellCollection TableCells(DomContainer ie, IHTMLElementCollection elements)
+    {
+      return new TableCellCollection(ie, elements); 
+    }
+
+    public static TableRow TableRow(DomContainer ie, AttributeValue findBy, IHTMLElementCollection elements)
+    {
+      return new TableRow(ie, (HTMLTableRow) FindElementByAttribute("TR", findBy, null, elements));
+    }
+
+    public static TableRowCollection TableRows(DomContainer ie, IHTMLElementCollection elements)
+    {
+      return new TableRowCollection(ie, elements);
+    }
+
+    public static TextField TextField(DomContainer ie, AttributeValue findBy, IHTMLElementCollection elements)
+    {
+      TextField textfield = null;
+
+      try
+      {
+        textfield = new TextField(ie, (HTMLInputElement)FindElementByAttribute("input", findBy, "text password textarea hidden", elements));
+      }
+      catch (ElementNotFoundException)
+      {
+        try
+        {
+          textfield = new TextField(ie, (HTMLTextAreaElement)FindElementByAttribute("textarea", findBy, null, elements));
+        }
+        catch (ElementNotFoundException)
+        {
+          throw new ElementNotFoundException("input (text, password, textarea, hidden) or textarea", findBy.AttributeName, findBy.Value);
+        }
+      }
+
+      return textfield;
+    }
+
+    public static TextFieldCollection TextFields(DomContainer ie, IHTMLElementCollection elements)
+    {
+      return new TextFieldCollection(ie, elements);
+    }
+
+    public static Span Span(DomContainer ie, AttributeValue findBy, IHTMLElementCollection elements)
+    {
+      return new Span(ie, (HTMLSpanElement) FindElementByAttribute("span", findBy, null, elements));
+    }
+
+    public static SpanCollection Spans(DomContainer ie, IHTMLElementCollection elements)
+    {
+      return new SpanCollection(ie, elements);
+    }
+
+    public static Div Div(DomContainer ie, AttributeValue findBy, IHTMLElementCollection elements)
+    {
+      return new Div(ie, (HTMLDivElement) FindElementByAttribute("div", findBy, null, elements));
+    }
+
+    public static DivCollection Divs(DomContainer ie, IHTMLElementCollection elements)
+    {
+      return new DivCollection(ie, elements);
+    }
+
+    public static Image Image(DomContainer ie, AttributeValue findBy, IHTMLElementCollection elements)
+    {
+      return new Image(ie, (IHTMLImgElement) FindElementByAttribute("img", findBy, null, elements));
+    }
+
+    public static ImageCollection Images(DomContainer ie, IHTMLElementCollection elements)
+    {
+      return new ImageCollection(ie, elements);
+    }
+
+    private static IHTMLElement FindElementByAttribute(string tagName, AttributeValue findBy, string inputType, IHTMLElementCollection elementsCollection)
+    {
+      if (IsInputElement(tagName) && (inputType == null || inputType == string.Empty))
+      {
+        throw new ArgumentNullException("inputType", "inputType must be set when tagName is 'input'");
+      }
+
+      IHTMLElementCollection elements = getElementCollectionByTageName(elementsCollection, tagName);
+
+      foreach (IHTMLElement element in elements)
+      {
+        while (((IHTMLElement2)element).readyStateValue != 4 )
+        {
+          Thread.Sleep(100);
+        }
+
+        string compareValue = getAttributeValue(findBy, element);
+
+        if (findBy.Compare(compareValue))
+        {
+          if (IsInputElement(tagName))
+          {
+            string inputElementType = ((IHTMLInputElement) element).type.ToLower();
+            if (inputType.ToLower().IndexOf(inputElementType) >= 0)
+            {
+              return element;
+            }
+          }
+          else
+          {
+            return element;
+          }
+        }
+      }
+
+      throw new ElementNotFoundException(tagName, findBy.AttributeName, findBy.Value);
+    }
+
+    private static IHTMLElementCollection getElementCollectionByTageName(IHTMLElementCollection elements, string tagName)
+    {
+      IHTMLElementCollection elementsWithTagName = (IHTMLElementCollection) elements.tags(tagName);
+
+      return elementsWithTagName;
+    }
+
+    private static bool IsInputElement(string tagName)
+    {
+      return tagName.ToLower() == "input";
+    }
+
+    private static string getAttributeValue(AttributeValue findBy, IHTMLElement element)
+    {
+      if (findBy is IDValue)
+      {
+        return element.id;        
+      }
+
+      else if (findBy is TextValue)
+      {
+        if (element.innerText != null)
+        {
+          return element.innerText.Trim();
+        }
+      }
+
+      else 
+      {
+        try
+        {
+          return (string) element.getAttribute(findBy.AttributeName, 0);
+        }
+        catch (Exception e)
+        {
+          Console.Write("Exception while trying to getAttribute '" + findBy.AttributeName + "' " );
+          Console.WriteLine(e);
+        }
+      }
+
+      return null;
+    }
+  }
+}
+
