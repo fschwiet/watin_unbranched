@@ -4,9 +4,6 @@
         ProductVersion = "7.10.3077"
         SchemaVersion = "2.0"
         ProjectGuid = "{217E2D34-F6DF-431B-AC5A-B368F481A530}"
-        SccProjectName = '"SurroundSCMScci"'
-        SccLocalPath = ".."
-        SccProvider = "MSSCCI:Surround SCM"
     >
         <Build>
             <Settings
@@ -360,6 +357,10 @@
                     RelPath = "TextFieldCollection.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TODO.txt"
+                    BuildAction = "Content"
                 />
                 <File
                     RelPath = "Utils.cs"
