@@ -75,6 +75,18 @@ namespace WatiN
     {}
   }
 
+  /// <summary>
+  /// Used when searching for a Label for an element
+  /// </summary>
+  public class ForValue : AttributeValue
+  {
+    public ForValue(string forId) : base("htmlfor", forId)
+    {}
+
+    public ForValue(Element element) : base("htmlfor", element.Id)
+    {}
+  }
+
   public class UrlValue : AttributeValue
   {
     Uri findUrl = null;
@@ -141,6 +153,16 @@ namespace WatiN
   /// </summary>
   public class Find
   {
+    /// <summary>
+    /// Find a Label element by the id of the element it's linked with
+    /// </summary>
+    /// <param name="forId">Id of the element the label is linked with</param>
+    /// <returns></returns>
+    public static ForValue ByFor(string forId)
+    {
+      return new ForValue(forId);
+    }
+
     /// <summary>
     /// Find an element by its id
     /// </summary>

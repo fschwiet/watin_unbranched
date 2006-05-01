@@ -42,6 +42,16 @@ namespace WatiN
       return new FormCollection(ie, elements);
     }
 
+    public static Label Label(DomContainer ie, AttributeValue findBy, IHTMLElementCollection elements)
+    {
+      return new Label(ie, (HTMLLabelElement) FindElementByAttribute("label", null, findBy, elements));
+    }
+
+    public static LabelCollection Labels(DomContainer ie, IHTMLElementCollection elements)
+    {
+      return new LabelCollection(ie, elements);
+    }
+
     public static Link Link(DomContainer ie, AttributeValue findBy, IHTMLElementCollection elements)
     {
       return new Link(ie, (HTMLAnchorElement) FindElementByAttribute("A", null, findBy, elements));

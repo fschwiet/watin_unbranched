@@ -14,6 +14,11 @@ namespace WatiN
     
     private string originalcolor;
 
+    /// <summary>
+    /// This constructor is mainly used from within WatiN.
+    /// </summary>
+    /// <param name="ie">Domcontainer this element is located in</param>
+    /// <param name="element">The element</param>
     public Element(DomContainer ie, object element)
     {
       this.ie = ie;
@@ -38,6 +43,24 @@ namespace WatiN
     public virtual string Text
     {
       get { return htmlElement.innerText; }
+    }
+
+    /// <summary>
+    /// Returns the text before this element when it's wrapped
+    /// in a Label element. Otherwise it returns null.
+    /// </summary>
+    public string TextAfter
+    {
+      get { return htmlElement2.getAdjacentText("afterEnd"); }
+    }
+
+    /// <summary>
+    /// Returns the text after this element when it's wrapped
+    /// in a Label element. Otherwise it returns null.
+    /// </summary>
+    public string TextBefore
+    {
+      get { return htmlElement2.getAdjacentText("beforeBegin"); }
     }
 
     public string InnerHtml
@@ -127,6 +150,11 @@ namespace WatiN
       }
     }
 
+    /// <summary>
+    /// Use this method when you want to continue without waiting
+    /// for the click event to be finished. Ussualy when a pop-up
+    /// window is displayed when clicking the element.
+    /// </summary>
     public void ClickNoWait()
     {
       if (!Enabled) { throw new ElementDisabledException(Id); }
@@ -259,6 +287,11 @@ namespace WatiN
     private IHTMLElement htmlElement
     {
       get { return (IHTMLElement) element; }
+    }
+
+    private IHTMLElement2 htmlElement2
+    {
+      get { return (IHTMLElement2) element; }
     }
 
     private IHTMLElement3 htmlElement3

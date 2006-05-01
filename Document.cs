@@ -138,6 +138,21 @@ namespace WatiN
       get { return SubElementsSupport.Forms(ie, elementCollection); }
     }
 
+    public Label Label(string elementID)
+    {
+      return this.Label(Find.ByID(elementID));
+    }
+
+    public Label Label(AttributeValue findBy)
+    {
+      return SubElementsSupport.Label(ie, findBy, elementCollection);
+    }
+
+    public LabelCollection Labels
+    {
+      get { return SubElementsSupport.Labels(ie, elementCollection); }
+    }
+
     public Link Link(string elementID)
     {
       return this.Link(Find.ByID(elementID));

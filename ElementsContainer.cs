@@ -57,6 +57,21 @@ namespace WatiN
 	    get { return SubElementsSupport.Forms(Ie, elementCollection); }
 	  }
 
+	  public Label Label(string elementID)
+	  {
+      return this.Label(Find.ByID(elementID));
+    }
+
+	  public Label Label(AttributeValue findBy)
+	  {
+      return SubElementsSupport.Label(Ie, findBy, elementCollection);
+    }
+
+	  public LabelCollection Labels
+	  {
+      get { return SubElementsSupport.Labels(Ie, elementCollection); }
+    }
+
 	  public Link Link(string elementID)
     {
       return this.Link(Find.ByID(elementID));
@@ -237,7 +252,7 @@ namespace WatiN
     {
       get
       {
-        return (IHTMLElementCollection)((IHTMLElement)base.element).all;
+        return (IHTMLElementCollection)((IHTMLElement)element).all;
       }
     }
 	}

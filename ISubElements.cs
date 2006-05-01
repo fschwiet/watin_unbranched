@@ -14,6 +14,10 @@ namespace WatiN
     Form Form(AttributeValue findBy);
     FormCollection Forms { get; }
 
+    Label Label(string elementID);
+    Label Label(AttributeValue findBy);
+    LabelCollection Labels { get; }
+
     Link Link(string elementID);
     Link Link(AttributeValue findBy);
     LinkCollection Links { get; }

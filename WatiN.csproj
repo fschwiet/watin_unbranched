@@ -237,6 +237,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Label.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LabelCollection.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Link.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
