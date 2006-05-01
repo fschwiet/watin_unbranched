@@ -172,10 +172,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "exceptions.rb"
-                    BuildAction = "None"
-                />
-                <File
                     RelPath = "FindBy.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
