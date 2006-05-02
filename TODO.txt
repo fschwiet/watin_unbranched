@@ -1,7 +1,7 @@
 This file lists things that still need to be done. 
 
 Maybe a roadmap for the upcoming WatiN releases should be made. Then these TODO's 
-can be assigned to a release. So first ting to do
+can be assigned to a release. So first thing to do
 
 - create roadmap for WatiN releases
 
@@ -14,6 +14,7 @@ can be assigned to a release. So first ting to do
   and the way it returns the WatiN.Element instance.
 - support for finding an element with xpath needed?
 - support for finding an element by multiple attributes needed?
+- support for making screenshots or saving the HTML page in mhtml format.
 - creating an installer for WatiN (MSI or NullSoft?)
 - creating NAnt build script
 - Adding documentation to the code
