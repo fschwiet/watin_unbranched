@@ -244,6 +244,10 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "License.txt"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Link.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
