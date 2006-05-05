@@ -28,7 +28,7 @@ namespace WatiN
 		
 		public FrameCollection(DomContainer ie, IHTMLDocument2 htmlDocument) 
 		{
-			this.elements = new ArrayList();
+			elements = new ArrayList();
       IHTMLElementCollection frameElements = (IHTMLElementCollection)htmlDocument.all.tags("FRAME");
 
       for (int index = 0; index < htmlDocument.frames.length; index++)
@@ -42,7 +42,7 @@ namespace WatiN
         // Create new Frame instance
         Frame frame = new Frame(ie, thisFrame.document, thisFrame.name, frameElement.id);
 
-        this.elements.Add(frame);
+        elements.Add(frame);
 			}
 		}
 

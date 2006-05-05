@@ -28,7 +28,7 @@ namespace WatiN
 		
     public TextFieldCollection(DomContainer ie, IHTMLElementCollection elements) 
     {
-      this.children = new ArrayList();
+      children = new ArrayList();
       IHTMLElementCollection inputElements = (IHTMLElementCollection)elements.tags("input");
 
       foreach (IHTMLInputElement inputElement in inputElements)
@@ -36,7 +36,7 @@ namespace WatiN
         if ("text password textarea hidden".IndexOf(inputElement.type) >= 0)
         {
           TextField v = new TextField(ie, (HTMLInputElement)inputElement);
-          this.children.Add(v);
+          children.Add(v);
         }
       }
 
@@ -45,7 +45,7 @@ namespace WatiN
       foreach (IHTMLElement textElement in textElements)
       {
         TextField v = new TextField(ie, (HTMLInputElement)textElement);
-        this.children.Add(v);
+        children.Add(v);
       }
     }
 

@@ -123,8 +123,8 @@ namespace WatiN
 
     private void Init(string name, string id)
     {
-      this.frameName = name;
-      this.frameId = id;
+      frameName = name;
+      frameId = id;
     }
   }
 }

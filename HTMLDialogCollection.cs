@@ -29,11 +29,11 @@ namespace WatiN
 
     public HTMLDialogCollection(Process ieProcess) 
     {
-      this.htmlDialogs = new ArrayList();
+      htmlDialogs = new ArrayList();
 
       IntPtr hWnd = IntPtr.Zero;
 
-      foreach (System.Diagnostics.ProcessThread t in ieProcess.Threads)
+      foreach (ProcessThread t in ieProcess.Threads)
       {
         int threadId = t.Id;
 
@@ -47,7 +47,7 @@ namespace WatiN
       if (HTMLDialog.IsIETridenDlgFrame(hWnd))
       {
         HTMLDialog htmlDialog = new HTMLDialog(hWnd);
-        this.htmlDialogs.Add(htmlDialog);
+        htmlDialogs.Add(htmlDialog);
       }
 
       return true;

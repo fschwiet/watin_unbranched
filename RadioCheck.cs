@@ -49,7 +49,7 @@ namespace WatiN
 
     private IHTMLInputElement inputElement
     {
-      get { return ((IHTMLInputElement) base.element); }
+      get { return ((IHTMLInputElement) element); }
     }
   }
 }

@@ -31,8 +31,8 @@ namespace WatiN
     public override TableRowCollection TableRows
     {
       get {
-        IHTMLElement firstTBody = (IHTMLElement)((HTMLTable)base.element).tBodies.item(0,null);
-        return new TableRowCollection(base.Ie, (IHTMLElementCollection)(firstTBody.all)); }
+        IHTMLElement firstTBody = (IHTMLElement)((HTMLTable)element).tBodies.item(0,null);
+        return new TableRowCollection(Ie, (IHTMLElementCollection)(firstTBody.all)); }
     }
 
     /// <summary>
@@ -45,7 +45,7 @@ namespace WatiN
     {
       Logger.LogAction("Searching for '" + findText + "' in column " + inColumn + " of " + GetType().Name + " '" + Id + "'");
 
-      foreach (TableRow tableRow in this.TableRows)
+      foreach (TableRow tableRow in TableRows)
       {
         TableCellCollection tableCells = tableRow.TableCells;
 

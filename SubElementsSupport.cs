@@ -166,7 +166,7 @@ namespace WatiN
 
     public static TextField TextField(DomContainer ie, AttributeValue findBy, IHTMLElementCollection elements)
     {
-      TextField textfield = null;
+      TextField textfield;
 
       try
       {

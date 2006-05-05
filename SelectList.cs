@@ -116,7 +116,7 @@ namespace WatiN
           else
           {
             option.selected = true;
-            this.FireEvent("onchange");
+            FireEvent("onchange");
             optionFound = true;
           }
         }

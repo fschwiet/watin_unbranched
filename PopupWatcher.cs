@@ -37,8 +37,8 @@ namespace WatiN
     public PopupWatcher(int iePid)
     {
       this.iePid = iePid;
-      this.keepRunning = true;
-      this.alertQueue = new System.Collections.Queue();
+      keepRunning = true;
+      alertQueue = new System.Collections.Queue();
     }
 
     public int alertCount()

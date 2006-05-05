@@ -86,7 +86,7 @@ namespace WatiN
 
     public Frame Frame(string elementID)
     {
-      return this.Frame(Find.ByID(elementID));
+      return Frame(Find.ByID(elementID));
     }
     
     public Frame Frame(NameValue findBy)
@@ -114,7 +114,7 @@ namespace WatiN
 
     public Button Button(string elementID)
     {
-      return this.Button(Find.ByID(elementID));
+      return Button(Find.ByID(elementID));
     }
 
     public Button Button(AttributeValue findBy)
@@ -129,7 +129,7 @@ namespace WatiN
 
     public CheckBox CheckBox(string elementID)
     {
-      return this.CheckBox(Find.ByID(elementID));
+      return CheckBox(Find.ByID(elementID));
     }
 
     public CheckBox CheckBox(AttributeValue findBy)
@@ -144,7 +144,7 @@ namespace WatiN
 
     public Form Form(string elementID)
     {
-      return this.Form(Find.ByID(elementID));
+      return Form(Find.ByID(elementID));
     }
 
     public Form Form(AttributeValue findBy)
@@ -159,7 +159,7 @@ namespace WatiN
 
     public Label Label(string elementID)
     {
-      return this.Label(Find.ByID(elementID));
+      return Label(Find.ByID(elementID));
     }
 
     public Label Label(AttributeValue findBy)
@@ -174,7 +174,7 @@ namespace WatiN
 
     public Link Link(string elementID)
     {
-      return this.Link(Find.ByID(elementID));
+      return Link(Find.ByID(elementID));
     }
 
     public Link Link(AttributeValue findBy)
@@ -189,7 +189,7 @@ namespace WatiN
 
     public Para Para(string elementID)
     {
-      return this.Para(Find.ByID(elementID));
+      return Para(Find.ByID(elementID));
     }
 
     public Para Para(AttributeValue findBy)
@@ -204,7 +204,7 @@ namespace WatiN
 
     public RadioButton RadioButton(string elementID)
     {
-      return this.RadioButton(Find.ByID(elementID));
+      return RadioButton(Find.ByID(elementID));
     }
 
     public RadioButton RadioButton(AttributeValue findBy)
@@ -219,7 +219,7 @@ namespace WatiN
 
     public SelectList SelectList(string elementID)
     {
-      return this.SelectList(Find.ByID(elementID));
+      return SelectList(Find.ByID(elementID));
     }
 
     public SelectList SelectList(AttributeValue findBy)
@@ -234,7 +234,7 @@ namespace WatiN
 
     public Table Table(string elementID)
     {
-      return this.Table(Find.ByID(elementID));
+      return Table(Find.ByID(elementID));
     }
 
     public Table Table(AttributeValue findBy)
@@ -254,7 +254,7 @@ namespace WatiN
 
     public TableCell TableCell(string elementID)
     {
-      return this.TableCell(Find.ByID(elementID));
+      return TableCell(Find.ByID(elementID));
     }
 
     public TableCell TableCell(AttributeValue findBy)
@@ -274,7 +274,7 @@ namespace WatiN
 
     public TableRow TableRow(string elementID)
     {
-      return this.TableRow(Find.ByID(elementID));
+      return TableRow(Find.ByID(elementID));
     }
 
     public TableRow TableRow(AttributeValue findBy)
@@ -289,7 +289,7 @@ namespace WatiN
 
     public TextField TextField(string elementID)
     {
-      return this.TextField(Find.ByID(elementID));
+      return TextField(Find.ByID(elementID));
     }
 
     public TextField TextField(AttributeValue findBy)
@@ -304,7 +304,7 @@ namespace WatiN
 
     public Span Span(string elementID)
     {
-      return this.Span(Find.ByID(elementID));
+      return Span(Find.ByID(elementID));
     }
 
     public Span Span(AttributeValue findBy)
@@ -319,7 +319,7 @@ namespace WatiN
 
     public Div Div(string elementID)
     {
-      return this.Div(Find.ByID(elementID));
+      return Div(Find.ByID(elementID));
     }
 
     public Div Div(AttributeValue findBy)
@@ -334,7 +334,7 @@ namespace WatiN
 
     public Image Image(string elementID)
     {
-      return this.Image(Find.ByID(elementID));
+      return Image(Find.ByID(elementID));
     }
 
     public Image Image(AttributeValue findBy)

@@ -29,7 +29,7 @@ namespace WatiN
 		
     public IECollection() 
     {
-      this.internetExplorers = new ArrayList();
+      internetExplorers = new ArrayList();
 
       ShellWindows allBrowsers = new ShellWindows();
 
@@ -38,7 +38,7 @@ namespace WatiN
         try
         {
           IE ie = new IE(internetExplorer);
-          this.internetExplorers.Add(ie);
+          internetExplorers.Add(ie);
         }
         catch
         {}

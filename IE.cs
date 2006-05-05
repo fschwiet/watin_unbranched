@@ -35,7 +35,7 @@ namespace WatiN
   {
     const int waitForWindowTime = 60;
 
-    private SHDocVw.InternetExplorer ie;
+    private InternetExplorer ie;
 
     private bool autoClose = true;
     private PopupWatcher popupWatcher;
@@ -147,7 +147,7 @@ namespace WatiN
 
       SetAutoCloseAndMoveMouse(autoClose);
 
-      InitIEAndStartPopupWatcher(new SHDocVw.InternetExplorerClass());
+      InitIEAndStartPopupWatcher(new InternetExplorerClass());
 
       GoTo(URL);
     }
@@ -165,7 +165,7 @@ namespace WatiN
     {
       int iePid = 0;
       IntPtr hwnd = GetIEHandle();
-      foreach (System.Diagnostics.Process p in System.Diagnostics.Process.GetProcesses())
+      foreach (Process p in Process.GetProcesses())
       {
         if (p.MainWindowHandle == hwnd)
         {
@@ -228,7 +228,7 @@ namespace WatiN
 
     private void SetAutoCloseAndMoveMouse(bool autoClose)
     {
-      this.AutoCloseIE = autoClose;
+      AutoCloseIE = autoClose;
 
       if (autoClose)
       {
@@ -367,7 +367,7 @@ namespace WatiN
 
     public void Close()
     {
-      Logger.LogAction("Closing browser '" + this.MainDocument.Title + "'");
+      Logger.LogAction("Closing browser '" + MainDocument.Title + "'");
       StopPopupWatcherAndQuitIE();
     }
 
@@ -381,7 +381,7 @@ namespace WatiN
       popupWatcher.Stop();
       popupWatcherThread.Join();
 
-      foreach(HTMLDialog htmlDialog in this.HTMLDialogs)
+      foreach(HTMLDialog htmlDialog in HTMLDialogs)
       {
         htmlDialog.Close();
       }
@@ -401,12 +401,12 @@ namespace WatiN
     {
       Logger.LogAction("Force closing all IE instances");
 
-      int iePid = this.StopPopupWatcherAndQuitIE();
+      int iePid = StopPopupWatcherAndQuitIE();
 
       try
       {
-        System.Diagnostics.Process.GetProcessById(iePid).Kill(); // force IE to close if needed
-        System.Diagnostics.Debug.WriteLine("IE didn't close by itself, so we explicitly killed it");
+        Process.GetProcessById(iePid).Kill(); // force IE to close if needed
+        Debug.WriteLine("IE didn't close by itself, so we explicitly killed it");
       }
       catch (ArgumentException)
       {
@@ -422,19 +422,19 @@ namespace WatiN
 
     public override void WaitForComplete()
     {
-      base.InitTimeOut();
+      InitTimeOut();
 
       WaitWhileIEBusy();
       WaitWhileIEStateNotComplete();
       
-      base.WaitForCompleteTimeOutIsInitialized();
+      WaitForCompleteTimeOutIsInitialized();
     }
 
     private void WaitWhileIEStateNotComplete()
     {
-      while (Ie.ReadyState !=  SHDocVw.tagREADYSTATE.READYSTATE_COMPLETE)
+      while (Ie.ReadyState !=  tagREADYSTATE.READYSTATE_COMPLETE)
       {
-        base.ThrowExceptionWhenTimeOut("Internet Explorer state not complete");
+        ThrowExceptionWhenTimeOut("Internet Explorer state not complete");
 
         Thread.Sleep(100);        
       }
@@ -444,7 +444,7 @@ namespace WatiN
     {
       while (Ie.Busy)
       {
-        base.ThrowExceptionWhenTimeOut("Internet Explorer busy");
+        ThrowExceptionWhenTimeOut("Internet Explorer busy");
 
         Thread.Sleep(100);
       }
@@ -452,9 +452,9 @@ namespace WatiN
 
     #region IDisposable Members
 
-    public void Dispose()
+    public new void Dispose()
     {
-      if (this.AutoCloseIE)
+      if (AutoCloseIE)
       {
         Close();
       }
@@ -536,7 +536,7 @@ namespace WatiN
       {
         Thread.Sleep(500);
 
-        foreach(HTMLDialog htmlDialog in this.HTMLDialogs)
+        foreach(HTMLDialog htmlDialog in HTMLDialogs)
         {
           string compareValue = string.Empty;
 

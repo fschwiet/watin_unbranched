@@ -182,7 +182,7 @@ namespace WatiN
 
       HighLight(true);
 
-      Thread clickButton = new Thread(new ThreadStart(this.Click));
+      Thread clickButton = new Thread(new ThreadStart(Click));
       clickButton.Start();
       clickButton.Join(500);
 

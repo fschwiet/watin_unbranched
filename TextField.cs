@@ -110,7 +110,7 @@ namespace WatiN
     {
       get
       {
-        return this.Value;
+        return Value;
       }
     }
 
@@ -161,7 +161,7 @@ namespace WatiN
         //TODO: Make typing speed a variable
         //        Thread.Sleep(0); 
 
-        setValue(this.Value + value.Substring(i, 1));
+        setValue(Value + value.Substring(i, 1));
 
         if (doKeydown) { KeyDown(); }
         if (doKeyPress) { KeyPress(); }
@@ -227,7 +227,7 @@ namespace WatiN
 
       public TextFieldElement(HTMLInputElement htmlInputElement)
       {
-        this.inputElement = htmlInputElement;
+        inputElement = htmlInputElement;
       }
 
       public int MaxLength

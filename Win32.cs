@@ -74,7 +74,7 @@ namespace WatiN
     internal static extern Int32 SendMessageTimeout(IntPtr hWnd, Int32 msg, Int32 wParam, Int32 lParam, Int32 fuFlags, Int32 uTimeout, ref Int32 lpdwResult);
     
     [DllImport("oleacc", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
-    internal static extern Int32 ObjectFromLresult(Int32 lResult, ref System.Guid riid, Int32 wParam, ref IHTMLDocument2 ppvObject);
+    internal static extern Int32 ObjectFromLresult(Int32 lResult, ref Guid riid, Int32 wParam, ref IHTMLDocument2 ppvObject);
     
     internal const Int32 SMTO_ABORTIFHUNG = 2;
     

@@ -40,17 +40,17 @@ namespace WatiN
     /// </summary>
     public override string Text
     {
-      get { return this.Value; }
+      get { return Value; }
     }
 
     private HTMLInputElement inputButtonElement
     {
-      get { return ((HTMLInputElement) base.element); }
+      get { return ((HTMLInputElement) element); }
     }
 
     public override string ToString()
     {
-      return this.Value;
+      return Value;
     }
   }
 }

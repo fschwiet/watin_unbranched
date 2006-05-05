@@ -44,8 +44,8 @@ namespace WatiN
 
     public void Close()
     {
-      base.Dispose();
-      Win32.SendMessage(this.hWnd, Win32.WM_CLOSE, 0, 0);
+      Dispose();
+      Win32.SendMessage(hWnd, Win32.WM_CLOSE, 0, 0);
     }
 
     public bool HasFocus()
@@ -56,12 +56,12 @@ namespace WatiN
 
     public override IHTMLDocument2 OnGetHTMLDocument()
     {
-      return IEDOMFromhWnd(this.hWnd);
+      return IEDOMFromhWnd(hWnd);
     }
 
     private IHTMLDocument2 IEDOMFromhWnd(IntPtr hWnd)
     {
-      System.Guid IID_IHTMLDocument2 = new System.Guid("626FC520-A41E-11CF-A731-00A0C9082637");
+      Guid IID_IHTMLDocument2 = new Guid("626FC520-A41E-11CF-A731-00A0C9082637");
 
       Int32 lRes = 0;
       Int32 lMsg = 0;
