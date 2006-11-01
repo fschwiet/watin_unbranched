@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0029)http://watin.sourceforge.net/ -->
+<html>
+    <head>
+        <title></title>
+        <meta name="vs_targetSchema" content="http://schemas.microsoft.com/intellisense/ie5">
+        <meta name="GENERATOR" content="Microsoft Visual Studio .NET 7.1">
+        <meta name="ProgId" content="VisualStudio.HTML">
+        <meta name="Originator" content="Microsoft Visual Studio .NET 7.1">
+        <script language="javascript">
+
+function Button1_onkeydown(element) {
+    report = document.getElementById("Report")
+    report.value = "button.id = " + element.id
+    return true
+}
+
+function ShowConfirmDialog() {
+     var answer = confirm('Do you want to do xyz?');
+     report = document.getElementById("ReportConfirmResult")
+     if (answer == true)
+         report.value = "OK"
+     else
+         report.value = "Cancel";
+}
+
+function ShowAlertDialog() {
+     alert('This is an alert!');
+}
+
+function keyDown() {
+    checkbox = document.getElementById("chkKeyDown");
+    checkbox.checked = true;
+    return true
+}
+function keyPress() {
+    checkbox = document.getElementById("chkKeyPress");
+    checkbox.checked = true;
+    return true
+}
+function keyUp() {
+    checkbox = document.getElementById("chkKeyUp");
+    checkbox.checked = true;
+    return true
+}
+        </script>
+    </head>
+    <body>
+        <P>
+            <INPUT type="button" value="Button without id" onkeydown="return Button1_onkeydown(this)"><INPUT id="Report" type="text" name="Report" style="WIDTH: 456px; HEIGHT: 22px" size="70">
+        </P>
+        <P>
+            <INPUT id="confirmdialogid" onclick="javascript:ShowConfirmDialog()" type="button" value="Show confirm dialog"><INPUT id="ReportConfirmResult" type="text" style="WIDTH: 432px; HEIGHT: 22px" size="66">
+        </P>
+        <P>
+            <INPUT id="alertdialogid" onclick="javascript:ShowAlertDialog()" type="button" value="Show alert dialog">
+        </P>
+        <p>
+            <input id="textfieldid" type="text" onkeydown="javascript:keyDown()" onkeypress="javascript:keyPress()"
+                onkeyup="javascript:keyUp()" /> <label><input type="checkbox" id="chkKeyDown" />
+                KeyDown</label> <label><input type="checkbox" id="chkKeyPress" /> KeyPress</label>
+            <label><input type="checkbox" id="chkKeyUp" /> KeyUp</label>
+        </p>
+    </body>
+</html>
