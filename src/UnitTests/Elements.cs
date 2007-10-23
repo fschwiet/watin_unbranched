@@ -292,8 +292,8 @@ namespace WatiN.Core.UnitTests
     [Test]
     public void TableRowRowIndex()
     {
-      Assert.AreEqual(1, ie.TableRow(Find.ByText("a1")).Index);
-      Assert.AreEqual(2, ie.TableRow(Find.ByText("b2")).Index);
+      Assert.AreEqual(1, ie.TableRow(Find.ByText(new StringContainsAndCaseInsensitiveComparer("a1"))).Index);
+      Assert.AreEqual(2, ie.TableRow(Find.ByText(new StringContainsAndCaseInsensitiveComparer("b2"))).Index);
     }
 
     [Test]
