@@ -188,8 +188,9 @@ namespace WatiN.Core.UnitTests
       AttributeConstraint value = Find.ByText("textvalue");
 
       Assert.IsInstanceOfType(typeof (AttributeConstraint), value, "Text class should inherit Attribute class");
+	  Assert.IsAssignableFrom(typeof(StringComparer), value.Comparer, "Unexpected comparer");
 
-      const string innertext = "innertext";
+	  const string innertext = "innertext";
       Assert.AreEqual(innertext, value.AttributeName, "Wrong attributename");
       Assert.AreEqual("textvalue", value.Value, "Wrong value");
 
