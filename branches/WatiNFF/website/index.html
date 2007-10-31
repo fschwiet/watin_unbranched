@@ -1,0 +1,264 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>WatiN Home</title>
+        <meta content="http://schemas.microsoft.com/intellisense/ie5" name="vs_targetSchema">
+        <meta content="watin, test, C#, web, .Net, framework, html, dom, watir" name="Keywords">
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+        <meta content="Global" name="Distribution">
+        <meta content="Jeroen van Menen" name="Author">
+        <meta content="index,follow" name="Robots">
+        <LINK href="images/BrightSide.css" type="text/css" rel="stylesheet">
+    </head>
+    <body>
+        <!-- wrap starts here -->
+        <div id="wrap">
+            <div id="header">
+                <h1 id="logo"><span class="green"><FONT color="#6297bc">WatiN</FONT></span></h1>
+                <h2 id="slogan">Web Application Testing In .Net</h2>
+                <form class="searchform" action="#" method="post">
+                    <p><input class="textbox" type="text" name="search_query"> <input class="button" type="submit" value="Search" name="search"></p>
+                </form>
+                <!-- Menu Tabs -->
+                <ul>
+                    <li id="current">
+                        <A href="index.html"><span>Home</span></A>
+                    <li>
+                        <a href="http://sourceforge.net/project/showfiles.php?group_id=167632"><span>Downloads</span></a>
+                    <li>
+                        <A href="documentation.html"><span>Documentation</span></A>
+                    <li>
+                        <A href="contribute.html"><span>Contribute</span></A>
+                    <li>
+                        <A href="support.html"><span>Support</span></A>
+                    <li>
+                        <a href="http://sourceforge.net/export/rss2_project.php?group_id=167632"><span>RSS</span></a>
+                    </li>
+                </ul>
+            </div>
+            <!-- content-wrap starts here -->
+            <div id="content-wrap">
+                <div id="main">
+                    <h1>WatiN&nbsp; <span class="green">Overview</span></h1>
+                    <p><strong>Welcome at the WatiN </strong><i>(pronounced as What-in)</i> <strong>website</strong>. 
+                        Inspired</STRONG> by <a href="http://www.openqa.org/watir/" target="_blank">Watir</a>
+                        development of WatiN started in December 2005 to make a similar kind of Web 
+                        Application Testing possible for the .Net languages. Since then WatiN has grown 
+                        into an easy to use, feature rich and stable framework. WatiN is developed in 
+                        C# and aims to&nbsp;bring you&nbsp;an easy way to automate tests with Internet 
+                        Explorer.</p>
+                    <br>
+                    <h1>WatiN&nbsp; <span class="green">Example</span></h1>
+                    <p>Following is the Hello world example of web test automation; searching Google.</p>
+                    <p><code>[Test]
+                            <br>
+                            public void SearchForWatiNOnGoogle()<br>
+                            {<br>
+                            &nbsp;using (IE ie = new IE("http://www.google.com"))<br>
+                            &nbsp;{<br>
+                            &nbsp;&nbsp;ie.TextField(Find.ByName("q")).TypeText("WatiN");<br>
+                            &nbsp;&nbsp;ie.Button(Find.ByName("btnG")).Click();<br>
+                            &nbsp;&nbsp;<br>
+                            &nbsp;&nbsp;Assert.IsTrue(ie.ContainsText("WatiN"));<br>
+                            &nbsp;}<br>
+                            } </code>
+                    </p>
+                    <br>
+                    <h1>WatiN&nbsp; <span class="green">Feature</span>&nbsp; <span class="gray">List</span></h1>
+                    <ul>
+                        <li>
+                            <span>Automates all major HTML elements</span>
+                        <li>
+                            <span>Find elements by multiple attributes</span>
+                        <li>
+                            <span>Supports AJAX website testing</span>
+                        <li>
+                            <span>Supports frames (cross domain) and iframes</span>
+                        <li>
+                            <span>Supports popup dialogs like alert, confirm, login etc..</span>
+                        <li>
+                            <span>Supports HTML dialogs (modal and modeless)</span>
+                        <li>
+                            <span>A basic (extensible) logging mechanism</span>
+                        <li>
+                            <span>Works with Internet Explorer 6 and Internet Explorer 7</span>
+                        <li>
+                            <span>Developed in C#</span>
+                        <li>
+                            <span>Licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache 
+                                    License 2.0</a></span>
+                        <li>
+                            <span>And.. If you miss some feature, you can add it yourself because it is open 
+                                source!</span>
+                        </li>
+                    </ul>
+                    <br>
+                    <p>Don't forget to download the <a href="http://www.microsoft.com/downloads/details.aspx?FamilyID=e59c3964-672d-4511-bb3e-2d5e1db91038&amp;displaylang=en"
+                            target="_blank">Internet Explorer Developer Toolbar</a>. This will help 
+                        tremendously in exploring the structure of a webpage so you can create your 
+                        test automation more easily.</p>
+                    <br>
+                    <blockquote>
+                        <p>"... it will give you exactly the experience that you'll have when a customer hits the site, which ends up being a far more accurate assessment of the application quality."</I></p>
+                        <p><a href="weblogs.asp.net/scottgu"/>Scott Guthrie</a><br>
+                            General Manager within the Microsoft Developer Division.
+                            <br>
+                            <a href="http://codebetter.com/blogs/jeremy.miller/archive/2007/03/07/Jay_2700_s-TDD-QuickStart_2C00_-and-the-underlying-problems-he-stumbled-into.aspx#159825" target="_blank">Comment taken from Jeremy D. Millers blog</a></p>
+                    </blockquote><blockquote>
+                        <p>". it feels like it should have shipped out of the box with Visual Studio Team 
+                            Edition for Software Testers."</I></p>
+                        <p>Bruce McLeod<br>
+                            Principal Consultant for Devtest Pty Ltd.
+                            <br>
+                            <a href="http://www.devtest.com/" target="_blank">www.devtest.com</a></p>
+                    </blockquote><blockquote>
+                        <p>"What a great tool!!! We are using it with CruiseControl.Net.&nbsp;We run 
+                            roughly 1k tests each build."</p>
+                        <p>David Strickland<br>
+                            Vice President of Development
+                            <br>
+                            <a href="http://www.swingvote.com/" target="_blank">Swingvote, LLC</a></p>
+                    </blockquote><blockquote>
+                        <p>"Love your product. I'm new to WatiN but have spent the last couple of weeks 
+                            using it and I love it. Very clean interface and it's very quick and easy to 
+                            turn out tests."</p>
+                        <p>Todd Lichty</p>
+                    </blockquote>
+                </div>
+                <div id="rightbar">
+                    <div id="sidebar">
+                        <h1>Links</h1>
+                        <ul class="sidemenu">
+                            <li>
+                                <A href="gettingstarted.html">Getting started</A>
+                            <li>
+                                <A href="htmlelementmapping.html">HTML mapping list</A>
+                            <li>
+                                <A href="http://watintestrecord.sourceforge.net/" target="_blank">WatiN Test 
+                                    Recorder</A>
+                            <li>
+                                <A href="http://www.codeplex.com/wax/" target="_blank">WaX</A>
+                            <li>
+                                <a href="http://sourceforge.net/projects/watinfixture" target="_blank">WatiN Fixture</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <h1>News</h1>
+                    <p><strong>October 23, 2007</strong></p>
+                    <p>
+                        Released WatiN 1.2.1</p>
+                    <p>Bug fix release regarding Find.ByText(string).
+					</p >
+                     <p>Read the <a href="releasenotes-1-2-1-4000.html">release notes</a> and download 
+                        it from <a href="http://sourceforge.net/project/showfiles.php?group_id=167632">here</a>.
+					</p>
+                    <p><strong>October 14, 2007</strong></p>
+                    <p>Since the last release the online MSDN documentation wasn't available. This has been resolved.</p>
+                    <p><strong>October 4, 2007</strong></p>
+                    <p>
+                        Released WatiN 1.2.0!</p>
+                    <p>Many, many new features! A big thanks to all who contributed.
+					</p >
+                     <p>Read the <a href="releasenotes-1-2-0-4000.html">release notes</a> and download 
+                        it from <a href="http://sourceforge.net/project/showfiles.php?group_id=167632">here</a>.
+					</p>
+                    <p><strong>Aug 26, 2007</strong></p>
+                    <p>An updated roadmap will be up somewhere this week. A new release is scheduled for late September.
+					</p>
+                    <p><strong>Aug 24, 2007</strong></p>
+                    <p>WatiN and <A href="http://watintestrecord.sourceforge.net/" target="_blank">WatiN test recorder</a> have made it into <b>THE</b> <a href=
+"http://feeds.feedburner.com/~r/ScottHanselman/~3/147518722/ScottHanselmans2007UltimateDeveloperAndPowerUsersToolL
+istForWindows.aspx" target="_blank">"Scott Hanselman's 2007 Ultimate Developer and Power Users Tool List for Windows"</a>. 
+					</p>
+                    <p><strong>Aug 23, 2007</strong></p>
+                    <p><a href="http://www.codeplex.com/wax" target="_blank">WAX</a>: Use MS Excel to automate your webtesting.</p>
+                    <p>Check out this new WatiN test runner created by <a href="http://blogs.charteris.com/blogs/edwardw" target="_blank">Edward Wilde</a>. It allows you to write your tests in MS Excel and execute them with WatiN.
+					</p>
+					</p>
+                    <p><strong>May 16, 2007</strong></p>
+                    <p>
+                        Released WatiN 1.1.2!</p>
+                    <p>Fixed yet another issue. Everybody using the 1.1.0 or 1.1.1 release is strongly adviced to upgrade to this new release.
+					</p >
+                     <p>Read the <a href="releasenotes-1-1-2-4000.html">release notes</a> and download 
+                        it from <a href="http://sourceforge.net/project/showfiles.php?group_id=167632">here</a>.
+					</p>
+                    <p><strong>May 15, 2007</strong></p>
+                    <p>
+                        Released WatiN 1.1.1!</p>
+                    <p>Fixes a (major)  
+					<a href="http://sourceforge.net/tracker/index.php?func=detail&aid=1718162&group_id=167632&atid=843727" target="_blank">issue</a> with firing events on elements on a frames page. Everybody testing websites with frame pages is strongly
+					adviced to upgrade to this new release.
+					</p >
+                     <p>Read the <a href="releasenotes-1-1-1-4000.html">release notes</a> and download 
+                        it from <a href="http://sourceforge.net/project/showfiles.php?group_id=167632">here</a>.
+					</p>
+                   <p><strong>May 2, 2007</strong></p>
+                    <p>
+                        Released WatiN 1.1.0!</p>
+                    <p>Read the <a href="releasenotes-1-1-0-4000.html">release notes</a> and download 
+                        it from <a href="http://sourceforge.net/project/showfiles.php?group_id=167632">here</a>.
+					</p>
+					<p>Also restyled the website. Do you like it? (some parts are still in progress)</p >
+                    <p><strong>April 9, 2007</strong></p>
+                    <p>
+                        A new <a href="http://watintestrecord.sourceforge.net/" target="_blank">test 
+                            recorder for WatiN</a> is launched. Congrats to Daaron, Nick and others who 
+                        helped out!</p>
+                    <p><strong>April 8, 2007</strong></p>
+                    <p>The WatiN community is thriving! <a href="http://www.teknologika.com/blog/BuildingAGUITestAutomationFrameworkStructuringTheProject.aspx"
+                            target="_blank">Bruce McLeod</a> started a <a href="http://www.codeplex.com/WatinJobsiteSample/" target="_blank">
+                            sample project</a>. Doug Seelinger published a <a href="http://seelinger.us/community/blogs/doug/archive/2007/03/29/watin.aspx" target="_blank">
+                            WatiN screen cast</a>. Even Scott Guthrie <a href="http://codebetter.com/blogs/jeremy.miller/archive/2007/03/07/Jay_2700_s-TDD-QuickStart_2C00_-and-the-underlying-problems-he-stumbled-into.aspx#159825"
+                            target="_blank">talks about WatiN</a>. And last but not least, the WatiN 
+                        recorder world looks very promising!</p>
+                    <p>Updated the <a href="roadmap.html">roadmap</a> to reflect the upcoming 1.1 
+                        release in the first week of may.</p>
+                    <p><strong>March 1, 2007</strong></p>
+                    <p>Released WatiN 1.0.0.4000!</p>
+                    <p>Read the <a href="releasenotes-1-0-0-4000.html">release notes</a> and download 
+                        it from <a href="http://sourceforge.net/project/showfiles.php?group_id=167632">here</a>. 
+                        WatiN now uses the <a href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache 
+                            License 2.0</a></p>
+                    <p><strong>February 26, 2007</strong></p>
+                    <p>WatiN has been downloaded more then 5000 times! Updated the <a href="roadmap.html">roadmap</a>
+                        to reflect the up coming 1.0 release on 28 February.</p>
+                    <p><strong>January 29, 2007</strong></p>
+                    <p>Updated the <a href="roadmap.html">roadmap</a>. Release 1.0 is making&nbsp; 
+                        progress!</p>
+                    <p><strong>January 8, 2007</strong></p>
+                    <p>Updated documentation on using <a href="apartmentstateinfo.html#sharpdevelop">WatiN 
+                            with SharpDevelop and Fitnesse</a>.
+                    </p>
+                    <p>Jesus Jimenez has posted an article about <a href="http://www.codeproject.com/useritems/WatiN.asp">
+                            WatiN on code project</a>!
+                    </p>
+                    <p>Updated the <a href="roadmap.html">roadmap</a>.</p>
+                </div>
+                <!-- content-wrap ends here --></div>
+            <!-- footer starts here -->
+            <div id="footer">
+        <div class="footer-left" style="WIDTH: 50%; HEIGHT: 37px">
+          <p class="align-left">
+            © 2007 <strong>Jeroen van Menen</strong> | Design by <a href=
+            "http://www.styleshout.com/">styleshout</a>
+          </p>
+        </div>
+        <div class="footer-right" style="WIDTH: 40%; HEIGHT: 54px">
+			<p class="align-right">
+				<A href="index.html">Home</A>&nbsp;|&nbsp; <A href="http://sourceforge.net/projects/watin/">
+                    WatiN on SourceForge</A>&nbsp;|&nbsp; <A href="http://sourceforge.net/export/rss2_project.php?group_id=167632">
+                    RSS Feed</A>s
+			</p>
+			<p class="align-right">
+				<a href="http://sourceforge.net"><img border="0" width="125"
+					height="37" id="_x0000_i1025" src=
+					"http://sflogo.sourceforge.net/sflogo.php?group_id=167632&amp;type=2"
+					alt="SourceForge.net Logo" name="_x0000_i1025"></a>
+            </p>
+        </div>
+            </div>
+            <!-- footer ends here -->
+            <!-- wrap ends here --></div>
+    </body>
+</html>
