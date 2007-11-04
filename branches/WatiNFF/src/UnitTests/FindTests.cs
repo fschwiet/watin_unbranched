@@ -52,7 +52,7 @@ namespace WatiN.Core.UnitTests
 			AttributeConstraint value = Find.ByFor("foridvalue");
 
 			Assert.IsInstanceOfType(typeof (AttributeConstraint), value, "For class should inherit Attribute class");
-			Assert.That(value.Comparer,  NUnit.Framework.SyntaxHelpers.Is.TypeOf(typeof(StringComparer)), "Unexpected comparer");
+			Assert.That(value.Comparer,  NUnit.Framework.SyntaxHelpers.Is.TypeOf(typeof(WatiN.Core.Comparers.StringComparer)), "Unexpected comparer");
 
 			Assert.That(value.AttributeName, NUnit.Framework.SyntaxHelpers.Is.EqualTo(htmlfor), "Wrong attributename");
 			Assert.AreEqual("foridvalue", value.Value, "Wrong value");
@@ -80,7 +80,7 @@ namespace WatiN.Core.UnitTests
 			AttributeConstraint value = Find.ById("idvalue");
 
 			Assert.IsInstanceOfType(typeof (AttributeConstraint), value, "Id class should inherit Attribute class");
-			Assert.That(value.Comparer,  NUnit.Framework.SyntaxHelpers.Is.TypeOf(typeof(StringComparer)), "Unexpected comparer");
+			Assert.That(value.Comparer,  NUnit.Framework.SyntaxHelpers.Is.TypeOf(typeof(WatiN.Core.Comparers.StringComparer)), "Unexpected comparer");
 
 			const string id = "id";
 			Assert.AreEqual(id, value.AttributeName, "Wrong attributename");
@@ -126,7 +126,7 @@ namespace WatiN.Core.UnitTests
 			AttributeConstraint value = Find.ByAlt("alt text");
 			
 			Assert.IsInstanceOfType(typeof (AttributeConstraint), value, "Alt class should inherit Attribute class");
-			Assert.That(value.Comparer,  NUnit.Framework.SyntaxHelpers.Is.TypeOf(typeof(StringComparer)), "Unexpected comparer");
+			Assert.That(value.Comparer,  NUnit.Framework.SyntaxHelpers.Is.TypeOf(typeof(WatiN.Core.Comparers.StringComparer)), "Unexpected comparer");
 
 			const string name = "alt";
 			Assert.AreEqual(name, value.AttributeName, "Wrong attributename");
@@ -162,7 +162,7 @@ namespace WatiN.Core.UnitTests
 			AttributeConstraint value = Find.ByName("namevalue");
 
 			Assert.IsInstanceOfType(typeof (AttributeConstraint), value, "Name class should inherit Attribute class");
-			Assert.That(value.Comparer,  NUnit.Framework.SyntaxHelpers.Is.TypeOf(typeof(StringComparer)), "Unexpected comparer");
+			Assert.That(value.Comparer,  NUnit.Framework.SyntaxHelpers.Is.TypeOf(typeof(WatiN.Core.Comparers.StringComparer)), "Unexpected comparer");
 
 			const string name = "name";
 			Assert.AreEqual(name, value.AttributeName, "Wrong attributename");
@@ -190,7 +190,7 @@ namespace WatiN.Core.UnitTests
 			AttributeConstraint value = Find.ByText("textvalue");
 
 			Assert.IsInstanceOfType(typeof (AttributeConstraint), value, "Text class should inherit Attribute class");
-			Assert.That(value.Comparer,  NUnit.Framework.SyntaxHelpers.Is.TypeOf(typeof(StringComparer)), "Unexpected comparer");
+			Assert.That(value.Comparer,  NUnit.Framework.SyntaxHelpers.Is.TypeOf(typeof(WatiN.Core.Comparers.StringComparer)), "Unexpected comparer");
 
 			const string innertext = "innertext";
 			Assert.AreEqual(innertext, value.AttributeName, "Wrong attributename");
@@ -219,7 +219,7 @@ namespace WatiN.Core.UnitTests
 			AttributeConstraint value = Find.ByStyle(attributeName, "red");
 
 			Assert.IsInstanceOfType(typeof (AttributeConstraint), value, "StyleAttributeConstraint class should inherit AttributeConstraint class");
-			Assert.That(value.Comparer,  NUnit.Framework.SyntaxHelpers.Is.TypeOf(typeof(StringComparer)), "Unexpected comparer");
+			Assert.That(value.Comparer,  NUnit.Framework.SyntaxHelpers.Is.TypeOf(typeof(WatiN.Core.Comparers.StringComparer)), "Unexpected comparer");
 
 			const string fullAttributeName = "style.background-color";
 			Assert.AreEqual(fullAttributeName, value.AttributeName, "Wrong attributename");
@@ -393,7 +393,7 @@ namespace WatiN.Core.UnitTests
 			AttributeConstraint value = Find.ByValue("valuevalue");
 
 			Assert.IsInstanceOfType(typeof (AttributeConstraint), value, "Value class should inherit AttributeConstraint class");
-			Assert.That(value.Comparer,  NUnit.Framework.SyntaxHelpers.Is.TypeOf(typeof(StringComparer)), "Unexpected comparer");
+			Assert.That(value.Comparer,  NUnit.Framework.SyntaxHelpers.Is.TypeOf(typeof(WatiN.Core.Comparers.StringComparer)), "Unexpected comparer");
 
 			Assert.AreEqual(valueAttrib, value.AttributeName, "Wrong attributename");
 			Assert.AreEqual("valuevalue", value.Value, "Wrong value");
@@ -423,7 +423,7 @@ namespace WatiN.Core.UnitTests
 			AttributeConstraint value = Find.BySrc("image.gif");
 
 			Assert.IsInstanceOfType(typeof (AttributeConstraint), value, "Src class should inherit AttributeConstraint class");
-			Assert.That(value.Comparer,  NUnit.Framework.SyntaxHelpers.Is.TypeOf(typeof(StringComparer)), "Unexpected comparer");
+			Assert.That(value.Comparer,  NUnit.Framework.SyntaxHelpers.Is.TypeOf(typeof(WatiN.Core.Comparers.StringComparer)), "Unexpected comparer");
 
 			Assert.AreEqual(src, value.AttributeName, "Wrong attributename");
 			Assert.AreEqual("image.gif", value.Value, "Wrong value");
@@ -504,7 +504,7 @@ namespace WatiN.Core.UnitTests
 		{
 			const string id = "id";
 			AttributeConstraint value = Find.By(id, "idvalue");
-			Assert.That(value.Comparer,  NUnit.Framework.SyntaxHelpers.Is.TypeOf(typeof(StringComparer)), "Unexpected comparer");
+			Assert.That(value.Comparer,  NUnit.Framework.SyntaxHelpers.Is.TypeOf(typeof(WatiN.Core.Comparers.StringComparer)), "Unexpected comparer");
 
 			Assert.AreEqual(id, value.AttributeName, "Wrong attributename");
 			Assert.AreEqual("idvalue", value.Value, "Wrong value");
@@ -543,7 +543,7 @@ namespace WatiN.Core.UnitTests
 			AttributeConstraint value = Find.ByClass("highlighted");
 
 			Assert.IsInstanceOfType(typeof (AttributeConstraint), value, "Find.ByClass should return an AttributeConstraint");
-			Assert.That(value.Comparer,  NUnit.Framework.SyntaxHelpers.Is.TypeOf(typeof(StringComparer)), "Unexpected comparer");
+			Assert.That(value.Comparer,  NUnit.Framework.SyntaxHelpers.Is.TypeOf(typeof(WatiN.Core.Comparers.StringComparer)), "Unexpected comparer");
 
 			const string classname = "classname";
 			Assert.AreEqual(classname, value.AttributeName, "Wrong attributename");

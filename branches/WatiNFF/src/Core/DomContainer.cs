@@ -159,7 +159,7 @@ namespace WatiN.Core
 		/// determine the image format. The following image formats are
 		/// supported (if the encoder is available on the machine):
 		/// jpg, tif, gif, png, bmp.
-		/// If you want more controle over the output, use <seealso cref="CaptureWebPage.CaptureWebPageToFile"/>
+		/// If you want more controle over the output, use <seealso cref="CaptureWebPage.CaptureWebPageToFile(string,bool,bool,int,int)"/>
 		/// </summary>
 		/// <param name="filename">The filename.</param>
 		public void CaptureWebPageToFile(string filename)
