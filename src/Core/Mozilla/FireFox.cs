@@ -17,6 +17,7 @@
 #endregion Copyright
 
 using System;
+using WatiN.Core.Interfaces;
 using WatiN.Core.Logging;
 
 namespace WatiN.Core.Mozilla
@@ -97,6 +98,11 @@ namespace WatiN.Core.Mozilla
                 this.ffPort.Write("wContent.location");
                 return this.ffPort.LastResponse;
             }
+        }
+
+        public BrowserType BrowserType
+        {
+            get { return Core.BrowserType.FireFox; }
         }
 
         #endregion Public instance properties

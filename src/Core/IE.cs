@@ -26,6 +26,7 @@ using mshtml;
 using SHDocVw;
 using WatiN.Core.DialogHandlers;
 using WatiN.Core.Exceptions;
+using WatiN.Core.Interfaces;
 using WatiN.Core.Logging;
 
 namespace WatiN.Core
@@ -829,7 +830,16 @@ namespace WatiN.Core
 			WaitForComplete();
 		}
 
-		/// <summary>
+        /// <summary>
+        /// Gets the type of the browser.
+        /// </summary>
+        /// <value>The type of the browser.</value>
+	    public BrowserType BrowserType
+	    {
+            get { return Core.BrowserType.InternetExplorer; }
+	    }
+
+	    /// <summary>
 		/// Sends a Tab key to the IE window to simulate tabbing through
 		/// the elements (and adres bar).
 		/// </summary>

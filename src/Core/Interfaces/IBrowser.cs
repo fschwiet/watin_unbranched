@@ -20,9 +20,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace WatiN.Core
+namespace WatiN.Core.Interfaces
 {
-    public interface IBrowser : IDisposable
+    public interface IBrowser : IDocument, IDisposable
     {
 
         /// <summary>
@@ -108,5 +108,7 @@ namespace WatiN.Core
         /// </code>
         /// </example>
         string Url { get;}
+
+        BrowserType BrowserType { get; }
     }
 }

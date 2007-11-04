@@ -16,29 +16,10 @@
 
 #endregion Copyright
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using WatiN.Core.Interfaces;
-
-namespace WatiN.Core.Mozilla
+namespace WatiN.Core.Interfaces
 {
-    public class TextField : Element, ITextField
+    public interface ITextField
     {
-        public TextField(string outerHtml, FireFoxClientPort clientPort) : base(outerHtml, clientPort)
-        {
-        }        
-
-        public string Value
-        {
-            get
-            {
-                return GetAttribute("value");
-            }
-            set
-            {
-                SetAttribute("value", value);
-            }
-        }
+        string Value { get; set; }
     }
 }

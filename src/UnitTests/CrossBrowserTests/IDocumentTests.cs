@@ -24,32 +24,35 @@ using WatiN.Core.Interfaces;
 using WatiN.Core.Logging;
 using WatiN.Core.Mozilla;
 
-namespace WatiN.Core.UnitTests.Mozilla
+namespace WatiN.Core.UnitTests.CrossBrowserTests
 {
+    /// <summary>
+    /// Test the functionality of the <see cref="IDocument"/> interface using both IE and FireFox
+    /// implementations <see cref="WatiN.Core.Document">IE Document</see> and <see cref="WatiN.Core.Mozilla.Document">Mozilla Document</see>.
+    /// </summary>
     [TestFixture]
-    public class ElementsTests
+    public class IDocumentTests : CrossBrowserTest
     {
-        [TestFixtureSetUp]
-        public void Setup()
-        {
-            Logger.LogWriter = new DebugLogWriter();
-        }
-
         /// <summary>
-        /// Tests retrieving most of the standard element attributes.
+        /// Test that we can reference the title of the webpage.
         /// </summary>
         [Test]
-        public void GetAttributes()
+        public void Title()
         {
-            using (FireFox ff = new FireFox())
-            {
-                ff.GoTo(BaseElementsTests.MainURI.ToString());
-                Assert.AreEqual(BaseElementsTests.MainURI, ff.Url);
-
-                IElement element = ff.Element("testElementAttributes");
-                Assert.AreEqual("testElementAttributes", element.Id, "Id attribute incorrect");
-                Assert.AreEqual("p1main", element.ClassName, "css attribute incorrect");
-            }
+            ExecuteTest(TitleTest);            
         }
+
+        #region Private static methods
+
+        /// <summary>
+        /// Test that we can reference the title of the webpage.
+        /// </summary>
+        private static void TitleTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+            Assert.AreEqual("Main", browser.Title, GetErrorMessage("The Title retrieved was not the expected value.", browser));
+        }
+
+        #endregion
     }
 }
