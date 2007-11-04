@@ -29,7 +29,7 @@ namespace WatiN.Core
 	/// This class provides specialized functionality for a HTML input element of type 
 	/// text password textarea hidden and for a HTML textarea element.
 	/// </summary>
-	public class TextField : Element
+	public class TextField : Element, ITextField
 	{
 		private static ArrayList elementTags;
 

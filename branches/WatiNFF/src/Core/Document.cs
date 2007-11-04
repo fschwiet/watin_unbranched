@@ -55,7 +55,7 @@ namespace WatiN.Core
 	///  }
 	/// </code>
 	/// </example>
-	public abstract class Document : IElementsContainer, IDisposable, IElementCollection
+	public abstract class Document : IElementsContainer, IDisposable, IElementCollection, IDocument
 	{
 		private DomContainer domContainer;
 		private IHTMLDocument2 htmlDocument;
@@ -295,7 +295,7 @@ namespace WatiN.Core
 			get { return HtmlDocument.title; }
 		}
 
-		/// <summary>
+	    /// <summary>
 		/// Gets the active element in this webpage.
 		/// </summary>
 		/// <value>The active element or <c>null</c> if no element has the focus.</value>
@@ -416,6 +416,11 @@ namespace WatiN.Core
 		{
 			return Element(Find.ById(elementId));
 		}
+
+        IElement IElementsContainerTemp.Element(string id)
+        {
+            return Element(Find.ById(id));
+        }
 
 		public Element Element(Regex elementId)
 		{
@@ -672,6 +677,11 @@ namespace WatiN.Core
 			return TextField(Find.ById(elementId));
 		}
 
+        ITextField IElementsContainerTemp.TextField(string id)
+        {
+            return TextField(Find.ById(id));
+        }
+
 		public TextField TextField(Regex elementId)
 		{
 			return TextField(Find.ById(elementId));
@@ -865,6 +875,6 @@ namespace WatiN.Core
 			}
 
 			return null;
-		}
+		}	    
 	}
 }

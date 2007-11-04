@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
 using WatiN.Core;
+using WatiN.Core.Interfaces;
 using WatiN.Core.Logging;
 using WatiN.Core.Mozilla;
 

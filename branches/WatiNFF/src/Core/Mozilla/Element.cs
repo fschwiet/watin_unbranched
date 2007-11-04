@@ -20,10 +20,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using MIL.Html;
+using WatiN.Core.Interfaces;
 
 namespace WatiN.Core.Mozilla
 {
-    public class Element
+    public class Element : IElement
     {
         private readonly FireFoxClientPort clientPort;
         private readonly MIL.Html.HtmlElement parsedElement;

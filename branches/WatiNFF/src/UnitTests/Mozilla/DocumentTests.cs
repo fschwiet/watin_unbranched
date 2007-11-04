@@ -37,7 +37,7 @@ namespace WatiN.Core.UnitTests.Mozilla
                 ff.GoTo(BaseElementsTests.MainURI.ToString());
                 Assert.AreEqual(BaseElementsTests.MainURI, ff.Url); 
                 
-                WatiN.Core.Mozilla.TextField nameTextField = ff.TextField("name");
+                WatiN.Core.Mozilla.TextField nameTextField = ff.TextField("name") as Core.Mozilla.TextField;
                 Assert.IsNotNull(nameTextField, "Text field should not be null");
                 Assert.AreEqual("name", nameTextField.Id);
             }

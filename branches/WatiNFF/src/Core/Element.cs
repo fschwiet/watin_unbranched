@@ -25,6 +25,7 @@ using System.Threading;
 using mshtml;
 using WatiN.Core.Comparers;
 using WatiN.Core.Exceptions;
+using WatiN.Core.Interfaces;
 using WatiN.Core.Logging;
 
 namespace WatiN.Core
@@ -33,7 +34,7 @@ namespace WatiN.Core
 	/// This is the base class for all other element types in this project, like
 	/// Button, Checkbox etc.. It provides common functionality to all these elements
 	/// </summary>
-	public class Element
+	public class Element : IElement
 	{
 		private static Hashtable _elementConstructors = null;
 

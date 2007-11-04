@@ -19,48 +19,29 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using WatiN.Core.Interfaces;
+using WatiN.Core.Mozilla;
 
-namespace WatiN.Core.Mozilla
+namespace WatiN.Core.Interfaces
 {
-    public abstract class Document : IDocument
+    /// <summary>
+    /// Temp. interface, will be removed and <see cref="IDocument"/> will use <see cref="IElementsContainer"/>
+    /// when the implementation of <see cref="Mozilla.Document" /> supports all of the functionality.
+    /// </summary>
+    public interface IElementsContainerTemp
     {
-        public string Title
-        {
-            get
-            {
-                this.ClientPort.Write(string.Format("{0}.title", FireFoxClientPort.DocumentVariableName));
-                return this.ClientPort.LastResponse;
-            }
-        }
-
-        protected abstract FireFoxClientPort ClientPort { get; }
 
         /// <summary>
         /// Finds a text field using the Id.
         /// </summary>
         /// <param name="id">The id.</param>
         /// <returns>A text field for the specified id</returns>
-        public ITextField TextField(string id)
-        {
-            SendGetElementById(id);
-            return new TextField(this.ClientPort.LastResponse, this.ClientPort);
-        }
+        ITextField TextField(string id);
 
         /// <summary>
         /// Finds an element matching the specified id.
         /// </summary>
         /// <param name="id">The id.</param>
         /// <returns></returns>
-        public IElement Element(string id)
-        {
-            SendGetElementById(id);
-            return new Element(this.ClientPort.LastResponse, this.ClientPort);
-        }
-
-        protected void SendGetElementById(string id)
-        {
-            this.ClientPort.Write(string.Format("domDumpFull({0}.getElementById(\"{1}\"));", FireFoxClientPort.DocumentVariableName, id));
-        }       
+        IElement Element(string id);
     }
 }

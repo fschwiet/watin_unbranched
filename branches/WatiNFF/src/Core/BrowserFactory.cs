@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using WatiN.Core.Interfaces;
 using WatiN.Core.Mozilla;
 
 namespace WatiN.Core

@@ -362,7 +362,7 @@
     <Compile Include="HtmlDialogCollection.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IBrowser.cs" />
+    <Compile Include="Interfaces\IBrowser.cs" />
     <Compile Include="IE.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -375,6 +375,8 @@
     <Compile Include="IEWaitForComplete.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Interfaces\IElementsContainerTemp.cs" />
+    <Compile Include="Interfaces\IIE.cs" />
     <Compile Include="Image.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -434,6 +436,9 @@
     <Compile Include="Mozilla\FireFox.cs" />
     <Compile Include="Mozilla\FireFoxClientPort.cs" />
     <Compile Include="Mozilla\FireFoxException.cs" />
+    <Compile Include="Interfaces\IDocument.cs" />
+    <Compile Include="Interfaces\IElement.cs" />
+    <Compile Include="Interfaces\ITextField.cs" />
     <Compile Include="Mozilla\TextField.cs" />
     <Compile Include="Mozilla\Window.cs" />
     <Compile Include="Mozilla\XULBrowser.cs" />

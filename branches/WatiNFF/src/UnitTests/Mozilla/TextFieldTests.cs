@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
+using WatiN.Core.Interfaces;
 using WatiN.Core.Logging;
 using WatiN.Core.Mozilla;
 
@@ -42,7 +43,7 @@ namespace WatiN.Core.UnitTests.Mozilla
                 ff.GoTo(BaseElementsTests.MainURI.ToString());
                 Assert.AreEqual(BaseElementsTests.MainURI, ff.Url);
 
-                WatiN.Core.Mozilla.TextField readonlyTextField = ff.TextField("readonlytext");
+                ITextField readonlyTextField = ff.TextField("readonlytext");
                 Assert.AreEqual("readonly", readonlyTextField.Value);
             }
         }
@@ -55,7 +56,7 @@ namespace WatiN.Core.UnitTests.Mozilla
                 ff.GoTo(BaseElementsTests.MainURI.ToString());
                 Assert.AreEqual(BaseElementsTests.MainURI, ff.Url);
 
-                WatiN.Core.Mozilla.TextField nameTextField = ff.TextField("name");
+                ITextField nameTextField = ff.TextField("name");
                 nameTextField.Value = "Steve Jobs";
                 Assert.AreEqual("Steve Jobs", nameTextField.Value);
             }
