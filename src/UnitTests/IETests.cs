@@ -49,7 +49,9 @@ namespace WatiN.Core.UnitTests
 		{
 #if NET11
 			// Code for .Net 1.1
+#pragma warning disable 612,618
 			Assert.IsTrue(Thread.CurrentThread.ApartmentState == ApartmentState.STA);
+#pragma warning restore 612,618
 
 #elif NET20
 	// Code for .Net 2.0

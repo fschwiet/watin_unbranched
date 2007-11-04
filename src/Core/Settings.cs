@@ -96,6 +96,7 @@ namespace WatiN.Core
 			public bool autoStartDialogWatcher;
 			public bool autoMoveMousePointerToTopLeft;
 			public bool makeNewIEInstanceVisible;
+            public BrowserType browserType;
 		}
 
 		private settingsStruct settings;
@@ -139,7 +140,25 @@ namespace WatiN.Core
 			settings.autoStartDialogWatcher = true;
 			settings.autoMoveMousePointerToTopLeft = true;
 			settings.makeNewIEInstanceVisible = true;
+            settings.browserType = BrowserType.InternetExplorer;
 		}
+
+        /// <summary>
+        /// Gets or sets the type of the browser to be used during automation.
+        /// </summary>
+        /// <value>The type of the browser.</value>
+        public BrowserType BrowserType
+        {
+            get
+            {
+                return this.settings.browserType;
+            }
+
+            set
+            {
+                this.settings.browserType = value;
+            }
+        }
 
 		/// <summary>
 		/// Get or set the default time out used when calling IE ie = IE.AttachToIE(findBy).

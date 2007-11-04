@@ -250,11 +250,13 @@ namespace WatiN.Core
 			[FieldOffset(20)] public uint dwHitRate;
 			[FieldOffset(24)] public uint dwSizeLow;
 			[FieldOffset(28)] public uint dwSizeHigh;
+#pragma warning disable 612,618
 			[FieldOffset(32)] public FILETIME LastModifiedTime;
 			[FieldOffset(40)] public FILETIME ExpireTime;
 			[FieldOffset(48)] public FILETIME LastAccessTime;
 			[FieldOffset(56)] public FILETIME LastSyncTime;
-			[FieldOffset(64)] public IntPtr lpHeaderInfo;
+#pragma warning restore 612,618
+            [FieldOffset(64)] public IntPtr lpHeaderInfo;
 			[FieldOffset(68)] public uint dwHeaderInfoSize;
 			[FieldOffset(72)] public IntPtr lpszFileExtension;
 			[FieldOffset(76)] public uint dwReserved;
