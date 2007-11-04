@@ -80,8 +80,7 @@ namespace WatiN.Core
         /// <summary>
         /// Reloads the currently displayed webpage.
         /// </summary>
-        void Refresh();
-    
+        void Refresh();    
       
         /// <summary>
         /// Returns the url, as displayed in the address bar of the browser, of the currently
