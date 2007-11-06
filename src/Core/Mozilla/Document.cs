@@ -25,6 +25,38 @@ namespace WatiN.Core.Mozilla
 {
     public abstract class Document : IDocument
     {
+        #region Public instance properties
+
+        /// <summary>
+        /// Gets the HTML of the Body part of the webpage.
+        /// </summary>
+        /// <value>The HTML of the Body part of the webpage.</value>
+        public string Html
+        {
+            get
+            {
+                this.ClientPort.Write(string.Format("domDumpFull({0}.body);", FireFoxClientPort.DocumentVariableName));
+                return this.ClientPort.LastResponse;
+            }
+        }
+
+        /// <summary>
+        /// Gets the inner text of the Body part of the webpage.
+        /// </summary>
+        /// <value>The inner text.</value>
+        public string Text
+        {
+            get
+            {
+                this.ClientPort.Write(string.Format("{0}.body.textContent;", FireFoxClientPort.DocumentVariableName));
+                return this.ClientPort.LastResponse;
+            }    
+        }
+
+        /// <summary>
+        /// Gets the title of the webpage.
+        /// </summary>
+        /// <value>The title.</value>
         public string Title
         {
             get
@@ -34,7 +66,82 @@ namespace WatiN.Core.Mozilla
             }
         }
 
+        /// <summary>
+        /// Returns a System.Uri instance of the url displayed in the address bar of the browser,
+        /// of the currently displayed web page.
+        /// </summary>
+        /// <value></value>
+        /// <example>
+        /// The following example creates a new Internet Explorer instances, navigates to
+        /// the WatiN Project website on SourceForge and writes the Uri of the
+        /// currently displayed webpage to the debug window.
+        /// <code>
+        /// using WatiN.Core;
+        /// using System.Diagnostics;
+        /// namespace NewIEExample
+        /// {
+        /// public class WatiNWebsite
+        /// {
+        /// public WatiNWebsite()
+        /// {
+        /// IE ie = new IE("http://watin.sourceforge.net");
+        /// Debug.WriteLine(ie.Uri.ToString());
+        /// }
+        /// }
+        /// }
+        /// </code>
+        /// </example>
+        public Uri Uri
+        {
+            get
+            {
+                return new Uri(this.Url);
+            }
+        }
+
+        /// <summary>
+        /// Returns the url, as displayed in the address bar of the browser, of the currently
+        /// displayed web page.
+        /// </summary>
+        /// <example>
+        /// The following example creates a new Internet Explorer instances, navigates to
+        /// the WatiN Project website on SourceForge and writes the Url of the
+        /// currently displayed webpage to the debug window.
+        /// <code>
+        /// using WatiN.Core;
+        /// using System.Diagnostics;
+        ///
+        /// namespace NewIEExample
+        /// {
+        ///    public class WatiNWebsite
+        ///    {
+        ///      public WatiNWebsite()
+        ///      {
+        ///        IE ie = new IE("http://watin.sourceforge.net");
+        ///        Debug.WriteLine(ie.Url);
+        ///      }
+        ///    }
+        ///  }
+        /// </code>
+        /// </example>
+        public string Url
+        {
+            get
+            {
+                this.ClientPort.Write("wContent.location");
+                return this.ClientPort.LastResponse;
+            }
+        }
+
+        #endregion
+
+        #region Protected instance properties
+
         protected abstract FireFoxClientPort ClientPort { get; }
+
+        #endregion
+
+        #region Public instance methods
 
         /// <summary>
         /// Finds a text field using the Id.
@@ -58,9 +165,11 @@ namespace WatiN.Core.Mozilla
             return new Element(this.ClientPort.LastResponse, this.ClientPort);
         }
 
+        #endregion
+
         protected void SendGetElementById(string id)
         {
             this.ClientPort.Write(string.Format("domDumpFull({0}.getElementById(\"{1}\"));", FireFoxClientPort.DocumentVariableName, id));
-        }       
+        }
     }
 }

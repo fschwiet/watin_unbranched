@@ -22,8 +22,28 @@ using System.Text;
 
 namespace WatiN.Core.Interfaces
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IBrowser : IDocument, IDisposable
     {
+        /// <summary>
+        /// Navigates the browser back to the previously displayed Url (like the back
+        /// button in Internet Explorer). 
+        /// </summary>
+        void Back();
+
+        /// <summary>
+        /// Gets the type of the browser.
+        /// </summary>
+        /// <value>The type of the browser.</value>
+        BrowserType BrowserType { get; }
+
+        /// <summary>
+        /// Navigates the browser forward to the next displayed Url (like the forward
+        /// button in Internet Explorer). 
+        /// </summary>
+        void Forward();
 
         /// <summary>
         /// Navigates to the given <paramref name="url" />.
@@ -80,35 +100,14 @@ namespace WatiN.Core.Interfaces
         /// <summary>
         /// Reloads the currently displayed webpage.
         /// </summary>
-        void Refresh();    
-      
-        /// <summary>
-        /// Returns the url, as displayed in the address bar of the browser, of the currently
-        /// displayed web page.
-        /// </summary>
-        /// <example>
-        /// The following example creates a new Internet Explorer instances, navigates to
-        /// the WatiN Project website on SourceForge and writes the Url of the
-        /// currently displayed webpage to the debug window.
-        /// <code>
-        /// using WatiN.Core;
-        /// using System.Diagnostics;
-        ///
-        /// namespace NewIEExample
-        /// {
-        ///    public class WatiNWebsite
-        ///    {
-        ///      public WatiNWebsite()
-        ///      {
-        ///        IE ie = new IE("http://watin.sourceforge.net");
-        ///        Debug.WriteLine(ie.Url);
-        ///      }
-        ///    }
-        ///  }
-        /// </code>
-        /// </example>
-        string Url { get;}
+        void Refresh();
 
-        BrowserType BrowserType { get; }
+        /// <summary>
+        /// Closes then reopens the browser navigating to a blank page.
+        /// </summary>
+        /// <remarks>
+        /// Useful when clearing the cookie cache and continuing execution to a test.
+        /// </remarks>
+        void Reopen();
     }
 }

@@ -9,8 +9,14 @@ namespace WatiN.Core.Mozilla
     /// </summary>
     internal class XULBrowser
     {
-        private readonly FireFoxClientPort clientPort;        
-        
+        #region Private fields
+
+        private readonly FireFoxClientPort clientPort;
+
+        #endregion
+
+        #region Constructors
+
         /// <summary>
         /// Initializes a new instance of the <see cref="XULBrowser"/> class.
         /// </summary>
@@ -20,9 +26,39 @@ namespace WatiN.Core.Mozilla
             this.clientPort = clientPort;
         }
 
+        #endregion
+
+        #region Public instance properties
+
+        /// <summary>
+        /// Gets the client port used to communicate with the instance of FireFox.
+        /// </summary>
+        /// <value>The client port.</value>
         public FireFoxClientPort ClientPort
         {
             get { return clientPort; }
+        }
+
+        #endregion
+
+        #region Public instance methods
+
+        /// <summary>
+        /// Navigates to the previous page in the browser history.
+        /// </summary>
+        public void Back()
+        {
+            this.ClientPort.Write(string.Format("{0}.goBack();", FireFoxClientPort.BrowserVariableName));
+            this.ClientPort.InitializeDocument();
+        }
+
+        /// <summary>
+        /// Navigates to the next back in the browser history.
+        /// </summary>
+        public void Forward()
+        {
+            this.ClientPort.Write(string.Format("{0}.goForward();", FireFoxClientPort.BrowserVariableName));
+            this.ClientPort.InitializeDocument();
         }
 
         /// <summary>
@@ -35,9 +71,15 @@ namespace WatiN.Core.Mozilla
             this.ClientPort.InitializeDocument();
         }
 
+        /// <summary>
+        /// Reloads this instance.
+        /// </summary>
         public void Reload()
         {
-            throw new NotImplementedException();
+            this.ClientPort.Write(string.Format("{0}.reload();", FireFoxClientPort.BrowserVariableName));
+            this.ClientPort.InitializeDocument();
         }
+
+        #endregion        
     }
 }
