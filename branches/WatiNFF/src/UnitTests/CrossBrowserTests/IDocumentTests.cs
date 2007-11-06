@@ -34,6 +34,24 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
     public class IDocumentTests : CrossBrowserTest
     {
         /// <summary>
+        /// Tests the behaviour of the <see cref="IDocument.Html"/> method.
+        /// </summary>
+        [Test]
+        public void Html()
+        {
+            ExecuteTest(HtmlTest);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IDocument.Text"/> method.
+        /// </summary>
+        [Test]
+        public void Text()
+        {
+            ExecuteTest(TextTest);
+        }
+
+        /// <summary>
         /// Test that we can reference the title of the webpage.
         /// </summary>
         [Test]
@@ -42,7 +60,49 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
             ExecuteTest(TitleTest);            
         }
 
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IDocument.Url"/> and <see cref="IDocument.Uri"/> methods.
+        /// </summary>
+        [Test]
+        public void UrlUri()
+        {
+            ExecuteTest(UrlTest);
+        }
+
         #region Private static methods
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IDocument.Text"/> method.
+        /// </summary>
+        /// <param name="browser">The browser.</param>
+        private static void TextTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+            string text = browser.Text.Trim();
+            Assert.IsTrue(text.Contains("Goto Index page"), GetErrorMessage("Text value of IDocument incorrect", browser));
+        }
+
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IDocument.Html"/> method.
+        /// </summary>
+        /// <param name="browser">The browser.</param>
+        private static void HtmlTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+            string bodyHtml = browser.Html.Trim();
+            Assert.IsTrue(bodyHtml.StartsWith("<body>", StringComparison.OrdinalIgnoreCase), GetErrorMessage("Html value of IDocument incorrect", browser));
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IDocument.Url"/> and <see cref="IDocument.Uri"/> methods.
+        /// </summary>
+        /// <param name="browser">The browser.</param>
+        private static void UrlTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+            Assert.AreEqual(MainURI, browser.Url);
+        }
 
         /// <summary>
         /// Test that we can reference the title of the webpage.

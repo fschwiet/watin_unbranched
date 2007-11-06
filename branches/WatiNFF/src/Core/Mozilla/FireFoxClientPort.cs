@@ -127,6 +127,7 @@ namespace WatiN.Core.Mozilla
         {
             if (!this.connected)
             {
+                this.disposed = false;
                 Logger.LogAction("Attempting to connect to jssh server on localhost port 9997.");
                 this.lastResponse = string.Empty;
                 this.response = new StringBuilder();
@@ -173,19 +174,6 @@ namespace WatiN.Core.Mozilla
         public bool Connected
         {
             get { return connected; }
-        }
-
-        /// <summary>
-        /// Gets the URL.
-        /// </summary>
-        /// <value>The URL.</value>
-        public string Url
-        {
-            get
-            {
-                this.Write("wContent.location");
-                return this.lastResponse;
-            }
         }
 
         /// <summary>
@@ -241,7 +229,7 @@ namespace WatiN.Core.Mozilla
                     if (this.telnetClient != null && this.telnetSocket.Connected)
                     {
                         Logger.LogAction("Closing connection to jssh");
-                        this.Write("wContent.close()", false);
+                        this.Write(string.Format("{0}.close()", WindowVariableName), false);
                         this.telnetClient.Close();
                         this.ffProcess.WaitForExit(5000);
                     }
@@ -260,6 +248,7 @@ namespace WatiN.Core.Mozilla
             }
 
             this.disposed = true;
+            this.connected = false;
         }
 
         #endregion Protected instance methods
@@ -333,7 +322,9 @@ namespace WatiN.Core.Mozilla
                 this.lastResponse += readData.TrimEnd(new char[] {'\n','>', ' '});
             } while (read==1024);
 
-            if (this.lastResponse.StartsWith("SyntaxError", StringComparison.InvariantCultureIgnoreCase))
+            this.lastResponse = this.lastResponse.Trim();
+            if (this.lastResponse.StartsWith("SyntaxError", StringComparison.InvariantCultureIgnoreCase) ||
+                this.lastResponse.StartsWith("TypeError", StringComparison.InvariantCultureIgnoreCase))
             {
                 throw new FireFoxException(string.Format("Error sending last message to jssh server: {0}", this.lastResponse));    
             }
@@ -349,12 +340,41 @@ namespace WatiN.Core.Mozilla
         private void InitalizeExecutablePath()
         {
             RegistryKey mozillaKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Mozilla\Mozilla Firefox");
-            if (mozillaKey == null)
+            if (mozillaKey != null)
             {
-                throw new FireFoxException("Could not find registry key to locate FireFox installation, please make sure you have installed FireFox and Jssh correctly");
+                InitializeUsingRegistry(mozillaKey);
+            }
+            else
+            {
+                // We try and guess common locations where FireFox might be installed
+                string tempPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ProgramFiles), @"Mozilla FireFox\FireFox.exe");
+                if (File.Exists(tempPath))
+                {
+                    this.pathToExe = tempPath;                                
+                }
+                else
+                {
+                    tempPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ProgramFiles) + " (x86)", @"Mozilla FireFox\FireFox.exe");
+                    if (File.Exists(tempPath))
+                    {
+                        this.pathToExe = tempPath;
+                    }
+                    else
+                    {
+                        throw new FireFoxException("Unable to determine the current version of FireFox tried looking in the registry and the common locations on disk, please make sure you have installed FireFox and Jssh correctly");
+                    }        
+                }
             }
 
-            string currentVersion = (string)mozillaKey.GetValue("CurrentVersion");
+        }
+
+        /// <summary>
+        /// Initializes the executable path to FireFox using the registry.
+        /// </summary>
+        /// <param name="mozillaKey">The mozilla key.</param>
+        private void InitializeUsingRegistry(RegistryKey mozillaKey)
+        {
+            string currentVersion = (string) mozillaKey.GetValue("CurrentVersion");
             if (string.IsNullOrEmpty(currentVersion))
             {
                 throw new FireFoxException("Unable to determine the current version of FireFox using the registry, please make sure you have installed FireFox and Jssh correctly");
@@ -363,13 +383,15 @@ namespace WatiN.Core.Mozilla
             RegistryKey currentMain = mozillaKey.OpenSubKey(string.Format(@"{0}\Main", currentVersion));
             if (currentMain == null)
             {
-                throw new FireFoxException("Unable to determine the current version of FireFox using the registry, please make sure you have installed FireFox and Jssh correctly");
+                throw new FireFoxException(
+                    "Unable to determine the current version of FireFox using the registry, please make sure you have installed FireFox and Jssh correctly");
             }
 
-            this.pathToExe = (string)currentMain.GetValue("PathToExe");
+            this.pathToExe = (string) currentMain.GetValue("PathToExe");
             if (!File.Exists(this.pathToExe))
             {
-                throw new FireFoxException("FireFox executable listed in the registry does not exist, please make sure you have installed FireFox and Jssh correctly");
+                throw new FireFoxException(
+                    "FireFox executable listed in the registry does not exist, please make sure you have installed FireFox and Jssh correctly");
             }
         }
 

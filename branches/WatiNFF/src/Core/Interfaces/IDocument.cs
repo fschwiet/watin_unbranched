@@ -16,14 +16,82 @@
 
 #endregion Copyright
 
+using System;
+
 namespace WatiN.Core.Interfaces
 {
     public interface IDocument : IElementsContainerTemp
     {
         /// <summary>
+        /// Gets the HTML of the Body part of the webpage.
+        /// </summary>
+        /// <value>The HTML of the Body part of the webpage.</value>
+        string Html { get; }
+
+        /// <summary>
+        /// Gets the inner text of the Body part of the webpage.
+        /// </summary>
+        /// <value>The inner text.</value>
+        string Text { get; }
+
+        /// <summary>
         /// Gets the title of the webpage.
         /// </summary>
         /// <value>The title.</value>
         string Title { get; }
+
+        /// <summary>
+		/// Returns a System.Uri instance of the url displayed in the address bar of the browser, 
+		/// of the currently displayed web page.
+		/// </summary>
+		/// <example>
+		/// The following example creates a new Internet Explorer instances, navigates to
+		/// the WatiN Project website on SourceForge and writes the Uri of the
+		/// currently displayed webpage to the debug window.
+		/// <code>
+		/// using WatiN.Core;
+		/// using System.Diagnostics;
+		///
+		/// namespace NewIEExample
+		/// {
+		///    public class WatiNWebsite
+		///    {
+		///      public WatiNWebsite()
+		///      {
+		///        IE ie = new IE("http://watin.sourceforge.net");
+		///        Debug.WriteLine(ie.Uri.ToString());
+		///      }
+		///    }
+		///  }
+		/// </code>
+		/// </example>
+        Uri Uri { get; }
+
+        /// <summary>
+        /// Returns the url, as displayed in the address bar of the browser, of the currently
+        /// displayed web page.
+        /// </summary>
+        /// <example>
+        /// The following example creates a new Internet Explorer instances, navigates to
+        /// the WatiN Project website on SourceForge and writes the Url of the
+        /// currently displayed webpage to the debug window.
+        /// <code>
+        /// using WatiN.Core;
+        /// using System.Diagnostics;
+        ///
+        /// namespace NewIEExample
+        /// {
+        ///    public class WatiNWebsite
+        ///    {
+        ///      public WatiNWebsite()
+        ///      {
+        ///        IE ie = new IE("http://watin.sourceforge.net");
+        ///        Debug.WriteLine(ie.Url);
+        ///      }
+        ///    }
+        ///  }
+        /// </code>
+        /// </example>
+        string Url { get;}
     }
 }

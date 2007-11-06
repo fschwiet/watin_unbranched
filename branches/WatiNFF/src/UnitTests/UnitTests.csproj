@@ -160,6 +160,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CrossBrowserTests\CrossBrowserTest.cs" />
+    <Compile Include="CrossBrowserTests\IBrowserTests.cs" />
     <Compile Include="CrossBrowserTests\IDocumentTests.cs" />
     <Compile Include="CrossBrowserTests\IElementsContainerTests.cs" />
     <Compile Include="DialogHandlerTests\AlertAndConfirmDialogHandlerTests.cs">
@@ -296,6 +297,7 @@
     <Compile Include="WatiNTest.cs">
       <SubType>Code</SubType>
     </Compile>
+    <None Include="App.config" />
     <None Include="WatiN.Core.UnitTests.dll.config" />
     <Content Include="html\CrossDomainFrameset.html" />
     <Content Include="html\formsubmit.html" />

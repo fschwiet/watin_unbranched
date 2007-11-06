@@ -33,6 +33,18 @@ namespace WatiN.Core.UnitTests.Mozilla
         }
 
         /// <summary>
+        /// Tests that if the FireFox path is specified in the app config
+        /// It uses this instead of the registry
+        /// </summary>
+        [Test]
+        public void FireFoxPathSpecifiedInSettings()
+        {
+            // TODO Add this setting in App.config dynamically so that other tests
+            // can run with out this bit being set.
+
+        }
+
+        /// <summary>
         /// This test requires firefox and jssh installed. To install jssh go to: http://code.google.com/p/firewatir/
         /// </summary>
         [Test]
