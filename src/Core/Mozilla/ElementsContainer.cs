@@ -19,49 +19,83 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using WatiN.Core.Mozilla;
+using WatiN.Core.Interfaces;
 
-namespace WatiN.Core.Interfaces
+namespace WatiN.Core.Mozilla
 {
-    /// <summary>
-    /// Temp. interface, will be removed and <see cref="IDocument"/> will use <see cref="IElementsContainer"/>
-    /// when the implementation of <see cref="Mozilla.Document" /> supports all of the functionality.
-    /// </summary>
-    public interface IElementsContainerTemp
+    public abstract class ElementsContainer : Element, IElementsContainerTemp
     {
+        protected ElementsContainer(string outerHtml, FireFoxClientPort clientPort) : base(outerHtml, clientPort)
+        {
+        }
+
+        #region Public instance methods
+
         /// <summary>
         /// Finds a div element using the specified id.
         /// </summary>
-        /// <param name="id">The id div element being sought.</param>
+        /// <param name="id">The id.</param>
         /// <returns></returns>
-        IDiv Div(string id);
+        public IDiv Div(string id)
+        {
+            SendGetElementById(id);
+            return new Div(this.ClientPort.LastResponse, this.ClientPort);
+        }
 
         /// <summary>
         /// Finds a div element using the specified id.
         /// </summary>
         /// <param name="id">The id of the link element being sought.</param>
         /// <returns></returns>
-        ILink Link(string id);
+        public ILink Link(string id)
+        {
+            SendGetElementById(id);
+            return new Link(this.ClientPort.LastResponse, this.ClientPort);
+        }
 
         /// <summary>
         /// Finds a paragraph element using the specified id.
         /// </summary>
         /// <param name="id">The id of the paragraph element being sought.</param>
         /// <returns></returns>
-        IPara Para(string id);
+        public IPara Para(string id)
+        {
+            SendGetElementById(id);
+            return new Para(this.ClientPort.LastResponse, this.ClientPort);
+        }
 
         /// <summary>
         /// Finds a text field using the Id.
         /// </summary>
-        /// <param name="id">The id of the text field element being sought.</param>
+        /// <param name="id">The id.</param>
         /// <returns>A text field for the specified id</returns>
-        ITextField TextField(string id);
+        public ITextField TextField(string id)
+        {
+            SendGetElementById(id);
+            return new TextField(this.ClientPort.LastResponse, this.ClientPort);
+        }
 
         /// <summary>
         /// Finds an element matching the specified id.
         /// </summary>
         /// <param name="id">The id.</param>
         /// <returns></returns>
-        IElement Element(string id);
+        public IElement Element(string id)
+        {
+            SendGetElementById(id);
+            return new Element(this.ClientPort.LastResponse, this.ClientPort);
+        }
+
+        #endregion
+
+        #region Protected instance methods
+
+        protected void SendGetElementById(string id)
+        {
+            this.ClientPort.Write(string.Format("domDumpFull({0}.getElementById(\"{1}\"));", FireFoxClientPort.DocumentVariableName, id));
+        }
+
+        #endregion
+
     }
 }

@@ -32,13 +32,43 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
     public class IElementsContainerTests : CrossBrowserTest
     {
         /// <summary>
+        /// Test that we can obtain a reference to a paragraph using the elements Id to look it up.
+        /// Once the element is found we assert properties unique to the <see cref="IPara"/> interface.
+        /// </summary>
+        [Test]
+        public void ParaById()
+        {
+            ExecuteTest(ParaByIdTest);
+        }
+
+        /// <summary>
+        /// Test that we can obtain a reference to a link using the elements Id to look it up.
+        /// Once the element is found we assert properties unique to the <see cref="ILink"/> interface.
+        /// </summary>
+        [Test]
+        public void LinkById()
+        {
+            ExecuteTest(LinkByIdTest);
+        }
+
+        /// <summary>
+        /// Test that we can obtain a reference to a div using the elements Id to look it up.
+        /// Once the element is found we assert properties unique to the <see cref="IDiv"/> interface.
+        /// </summary>
+        [Test]
+        public void DivById()
+        {
+            ExecuteTest(DivByIdTest);
+        }
+
+        /// <summary>
         /// Test that we can obtain a reference to a text field using the elements Id to look it up.
         /// Once the element is found we assert properties unique to the <see cref="ITextField"/> interface.
         /// </summary>
         [Test]
         public void TextFieldById()
         {
-            ExecuteTest(TextFieldTest);
+            ExecuteTest(TextFieldByIdTest);
         }
 
         /// <summary>
@@ -54,10 +84,54 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         #region Private static methods
 
         /// <summary>
+        /// Test that we can obtain a reference to a paragraph using the elements Id to look it up.
+        /// Once the element is found we assert properties unique to the <see cref="IPara"/> interface.
+        /// </summary>
+        private static void ParaByIdTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+
+            IPara linkPara = browser.Para("links");
+            Assert.IsNotNull(linkPara, GetErrorMessage("The link element could not be found.", browser));
+            Assert.AreEqual("links", linkPara.Id, GetErrorMessage("The paragraph id had an incorrect value.", browser));
+
+            // Test that we can get a reference to the inner link
+            ILink linkElement = linkPara.Link("testlinkid1");
+            Assert.IsNotNull(linkElement, GetErrorMessage("The link element could not be found.", browser));
+            Assert.AreEqual("testlinkid1", linkElement.Id, GetErrorMessage("The link id had an incorrect value.", browser));
+            Assert.AreEqual("http://www.microsoft.com/", linkElement.Url, GetErrorMessage("The link url had an incorrect value.", browser));
+        }
+
+        /// <summary>
+        /// Test that we can obtain a reference to a link using the elements Id to look it up.
+        /// Once the element is found we assert properties unique to the <see cref="ILink"/> interface.
+        /// </summary>
+        private static void LinkByIdTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+            ILink linkElement = browser.Link("testlinkid1");
+            Assert.IsNotNull(linkElement, GetErrorMessage("The link element could not be found.", browser));
+            Assert.AreEqual("testlinkid1", linkElement.Id, GetErrorMessage("The link id had an incorrect value.", browser));
+            Assert.AreEqual("http://www.microsoft.com/", linkElement.Url, GetErrorMessage("The link url had an incorrect value.", browser));
+        }
+
+        /// <summary>
+        /// Test that we can obtain a reference to a div using the elements Id to look it up.
+        /// Once the element is found we assert properties unique to the <see cref="IDiv"/> interface.
+        /// </summary>
+        private static void DivByIdTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+            IDiv divElement = browser.Div("divid");
+            Assert.IsNotNull(divElement, GetErrorMessage("The div element could not be found.", browser));
+            Assert.AreEqual("divid", divElement.Id, GetErrorMessage("The div id had an incorrect value.", browser));
+        }
+
+        /// <summary>
         /// Tests that we can reference a text field.
         /// </summary>
         /// <param name="browser">The browser.</param>
-        private static void TextFieldTest(IBrowser browser)
+        private static void TextFieldByIdTest(IBrowser browser)
         {
             browser.GoTo(MainURI);
             ITextField textField = browser.TextField("readonlytext");

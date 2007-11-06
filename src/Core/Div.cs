@@ -18,13 +18,14 @@
 
 using System.Collections;
 using mshtml;
+using WatiN.Core.Interfaces;
 
 namespace WatiN.Core
 {
 	/// <summary>
 	/// This class provides specialized functionality for a HTML div element.
 	/// </summary>
-	public class Div : ElementsContainer
+	public class Div : ElementsContainer, IDiv
 	{
 		private static ArrayList elementTags;
 

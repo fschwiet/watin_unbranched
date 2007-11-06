@@ -30,11 +30,6 @@ namespace WatiN.Core.Mozilla
         private bool disposed;
 
         /// <summary>
-        /// The FireFox client port that sends commands to a running instance of FireFox using <a href="http://www.croczilla.com/jssh">JSSH</a>
-        /// </summary>
-        private readonly FireFoxClientPort ffPort;
-
-        /// <summary>
         /// Wrapper for the XUL:Browser object see: http://developer.mozilla.org/en/docs/XUL:browser
         /// </summary>
         private readonly XULBrowser xulBrowser;
@@ -44,13 +39,12 @@ namespace WatiN.Core.Mozilla
         /// <summary>
         /// Initializes a new instance of the <see cref="FireFox"/> class.
         /// </summary>
-        public FireFox()
+        public FireFox() : base(string.Empty, new FireFoxClientPort())
         {
             Logger.LogAction("Creating new FireFox instance");
-            this.ffPort = new FireFoxClientPort();
-            this.ffPort.Connect();
+            this.ClientPort.Connect();
 
-            this.xulBrowser = new XULBrowser(this.ffPort);
+            this.xulBrowser = new XULBrowser(this.ClientPort);
         }
 
         /// <summary>
@@ -188,12 +182,7 @@ namespace WatiN.Core.Mozilla
         
         #endregion Public instance methods
 
-        #region Protected instance methods
-
-        protected override FireFoxClientPort ClientPort
-        {
-            get { return this.ffPort; }
-        }
+        #region Protected instance methods      
 
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources
@@ -209,7 +198,7 @@ namespace WatiN.Core.Mozilla
                 if (disposing)
                 {
                     // Dispose managed resources.
-                    this.ffPort.Dispose();
+                    this.ClientPort.Dispose();
                 }
 
                 // Call the appropriate methods to clean up 

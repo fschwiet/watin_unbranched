@@ -375,6 +375,7 @@
     <Compile Include="IEWaitForComplete.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Interfaces\IDiv.cs" />
     <Compile Include="Interfaces\IElementsContainerTemp.cs" />
     <Compile Include="Interfaces\IIE.cs" />
     <Compile Include="Image.cs">
@@ -398,9 +399,11 @@
     <Compile Include="Interfaces\IElementsContainer.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Interfaces\ILink.cs" />
     <Compile Include="Interfaces\ILogWriter.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Interfaces\IPara.cs" />
     <Compile Include="Interfaces\ITextElement.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -431,14 +434,18 @@
     <Compile Include="Logging\NoLog.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Mozilla\Div.cs" />
     <Compile Include="Mozilla\Document.cs" />
     <Compile Include="Mozilla\Element.cs" />
+    <Compile Include="Mozilla\ElementsContainer.cs" />
     <Compile Include="Mozilla\FireFox.cs" />
     <Compile Include="Mozilla\FireFoxClientPort.cs" />
     <Compile Include="Mozilla\FireFoxException.cs" />
     <Compile Include="Interfaces\IDocument.cs" />
     <Compile Include="Interfaces\IElement.cs" />
     <Compile Include="Interfaces\ITextField.cs" />
+    <Compile Include="Mozilla\Link.cs" />
+    <Compile Include="Mozilla\Para.cs" />
     <Compile Include="Mozilla\TextField.cs" />
     <Compile Include="Mozilla\Window.cs" />
     <Compile Include="Mozilla\XULBrowser.cs" />

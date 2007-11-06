@@ -23,8 +23,12 @@ using WatiN.Core.Interfaces;
 
 namespace WatiN.Core.Mozilla
 {
-    public abstract class Document : IDocument
+    public abstract class Document : ElementsContainer, IDocument
     {
+        protected Document(string outerHtml, FireFoxClientPort clientPort) : base(outerHtml, clientPort)
+        {
+        }
+
         #region Public instance properties
 
         /// <summary>
@@ -135,41 +139,8 @@ namespace WatiN.Core.Mozilla
 
         #endregion
 
-        #region Protected instance properties
-
-        protected abstract FireFoxClientPort ClientPort { get; }
+        #region Public instance methods        
 
         #endregion
-
-        #region Public instance methods
-
-        /// <summary>
-        /// Finds a text field using the Id.
-        /// </summary>
-        /// <param name="id">The id.</param>
-        /// <returns>A text field for the specified id</returns>
-        public ITextField TextField(string id)
-        {
-            SendGetElementById(id);
-            return new TextField(this.ClientPort.LastResponse, this.ClientPort);
-        }
-
-        /// <summary>
-        /// Finds an element matching the specified id.
-        /// </summary>
-        /// <param name="id">The id.</param>
-        /// <returns></returns>
-        public IElement Element(string id)
-        {
-            SendGetElementById(id);
-            return new Element(this.ClientPort.LastResponse, this.ClientPort);
-        }
-
-        #endregion
-
-        protected void SendGetElementById(string id)
-        {
-            this.ClientPort.Write(string.Format("domDumpFull({0}.getElementById(\"{1}\"));", FireFoxClientPort.DocumentVariableName, id));
-        }
     }
 }

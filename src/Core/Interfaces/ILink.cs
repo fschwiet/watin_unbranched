@@ -18,12 +18,15 @@
 
 namespace WatiN.Core.Interfaces
 {
-
     /// <summary>
-    /// Represents the behaviour and properties of an HTML text field.
+    /// Represents the behavior and attributes of an HTML link element
     /// </summary>
-    public interface ITextField : IElement
+    public interface ILink : IElement
     {
-        string Value { get; set; }
+        /// <summary>
+        /// Gets the URL of this link element.
+        /// </summary>
+        /// <value>The URL of this link element.</value>
+        string Url { get; }
     }
 }

@@ -18,13 +18,14 @@
 
 using System.Collections;
 using mshtml;
+using WatiN.Core.Interfaces;
 
 namespace WatiN.Core
 {
 	/// <summary>
 	/// This class provides specialized functionality for a HTML para element.
 	/// </summary>
-	public class Para : ElementsContainer
+	public class Para : ElementsContainer, IPara
 	{
 		private static ArrayList elementTags;
 

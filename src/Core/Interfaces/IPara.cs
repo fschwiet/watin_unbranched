@@ -18,12 +18,10 @@
 
 namespace WatiN.Core.Interfaces
 {
-
     /// <summary>
-    /// Represents the behaviour and properties of an HTML text field.
+    /// Represents the behavior and attributes of an HTML paragraph element
     /// </summary>
-    public interface ITextField : IElement
-    {
-        string Value { get; set; }
+    public interface IPara : IElement, IElementsContainerTemp
+    {        
     }
 }

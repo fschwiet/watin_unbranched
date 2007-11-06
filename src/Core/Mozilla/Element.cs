@@ -39,16 +39,20 @@ namespace WatiN.Core.Mozilla
         public Element(string outerHtml, FireFoxClientPort clientPort)
         {
             this.clientPort = clientPort;
-            HtmlDocument htmlDoc = HtmlDocument.Create(outerHtml);            
-            if (htmlDoc == null || htmlDoc.Nodes == null || htmlDoc.Nodes.Count == 0)
-            {
-                throw new FireFoxException(string.Format("Unable to create html element using outerHtml: {0}", outerHtml));
-            }
 
-            parsedElement = htmlDoc.Nodes[0] as HtmlElement;
-            if (parsedElement == null)
+            if (!string.IsNullOrEmpty(outerHtml))
             {
-                throw new FireFoxException(string.Format("Unable to create html element using outerHtml: {0}", outerHtml));
+                HtmlDocument htmlDoc = HtmlDocument.Create(outerHtml);            
+                if (htmlDoc == null || htmlDoc.Nodes == null || htmlDoc.Nodes.Count == 0)
+                {
+                    throw new FireFoxException(string.Format("Unable to create html element using outerHtml: {0}", outerHtml));
+                }
+
+                parsedElement = htmlDoc.Nodes[0] as HtmlElement;
+                if (parsedElement == null)
+                {
+                    throw new FireFoxException(string.Format("Unable to create html element using outerHtml: {0}", outerHtml));
+                }
             }
         }
 
