@@ -16,14 +16,16 @@
 
 #endregion Copyright
 
+using System;
+using System.Collections.Generic;
+using System.Text;
+
 namespace WatiN.Core.Interfaces
 {
-
     /// <summary>
-    /// Represents the behaviour and properties of an HTML text field.
+    /// Represents the behavior and attributes of an HTML div element
     /// </summary>
-    public interface ITextField : IElement
+    public interface IDiv : IElement
     {
-        string Value { get; set; }
     }
 }

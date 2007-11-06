@@ -26,7 +26,7 @@ namespace WatiN.Core
 	/// <summary>
 	/// Summary description for ElementsContainer.
 	/// </summary>
-	public class ElementsContainer : Element, IElementsContainer, IElementCollection
+	public class ElementsContainer : Element, IElementsContainer, IElementsContainerTemp, IElementCollection
 	{
 		public ElementsContainer(DomContainer ie, object element) : base(ie, element) {}
 
@@ -446,6 +446,35 @@ namespace WatiN.Core
 		}
 
 		#endregion
+
+        #region IElementsContainerTemp
+
+        IElement IElementsContainerTemp.Element(string id)
+        {
+            return Element(Find.ById(id));
+        }
+
+        ILink IElementsContainerTemp.Link(string elementId)
+        {
+            return Link(Find.ById(elementId));
+        }
+
+        IPara IElementsContainerTemp.Para(string elementId)
+        {
+            return Para(Find.ById(elementId));
+        }
+
+        IDiv IElementsContainerTemp.Div(string id)
+        {
+            return Div(Find.ById(id));
+        }
+
+        ITextField IElementsContainerTemp.TextField(string id)
+        {
+            return TextField(Find.ById(id));
+        }
+
+        #endregion
 
 		IHTMLElementCollection IElementCollection.Elements
 		{

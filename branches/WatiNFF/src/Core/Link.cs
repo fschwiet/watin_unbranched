@@ -18,13 +18,14 @@
 
 using System.Collections;
 using mshtml;
+using WatiN.Core.Interfaces;
 
 namespace WatiN.Core
 {
 	/// <summary>
 	/// This class provides specialized functionality for a HTML link element.
 	/// </summary>
-	public class Link : Element
+	public class Link : Element, ILink
 	{
 		private static ArrayList elementTags;
 

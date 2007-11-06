@@ -417,11 +417,6 @@ namespace WatiN.Core
 			return Element(Find.ById(elementId));
 		}
 
-        IElement IElementsContainerTemp.Element(string id)
-        {
-            return Element(Find.ById(id));
-        }
-
 		public Element Element(Regex elementId)
 		{
 			return Element(Find.ById(elementId));
@@ -522,7 +517,7 @@ namespace WatiN.Core
 			get { return ElementsSupport.Links(DomContainer, this); }
 		}
 
-		public Para Para(string elementId)
+        public Para Para(string elementId)
 		{
 			return Para(Find.ById(elementId));
 		}
@@ -677,11 +672,6 @@ namespace WatiN.Core
 			return TextField(Find.ById(elementId));
 		}
 
-        ITextField IElementsContainerTemp.TextField(string id)
-        {
-            return TextField(Find.ById(id));
-        }
-
 		public TextField TextField(Regex elementId)
 		{
 			return TextField(Find.ById(elementId));
@@ -759,7 +749,36 @@ namespace WatiN.Core
 
 		#endregion
 
-		protected DomContainer DomContainer
+        #region IElementsContainerTemp
+
+        IElement IElementsContainerTemp.Element(string id)
+        {
+            return Element(Find.ById(id));
+        }
+
+        ILink IElementsContainerTemp.Link(string elementId)
+        {
+            return Link(Find.ById(elementId));
+        }
+
+        IPara IElementsContainerTemp.Para(string elementId)
+        {
+            return Para(Find.ById(elementId));
+        }
+
+        IDiv IElementsContainerTemp.Div(string id)
+        {
+            return Div(Find.ById(id));
+        }
+
+        ITextField IElementsContainerTemp.TextField(string id)
+        {
+            return TextField(Find.ById(id));
+        }
+
+        #endregion
+
+        protected DomContainer DomContainer
 		{
 			get { return domContainer; }
 			set { domContainer = value; }

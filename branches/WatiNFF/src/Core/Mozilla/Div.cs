@@ -16,14 +16,22 @@
 
 #endregion Copyright
 
-namespace WatiN.Core.Interfaces
-{
+using WatiN.Core.Interfaces;
 
+namespace WatiN.Core.Mozilla
+{
     /// <summary>
-    /// Represents the behaviour and properties of an HTML text field.
+    /// Represents the behavior and attributes of an HTML div element implemented for the FireFox browser.
     /// </summary>
-    public interface ITextField : IElement
+    public class Div : Element, IDiv 
     {
-        string Value { get; set; }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Div"/> class.
+        /// </summary>
+        /// <param name="outerHtml">The outer HTML that defines the element.</param>
+        /// <param name="clientPort">The client port.</param>
+        public Div(string outerHtml, FireFoxClientPort clientPort) : base(outerHtml, clientPort)
+        {
+        }
     }
 }
