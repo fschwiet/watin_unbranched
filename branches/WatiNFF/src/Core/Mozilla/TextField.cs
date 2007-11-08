@@ -33,11 +33,11 @@ namespace WatiN.Core.Mozilla
         {
             get
             {
-                return GetAttribute("value");
+                return GetAttributeValue("value");
             }
             set
             {
-                SetAttribute("value", value);
+                SetAttributeValue("value", value);
             }
         }
     }

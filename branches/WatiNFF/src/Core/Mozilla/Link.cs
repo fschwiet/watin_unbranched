@@ -40,7 +40,7 @@ namespace WatiN.Core.Mozilla
         /// <value>The URL of this link element.</value>
         public string Url
         {
-            get { return GetAttribute("href"); }
+            get { return GetAttributeValue("href"); }
         }
     }
 }

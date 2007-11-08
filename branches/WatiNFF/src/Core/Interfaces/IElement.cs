@@ -31,5 +31,12 @@ namespace WatiN.Core.Interfaces
         /// </summary>
         /// <value>The name of the element's class.</value>
         string ClassName { get; }
+        
+        /// <summary>
+        /// Gets the value of the attribute
+        /// </summary>
+        /// <param name="attributeName">The attribute name</param>
+        /// <returns></returns>
+        string GetAttributeValue(string attributeName);
     }
 }

@@ -297,6 +297,7 @@
     <Compile Include="WatiNTest.cs">
       <SubType>Code</SubType>
     </Compile>
+    <None Include="app.config" />
     <None Include="WatiN.Core.UnitTests.dll.config" />
     <Content Include="html\CrossDomainFrameset.html" />
     <Content Include="html\formsubmit.html" />
