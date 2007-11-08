@@ -324,7 +324,8 @@ namespace WatiN.Core.Mozilla
 
             this.lastResponse = this.lastResponse.Trim();
             if (this.lastResponse.StartsWith("SyntaxError", StringComparison.InvariantCultureIgnoreCase) ||
-                this.lastResponse.StartsWith("TypeError", StringComparison.InvariantCultureIgnoreCase))
+                this.lastResponse.StartsWith("TypeError", StringComparison.InvariantCultureIgnoreCase) ||
+                this.lastResponse.StartsWith("uncaught exception", StringComparison.InvariantCultureIgnoreCase))
             {
                 throw new FireFoxException(string.Format("Error sending last message to jssh server: {0}", this.lastResponse));    
             }

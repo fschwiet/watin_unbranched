@@ -43,5 +43,29 @@ namespace WatiN.Core.UnitTests.Mozilla
                 Assert.AreEqual(BaseElementsTests.MainURI, ff.Url);
             }
         }
+
+        /// <summary>
+        /// Test that you can navigate a Url.
+        /// </summary>
+        [Test]
+        public void CreateFireFoxWithUrlInConstructor()
+        {
+            using (FireFox ff = new FireFox(BaseElementsTests.MainURI.ToString()))
+            {
+                Assert.AreEqual(BaseElementsTests.MainURI, ff.Url);
+            }
+        }
+
+        /// <summary>
+        /// Test that you can navigate a Uri.
+        /// </summary>
+        [Test]
+        public void CreateFireFoxWithUriInConstructor()
+        {
+            using (FireFox ff = new FireFox(BaseElementsTests.MainURI.ToString()))
+            {
+                Assert.AreEqual(BaseElementsTests.MainURI, ff.Url);
+            }
+        }
     }
 }

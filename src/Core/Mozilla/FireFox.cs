@@ -32,7 +32,7 @@ namespace WatiN.Core.Mozilla
         /// <summary>
         /// Wrapper for the XUL:Browser object see: http://developer.mozilla.org/en/docs/XUL:browser
         /// </summary>
-        private readonly XULBrowser xulBrowser;
+        private XULBrowser xulBrowser;
 
         #region Public constructors / destructor
 
@@ -41,10 +41,27 @@ namespace WatiN.Core.Mozilla
         /// </summary>
         public FireFox() : base(string.Empty, new FireFoxClientPort())
         {
-            Logger.LogAction("Creating new FireFox instance");
-            this.ClientPort.Connect();
+        	CreateFireFoxInstance();
+        }
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FireFox"/> class.
+        /// </summary>
+        /// <param name="url">The url to go to</param>
+        public FireFox(string url) : base(string.Empty, new FireFoxClientPort())
+        {
+        	CreateFireFoxInstance();            
+            GoTo(url);
+        }
 
-            this.xulBrowser = new XULBrowser(this.ClientPort);
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FireFox"/> class.
+        /// </summary>
+        /// <param name="uri">The url to go to</param>
+        public FireFox(Uri uri) : base(string.Empty, new FireFoxClientPort())
+        {
+        	CreateFireFoxInstance();            
+            GoTo(uri);
         }
 
         /// <summary>
@@ -234,6 +251,14 @@ namespace WatiN.Core.Mozilla
             return uri;
         }
 
-        #endregion        
+        private void CreateFireFoxInstance()
+        {
+            Logger.LogAction("Creating new FireFox instance");
+            this.ClientPort.Connect();
+
+            this.xulBrowser = new XULBrowser(this.ClientPort);
+        }
+
+        #endregion
     }
 }

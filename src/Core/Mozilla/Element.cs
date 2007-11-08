@@ -27,7 +27,7 @@ namespace WatiN.Core.Mozilla
     public class Element : IElement
     {
         private readonly FireFoxClientPort clientPort;
-        private readonly MIL.Html.HtmlElement parsedElement;
+        private readonly string elementId;
 
         #region Constructors
 
@@ -48,11 +48,13 @@ namespace WatiN.Core.Mozilla
                     throw new FireFoxException(string.Format("Unable to create html element using outerHtml: {0}", outerHtml));
                 }
 
-                parsedElement = htmlDoc.Nodes[0] as HtmlElement;
+                HtmlElement parsedElement = htmlDoc.Nodes[0] as HtmlElement;
                 if (parsedElement == null)
                 {
                     throw new FireFoxException(string.Format("Unable to create html element using outerHtml: {0}", outerHtml));
                 }
+                
+                elementId = GetAttribute("id", parsedElement);
             }
         }
 
@@ -68,7 +70,7 @@ namespace WatiN.Core.Mozilla
         {
             get
             {
-                return GetAttribute("id");
+                return elementId;
             }
         }
 
@@ -80,7 +82,7 @@ namespace WatiN.Core.Mozilla
         {
             get
             {
-                return GetAttribute("class");
+                return GetAttributeValue("class");
             }
         }               
 
@@ -102,10 +104,50 @@ namespace WatiN.Core.Mozilla
         /// </summary>
         /// <param name="attributeName">Name of the attribute.</param>
         /// <returns></returns>
-        protected string GetAttribute(string attributeName)
+        public string GetAttributeValue(string attributeName)
+        {
+        	if (UtilityClass.IsNullOrEmpty(attributeName))
+			{
+				throw new ArgumentNullException("attributeName", "Null or Empty not allowed.");
+			}
+
+			string getAttributeWrite = string.Format("{0}.getElementById(\"{1}\").getAttribute(\"{2}\");", FireFoxClientPort.DocumentVariableName, this.Id, attributeName);
+			this.ClientPort.Write(getAttributeWrite);
+
+			string attibuteValue = this.ClientPort.LastResponse;
+			
+			if (attibuteValue == "null")
+			{
+				return null;
+			}
+			return attibuteValue;
+        }
+
+        /// <summary>
+        /// Sets the attribute.
+        /// </summary>
+        /// <param name="attributeName">Name of the attribute.</param>
+        /// <param name="value">The value.</param>
+        protected void SetAttributeValue(string attributeName, string value)
+        {
+        	string command = string.Format("{0}.getElementById(\"{1}\").setAttribute(\"{2}\", \"{3}\");", FireFoxClientPort.DocumentVariableName, this.Id, attributeName, value);
+            this.ClientPort.Write(command);
+        }
+        #endregion
+
+        #region private instance methods
+        
+        /// <summary>
+        /// Gets the attribute.
+        /// </summary>
+        /// <param name="attributeName">Name of the attribute.</param>
+        /// <param name="htmlElement">The HtmlElement to get the attribute from</param>
+        /// <returns></returns>
+        private string GetAttribute(string attributeName, HtmlElement htmlElement)
         {
             string attibuteValue = null;
-            HtmlAttribute attribute = parsedElement.Attributes.FindByName(attributeName);
+            	
+            HtmlAttribute attribute = htmlElement.Attributes.FindByName(attributeName);
 
             if (attribute != null)
             {
@@ -114,26 +156,7 @@ namespace WatiN.Core.Mozilla
 
             return attibuteValue;
         }
-
-        /// <summary>
-        /// Sets the attribute.
-        /// </summary>
-        /// <param name="attributeName">Name of the attribute.</param>
-        /// <param name="value">The value.</param>
-        protected void SetAttribute(string attributeName, string value)
-        {
-            this.ClientPort.Write(string.Format("{0}.getElementById(\"{1}\").{2} = \"{3}\";", FireFoxClientPort.DocumentVariableName, this.Id, attributeName, value));
-            
-            HtmlAttribute attribute = parsedElement.Attributes.FindByName(attributeName);
-            if (attribute != null)
-            {
-                attribute.Value = value;
-            }
-            else
-            {
-                parsedElement.Attributes.Add(new HtmlAttribute(attributeName, value));
-            }
-        }
         #endregion
+
     }
 }
