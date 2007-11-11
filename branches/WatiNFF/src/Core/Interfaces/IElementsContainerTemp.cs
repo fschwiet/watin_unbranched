@@ -30,6 +30,13 @@ namespace WatiN.Core.Interfaces
     public interface IElementsContainerTemp
     {
         /// <summary>
+        /// Finds an area element using the specified id.
+        /// </summary>
+        /// <param name="id">The area element being sought.</param>
+        /// <returns></returns>
+        IArea Area(string id);
+
+        /// <summary>
         /// Finds a div element using the specified id.
         /// </summary>
         /// <param name="id">The id div element being sought.</param>

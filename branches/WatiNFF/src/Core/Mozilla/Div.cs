@@ -28,9 +28,9 @@ namespace WatiN.Core.Mozilla
         /// <summary>
         /// Initializes a new instance of the <see cref="Div"/> class.
         /// </summary>
-        /// <param name="outerHtml">The outer HTML that defines the element.</param>
+        /// <param name="id">The id.</param>
         /// <param name="clientPort">The client port.</param>
-        public Div(string outerHtml, FireFoxClientPort clientPort) : base(outerHtml, clientPort)
+        public Div(string id, FireFoxClientPort clientPort) : base(id, clientPort)
         {
         }
     }

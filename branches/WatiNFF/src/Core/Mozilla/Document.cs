@@ -25,7 +25,12 @@ namespace WatiN.Core.Mozilla
 {
     public abstract class Document : ElementsContainer, IDocument
     {
-        protected Document(string outerHtml, FireFoxClientPort clientPort) : base(outerHtml, clientPort)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Document"/> class.
+        /// </summary>
+        /// <param name="id">The id.</param>
+        /// <param name="clientPort">The client port.</param>
+        protected Document(string id, FireFoxClientPort clientPort) : base(id, clientPort)
         {
         }
 
@@ -48,7 +53,7 @@ namespace WatiN.Core.Mozilla
         /// Gets the inner text of the Body part of the webpage.
         /// </summary>
         /// <value>The inner text.</value>
-        public string Text
+        public new string Text
         {
             get
             {
@@ -61,7 +66,7 @@ namespace WatiN.Core.Mozilla
         /// Gets the title of the webpage.
         /// </summary>
         /// <value>The title.</value>
-        public string Title
+        public new string Title
         {
             get
             {
