@@ -18,13 +18,14 @@
 
 using System.Collections;
 using mshtml;
+using WatiN.Core.Interfaces;
 
 namespace WatiN.Core
 {
 	/// <summary>
 	/// Represents an area of an image map.
 	/// </summary>
-	public class Area : Element
+	public class Area : Element, IArea
 	{
 		private static ArrayList elementTags;
 

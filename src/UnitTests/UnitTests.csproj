@@ -160,9 +160,11 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CrossBrowserTests\CrossBrowserTest.cs" />
+    <Compile Include="CrossBrowserTests\IAreaTests.cs" />
     <Compile Include="CrossBrowserTests\IBrowserTests.cs" />
     <Compile Include="CrossBrowserTests\IDocumentTests.cs" />
     <Compile Include="CrossBrowserTests\IElementsContainerTests.cs" />
+    <Compile Include="CrossBrowserTests\IElementTests.cs" />
     <Compile Include="DialogHandlerTests\AlertAndConfirmDialogHandlerTests.cs">
       <SubType>Code</SubType>
     </Compile>

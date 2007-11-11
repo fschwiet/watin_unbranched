@@ -751,6 +751,11 @@ namespace WatiN.Core
 
         #region IElementsContainerTemp
 
+        IArea IElementsContainerTemp.Area(string elementId)
+        {
+            return Area(Find.ById(elementId));
+        }
+
         IElement IElementsContainerTemp.Element(string id)
         {
             return Element(Find.ById(id));

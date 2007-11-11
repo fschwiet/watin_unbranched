@@ -21,26 +21,53 @@ using WatiN.Core.Interfaces;
 namespace WatiN.Core.Mozilla
 {
     /// <summary>
-    /// Represents the behavior and attributes of an HTML link element implemented for the FireFox browser
+    /// Represents an area of an image map.
     /// </summary>
-    public class Link : Element, ILink
+    public class Area : Element, IArea
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Link"/> class.
+        /// Initializes a new instance of the <see cref="Area"/> class.
         /// </summary>
         /// <param name="id">The id.</param>
         /// <param name="clientPort">The client port.</param>
-        public Link(string id, FireFoxClientPort clientPort) : base(id, clientPort)
+        public Area(string id, FireFoxClientPort clientPort) : base(id, clientPort)
         {
         }
 
         /// <summary>
-        /// Gets the URL of this link element.
+        /// Gets the alt-text of the area element.
         /// </summary>
-        /// <value>The URL of this link element.</value>
+        /// <value></value>
+        public string Alt
+        {
+            get { return GetAttributeValue("alt"); }
+        }
+
+        /// <summary>
+        /// Gets the target url of the area element.
+        /// </summary>
+        /// <value></value>
         public string Url
         {
             get { return GetAttributeValue("href"); }
+        }
+
+        /// <summary>
+        /// Gets the coordinates the area element.
+        /// </summary>
+        /// <value></value>
+        public string Coords
+        {
+            get { return GetAttributeValue("coords"); }
+        }
+
+        /// <summary>
+        /// Gets the shape of the area element.
+        /// </summary>
+        /// <value></value>
+        public string Shape
+        {
+            get { return GetAttributeValue("shape"); }
         }
     }
 }

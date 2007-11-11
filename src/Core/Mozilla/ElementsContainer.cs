@@ -25,11 +25,22 @@ namespace WatiN.Core.Mozilla
 {
     public abstract class ElementsContainer : Element, IElementsContainerTemp
     {
-        protected ElementsContainer(string outerHtml, FireFoxClientPort clientPort) : base(outerHtml, clientPort)
+        protected ElementsContainer(string id, FireFoxClientPort clientPort) : base(id, clientPort)
         {
         }
 
         #region Public instance methods
+
+        /// <summary>
+        /// Finds an area element using the specified id.
+        /// </summary>
+        /// <param name="id">The area element being sought.</param>
+        /// <returns></returns>
+        public IArea Area(string id)
+        {
+            SendGetElementById(id);
+            return new Area(id, this.ClientPort);
+        }
 
         /// <summary>
         /// Finds a div element using the specified id.
@@ -39,7 +50,7 @@ namespace WatiN.Core.Mozilla
         public IDiv Div(string id)
         {
             SendGetElementById(id);
-            return new Div(this.ClientPort.LastResponse, this.ClientPort);
+            return new Div(id, this.ClientPort);
         }
 
         /// <summary>
@@ -50,7 +61,7 @@ namespace WatiN.Core.Mozilla
         public ILink Link(string id)
         {
             SendGetElementById(id);
-            return new Link(this.ClientPort.LastResponse, this.ClientPort);
+            return new Link(id, this.ClientPort);
         }
 
         /// <summary>
@@ -61,7 +72,7 @@ namespace WatiN.Core.Mozilla
         public IPara Para(string id)
         {
             SendGetElementById(id);
-            return new Para(this.ClientPort.LastResponse, this.ClientPort);
+            return new Para(id, this.ClientPort);
         }
 
         /// <summary>
@@ -72,7 +83,7 @@ namespace WatiN.Core.Mozilla
         public ITextField TextField(string id)
         {
             SendGetElementById(id);
-            return new TextField(this.ClientPort.LastResponse, this.ClientPort);
+            return new TextField(id, this.ClientPort);
         }
 
         /// <summary>
@@ -83,7 +94,7 @@ namespace WatiN.Core.Mozilla
         public IElement Element(string id)
         {
             SendGetElementById(id);
-            return new Element(this.ClientPort.LastResponse, this.ClientPort);
+            return new Element(id, this.ClientPort);
         }
 
         #endregion

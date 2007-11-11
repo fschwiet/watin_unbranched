@@ -464,7 +464,12 @@ namespace WatiN.Core
             return Para(Find.ById(elementId));
         }
 
-        IDiv IElementsContainerTemp.Div(string id)
+	    IArea IElementsContainerTemp.Area(string id)
+	    {
+            return Area(Find.ById(id));
+	    }
+
+	    IDiv IElementsContainerTemp.Div(string id)
         {
             return Div(Find.ById(id));
         }

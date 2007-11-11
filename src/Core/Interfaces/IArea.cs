@@ -16,34 +16,31 @@
 
 #endregion Copyright
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using WatiN.Core.Interfaces;
-
-namespace WatiN.Core.Mozilla
+namespace WatiN.Core.Interfaces
 {
-    public class TextField : Element, ITextField
+    /// <summary>
+    /// Represents an area of an image map.
+    /// </summary>
+    public interface IArea : IElement
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="TextField"/> class.
+        /// Gets the alt-text of the area element.
         /// </summary>
-        /// <param name="id">The id.</param>
-        /// <param name="clientPort">The client port.</param>
-        public TextField(string id, FireFoxClientPort clientPort) : base(id, clientPort)
-        {
-        }        
+        string Alt { get; }
 
-        public string Value
-        {
-            get
-            {
-                return GetAttributeValue("value");
-            }
-            set
-            {
-                SetAttributeValue("value", value);
-            }
-        }
+        /// <summary>
+        /// Gets the target url of the area element.
+        /// </summary>
+        string Url { get; }
+
+        /// <summary>
+        /// Gets the coordinates the area element.
+        /// </summary>
+        string Coords { get; }
+
+        /// <summary>
+        /// Gets the shape of the area element.
+        /// </summary>
+        string Shape { get; }
     }
 }

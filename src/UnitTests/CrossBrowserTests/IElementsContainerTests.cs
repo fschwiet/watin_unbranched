@@ -31,6 +31,17 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
     [TestFixture]
     public class IElementsContainerTests : CrossBrowserTest
     {
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Area(string)"/> method.
+        /// Tests that an area can be located based on the value of it's Id.
+        /// </summary>
+        [Test]
+        public void AreaById()
+        {
+            ExecuteTest(AreaByIdTest);
+        }
+
         /// <summary>
         /// Test that we can obtain a reference to a paragraph using the elements Id to look it up.
         /// Once the element is found we assert properties unique to the <see cref="IPara"/> interface.
@@ -82,6 +93,18 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         }
 
         #region Private static methods
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Area(string)"/> method.
+        /// Tests that an area can be located based on the value of it's Id.
+        /// </summary>
+        private static void AreaByIdTest(IBrowser browser)
+        {
+            browser.GoTo(ImagesURI);
+            IArea area = browser.Area("Area1");
+
+            Assert.IsNotNull(area, GetErrorMessage("The area with id Area1 could not be found", browser));
+        }
 
         /// <summary>
         /// Test that we can obtain a reference to a paragraph using the elements Id to look it up.

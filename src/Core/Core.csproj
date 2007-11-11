@@ -362,6 +362,7 @@
     <Compile Include="HtmlDialogCollection.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Interfaces\IArea.cs" />
     <Compile Include="Interfaces\IBrowser.cs" />
     <Compile Include="IE.cs">
       <SubType>Code</SubType>
@@ -434,6 +435,7 @@
     <Compile Include="Logging\NoLog.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Mozilla\Area.cs" />
     <Compile Include="Mozilla\Div.cs" />
     <Compile Include="Mozilla\Document.cs" />
     <Compile Include="Mozilla\Element.cs" />
