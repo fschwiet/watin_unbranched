@@ -192,6 +192,18 @@ namespace WatiN.Core.Mozilla
             get { return response.ToString(); }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether last response is null.
+        /// </summary>
+        /// <value><c>true</c> if last response is null; otherwise, <c>false</c>.</value>
+        public bool LastResponseIsNull
+        {
+            get
+            {
+                return this.LastResponse.Equals("null", StringComparison.OrdinalIgnoreCase);
+            }
+        }
+
         ///<summary>
         ///Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         ///</summary>

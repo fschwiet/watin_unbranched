@@ -31,6 +31,33 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         #region Public instance test methods
 
         /// <summary>
+        /// Tests the behaviour of the <see cref="IElement.NextSibling"/> method.
+        /// </summary>
+        [Test]
+        public void NextSibling()
+        {
+            ExecuteTest(NextSiblingTest);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElement.NextSibling"/> method when the sibling elements do not have Id's.
+        /// </summary>
+        [Test]
+        public void NextSiblingNoIds()
+        {
+            ExecuteTest(NextSiblingNoIdsTest);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElement.Parent"/> method.
+        /// </summary>
+        [Test]
+        public void Parent()
+        {
+            ExecuteTest(ParentTest);
+        }
+
+        /// <summary>
         /// Tests the behaviour of the <see cref="IElement.InnerHtml"/> property.
         /// </summary>
         [Test]
@@ -60,6 +87,39 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         #endregion
 
         #region private static test methods
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElement.NextSibling"/> method.
+        /// </summary>
+        private static void NextSiblingNoIdsTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+            IElement element = browser.Element("testParaNextSibling");
+
+            Assert.AreEqual("p4", element.NextSibling.NextSibling.NextSibling.Text.ToLower());
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElement.NextSibling"/> method.
+        /// </summary>
+        private static void NextSiblingTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+            IElement element = browser.Element("Checkbox1");
+
+            Assert.AreEqual("checkbox2", element.NextSibling.Id.ToLower());
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElement.Parent"/> method.
+        /// </summary>
+        private static void ParentTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+            IElement childElement = browser.Element("name");
+
+            Assert.AreEqual("form", childElement.Parent.Id.ToLower(), GetErrorMessage("Parent element not correctly retrieved.", browser));
+        }
 
         /// <summary>
         /// Tests the behaviour of the <see cref="IElement.Title"/> method.

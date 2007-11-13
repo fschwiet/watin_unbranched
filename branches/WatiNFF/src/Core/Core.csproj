@@ -451,6 +451,7 @@
     <Compile Include="Mozilla\TextField.cs" />
     <Compile Include="Mozilla\Window.cs" />
     <Compile Include="Mozilla\XULBrowser.cs" />
+    <Compile Include="Mozilla\NodeType.cs" />
     <Compile Include="Option.cs">
       <SubType>Code</SubType>
     </Compile>

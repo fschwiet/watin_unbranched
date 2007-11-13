@@ -205,16 +205,21 @@ namespace WatiN.Core
 		{
 			get
 			{
-				IHTMLElement nextSibling = domNode.nextSibling as IHTMLElement;
-				if (nextSibling != null)
-				{
-					return GetTypedElement(_domContainer, nextSibling);
-				}
-				return null;
+				return GetNextSibling();
 			}
 		}
 
-		/// <summary>
+	    private Element GetNextSibling()
+	    {
+	        IHTMLElement nextSibling = domNode.nextSibling as IHTMLElement;
+	        if (nextSibling != null)
+	        {
+	            return GetTypedElement(_domContainer, nextSibling);
+	        }
+	        return null;
+	    }
+
+	    /// <summary>
 		/// Gets the previous sibling of this element in the Dom of the HTML page.
 		/// </summary>
 		/// <value>The previous sibling.</value>
@@ -261,16 +266,21 @@ namespace WatiN.Core
 		{
 			get
 			{
-				IHTMLElement parentNode = domNode.parentNode as IHTMLElement;
-				if (parentNode != null)
-				{
-					return GetTypedElement(_domContainer, parentNode);
-				}
-				return null;
+				return GetParent();
 			}
 		}
 
-		public Style Style
+	    private Element GetParent()
+	    {
+	        IHTMLElement parentNode = domNode.parentNode as IHTMLElement;
+	        if (parentNode != null)
+	        {
+	            return GetTypedElement(_domContainer, parentNode);
+	        }
+	        return null;
+	    }
+
+	    public Style Style
 		{
 			get { return new Style(htmlElement.style); }
 		}
@@ -1274,6 +1284,25 @@ namespace WatiN.Core
 		{
 			ElementAttributeBag attributeBag = new ElementAttributeBag((IHTMLElement) parentElement.HTMLElement);
 			return findBy.Compare(attributeBag);
-		}
-	}
+        }
+
+        #region IElement
+
+        IElement IElement.Parent
+        {
+            get
+            {
+                return this.GetParent();
+            }
+        }
+
+	    IElement IElement.NextSibling
+	    {
+	        get
+	        {
+	            return this.GetNextSibling();
+	        }
+	    }
+        #endregion
+    }
 }
