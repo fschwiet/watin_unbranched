@@ -35,6 +35,11 @@ namespace WatiN.Core.Mozilla
         #region Private fields
 
         /// <summary>
+        /// Used by CreateElementVariableName
+        /// </summary>
+        private static long elementCounter = 0;
+        
+        /// <summary>
         /// The path to FireFox executable
         /// </summary>
         private string pathToExe;
@@ -95,6 +100,20 @@ namespace WatiN.Core.Mozilla
 
         #endregion
 
+        #region public static methods
+        
+        /// <summary>
+        /// Creates a unique variable name
+        /// </summary>
+        /// <returns></returns>
+        public static string CreateVariableName()
+        {
+        	elementCounter++;
+        	return string.Format("{0}.watin{1}", DocumentVariableName, elementCounter);
+        }
+        
+        #endregion
+        
         #region Constructors / destructors
 
         public FireFoxClientPort()

@@ -211,11 +211,19 @@ namespace WatiN.Core
 
 	    private Element GetNextSibling()
 	    {
-	        IHTMLElement nextSibling = domNode.nextSibling as IHTMLElement;
-	        if (nextSibling != null)
-	        {
-	            return GetTypedElement(_domContainer, nextSibling);
-	        }
+	    	IHTMLDOMNode node = domNode.nextSibling;
+	    	while (node != null)
+	    	{
+	    		IHTMLElement nextSibling = node as IHTMLElement;
+		        if (nextSibling != null)
+		        {
+		            return GetTypedElement(_domContainer, nextSibling);
+		        }
+		        else
+		        {
+		        	node = node.nextSibling;
+		        }
+	    	}
 	        return null;
 	    }
 

@@ -439,6 +439,7 @@
     <Compile Include="Mozilla\Div.cs" />
     <Compile Include="Mozilla\Document.cs" />
     <Compile Include="Mozilla\Element.cs" />
+    <Compile Include="Mozilla\ElementFinder.cs" />
     <Compile Include="Mozilla\ElementsContainer.cs" />
     <Compile Include="Mozilla\FireFox.cs" />
     <Compile Include="Mozilla\FireFoxClientPort.cs" />
