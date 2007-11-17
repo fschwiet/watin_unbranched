@@ -262,6 +262,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Mozilla\DocumentTests.cs" />
+    <Compile Include="Mozilla\ElementFinderTests.cs" />
     <Compile Include="Mozilla\ElementsTests.cs" />
     <Compile Include="Mozilla\FireFoxClientPortTests.cs" />
     <Compile Include="Mozilla\FireFoxTests.cs" />

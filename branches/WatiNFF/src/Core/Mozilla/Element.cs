@@ -27,54 +27,18 @@ namespace WatiN.Core.Mozilla
     public class Element : IElement
     {
         private readonly FireFoxClientPort clientPort;
-        private readonly string elementId;
-
-        /// <summary>
-        /// If an element can not be identified by id, because known has been specified,
-        /// the knownElementId is used in conjuction with <see cref="findByPath"/> to
-        /// locate the element. For an example of it's usage <see cref="Element.ctor(string, string, FireFoxClientPort)"/>
-        /// </summary>
-        private string knownElementId;
-
-        private string findByPath;
+        private readonly string elementVariable;
 
         #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Element"/> class.
         /// </summary>
-        /// <param name="elementId">The element id.</param>
+        /// <param name="elementVariable">The javascript variable name referencing this element.</param>
         /// <param name="clientPort">The client port.</param>
-        public Element(string elementId, FireFoxClientPort clientPort)
-            : this(clientPort)
+        public Element(string elementVariable, FireFoxClientPort clientPort)
         {
-            this.elementId = elementId;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Element"/> class using the path
-        /// to identify how the element can be retrieved. Useful for elements that do not
-        /// have an id attribute specified
-        /// </summary>
-        /// <param name="findByPath">The path by which the element can be found.</param>
-        /// <param name="knownElementId">The known element id.</param>
-        /// <param name="clientPort">The client port.</param>
-        /// <example>Element noIdElement = new Element("NextSibling.NextSibling", "form1")
-        /// Where form1 is the element that can be identified by id.
-        /// </example>
-        internal Element(string findByPath, string knownElementId, FireFoxClientPort clientPort)
-            : this(clientPort)
-        {
-            this.findByPath = findByPath;
-            this.knownElementId = knownElementId;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Element"/> class.
-        /// </summary>
-        /// <param name="clientPort">The client port.</param>
-        private Element(FireFoxClientPort clientPort)
-        {
+            this.elementVariable = elementVariable;
             this.clientPort = clientPort;
         }
 
@@ -90,7 +54,7 @@ namespace WatiN.Core.Mozilla
         {
             get
             {
-                return elementId;
+            	return GetAttributeValue("id");
             }
         }
 
@@ -142,15 +106,6 @@ namespace WatiN.Core.Mozilla
 
                     element = (Element) element.NextSibling;
                 }
-
-                //Element element = (Element)GetElementByProperty("nextSibling");
-
-                //while (element != null && element.NodeType == NodeType.Text)
-                //{
-                //    element = (Element) element.NextSibling;
-                //}
-
-                //return element;
             }
         }
 
@@ -204,6 +159,12 @@ namespace WatiN.Core.Mozilla
             this.ExecuteMethod("click");
         }
 
+        public bool StoredElementReferenceExists()
+        {
+            string getAttributeWrite = string.Format("{0} != null; ", elementVariable);
+            this.ClientPort.Write(getAttributeWrite);
+            return this.clientPort.LastResponse == "true";
+        }
         #endregion
 
         #region Protected instance methods
@@ -212,7 +173,7 @@ namespace WatiN.Core.Mozilla
         /// Gets the client port used to communicate with the jssh server..
         /// </summary>
         /// <value>The client port.</value>
-        protected FireFoxClientPort ClientPort
+        public FireFoxClientPort ClientPort
         {
             get { return clientPort; }
         }
@@ -228,7 +189,7 @@ namespace WatiN.Core.Mozilla
                     "var event = {0}.createEvent(\"MouseEvents\");\n" +
                     "event.initEvent(\"{1}\",true,true);\n" +
                     "{2}.dispatchEvent(event)", FireFoxClientPort.DocumentVariableName,
-                    methodName, this.LocationToElementSuffix));
+                    methodName, this.elementVariable));
         }
 
         /// <summary>
@@ -243,7 +204,7 @@ namespace WatiN.Core.Mozilla
                 throw new ArgumentNullException("attributeName", "Null or Empty not allowed.");
             }
 
-            string getAttributeWrite = string.Format("{0}.getAttribute(\"{1}\");", this.LocationToElementSuffix, attributeName);
+            string getAttributeWrite = string.Format("{0}.getAttribute(\"{1}\");", this.elementVariable, attributeName);
             this.ClientPort.Write(getAttributeWrite);
 
             if (this.ClientPort.LastResponseIsNull)
@@ -261,15 +222,7 @@ namespace WatiN.Core.Mozilla
         /// <returns></returns>
         protected string GetProperty(string propertyName)
         {
-            if (UtilityClass.IsNullOrEmpty(propertyName))
-            {
-                throw new ArgumentNullException("propertyName", "Null or Empty not allowed.");
-            }
-
-            string getAttributeWrite = string.Format("{0}.{1};", this.LocationToElementSuffix, propertyName);
-            this.ClientPort.Write(getAttributeWrite);
-
-            return this.ClientPort.LastResponse;
+        	return GetAttributeValue(propertyName);
         }
 
         /// <summary>
@@ -279,7 +232,7 @@ namespace WatiN.Core.Mozilla
         /// <param name="value">The value.</param>
         protected void SetAttributeValue(string attributeName, string value)
         {
-            string command = string.Format("{0}.setAttribute(\"{1}\", \"{2}\");", this.LocationToElementSuffix, attributeName, value);
+            string command = string.Format("{0}.setAttribute(\"{1}\", \"{2}\");", this.elementVariable, attributeName, value);
             this.ClientPort.Write(command);
         }
 
@@ -290,76 +243,18 @@ namespace WatiN.Core.Mozilla
         /// <returns>Returns the element that is returned by the specified property</returns>
         private IElement GetElementByProperty(string propertyName)
         {
-            this.ClientPort.Write(
-                string.Format("{0}.{1}.id;", this.LocationToElementSuffix, propertyName));
+        	string elementvar = FireFoxClientPort.CreateVariableName();
+        	string command = string.Format("{0}={1}.{2};", elementvar, this.elementVariable, propertyName);
+            this.ClientPort.Write(command);
 
-            if (!this.ClientPort.LastResponseIsNull)
-            {
-                string id = this.ClientPort.LastResponse;
-
-                if (!string.IsNullOrEmpty(id))
-                {
-                    return new Element(id, this.ClientPort);
-                }
-                else
-                {
-                    if (!string.IsNullOrEmpty(this.findByPath))
-                    {
-                        return new Element(string.Format("{0}.{1}", this.findByPath, propertyName), this.knownElementId, this.ClientPort);
-                    }
-                    else
-                    {
-                        return new Element(propertyName, this.Id, this.ClientPort);
-                    }
-                }
-            }
-            else
-            {
-                return null;
-            }
+            return new Element(elementvar, this.ClientPort);
         }
 
-        /// <summary>
-        /// Gets the location to element suffix.
-        /// </summary>
-        /// <returns></returns>
-        private string LocationToElementSuffix
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(this.Id) && string.IsNullOrEmpty(this.findByPath))
-                {
-                    throw new FireFoxException("Unable to locate an element without an id or a specified find path");
-                }
-
-                string locationSuffix = "";
-
-                if (!string.IsNullOrEmpty(this.Id))
-                {
-                    locationSuffix =
-                        string.Format("{0}.getElementById(\"{1}\")", FireFoxClientPort.DocumentVariableName, this.Id);
-                }
-                else if (!string.IsNullOrEmpty(this.knownElementId))
-                {
-                    locationSuffix =
-                        string.Format("{0}.getElementById(\"{1}\").{2}", FireFoxClientPort.DocumentVariableName,
-                                      this.knownElementId, this.findByPath);
-                }
-                else
-                {
-                    locationSuffix =
-                        string.Format("{0}.body.{1}", FireFoxClientPort.DocumentVariableName, this.findByPath);
-                }
-
-                return locationSuffix;
-            }
-        }
         #endregion
 
         #region private instance methods
 
 
         #endregion
-
     }
 }

@@ -38,8 +38,8 @@ namespace WatiN.Core.Mozilla
         /// <returns></returns>
         public IArea Area(string id)
         {
-            SendGetElementById(id);
-            return new Area(id, this.ClientPort);
+        	Mozilla.ElementFinder finder = new Mozilla.ElementFinder("area", Find.ById(id), this.ClientPort);
+        	return new Area(finder.FindFirst(), this.ClientPort);
         }
 
         /// <summary>
@@ -49,8 +49,8 @@ namespace WatiN.Core.Mozilla
         /// <returns></returns>
         public IDiv Div(string id)
         {
-            SendGetElementById(id);
-            return new Div(id, this.ClientPort);
+        	Mozilla.ElementFinder finder = new Mozilla.ElementFinder("div", Find.ById(id), this.ClientPort);
+        	return new Div(finder.FindFirst(), this.ClientPort);
         }
 
         /// <summary>
@@ -60,8 +60,8 @@ namespace WatiN.Core.Mozilla
         /// <returns></returns>
         public ILink Link(string id)
         {
-            SendGetElementById(id);
-            return new Link(id, this.ClientPort);
+        	Mozilla.ElementFinder finder = new Mozilla.ElementFinder("a", Find.ById(id), this.ClientPort);
+        	return new Link(finder.FindFirst(), this.ClientPort);
         }
 
         /// <summary>
@@ -71,8 +71,8 @@ namespace WatiN.Core.Mozilla
         /// <returns></returns>
         public IPara Para(string id)
         {
-            SendGetElementById(id);
-            return new Para(id, this.ClientPort);
+        	Mozilla.ElementFinder finder = new Mozilla.ElementFinder("p", Find.ById(id), this.ClientPort);
+        	return new Para(finder.FindFirst(), this.ClientPort);
         }
 
         /// <summary>
@@ -82,8 +82,8 @@ namespace WatiN.Core.Mozilla
         /// <returns>A text field for the specified id</returns>
         public ITextField TextField(string id)
         {
-            SendGetElementById(id);
-            return new TextField(id, this.ClientPort);
+        	Mozilla.ElementFinder finder = new Mozilla.ElementFinder("input", Find.ById(id), this.ClientPort);
+        	return new TextField(finder.FindFirst(), this.ClientPort);
         }
 
         /// <summary>
@@ -93,18 +93,13 @@ namespace WatiN.Core.Mozilla
         /// <returns></returns>
         public IElement Element(string id)
         {
-            SendGetElementById(id);
-            return new Element(id, this.ClientPort);
+        	Mozilla.ElementFinder finder = new Mozilla.ElementFinder("", Find.ById(id), this.ClientPort);
+        	return new Element(finder.FindFirst(), this.ClientPort);
         }
 
         #endregion
 
         #region Protected instance methods
-
-        protected void SendGetElementById(string id)
-        {
-            this.ClientPort.Write(string.Format("domDumpFull({0}.getElementById(\"{1}\"));", FireFoxClientPort.DocumentVariableName, id));
-        }
 
         #endregion
 
