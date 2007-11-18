@@ -35,7 +35,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void Back()
         {
-            ExecuteTest(BackTest);
+            ExecuteTest(BackTest, false);
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void Forward()
         {
-            ExecuteTest(ForwardTest);
+            ExecuteTest(ForwardTest, false);
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void Refresh()
         {
-            ExecuteTest(RefreshTest);
+            ExecuteTest(RefreshTest, false);
         }
 
         /// <summary>
@@ -62,11 +62,10 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void Reopen()
         {
-            ExecuteTest(ReopenTest);
+            ExecuteTest(ReopenTest, false);
         }
 
         #endregion
-
 
         #region Private static methods
 

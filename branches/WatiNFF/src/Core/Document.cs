@@ -756,6 +756,11 @@ namespace WatiN.Core
             return Area(Find.ById(elementId));
         }
 
+        IButton IElementsContainerTemp.Button(string id)
+        {
+            return Button(Find.ById(id));
+        }
+
         IElement IElementsContainerTemp.Element(string id)
         {
             return Element(Find.ById(id));

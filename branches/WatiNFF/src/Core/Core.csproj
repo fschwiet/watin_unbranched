@@ -376,6 +376,7 @@
     <Compile Include="IEWaitForComplete.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Interfaces\IButton.cs" />
     <Compile Include="Interfaces\IDiv.cs" />
     <Compile Include="Interfaces\IElementsContainerTemp.cs" />
     <Compile Include="Interfaces\IIE.cs" />
@@ -436,6 +437,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Mozilla\Area.cs" />
+    <Compile Include="Mozilla\Button.cs" />
     <Compile Include="Mozilla\Div.cs" />
     <Compile Include="Mozilla\Document.cs" />
     <Compile Include="Mozilla\Element.cs" />
@@ -443,6 +445,7 @@
     <Compile Include="Mozilla\ElementsContainer.cs" />
     <Compile Include="Mozilla\FireFox.cs" />
     <Compile Include="Mozilla\FireFoxClientPort.cs" />
+    <Compile Include="Mozilla\FireFoxElementAttributeBag.cs" />
     <Compile Include="Mozilla\FireFoxException.cs" />
     <Compile Include="Interfaces\IDocument.cs" />
     <Compile Include="Interfaces\IElement.cs" />

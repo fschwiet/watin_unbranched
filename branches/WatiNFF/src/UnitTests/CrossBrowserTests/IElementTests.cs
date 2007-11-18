@@ -31,12 +31,30 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         #region Public instance test methods
 
         /// <summary>
+        /// Tests the behaviour of the <see cref="IElement.PreviousSibling"/>
+        /// </summary>
+        [Test]
+        public void PreviousSibling()
+        {
+            ExecuteTest(PreviousSiblingTest, false);
+        }
+
+        /// <summary>
+        /// Tests that the previous sibling for the first node is null.
+        /// </summary>
+        [Test]
+        public void PreviousSiblingShouldBeNullForFirstNode()
+        {
+            ExecuteTest(PreviousSiblingIsNullTest, false);
+        }
+
+        /// <summary>
         /// Tests the behaviour of the <see cref="IElement.NextSibling"/> method.
         /// </summary>
         [Test]
         public void NextSibling()
         {
-            ExecuteTest(NextSiblingTest);
+            ExecuteTest(NextSiblingTest, false);
         }
 
         /// <summary>
@@ -45,7 +63,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void NextSiblingNoIds()
         {
-            ExecuteTest(NextSiblingNoIdsTest);
+            ExecuteTest(NextSiblingNoIdsTest, false);
         }
 
         /// <summary>
@@ -54,7 +72,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void Parent()
         {
-            ExecuteTest(ParentTest);
+            ExecuteTest(ParentTest, false);
         }
 
         /// <summary>
@@ -63,7 +81,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void InnerHtml()
         {
-            ExecuteTest(InnerHtmlTest);
+            ExecuteTest(InnerHtmlTest, false);
         }
 
         /// <summary>
@@ -72,7 +90,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void Text()
         {
-            ExecuteTest(TextTest);
+            ExecuteTest(TextTest, false);
         }
 
         /// <summary>
@@ -81,12 +99,32 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test] 
         public void Title()
         {
-            ExecuteTest(TitleTest);
+            ExecuteTest(TitleTest, false);
         }
 
         #endregion
 
         #region private static test methods
+
+        /// <summary>
+        /// Tests that the previous sibling for the first node is null.
+        /// </summary>
+        private static void PreviousSiblingIsNullTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+            IElement element = browser.Element("Form");
+            Assert.IsNull(element.PreviousSibling, GetErrorMessage("Previous sibling should return null for the first node in a branch of the DOM", browser));
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElement.PreviousSibling"/>
+        /// </summary>
+        private static void PreviousSiblingTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+            IElement element = browser.Element("testParaNextSibling");
+            Assert.AreEqual("testElementAttributes", element.PreviousSibling.Id);
+        }
 
         /// <summary>
         /// Tests the behaviour of the <see cref="IElement.NextSibling"/> method.

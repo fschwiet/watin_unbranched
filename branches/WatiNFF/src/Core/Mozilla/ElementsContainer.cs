@@ -43,6 +43,19 @@ namespace WatiN.Core.Mozilla
         }
 
         /// <summary>
+        /// Finds a button element using the specified id.
+        /// </summary>
+        /// <param name="id">The id of the button element being sought.</param>
+        /// <returns>
+        /// The button element for the corresponding id, or null if none is found
+        /// </returns>
+        public IButton Button(string id)
+        {
+            Mozilla.ElementFinder finder = new Mozilla.ElementFinder("input", Find.ById(id), this.ClientPort);
+            return new Button(finder.FindFirst(), this.ClientPort);
+        }
+
+        /// <summary>
         /// Finds a div element using the specified id.
         /// </summary>
         /// <param name="id">The id.</param>

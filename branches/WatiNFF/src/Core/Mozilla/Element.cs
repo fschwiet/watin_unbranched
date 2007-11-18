@@ -109,12 +109,30 @@ namespace WatiN.Core.Mozilla
             }
         }
 
+        public IElement PreviousSibling
+        {
+            get
+            {
+                Element element = (Element)GetElementByProperty("previousSibling");
+
+                while (true)
+                {
+                    if (element == null || element.NodeType != NodeType.Text)
+                    {
+                        return element;
+                    }
+
+                    element = (Element)element.PreviousSibling;
+                }
+            }
+        }
+
         /// <summary>
         /// Gets the innertext of this element (and the innertext of all the elements contained
         /// in this element).
         /// </summary>
         /// <value>The inner text of this element</value>
-        public string Text
+        public virtual string Text
         {
             get
             {
@@ -157,6 +175,7 @@ namespace WatiN.Core.Mozilla
         public void Click()
         {
             this.ExecuteMethod("click");
+            this.ClientPort.InitializeDocument();
         }
 
         public bool StoredElementReferenceExists()
@@ -222,7 +241,15 @@ namespace WatiN.Core.Mozilla
         /// <returns></returns>
         protected string GetProperty(string propertyName)
         {
-        	return GetAttributeValue(propertyName);
+            if (UtilityClass.IsNullOrEmpty(propertyName))
+            {
+                throw new ArgumentNullException("propertyName", "Null or Empty not allowed.");
+            }
+
+            string command = string.Format("{0}.{1};", this.elementVariable, propertyName);
+            this.ClientPort.Write(command);
+
+            return this.ClientPort.LastResponse;
         }
 
         /// <summary>
@@ -247,7 +274,14 @@ namespace WatiN.Core.Mozilla
         	string command = string.Format("{0}={1}.{2};", elementvar, this.elementVariable, propertyName);
             this.ClientPort.Write(command);
 
-            return new Element(elementvar, this.ClientPort);
+            if (!this.ClientPort.LastResponseIsNull)
+            {
+                return new Element(elementvar, this.ClientPort);    
+            }
+            else
+            {
+                return null;
+            }
         }
 
         #endregion
