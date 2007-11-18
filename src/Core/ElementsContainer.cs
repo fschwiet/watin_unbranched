@@ -479,6 +479,11 @@ namespace WatiN.Core
             return TextField(Find.ById(id));
         }
 
+        IButton IElementsContainerTemp.Button(string id)
+        {
+            return Button(Find.ById(id));
+        }
+
         #endregion
 
 		IHTMLElementCollection IElementCollection.Elements

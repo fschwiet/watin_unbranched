@@ -31,6 +31,17 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
     [TestFixture]
     public class IElementsContainerTests : CrossBrowserTest
     {
+        #region Public test methods
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Button(string)"/> method.
+        /// Tests that a button can be located based on the value of it's Id.
+        /// </summary>
+        [Test]
+        public void ButtonById()
+        {
+            ExecuteTest(ButtonByIdTest, false);
+        }
 
         /// <summary>
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.Area(string)"/> method.
@@ -39,7 +50,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void AreaById()
         {
-            ExecuteTest(AreaByIdTest);
+            ExecuteTest(AreaByIdTest, false);
         }
 
         /// <summary>
@@ -49,7 +60,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void ParaById()
         {
-            ExecuteTest(ParaByIdTest);
+            ExecuteTest(ParaByIdTest, false);
         }
 
         /// <summary>
@@ -59,7 +70,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void LinkById()
         {
-            ExecuteTest(LinkByIdTest);
+            ExecuteTest(LinkByIdTest, false);
         }
 
         /// <summary>
@@ -69,7 +80,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void DivById()
         {
-            ExecuteTest(DivByIdTest);
+            ExecuteTest(DivByIdTest, false);
         }
 
         /// <summary>
@@ -79,7 +90,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void TextFieldById()
         {
-            ExecuteTest(TextFieldByIdTest);
+            ExecuteTest(TextFieldByIdTest, false);
         }
 
         /// <summary>
@@ -89,10 +100,24 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void ElementById()
         {
-            ExecuteTest(ElementTest);            
+            ExecuteTest(ElementTest, false);            
         }
 
+        #endregion
+
         #region Private static methods
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Button(string)"/> method.
+        /// Tests that a button can be located based on the value of it's Id.
+        /// </summary>
+        private static void ButtonByIdTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+            IButton button = browser.Button("helloid");
+
+            Assert.IsNotNull(button, GetErrorMessage("The button with id helloid could not be found", browser));
+        }
 
         /// <summary>
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.Area(string)"/> method.

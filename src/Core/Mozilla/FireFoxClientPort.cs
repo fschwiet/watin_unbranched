@@ -100,20 +100,6 @@ namespace WatiN.Core.Mozilla
 
         #endregion
 
-        #region public static methods
-        
-        /// <summary>
-        /// Creates a unique variable name
-        /// </summary>
-        /// <returns></returns>
-        public static string CreateVariableName()
-        {
-        	elementCounter++;
-        	return string.Format("{0}.watin{1}", DocumentVariableName, elementCounter);
-        }
-        
-        #endregion
-        
         #region Constructors / destructors
 
         public FireFoxClientPort()
@@ -128,6 +114,81 @@ namespace WatiN.Core.Mozilla
         ~FireFoxClientPort()
         {
             Dispose(false);
+        }
+
+        #endregion
+
+        #region Public static methods
+
+        /// <summary>
+        /// Creates a unique variable name
+        /// </summary>
+        /// <returns></returns>
+        public static string CreateVariableName()
+        {
+            elementCounter++;
+            return string.Format("{0}.watin{1}", DocumentVariableName, elementCounter);
+        }
+
+        #endregion
+
+        #region Private static methods
+
+        /// <summary>
+        /// Cleans the response.
+        /// </summary>
+        /// <param name="response">The response.</param>
+        /// <returns>Response from FireFox with out any of the telnet UI characters</returns>
+        private static string CleanTelnetResponse(string response)
+        {
+            //HACK refactor in the future, should find a cleaner way of doing this.
+            if (!string.IsNullOrEmpty(response))
+            {
+                if (response.EndsWith(string.Format("{0}>", "\n")))
+                {
+                    response = response.Substring(0, response.Length - 2);
+                }
+                else if (response.EndsWith(string.Format("{0}> ", "\n")))
+                {
+                    response = response.Substring(0, response.Length - 3);
+                }
+                else if (response.EndsWith(string.Format("{0}> {0}", "\n")))
+                {
+                    response = response.Substring(0, response.Length - 4);
+                }
+                else if (response.EndsWith(string.Format("{0}> {0}{0}", "\n")))
+                {
+                    response = response.Substring(0, response.Length - 5);
+                }
+                else if (response.EndsWith(string.Format("{0}>", Environment.NewLine)))
+                {
+                    response = response.Substring(0, response.Length - 3);
+                }
+                else if (response.EndsWith(string.Format("{0}> ", Environment.NewLine)))
+                {
+                    response = response.Substring(0, response.Length - 4);
+                }
+                else if (response.EndsWith(string.Format("{0}> {0}", Environment.NewLine)))
+                {
+                    response = response.Substring(0, response.Length - 6);
+                }
+                else if (response.EndsWith(string.Format("{0}> {0}{0}", Environment.NewLine)))
+                {
+                    response = response.Substring(0, response.Length - 8);
+                }
+
+                if (response.StartsWith("> "))
+                {
+                    response = response.Substring(2);
+                }
+                else if (response.StartsWith(string.Format("{0}> ", "\n")))
+                {
+                    response = response.Substring(3);
+                }
+
+                response = response.Trim();
+            }
+            return response;
         }
 
         #endregion
@@ -343,14 +404,13 @@ namespace WatiN.Core.Mozilla
                 System.Threading.Thread.Sleep(200);
             }
 
-            string readData;
             do
             {
                 read = this.telnetClient.Read(buffer, 0, 1024);
-                readData = ASCIIEncoding.ASCII.GetString(buffer, 0, read);
+                string readData = ASCIIEncoding.ASCII.GetString(buffer, 0, read);
                 Logger.LogAction(string.Format("jssh says: {0}", readData));
-                
-                this.lastResponse += readData.TrimEnd(new char[] {'\n','>', ' '});
+
+                this.lastResponse += CleanTelnetResponse(readData);
             } while (read==1024);
 
             this.lastResponse = this.lastResponse.Trim();
@@ -364,7 +424,6 @@ namespace WatiN.Core.Mozilla
             this.response.Append(this.lastResponse);
             
         }
-
 
         /// <summary>
         /// Initalizes the executable path.
@@ -425,7 +484,7 @@ namespace WatiN.Core.Mozilla
                 throw new FireFoxException(
                     "FireFox executable listed in the registry does not exist, please make sure you have installed FireFox and Jssh correctly");
             }
-        }
+        }        
 
         #endregion private instance methods       
     }

@@ -93,6 +93,12 @@ namespace WatiN.Core.Interfaces
         /// <value>The next sibling.</value>		
         IElement NextSibling { get; }
 
+        /// <summary>
+        /// Gets the previous sibling of this element in the Dom of the HTML page.
+        /// </summary>
+        /// <value>The previous sibling.</value>		
+        IElement PreviousSibling { get; }
+
         #endregion
 
         #region Methods

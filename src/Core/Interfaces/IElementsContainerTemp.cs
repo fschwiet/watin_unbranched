@@ -32,43 +32,50 @@ namespace WatiN.Core.Interfaces
         /// <summary>
         /// Finds an area element using the specified id.
         /// </summary>
-        /// <param name="id">The area element being sought.</param>
-        /// <returns></returns>
+        /// <param name="id">The id of the area element being sought.</param>
+        /// <returns>The area element for the corresponding id, or null if none is found</returns>
         IArea Area(string id);
+
+        /// <summary>
+        /// Finds a button element using the specified id.
+        /// </summary>
+        /// <param name="id">The id of the button element being sought.</param>
+        /// <returns>The button element for the corresponding id, or null if none is found</returns>
+        IButton Button(string id);
 
         /// <summary>
         /// Finds a div element using the specified id.
         /// </summary>
-        /// <param name="id">The id div element being sought.</param>
-        /// <returns></returns>
+        /// <param name="id">The id of the div element being sought.</param>
+        /// <returns>The div element for the corresponding id, or null if none is found</returns>
         IDiv Div(string id);
 
         /// <summary>
         /// Finds a div element using the specified id.
         /// </summary>
         /// <param name="id">The id of the link element being sought.</param>
-        /// <returns></returns>
+        /// <returns>The link element for the corresponding id, or null if none is found</returns>
         ILink Link(string id);
 
         /// <summary>
         /// Finds a paragraph element using the specified id.
         /// </summary>
         /// <param name="id">The id of the paragraph element being sought.</param>
-        /// <returns></returns>
+        /// <returns>The paragraph element for the corresponding id, or null if none is found</returns>
         IPara Para(string id);
 
         /// <summary>
         /// Finds a text field using the Id.
         /// </summary>
         /// <param name="id">The id of the text field element being sought.</param>
-        /// <returns>A text field for the specified id</returns>
+        /// <returns>The text field element for the corresponding id, or null if none is found</returns>
         ITextField TextField(string id);
 
         /// <summary>
         /// Finds an element matching the specified id.
         /// </summary>
         /// <param name="id">The id.</param>
-        /// <returns></returns>
+        /// <returns>The element for the corresponding id, or null if none is found</returns>
         IElement Element(string id);
     }
 }

@@ -170,7 +170,7 @@ namespace WatiN.Core.UnitTests
 			Assert.AreEqual(popupValue, ie.Button(Find.ByName("popupname")).Value);
 
 			Button helloButton = ie.Button("helloid");
-			Assert.AreEqual("Show allert", helloButton.Value);
+			Assert.AreEqual("Show alert", helloButton.Value);
 			Assert.AreEqual(helloButton.Value, helloButton.Text);
 
 			Assert.IsTrue(ie.Button(new Regex("popupid")).Exists);
