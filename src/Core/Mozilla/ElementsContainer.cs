@@ -51,7 +51,7 @@ namespace WatiN.Core.Mozilla
         /// </returns>
         public IButton Button(string id)
         {
-            Mozilla.ElementFinder finder = new Mozilla.ElementFinder("input", Find.ById(id), this.ClientPort);
+            Mozilla.ElementFinder finder = new Mozilla.ElementFinder("input", "button", Find.ById(id), this.ClientPort);
             return new Button(finder.FindFirst(), this.ClientPort);
         }
 
@@ -95,7 +95,7 @@ namespace WatiN.Core.Mozilla
         /// <returns>A text field for the specified id</returns>
         public ITextField TextField(string id)
         {
-        	Mozilla.ElementFinder finder = new Mozilla.ElementFinder("input", Find.ById(id), this.ClientPort);
+        	Mozilla.ElementFinder finder = new Mozilla.ElementFinder("input", "text", Find.ById(id), this.ClientPort);
         	return new TextField(finder.FindFirst(), this.ClientPort);
         }
 

@@ -24,11 +24,11 @@ namespace WatiN.Core.UnitTests.Mozilla
 			{
 				WatiN.Core.Mozilla.Element element = (WatiN.Core.Mozilla.Element)browser.Element("testElementAttributes");
 				
-				Assert.That(element.StoredElementReferenceExists(), Is.True);
+				Assert.That(element.Exists(), Is.True);
 				Assert.AreEqual("testElementAttributes", element.Id, "Id attribute incorrect");
 				
 				browser.GoTo(MainURI);
-				Assert.That(element.StoredElementReferenceExists(), Is.False);
+				Assert.That(element.Exists(), Is.False);
 				
 			}
 		}
@@ -42,6 +42,30 @@ namespace WatiN.Core.UnitTests.Mozilla
 				string element = elementFinder.FindFirst();
 
 				Assert.That(element, Is.Not.Null, "Shouldn't be null");
+			}
+		}
+
+		[Test]
+		public void ShouldFindInputByTagNameAndTypeAndId()
+		{
+			using (FireFox browser = new FireFox(MainURI))
+			{
+				WatiN.Core.Mozilla.ElementFinder elementFinder = new WatiN.Core.Mozilla.ElementFinder("input", "TEXT", Find.ById("name"), browser.ClientPort);
+				string element = elementFinder.FindFirst();
+
+				Assert.That(element, Is.Not.Null, "Shouldn't be null");
+			}
+		}
+
+		[Test]
+		public void ShouldNotFindInputByTagNameAndIncorrectTypeAndId()
+		{
+			using (FireFox browser = new FireFox(MainURI))
+			{
+				WatiN.Core.Mozilla.ElementFinder elementFinder = new WatiN.Core.Mozilla.ElementFinder("input", "text", Find.ById("Checkbox3"), browser.ClientPort);
+				string element = elementFinder.FindFirst();
+
+				Assert.That(element, Is.Null, "Should be null");
 			}
 		}
 
