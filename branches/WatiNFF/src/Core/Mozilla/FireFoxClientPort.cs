@@ -371,7 +371,7 @@ namespace WatiN.Core.Mozilla
             byte[] bytes = ASCIIEncoding.ASCII.GetBytes(data + "\n");
             this.telnetClient.Write(bytes, 0, bytes.Length);
             
-            Logger.LogAction("sending: " + data);
+            Logger.LogAction("sending: {0}", data);
             
             if (readResponse)
             {

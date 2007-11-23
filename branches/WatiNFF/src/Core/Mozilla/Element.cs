@@ -178,10 +178,10 @@ namespace WatiN.Core.Mozilla
             this.ClientPort.InitializeDocument();
         }
 
-        public bool StoredElementReferenceExists()
+        public bool Exists()
         {
-            string getAttributeWrite = string.Format("{0} != null; ", elementVariable);
-            this.ClientPort.Write(getAttributeWrite);
+            string command = string.Format("{0} != null; ", elementVariable);
+            this.ClientPort.Write(command);
             return this.clientPort.LastResponse == "true";
         }
         #endregion
