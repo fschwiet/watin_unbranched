@@ -1,7 +1,7 @@
-﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
-    <ProductVersion>8.0.50727</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{217E2D34-F6DF-431B-AC5A-B368F481A530}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -26,6 +26,7 @@
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\Debug\</OutputPath>
@@ -362,6 +363,7 @@
     <Compile Include="HtmlDialogCollection.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Interfaces\IBaseElementCollection.cs" />
     <Compile Include="Interfaces\IArea.cs" />
     <Compile Include="Interfaces\IBrowser.cs" />
     <Compile Include="IE.cs">
@@ -412,6 +414,13 @@
     <Compile Include="Interfaces\IWait.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Interfaces\ITable.cs" />
+    <Compile Include="Interfaces\ITableRowCollection.cs" />
+    <Compile Include="Interfaces\ITableRow.cs" />
+    <Compile Include="Interfaces\ITableCellCollection.cs" />
+    <Compile Include="Interfaces\IWatiNElementCollection.cs" />
+    <Compile Include="Interfaces\ITableBodyCollection.cs" />
+    <Compile Include="Interfaces\ITableBody.cs" />
     <Compile Include="Label.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -437,6 +446,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Mozilla\Area.cs" />
+    <Compile Include="Mozilla\BaseElementCollection.cs" />
     <Compile Include="Mozilla\Button.cs" />
     <Compile Include="Mozilla\Div.cs" />
     <Compile Include="Mozilla\Document.cs" />
@@ -452,7 +462,13 @@
     <Compile Include="Interfaces\ITextField.cs" />
     <Compile Include="Mozilla\Link.cs" />
     <Compile Include="Mozilla\Para.cs" />
+    <Compile Include="Mozilla\Table.cs" />
+    <Compile Include="Mozilla\TableBody.cs" />
+    <Compile Include="Mozilla\TableBodyCollection.cs" />
+    <Compile Include="Mozilla\TableRow.cs" />
+    <Compile Include="Mozilla\TableRowCollection.cs" />
     <Compile Include="Mozilla\TextField.cs" />
+    <Compile Include="Mozilla\WatiNElementCollection.cs" />
     <Compile Include="Mozilla\Window.cs" />
     <Compile Include="Mozilla\XULBrowser.cs" />
     <Compile Include="Mozilla\NodeType.cs" />

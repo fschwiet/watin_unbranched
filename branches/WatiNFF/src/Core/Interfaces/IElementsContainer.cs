@@ -212,12 +212,12 @@ namespace WatiN.Core.Interfaces
 		TableCell TableCell(string elementId, int index);
 
 		TableCell TableCell(Regex elementId, int index);
-		TableCellCollection TableCells { get; }
+		ITableCellCollection TableCells { get; }
 
 		TableRow TableRow(string elementId);
 		TableRow TableRow(Regex elementId);
 		TableRow TableRow(AttributeConstraint findBy);
-		TableRowCollection TableRows { get; }
+		ITableRowCollection TableRows { get; }
 
 		TableBody TableBody(string elementId);
 		TableBody TableBody(Regex elementId);

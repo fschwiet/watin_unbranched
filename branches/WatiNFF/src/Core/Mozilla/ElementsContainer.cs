@@ -25,9 +25,24 @@ namespace WatiN.Core.Mozilla
 {
     public abstract class ElementsContainer : Element, IElementsContainerTemp
     {
-        protected ElementsContainer(string id, FireFoxClientPort clientPort) : base(id, clientPort)
+        protected ElementsContainer(string elementVariable, FireFoxClientPort clientPort) : base(elementVariable, clientPort)
         {
         }
+
+        #region Public instance properties
+
+        public IWatiNElementCollection Elements
+        {
+            get 
+            {
+
+                WatiNElementCollection elements = new WatiNElementCollection(this.ClientPort, new ElementFinder(this, "*", null, this.ClientPort));
+                return elements;
+            }
+        }
+
+        #endregion
+
 
         #region Public instance methods
 
@@ -86,6 +101,17 @@ namespace WatiN.Core.Mozilla
         {
         	Mozilla.ElementFinder finder = new Mozilla.ElementFinder("p", Find.ById(id), this.ClientPort);
         	return new Para(finder.FindFirst(), this.ClientPort);
+        }
+
+        /// <summary>
+        /// Finds a table using the specified Id.
+        /// </summary>
+        /// <param name="id">The id of the table element being sought.</param>
+        /// <returns>The table element for the corresponding id, or null if none is found</returns>
+        public ITable Table(string id)
+        {
+            Mozilla.ElementFinder finder = new Mozilla.ElementFinder("table", Find.ById(id), this.ClientPort);
+            return new Table(finder.FindFirst(), this.ClientPort);
         }
 
         /// <summary>

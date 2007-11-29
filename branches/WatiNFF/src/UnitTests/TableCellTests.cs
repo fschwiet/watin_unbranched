@@ -19,6 +19,7 @@
 using System.Collections;
 using System.Text.RegularExpressions;
 using NUnit.Framework;
+using WatiN.Core.Interfaces;
 
 namespace WatiN.Core.UnitTests
 {
@@ -83,7 +84,7 @@ namespace WatiN.Core.UnitTests
 		public void TableCells()
 		{
 			// Collection.Length
-			TableCellCollection cells = ie.Table("table1").TableRows[1].TableCells;
+			ITableCellCollection cells = ie.Table("table1").TableRows[1].TableCells;
 
 			Assert.AreEqual(2, cells.Length);
 

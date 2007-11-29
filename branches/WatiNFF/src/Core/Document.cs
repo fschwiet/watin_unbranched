@@ -642,7 +642,7 @@ namespace WatiN.Core
 			return ElementsSupport.TableCell(DomContainer, elementId, index, this);
 		}
 
-		public TableCellCollection TableCells
+		public ITableCellCollection TableCells
 		{
 			get { return ElementsSupport.TableCells(DomContainer, this); }
 		}
@@ -662,7 +662,7 @@ namespace WatiN.Core
 			return ElementsSupport.TableRow(DomContainer, findBy, this);
 		}
 
-		public TableRowCollection TableRows
+		public ITableRowCollection TableRows
 		{
 			get { return ElementsSupport.TableRows(DomContainer, this); }
 		}
@@ -759,6 +759,16 @@ namespace WatiN.Core
         IButton IElementsContainerTemp.Button(string id)
         {
             return Button(Find.ById(id));
+        }
+
+        ITable IElementsContainerTemp.Table(string id)
+        {
+            return Table(Find.ById(id));            
+        }
+
+        IWatiNElementCollection IElementsContainerTemp.Elements
+        {
+            get { return ElementsSupport.Elements(DomContainer, this); }
         }
 
         IElement IElementsContainerTemp.Element(string id)

@@ -18,6 +18,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using MIL.Html;
 using WatiN.Core.Interfaces;
@@ -54,7 +55,33 @@ namespace WatiN.Core.Mozilla
         {
             get
             {
-            	return GetAttributeValue("id");
+                return GetAttributeValue("id");
+            }
+        }
+
+        /// <summary>
+        /// Gets a collection of child nodes for the current element.
+        /// </summary>
+        public Collection<Element> ChildNodes
+        {
+            get
+            {
+                Collection<Element> childNodes = new Collection<Element>();
+                int childNodeCount;
+                if (int.TryParse(this.GetProperty("childNodes.length"), out childNodeCount))
+                {
+                    for (int i = 0; i < childNodeCount; i++)
+                    {
+                        Element element = (Element)this.GetElementByProperty(string.Format("childNodes[{0}]", i));
+                        
+                        if (element.NodeType != Mozilla.NodeType.Text)
+                        {
+                            childNodes.Add(element);
+                        }
+                    }
+                }
+
+                return childNodes;
             }
         }
 
@@ -99,12 +126,12 @@ namespace WatiN.Core.Mozilla
 
                 while (true)
                 {
-                    if(element == null || element.NodeType != NodeType.Text)
+                    if (element == null || element.NodeType != NodeType.Text)
                     {
-                        return element;                        
+                        return element;
                     }
 
-                    element = (Element) element.NextSibling;
+                    element = (Element)element.NextSibling;
                 }
             }
         }
@@ -125,6 +152,15 @@ namespace WatiN.Core.Mozilla
                     element = (Element)element.PreviousSibling;
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets the tag name of this element.
+        /// </summary>
+        /// <value>The name of the tag.</value>
+        public string TagName
+        {
+            get { return this.GetProperty("tagName"); }
         }
 
         /// <summary>
@@ -169,6 +205,15 @@ namespace WatiN.Core.Mozilla
         #region Public instance methods
 
         /// <summary>
+        /// Gets the client port used to communicate with the jssh server..
+        /// </summary>
+        /// <value>The client port.</value>
+        public FireFoxClientPort ClientPort
+        {
+            get { return clientPort; }
+        }
+
+        /// <summary>
         /// Clicks this element and waits till the event is completely finished (page is loaded
         /// and ready) .
         /// </summary>
@@ -184,18 +229,20 @@ namespace WatiN.Core.Mozilla
             this.ClientPort.Write(command);
             return this.clientPort.LastResponse == "true";
         }
+
         #endregion
 
-        #region Protected instance methods
+        #region Internal instance properties
 
-        /// <summary>
-        /// Gets the client port used to communicate with the jssh server..
-        /// </summary>
-        /// <value>The client port.</value>
-        public FireFoxClientPort ClientPort
+        internal string ElementVariable
         {
-            get { return clientPort; }
+            get { return elementVariable; }
         }
+
+        #endregion
+
+
+        #region Protected instance methods
 
         /// <summary>
         /// Executes the method.
@@ -208,7 +255,7 @@ namespace WatiN.Core.Mozilla
                     "var event = {0}.createEvent(\"MouseEvents\");\n" +
                     "event.initEvent(\"{1}\",true,true);\n" +
                     "{2}.dispatchEvent(event)", FireFoxClientPort.DocumentVariableName,
-                    methodName, this.elementVariable));
+                    methodName, this.ElementVariable));
         }
 
         /// <summary>
@@ -223,7 +270,7 @@ namespace WatiN.Core.Mozilla
                 throw new ArgumentNullException("attributeName", "Null or Empty not allowed.");
             }
 
-            string getAttributeWrite = string.Format("{0}.getAttribute(\"{1}\");", this.elementVariable, attributeName);
+            string getAttributeWrite = string.Format("{0}.getAttribute(\"{1}\");", this.ElementVariable, attributeName);
             this.ClientPort.Write(getAttributeWrite);
 
             if (this.ClientPort.LastResponseIsNull)
@@ -239,17 +286,38 @@ namespace WatiN.Core.Mozilla
         /// </summary>
         /// <param name="propertyName">Name of the property.</param>
         /// <returns></returns>
-        protected string GetProperty(string propertyName)
+        internal string GetProperty(string propertyName)
         {
             if (UtilityClass.IsNullOrEmpty(propertyName))
             {
                 throw new ArgumentNullException("propertyName", "Null or Empty not allowed.");
             }
 
-            string command = string.Format("{0}.{1};", this.elementVariable, propertyName);
+            string command = string.Format("{0}.{1};", this.ElementVariable, propertyName);
             this.ClientPort.Write(command);
 
             return this.ClientPort.LastResponse;
+        }
+
+        /// <summary>
+        /// Gets the element by property.
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <returns>Returns the element that is returned by the specified property</returns>
+        internal IElement GetElementByProperty(string propertyName)
+        {
+            string elementvar = FireFoxClientPort.CreateVariableName();
+            string command = string.Format("{0}={1}.{2};", elementvar, this.ElementVariable, propertyName);
+            this.ClientPort.Write(command);
+
+            if (!this.ClientPort.LastResponseIsNull)
+            {
+                return new Element(elementvar, this.ClientPort);
+            }
+            else
+            {
+                return null;
+            }
         }
 
         /// <summary>
@@ -259,29 +327,8 @@ namespace WatiN.Core.Mozilla
         /// <param name="value">The value.</param>
         protected void SetAttributeValue(string attributeName, string value)
         {
-            string command = string.Format("{0}.setAttribute(\"{1}\", \"{2}\");", this.elementVariable, attributeName, value);
+            string command = string.Format("{0}.setAttribute(\"{1}\", \"{2}\");", this.ElementVariable, attributeName, value);
             this.ClientPort.Write(command);
-        }
-
-        /// <summary>
-        /// Gets the element by property.
-        /// </summary>
-        /// <param name="propertyName">Name of the property.</param>
-        /// <returns>Returns the element that is returned by the specified property</returns>
-        private IElement GetElementByProperty(string propertyName)
-        {
-        	string elementvar = FireFoxClientPort.CreateVariableName();
-        	string command = string.Format("{0}={1}.{2};", elementvar, this.elementVariable, propertyName);
-            this.ClientPort.Write(command);
-
-            if (!this.ClientPort.LastResponseIsNull)
-            {
-                return new Element(elementvar, this.ClientPort);    
-            }
-            else
-            {
-                return null;
-            }
         }
 
         #endregion

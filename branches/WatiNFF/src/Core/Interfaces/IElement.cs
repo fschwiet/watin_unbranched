@@ -99,6 +99,12 @@ namespace WatiN.Core.Interfaces
         /// <value>The previous sibling.</value>		
         IElement PreviousSibling { get; }
 
+        /// <summary>
+        /// Gets the tag name of this element.
+        /// </summary>
+        /// <value>The name of the tag.</value>
+        string TagName { get; }
+
         #endregion
 
         #region Methods

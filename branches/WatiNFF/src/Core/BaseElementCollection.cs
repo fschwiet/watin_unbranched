@@ -19,6 +19,7 @@
 using System.Collections;
 using System.Text.RegularExpressions;
 using mshtml;
+using WatiN.Core.Interfaces;
 
 namespace WatiN.Core
 {
@@ -32,7 +33,7 @@ namespace WatiN.Core
 	/// This class is mainly used by Watin internally as the base class for all 
 	/// of the element collections.
 	/// </summary>
-	public abstract class BaseElementCollection : IEnumerable
+	public abstract class BaseElementCollection : IBaseElementCollection
 	{
 		protected DomContainer domContainer;
 

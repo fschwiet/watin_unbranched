@@ -34,6 +34,16 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         #region Public test methods
 
         /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Table(string)"/> method.
+        /// Tests that a button can be located based on the value of it's Id.
+        /// </summary>
+        [Test]
+        public void TableById()
+        {
+            ExecuteTest(TableByIdTest, false);
+        }
+
+        /// <summary>
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.Button(string)"/> method.
         /// Tests that a button can be located based on the value of it's Id.
         /// </summary>
@@ -106,6 +116,18 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         #endregion
 
         #region Private static methods
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Table(string)"/> method.
+        /// Tests that a table can be located based on the value of it's Id.
+        /// </summary>
+        private static void TableByIdTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+            ITable table = browser.Table("table1");
+
+            Assert.IsNotNull(table, GetErrorMessage("The table with id table1 could not be found", browser));
+        }
 
         /// <summary>
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.Button(string)"/> method.

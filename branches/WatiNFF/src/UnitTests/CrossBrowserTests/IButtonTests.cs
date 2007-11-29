@@ -53,7 +53,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// which should return the same value as <see cref="IButton.Text"/>.
         /// </summary>
         [Test]
-        public void ToString()
+        public void ToStringTest()
         {
             ExecuteTest(ToStringTest, false);
         }
