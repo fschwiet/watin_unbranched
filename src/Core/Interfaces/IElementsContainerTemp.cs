@@ -29,6 +29,8 @@ namespace WatiN.Core.Interfaces
     /// </summary>
     public interface IElementsContainerTemp
     {
+        IWatiNElementCollection Elements { get; } 
+
         /// <summary>
         /// Finds an area element using the specified id.
         /// </summary>
@@ -63,6 +65,13 @@ namespace WatiN.Core.Interfaces
         /// <param name="id">The id of the paragraph element being sought.</param>
         /// <returns>The paragraph element for the corresponding id, or null if none is found</returns>
         IPara Para(string id);
+
+        /// <summary>
+        /// Finds a table using the specified Id.
+        /// </summary>
+        /// <param name="id">The id of the table element being sought.</param>
+        /// <returns>The table element for the corresponding id, or null if none is found</returns>
+        ITable Table(string id);
 
         /// <summary>
         /// Finds a text field using the Id.

@@ -93,7 +93,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// <param name="browserType">The browser type</param>
         /// <param name="newBrowserInstance">If true, returns a new browser instance, otherwise the cached browser is returned</param>
         /// <returns>A browser instance</returns>
-        private IBrowser GetBrowserInstance(IBrowser browser, BrowserType browserType, bool newBrowserInstance)
+        protected IBrowser GetBrowserInstance(IBrowser browser, BrowserType browserType, bool newBrowserInstance)
         {
            	if(browser == null || newBrowserInstance)
         	{

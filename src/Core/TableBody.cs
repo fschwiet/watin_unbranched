@@ -25,7 +25,7 @@ namespace WatiN.Core
 	/// <summary>
 	/// This class provides specialized functionality for a HTML tbody element. 
 	/// </summary>
-	public class TableBody : ElementsContainer
+	public class TableBody : ElementsContainer, ITableBody
 	{
 		private static ArrayList elementTags;
 
@@ -40,7 +40,7 @@ namespace WatiN.Core
 		/// from tables nested in this table body).
 		/// </summary>
 		/// <value>The table rows.</value>
-		public override TableRowCollection TableRows
+		public override ITableRowCollection TableRows
 		{
 			get { return new TableRowCollection(DomContainer, UtilityClass.IHtmlElementCollectionToArrayList(HtmlBody.rows)); }
 		}

@@ -31,6 +31,15 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         #region Public instance test methods
 
         /// <summary>
+        /// Tests the behaviour of the <see cref="IElement.TagName"/> property.
+        /// </summary>
+        [Test]
+        public void TagName()
+        {
+            ExecuteTest(TagNameTest);    
+        }
+
+        /// <summary>
         /// Tests the behaviour of the <see cref="IElement.PreviousSibling"/>
         /// </summary>
         [Test]
@@ -105,6 +114,16 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         #endregion
 
         #region private static test methods
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElement.TagName"/> property.
+        /// </summary>
+        private static void TagNameTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+            IElement element = browser.Element("Form");
+            Assert.AreEqual("FORM", element.TagName.ToUpper(), GetErrorMessage("Incorrect tag name retrieved.", browser));
+        }
 
         /// <summary>
         /// Tests that the previous sibling for the first node is null.

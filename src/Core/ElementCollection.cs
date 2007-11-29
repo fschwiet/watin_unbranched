@@ -18,13 +18,14 @@
 
 using System.Collections;
 using mshtml;
+using WatiN.Core.Interfaces;
 
 namespace WatiN.Core
 {
 	/// <summary>
 	/// A typed collection of <see cref="Element" /> instances within a <see cref="Document"/> or <see cref="Element"/>.
 	/// </summary>
-	public class ElementCollection : BaseElementCollection
+	public class ElementCollection : BaseElementCollection, IWatiNElementCollection
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ElementCollection"/> class.
@@ -46,7 +47,7 @@ namespace WatiN.Core
 		/// Gets the <see cref="Element"/> at the specified index.
 		/// </summary>
 		/// <value></value>
-		public Element this[int index]
+		public IElement this[int index]
 		{
 			get { return New(domContainer, (IHTMLElement) Elements[index]); }
 		}

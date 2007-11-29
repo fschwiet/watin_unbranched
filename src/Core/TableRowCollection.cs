@@ -18,13 +18,14 @@
 
 using System.Collections;
 using mshtml;
+using WatiN.Core.Interfaces;
 
 namespace WatiN.Core
 {
 	/// <summary>
 	/// A typed collection of <see cref="TableRow" /> instances within a <see cref="Document"/> or <see cref="Element"/>.
 	/// </summary>
-	public class TableRowCollection : BaseElementCollection
+	public class TableRowCollection : BaseElementCollection, ITableRowCollection
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="TableRowCollection"/> class.
@@ -46,7 +47,7 @@ namespace WatiN.Core
 		/// Gets the <see cref="TableRow"/> at the specified index.
 		/// </summary>
 		/// <value></value>
-		public TableRow this[int index]
+		ITableRow ITableRowCollection.this[int index]
 		{
 			get { return new TableRow(domContainer, (IHTMLTableRow) Elements[index]); }
 		}

@@ -20,6 +20,7 @@ using System.Collections;
 using System.Text.RegularExpressions;
 using NUnit.Framework;
 using WatiN.Core.Comparers;
+using WatiN.Core.Interfaces;
 
 namespace WatiN.Core.UnitTests
 {
@@ -53,7 +54,7 @@ namespace WatiN.Core.UnitTests
 		public void TableRows()
 		{
 			// Collection.Length
-			TableRowCollection rows = ie.Table("table1").TableRows;
+			ITableRowCollection rows = ie.Table("table1").TableRows;
 
 			Assert.AreEqual(3, rows.Length);
 

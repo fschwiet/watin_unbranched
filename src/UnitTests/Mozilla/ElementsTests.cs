@@ -17,11 +17,8 @@
 #endregion Copyright
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 using NUnit.Framework;
 using WatiN.Core.Interfaces;
-using WatiN.Core.Logging;
 using WatiN.Core.Mozilla;
 using WatiN.Core.UnitTests.CrossBrowserTests;
 
@@ -30,97 +27,125 @@ namespace WatiN.Core.UnitTests.Mozilla
     [TestFixture]
     public class ElementsTests : CrossBrowserTest
     {
+        #region Public instance test methods
+
         /// <summary>
         /// Tests retrieving most of the standard element attributes.
         /// </summary>
         [Test]
         public void GetAttributes()
         {
-        	ExecuteTest(GetAttributesTest, false);
+            ExecuteTest(GetAttributesTest, false);
         }
-        
-        private void GetAttributesTest(IBrowser browser)
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="Core.Mozilla.Element.ChildNodes"/> property.
+        /// </summary>
+        [Test]
+        public void ChildNodes()
         {
-        	browser.GoTo(MainURI);
+            FireFox fireFox = null;
+            fireFox = (FireFox) GetBrowserInstance(fireFox, BrowserType.FireFox, false);
+            ChildNodesTest(fireFox);
+        }
+
+        [Test]
+        public void GetAttributeValueOfEmptyStringThrowsArgumentNullExceptionTest()
+        {
+            ExecuteTest(GetAttributeValueOfEmptyStringThrowsArgumentNullExceptionTest, false);
+        }
+
+        [Test]
+        public void GetAttributeValueOfNullThrowsArgumentNullException()
+        {
+            ExecuteTest(GetAttributeValueOfNullThrowsArgumentNullExceptionTest, false);
+        }
+
+        [Test]
+        public void GetInvalidAttribute()
+        {
+            ExecuteTest(GetInvalidAttributeTest, false);
+        }
+
+        [Test]
+        public void GetValidButUndefiniedAttribute()
+        {
+            ExecuteTest(GetValidButUndefiniedAttributeTest, false);
+        }
+
+        #endregion
+
+
+        #region Private static test methods
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="Core.Mozilla.Element.ChildNodes"/> property.
+        /// </summary>
+        private static void ChildNodesTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+            Core.Mozilla.Element tableElement = (Core.Mozilla.Element)browser.Element("table1");
+            Assert.AreEqual(1, tableElement.ChildNodes.Count, GetErrorMessage("Incorrect number of child nodes found.", browser));
+            Assert.AreEqual(NodeType.Element, tableElement.ChildNodes[0].NodeType, GetErrorMessage("Incorrect node type encountered", browser));
+        }
+
+        private static void GetValidButUndefiniedAttributeTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+            IElement helloButton = browser.Element("helloid");
+            Assert.IsNull(helloButton.GetAttributeValue("title"));
+        }
+
+        private static void GetAttributeValueOfEmptyStringThrowsArgumentNullExceptionTest(IBrowser browser)
+        {
+            try
+            {
+                browser.GoTo(MainURI);
+                IElement helloButton = browser.Element("helloid");
+                Assert.IsNull(helloButton.GetAttributeValue(String.Empty));
+                Assert.Fail("Expected ArgumentNullException.");
+            }
+            catch (ArgumentNullException)
+            {
+                // As expected
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        private static void GetAttributeValueOfNullThrowsArgumentNullExceptionTest(IBrowser browser)
+        {
+            try
+            {
+                browser.GoTo(MainURI);
+                IElement helloButton = browser.Element("helloid");
+                Assert.IsNull(helloButton.GetAttributeValue(null));
+                Assert.Fail("Expected ArgumentNullException.");
+            }
+            catch (ArgumentNullException)
+            {
+                // As expected
+            }
+        }
+
+        private static void GetAttributesTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
             IElement element = browser.Element("testElementAttributes");
             Assert.AreEqual("testElementAttributes", element.Id, "Id attribute incorrect");
             Assert.AreEqual("p1main", element.ClassName, "css attribute incorrect");
         }
-        
-        [Test]
-		public void GetAttributeValueOfEmptyStringThrowsArgumentNullExceptionTest()
-		{
-			ExecuteTest(GetAttributeValueOfEmptyStringThrowsArgumentNullExceptionTest, false);
-		}
-		
-		private void GetAttributeValueOfEmptyStringThrowsArgumentNullExceptionTest(IBrowser browser)
-		{
-			try
-			{
-	        	browser.GoTo(MainURI);
-				IElement helloButton = browser.Element("helloid");
-				Assert.IsNull(helloButton.GetAttributeValue(String.Empty));
-				Assert.Fail("Expected ArgumentNullException.");
-			}
-			catch(ArgumentNullException)
-			{
-				// As expected
-			}
-			catch
-			{
-				throw;
-			}
-		}
 
-		[Test]
-		public void GetAttributeValueOfNullThrowsArgumentNullException()
-		{
-			ExecuteTest(GetAttributeValueOfNullThrowsArgumentNullExceptionTest, false);
-		}
-		
-		private void GetAttributeValueOfNullThrowsArgumentNullExceptionTest(IBrowser browser)
-		{
-			try
-			{
-	        	browser.GoTo(MainURI);
-				IElement helloButton = browser.Element("helloid");
-				Assert.IsNull(helloButton.GetAttributeValue(null));
-				Assert.Fail("Expected ArgumentNullException.");
-			}
-			catch(ArgumentNullException)
-			{
-				// As expected
-			}
-			catch
-			{
-				throw;
-			}
-		}
+        private static void GetInvalidAttributeTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+            IElement helloButton = browser.Element("helloid");
+            Assert.IsNull(helloButton.GetAttributeValue("NONSENCE"));
+        }
 
-		[Test]
-		public void GetInvalidAttribute()
-		{
-			ExecuteTest(GetInvalidAttributeTest, false);
-		}
-		
-		private void GetInvalidAttributeTest(IBrowser browser)
-		{
-		  	browser.GoTo(MainURI);
-			IElement helloButton = browser.Element("helloid");
-			Assert.IsNull(helloButton.GetAttributeValue("NONSENCE"));
-		}
+        #endregion
 
-		[Test]
-		public void GetValidButUndefiniedAttribute()
-		{
-			ExecuteTest(GetValidButUndefiniedAttributeTest, false);
-		}
-		
-		private void GetValidButUndefiniedAttributeTest(IBrowser browser)
-		{
-		   	browser.GoTo(MainURI);
-			IElement helloButton = browser.Element("helloid");
-			Assert.IsNull(helloButton.GetAttributeValue("title"));
-		}
     }
 }

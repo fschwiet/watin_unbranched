@@ -25,7 +25,8 @@ namespace WatiN.Core.UnitTests
 	{
 		private static Uri htmlTestBaseURI = null;
 		public static Uri MainURI = new Uri(HtmlTestBaseURI, "main.html");
-		public static Uri IndexURI = new Uri(HtmlTestBaseURI, "Index.html");
+        public static Uri TablesURI = new Uri(HtmlTestBaseURI, "tables.html");
+        public static Uri IndexURI = new Uri(HtmlTestBaseURI, "Index.html");
 		public static Uri PopUpURI = new Uri(HtmlTestBaseURI, "popup.html");
 		public static Uri FramesetURI = new Uri(HtmlTestBaseURI, "Frameset.html");
 		public static Uri FramesetWithinFramesetURI = new Uri(HtmlTestBaseURI, "FramesetWithinFrameset.html");

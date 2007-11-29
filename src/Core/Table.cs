@@ -27,7 +27,7 @@ namespace WatiN.Core
 	/// <summary>
 	/// This class provides specialized functionality for a HTML table element.
 	/// </summary>
-	public class Table : ElementsContainer
+	public class Table : ElementsContainer, ITable
 	{
 		private static ArrayList elementTags;
 
@@ -62,7 +62,7 @@ namespace WatiN.Core
 		/// This method also returns rows from nested tables.
 		/// </summary>
 		/// <value>The table rows.</value>
-		public override TableRowCollection TableRows
+		ITableRowCollection ITable.TableRows
 		{
 			get { return ElementsSupport.TableRows(DomContainer, TableBodies[0]); }
 		}
@@ -76,6 +76,11 @@ namespace WatiN.Core
 		{
 			get { return new TableBodyCollection(DomContainer, UtilityClass.IHtmlElementCollectionToArrayList(HTMLTable.tBodies)); }
 		}
+
+	    ITableBodyCollection ITable.TableBodies
+	    {
+            get { return new TableBodyCollection(DomContainer, UtilityClass.IHtmlElementCollectionToArrayList(HTMLTable.tBodies)); }
+	    }
 
 		/// <summary>
 		/// Returns the table body section belonging to this table (not including table body sections 
