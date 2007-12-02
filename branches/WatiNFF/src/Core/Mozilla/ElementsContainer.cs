@@ -37,7 +37,7 @@ namespace WatiN.Core.Mozilla
             get 
             {
 
-                WatiNElementCollection elements = new WatiNElementCollection(this.ClientPort, new ElementFinder(this, "*", null, this.ClientPort));
+                WatiNElementCollection elements = new WatiNElementCollection(this.ClientPort, new ElementFinder(this, null, null, this.ClientPort));
                 return elements;
             }
         }
@@ -54,7 +54,7 @@ namespace WatiN.Core.Mozilla
         /// <returns></returns>
         public IArea Area(string id)
         {
-        	Mozilla.ElementFinder finder = new Mozilla.ElementFinder("area", Find.ById(id), this.ClientPort);
+        	Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "area", Find.ById(id), this.ClientPort);
         	return new Area(finder.FindFirst(), this.ClientPort);
         }
 
@@ -87,7 +87,7 @@ namespace WatiN.Core.Mozilla
         /// <returns>The button element for the matches the <see cref="AttributeConstaint" />, or null if none is found</returns>
         public IButton Button(AttributeConstraint constraint)
         {
-        	Mozilla.ElementFinder finder = new Mozilla.ElementFinder("input", "button submit image reset", constraint, this.ClientPort);
+        	Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "input", "button submit image reset", constraint, this.ClientPort);
             return new Button(finder.FindFirst(), this.ClientPort);
         }
 
@@ -98,7 +98,7 @@ namespace WatiN.Core.Mozilla
         /// <returns></returns>
         public IDiv Div(string id)
         {
-        	Mozilla.ElementFinder finder = new Mozilla.ElementFinder("div", Find.ById(id), this.ClientPort);
+        	Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "div", Find.ById(id), this.ClientPort);
         	return new Div(finder.FindFirst(), this.ClientPort);
         }
 
@@ -109,7 +109,7 @@ namespace WatiN.Core.Mozilla
         /// <returns></returns>
         public ILink Link(string id)
         {
-        	Mozilla.ElementFinder finder = new Mozilla.ElementFinder("a", Find.ById(id), this.ClientPort);
+        	Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "a", Find.ById(id), this.ClientPort);
         	return new Link(finder.FindFirst(), this.ClientPort);
         }
 
@@ -120,7 +120,7 @@ namespace WatiN.Core.Mozilla
         /// <returns></returns>
         public IPara Para(string id)
         {
-        	Mozilla.ElementFinder finder = new Mozilla.ElementFinder("p", Find.ById(id), this.ClientPort);
+        	Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "p", Find.ById(id), this.ClientPort);
         	return new Para(finder.FindFirst(), this.ClientPort);
         }
 
@@ -131,7 +131,7 @@ namespace WatiN.Core.Mozilla
         /// <returns>The table element for the corresponding id, or null if none is found</returns>
         public ITable Table(string id)
         {
-            Mozilla.ElementFinder finder = new Mozilla.ElementFinder("table", Find.ById(id), this.ClientPort);
+            Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "table", Find.ById(id), this.ClientPort);
             return new Table(finder.FindFirst(), this.ClientPort);
         }
 
@@ -162,7 +162,7 @@ namespace WatiN.Core.Mozilla
         /// <returns>The text field element for the matches the <see cref="AttributeConstaint" />, or null if none is found</returns>
         public ITextField TextField(AttributeConstraint constraint)
         {
-        	Mozilla.ElementFinder finder = new Mozilla.ElementFinder("input", "text password textarea hidden", constraint, this.ClientPort);
+        	Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "input", "text password textarea hidden", constraint, this.ClientPort);
         	return new TextField(finder.FindFirst(), this.ClientPort);
         }
 
@@ -173,7 +173,7 @@ namespace WatiN.Core.Mozilla
         /// <returns></returns>
         public IElement Element(string id)
         {
-        	Mozilla.ElementFinder finder = new Mozilla.ElementFinder("", Find.ById(id), this.ClientPort);
+        	Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, null, Find.ById(id), this.ClientPort);
         	return new Element(finder.FindFirst(), this.ClientPort);
         }
 
