@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Text;
 using WatiN.Core;
 using WatiN.Core.Interfaces;
 
@@ -51,22 +52,15 @@ namespace WatiN.Core.Mozilla
 		{
 			string elementArrayName = FireFoxClientPort.CreateVariableName();
 
-            string command = string.Format("{0} = {1}.getElementsByTagName(\"{2}\"); ", elementArrayName, FireFoxClientPort.DocumentVariableName, this.tagName);
-            if (this.type != null)
-            {
-            	string typeArrayName = FireFoxClientPort.CreateVariableName();
-            	command = command + string.Format("{0} = new Array();", typeArrayName);
-            	command = command + string.Format("for(i=0;i<{0}.length;i++)", elementArrayName);
-                command = command + "{";
-     		  	command = command + string.Format("if({0}[i].type.toLowerCase() ==\"{1}\")", elementArrayName, this.type.ToLower());
-                command = command + "{";
-            	command = command + string.Format("{0}.push({1}[i]);", typeArrayName, elementArrayName);
-                command = command + "}}";
-            	command = command + string.Format("{0} = {1};", elementArrayName, typeArrayName);
-            	command = command + string.Format("{0} = null;", typeArrayName);
-            }
+			string command = string.Format("{0} = {1}.getElementsByTagName(\"{2}\"); ", elementArrayName, FireFoxClientPort.DocumentVariableName, this.tagName);
+
+			// TODO: Can't get this to work, but if it does then the TypeIsOk check 
+			// Can be removed.
+//            if (this.type != null)
+//            {
+//            	command = command + FilterInputTypes(elementArrayName);
+//            }
             command = command + string.Format("{0}.length;", elementArrayName);
-            Console.WriteLine(command);
             this.clientPort.Write(command);
 
             int numberOfElements = int.Parse(this.clientPort.LastResponse);
@@ -75,7 +69,8 @@ namespace WatiN.Core.Mozilla
 			{	            
 				string indexedElementVariableName = string.Format("{0}[{1}]", elementArrayName, index);
                 FireFoxElementAttributeBag attributebag = new FireFoxElementAttributeBag(indexedElementVariableName, this.clientPort);
-                if (this.constraint.Compare(attributebag))
+                                
+                if (TypeIsOK(attributebag) && this.constraint.Compare(attributebag))
 	            {
 	            	string elementVariableName = FireFoxClientPort.CreateVariableName();
 					command = string.Format("{0}={1};", elementVariableName, indexedElementVariableName);
@@ -97,7 +92,7 @@ namespace WatiN.Core.Mozilla
             string elementArrayName = FireFoxClientPort.CreateVariableName();
             string elementToSearchFrom = FireFoxClientPort.DocumentVariableName;
                 
-            if (this.parentElement != null && this.parentElement.Exists())
+            if (this.parentElement != null && this.parentElement.Exists)
             {
                 elementToSearchFrom = this.parentElement.ElementVariable;
             }
@@ -113,7 +108,7 @@ namespace WatiN.Core.Mozilla
             {
                 string indexedElementVariableName = string.Format("{0}[{1}]", elementArrayName, index);
                 FireFoxElementAttributeBag attributebag = new FireFoxElementAttributeBag(indexedElementVariableName, this.clientPort);
-                if (this.constraint == null || this.constraint.Compare(attributebag))
+                if (TypeIsOK(attributebag) && (this.constraint == null || this.constraint.Compare(attributebag)))
                 {
                     string elementVariableName = FireFoxClientPort.CreateVariableName();
                     command = string.Format("{0}={1};", elementVariableName, indexedElementVariableName);
@@ -124,6 +119,49 @@ namespace WatiN.Core.Mozilla
             }
 
             return elementReferences;
+        }
+
+        private bool TypeIsOK(FireFoxElementAttributeBag attributebag)
+        {
+            if (this.type != null)
+            {
+            	string elementtype = attributebag.GetValue("type");
+            	if (elementtype == null)
+            	{
+            		elementtype = "text";
+            	}
+            	return this.type.ToLowerInvariant().Contains(elementtype.ToLowerInvariant());
+            }
+
+            return true;
+        }
+        
+        // TODO: Can't get this to work, but if it does then the TypeIsOk check 
+		// Can be removed.
+        private string FilterInputTypes(string elementArrayName)
+        {
+          	string typeArrayName = FireFoxClientPort.CreateVariableName();
+        	string types = FireFoxClientPort.CreateVariableName();
+        	string elementtype = FireFoxClientPort.CreateVariableName();
+        	
+			StringBuilder command = new StringBuilder(string.Format("{0} = {1}.getElementsByTagName(\"{2}\"); ", elementArrayName, FireFoxClientPort.DocumentVariableName, this.tagName));
+
+        	command.Append(string.Format("{0} = new Array();", typeArrayName));
+        	command.Append(string.Format("for(i=0;i<{0}.length;i++)", elementArrayName));
+        	command.Append("{");
+        	command.Append(string.Format("{0}={1}[i].type;", elementtype, elementArrayName));
+        	command.Append(string.Format("if ({0}== null)", elementtype));
+        	command.Append("{");
+        	command.Append(string.Format("{0}=\"text\";", elementtype));
+        	command.Append("}");
+        	command.Append(string.Format("if(\"{0}\".indexOf({1}.toLowerCase()) > 0)", this.type.ToLower(), elementtype));
+        	command.Append("{");
+        	command.Append(string.Format("{0}.push({1}[i]);", typeArrayName, elementArrayName));
+        	command.Append("}}");
+        	command.Append(string.Format("{0} = {1};", elementArrayName, typeArrayName));
+        	command.Append(string.Format("{0} = null;", typeArrayName));
+        	
+        	return command.ToString();
         }
 	}
 }

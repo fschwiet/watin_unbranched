@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 using WatiN.Core.Interfaces;
 
 namespace WatiN.Core.Mozilla
@@ -66,7 +67,27 @@ namespace WatiN.Core.Mozilla
         /// </returns>
         public IButton Button(string id)
         {
-            Mozilla.ElementFinder finder = new Mozilla.ElementFinder("input", "button", Find.ById(id), this.ClientPort);
+        	return this.Button(Find.ById(id));
+        }
+
+                /// <summary>
+        /// Finds a button element using the specified regular expression.
+        /// </summary>
+        /// <param name="regex)">The regular expression for the id of the button element being sought.</param>
+        /// <returns>The button element which id matches the regular expression, or null if none is found</returns>
+        public IButton Button(Regex regex)
+        {
+        	return this.Button(Find.ById(regex));
+        }
+
+        /// <summary>
+        /// Finds a button element using the specified <see cref="AttributeConstaint" />.
+        /// </summary>
+        /// <param name="constraint">The <see cref="AttributeConstaint" /> for the button element being sought.</param>
+        /// <returns>The button element for the matches the <see cref="AttributeConstaint" />, or null if none is found</returns>
+        public IButton Button(AttributeConstraint constraint)
+        {
+        	Mozilla.ElementFinder finder = new Mozilla.ElementFinder("input", "button submit image reset", constraint, this.ClientPort);
             return new Button(finder.FindFirst(), this.ClientPort);
         }
 
@@ -121,7 +142,27 @@ namespace WatiN.Core.Mozilla
         /// <returns>A text field for the specified id</returns>
         public ITextField TextField(string id)
         {
-        	Mozilla.ElementFinder finder = new Mozilla.ElementFinder("input", "text", Find.ById(id), this.ClientPort);
+        	return this.TextField(Find.ById(id));
+        }
+
+		/// <summary>
+        /// Finds a text field element using the specified regular expression.
+        /// </summary>
+        /// <param name="regex)">The regular expression for the id of the text field element being sought.</param>
+        /// <returns>The text field element which id matches the regular expression, or null if none is found</returns>
+        public ITextField TextField(Regex regex)
+        {
+        	return this.TextField(Find.ById(regex));
+        }
+
+        /// <summary>
+        /// Finds a text field element using the specified <see cref="AttributeConstaint" />.
+        /// </summary>
+        /// <param name="constraint">The <see cref="AttributeConstaint" /> for the text field element being sought.</param>
+        /// <returns>The text field element for the matches the <see cref="AttributeConstaint" />, or null if none is found</returns>
+        public ITextField TextField(AttributeConstraint constraint)
+        {
+        	Mozilla.ElementFinder finder = new Mozilla.ElementFinder("input", "text password textarea hidden", constraint, this.ClientPort);
         	return new TextField(finder.FindFirst(), this.ClientPort);
         }
 

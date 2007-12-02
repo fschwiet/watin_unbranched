@@ -223,11 +223,14 @@ namespace WatiN.Core.Mozilla
             this.ClientPort.InitializeDocument();
         }
 
-        public bool Exists()
+        public bool Exists
         {
-            string command = string.Format("{0} != null; ", elementVariable);
-            this.ClientPort.Write(command);
-            return this.clientPort.LastResponse == "true";
+        	get
+        	{
+	            string command = string.Format("{0} != null; ", elementVariable);
+	            this.ClientPort.Write(command);
+	            return this.clientPort.LastResponse == "true";
+        	}
         }
 
         #endregion

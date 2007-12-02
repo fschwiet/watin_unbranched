@@ -16,6 +16,7 @@
 
 #endregion Copyright
 
+using System;
 using WatiN.Core.Interfaces;
 
 namespace WatiN.Core.Mozilla
@@ -28,11 +29,10 @@ namespace WatiN.Core.Mozilla
         /// <summary>
         /// Initializes a new instance of the <see cref="Area"/> class.
         /// </summary>
-        /// <param name="id">The id.</param>
+        /// <param name="elementVariable">The elementVariable.</param>
         /// <param name="clientPort">The client port.</param>
-        public Area(string id, FireFoxClientPort clientPort) : base(id, clientPort)
-        {
-        }
+        public Area(string elementVariable, FireFoxClientPort clientPort) : base(elementVariable, clientPort)
+        {}
 
         /// <summary>
         /// Gets the alt-text of the area element.

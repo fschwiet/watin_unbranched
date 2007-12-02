@@ -183,6 +183,14 @@ namespace WatiN.Core.Mozilla
         }
 
         /// <summary>
+        /// Waits until the page is completely loaded
+        /// </summary>
+        public void WaitForComplete()
+        {
+        	this.xulBrowser.WaitForComplete();
+        }
+        
+        /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()

@@ -109,5 +109,10 @@ namespace WatiN.Core.Interfaces
         /// Useful when clearing the cookie cache and continuing execution to a test.
         /// </remarks>
         void Reopen();
+        
+        /// <summary>
+        /// Waits until the document is fully loaded
+        /// </summary>
+        void WaitForComplete();
     }
 }

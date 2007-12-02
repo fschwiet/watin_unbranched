@@ -408,7 +408,9 @@ namespace WatiN.Core.Mozilla
             {
                 read = this.telnetClient.Read(buffer, 0, 1024);
                 string readData = ASCIIEncoding.ASCII.GetString(buffer, 0, read);
-                Logger.LogAction(string.Format("jssh says: {0}", readData));
+				
+                // TODO: When running FireFoxTests.Google test, this method call fails??
+//                Logger.LogAction(string.Format("jssh says: {0}", readData));
 
                 this.lastResponse += CleanTelnetResponse(readData);
             } while (read==1024);
