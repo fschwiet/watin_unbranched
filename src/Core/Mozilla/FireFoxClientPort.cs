@@ -389,6 +389,15 @@ namespace WatiN.Core.Mozilla
         }
 
         /// <summary>
+        /// Writes the specified data to the jssh server.
+        /// </summary>
+        /// <param name="data">The data.</param>
+        internal void Write(string data, params object[] args)
+        {
+        	this.Write(string.Format(data, args), true);
+        }
+
+        /// <summary>
         /// Reads the response from the jssh server.
         /// </summary>
         private void ReadResponse()
@@ -409,9 +418,14 @@ namespace WatiN.Core.Mozilla
                 read = this.telnetClient.Read(buffer, 0, 1024);
                 string readData = ASCIIEncoding.ASCII.GetString(buffer, 0, read);
 				
-                // TODO: When running FireFoxTests.Google test, this method call fails??
-//                Logger.LogAction(string.Format("jssh says: {0}", readData));
-
+                // TODO: Sometimes this action raises a formatting exception
+                //       For example when running FireFoxTests.Google test
+                try
+                {
+                	Logger.LogAction(string.Format("jssh says: {0}", readData));
+                }
+                catch{}
+                
                 this.lastResponse += CleanTelnetResponse(readData);
             } while (read==1024);
 

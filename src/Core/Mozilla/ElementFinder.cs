@@ -15,31 +15,35 @@ namespace WatiN.Core.Mozilla
 		private readonly string type;
 		private readonly AttributeConstraint constraint;
 		private readonly FireFoxClientPort clientPort;
-	    private Element parentElement;
+	    private readonly Element parentElement;
 
         /// <summary>
         /// Creates a new instance of the <see cref="ElementFinder"/> class.
         /// </summary>
         /// <param name="parentElement">The element to start searching from.</param>
-        /// <param name="tagname"></param>
-        /// <param name="constraint"></param>
+        /// <param name="tagname">the tagname of the element to be found</param>
+        /// <param name="constraint">The constraint which should be met</param>
         /// <param name="clientPort"></param>
-	    public ElementFinder(Element parentElement, String tagname, AttributeConstraint constraint, FireFoxClientPort clientPort) : this (tagname, constraint, clientPort)
-	    {
-	        this.parentElement = parentElement;
-	    }
-
-		public ElementFinder(string tagname, AttributeConstraint constraint, FireFoxClientPort clientPort) : this (tagname, null, constraint, clientPort)
-		{}
+	    public ElementFinder(Element parentElement, string tagname, AttributeConstraint constraint, FireFoxClientPort clientPort) : this (parentElement, tagname, null, constraint, clientPort)
+	    {}
 		
-		public ElementFinder(string tagname, string type, AttributeConstraint constraint, FireFoxClientPort clientPort)
+        /// <summary>
+        /// Creates a new instance of the <see cref="ElementFinder"/> class.
+        /// </summary>
+        /// <param name="parentElement">The element to start searching from.</param>
+        /// <param name="tagname">The tagname of the element to be found</param>
+        /// <param name="type">The type(s) the input element should match with</param>
+        /// <param name="constraint">The constraint which should be met</param>
+        /// <param name="clientPort"></param>
+		public ElementFinder(Element parentElement, string tagname, string type, AttributeConstraint constraint, FireFoxClientPort clientPort)
 		{
-			this.type = type;
+	        this.parentElement = parentElement;
 			this.tagName = tagname;
             if (UtilityClass.IsNullOrEmpty(this.tagName))
 			{
                 this.tagName = "*";
 			}
+			this.type = type;
 			this.constraint = constraint;
 			this.clientPort = clientPort;
 		}
@@ -50,36 +54,11 @@ namespace WatiN.Core.Mozilla
 		/// <returns>A javascript variable name with a reference to the matching element, or null of no match is found.</returns>
 		public string FindFirst()
 		{
-			string elementArrayName = FireFoxClientPort.CreateVariableName();
-
-			string command = string.Format("{0} = {1}.getElementsByTagName(\"{2}\"); ", elementArrayName, FireFoxClientPort.DocumentVariableName, this.tagName);
-
-			// TODO: Can't get this to work, but if it does then the TypeIsOk check 
-			// Can be removed.
-//            if (this.type != null)
-//            {
-//            	command = command + FilterInputTypes(elementArrayName);
-//            }
-            command = command + string.Format("{0}.length;", elementArrayName);
-            this.clientPort.Write(command);
-
-            int numberOfElements = int.Parse(this.clientPort.LastResponse);
-			
-			for (int index = 0; index < numberOfElements; index++)
-			{	            
-				string indexedElementVariableName = string.Format("{0}[{1}]", elementArrayName, index);
-                FireFoxElementAttributeBag attributebag = new FireFoxElementAttributeBag(indexedElementVariableName, this.clientPort);
-                                
-                if (TypeIsOK(attributebag) && this.constraint.Compare(attributebag))
-	            {
-	            	string elementVariableName = FireFoxClientPort.CreateVariableName();
-					command = string.Format("{0}={1};", elementVariableName, indexedElementVariableName);
-                    this.clientPort.Write(command);
-		        	
-					return elementVariableName;
-	            }
+			List<string> elements = FindMatchingElements(true);
+			if (elements.Count > 0)
+			{
+				return elements[0];
 			}
-			
 			return null;
 		}
 
@@ -88,6 +67,11 @@ namespace WatiN.Core.Mozilla
         /// </summary>
         /// <returns>A list of element references that match the given constraint</returns>
         public List<string> FindAll()
+        {
+        	return FindMatchingElements(false);
+        }
+
+        private List<string> FindMatchingElements(bool returnAfterFirstMatch)
         {
             string elementArrayName = FireFoxClientPort.CreateVariableName();
             string elementToSearchFrom = FireFoxClientPort.DocumentVariableName;
@@ -98,6 +82,14 @@ namespace WatiN.Core.Mozilla
             }
 
             string command = string.Format("{0} = {1}.getElementsByTagName(\"{2}\"); ", elementArrayName, elementToSearchFrom, this.tagName);
+			
+            // TODO: Can't get this to work, but if it does then the TypeIsOk check
+			// Can be removed.
+//            if (this.type != null)
+//            {
+//            	command = command + FilterInputTypes(elementArrayName);
+//            }
+
             command = command + string.Format("{0}.length;", elementArrayName);
             this.clientPort.Write(command);
 
@@ -111,10 +103,13 @@ namespace WatiN.Core.Mozilla
                 if (TypeIsOK(attributebag) && (this.constraint == null || this.constraint.Compare(attributebag)))
                 {
                     string elementVariableName = FireFoxClientPort.CreateVariableName();
-                    command = string.Format("{0}={1};", elementVariableName, indexedElementVariableName);
-                    this.clientPort.Write(command);
+                    this.clientPort.Write("{0}={1};", elementVariableName, indexedElementVariableName);
 
                     elementReferences.Add(elementVariableName);
+					if (returnAfterFirstMatch)
+					{
+						return elementReferences;
+					}
                 }
             }
 

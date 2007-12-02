@@ -227,6 +227,8 @@ namespace WatiN.Core.Mozilla
         {
         	get
         	{
+        		if (UtilityClass.IsNullOrEmpty(elementVariable)) return false;
+        		
 	            string command = string.Format("{0} != null; ", elementVariable);
 	            this.ClientPort.Write(command);
 	            return this.clientPort.LastResponse == "true";

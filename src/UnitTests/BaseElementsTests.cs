@@ -17,6 +17,7 @@
 #endregion Copyright
 
 using NUnit.Framework;
+using WatiN.Core.Logging;
 
 namespace WatiN.Core.UnitTests
 {
@@ -28,6 +29,8 @@ namespace WatiN.Core.UnitTests
 		[TestFixtureSetUp]
 		public void FixtureSetup()
 		{
+			Logger.LogWriter = new ConsoleLogWriter();
+			
 			backupSettings = IE.Settings.Clone();
 			IE.Settings = new StealthSettings();
 
