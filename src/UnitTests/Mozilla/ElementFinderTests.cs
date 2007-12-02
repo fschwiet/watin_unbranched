@@ -24,11 +24,11 @@ namespace WatiN.Core.UnitTests.Mozilla
 			{
 				WatiN.Core.Mozilla.Element element = (WatiN.Core.Mozilla.Element)browser.Element("testElementAttributes");
 				
-				Assert.That(element.Exists(), Is.True);
+				Assert.That(element.Exists, Is.True);
 				Assert.AreEqual("testElementAttributes", element.Id, "Id attribute incorrect");
 				
 				browser.GoTo(MainURI);
-				Assert.That(element.Exists(), Is.False);
+				Assert.That(element.Exists, Is.False);
 				
 			}
 		}
@@ -51,6 +51,18 @@ namespace WatiN.Core.UnitTests.Mozilla
 			using (FireFox browser = new FireFox(MainURI))
 			{
 				WatiN.Core.Mozilla.ElementFinder elementFinder = new WatiN.Core.Mozilla.ElementFinder("input", "TEXT", Find.ById("name"), browser.ClientPort);
+				string element = elementFinder.FindFirst();
+
+				Assert.That(element, Is.Not.Null, "Shouldn't be null");
+			}
+		}
+
+		[Test]
+		public void ShouldFindInputByTagNameInUpperCaseAndTypeAndId()
+		{
+			using (FireFox browser = new FireFox(MainURI))
+			{
+				WatiN.Core.Mozilla.ElementFinder elementFinder = new WatiN.Core.Mozilla.ElementFinder("INPUT", "TEXT", Find.ByName("textinput1"), browser.ClientPort);
 				string element = elementFinder.FindFirst();
 
 				Assert.That(element, Is.Not.Null, "Shouldn't be null");

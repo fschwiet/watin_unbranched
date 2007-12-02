@@ -19,6 +19,8 @@
 using NUnit.Framework;
 using WatiN.Core.Logging;
 using WatiN.Core.Mozilla;
+using WatiN.Core.Interfaces;
+using System.Threading;
 
 namespace WatiN.Core.UnitTests.Mozilla
 {
@@ -67,5 +69,29 @@ namespace WatiN.Core.UnitTests.Mozilla
                 Assert.AreEqual(BaseElementsTests.MainURI, ff.Url);
             }
         }
+        
+        [Test, Category("InternetConnectionNeeded")]
+		public void Google()
+		{
+			// Instantiate a new DebugLogger to output "user" events to
+			// the debug window in VS
+			Logger.LogWriter = new DebugLogWriter();
+
+			using (FireFox ff = new FireFox(WatiNTest.GoogleUrl))
+			{
+				ITextField q = ff.TextField(Find.ByName("q"));
+				Assert.That(q.Exists);
+				q.Value = "WatiN";
+				ff.Button(Find.ByName("btnG")).Click();
+
+				// TODO: This call should be removed when Click does call WaitForComplete
+				ff.WaitForComplete();
+				
+				string text = ff.Text;
+				System.Console.WriteLine(text);
+				Assert.IsTrue(text.Contains("WatiN"));
+			}
+		}
+
     }
 }

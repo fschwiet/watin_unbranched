@@ -484,9 +484,29 @@ namespace WatiN.Core
             return TextField(Find.ById(id));
         }
 
+        ITextField IElementsContainerTemp.TextField(Regex regex)
+        {
+            return TextField(Find.ById(regex));
+        }
+
+		ITextField IElementsContainerTemp.TextField(AttributeConstraint constraint)
+        {
+            return TextField(constraint);
+        }
+
         IButton IElementsContainerTemp.Button(string id)
         {
             return Button(Find.ById(id));
+        }
+
+        IButton IElementsContainerTemp.Button(Regex regex)
+        {
+            return Button(Find.ById(regex));
+        }
+
+		IButton IElementsContainerTemp.Button(AttributeConstraint constraint)
+        {
+            return Button(constraint);
         }
 
         ITable IElementsContainerTemp.Table(string id)

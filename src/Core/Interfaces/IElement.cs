@@ -60,6 +60,12 @@ namespace WatiN.Core.Interfaces
         string InnerHtml { get; }
 
         /// <summary>
+        /// Does the HTML element exists.
+        /// </summary>
+        /// <value>True if the HTML element exists, otherwise false.</value>
+        bool Exists { get; }
+
+        /// <summary>
         /// Gets the parent element of this element.
         /// If the parent type is known you can cast it to that type.
         /// </summary>

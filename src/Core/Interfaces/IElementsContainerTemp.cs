@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 using WatiN.Core.Mozilla;
 
 namespace WatiN.Core.Interfaces
@@ -44,6 +45,20 @@ namespace WatiN.Core.Interfaces
         /// <param name="id">The id of the button element being sought.</param>
         /// <returns>The button element for the corresponding id, or null if none is found</returns>
         IButton Button(string id);
+
+        /// <summary>
+        /// Finds a button element using the specified regular expression.
+        /// </summary>
+        /// <param name="regex)">The regular expression for the id of the button element being sought.</param>
+        /// <returns>The button element which id matches the regular expression, or null if none is found</returns>
+        IButton Button(Regex regex);
+
+        /// <summary>
+        /// Finds a button element using the specified <see cref="AttributeConstaint" />.
+        /// </summary>
+        /// <param name="constraint">The <see cref="AttributeConstaint" /> for the button element being sought.</param>
+        /// <returns>The button element for the matches the <see cref="AttributeConstaint" />, or null if none is found</returns>
+        IButton Button(AttributeConstraint constraint);
 
         /// <summary>
         /// Finds a div element using the specified id.
@@ -79,6 +94,20 @@ namespace WatiN.Core.Interfaces
         /// <param name="id">The id of the text field element being sought.</param>
         /// <returns>The text field element for the corresponding id, or null if none is found</returns>
         ITextField TextField(string id);
+
+        /// <summary>
+        /// Finds a text field element using the specified regular expression.
+        /// </summary>
+        /// <param name="regex)">The regular expression for the id of the text field element being sought.</param>
+        /// <returns>The text field element which id matches the regular expression, or null if none is found</returns>
+        ITextField TextField(Regex regex);
+
+        /// <summary>
+        /// Finds a text field element using the specified <see cref="AttributeConstaint" />.
+        /// </summary>
+        /// <param name="constraint">The <see cref="AttributeConstaint" /> for the text field element being sought.</param>
+        /// <returns>The text field element for the matches the <see cref="AttributeConstaint" />, or null if none is found</returns>
+        ITextField TextField(AttributeConstraint constraint);
 
         /// <summary>
         /// Finds an element matching the specified id.

@@ -28,10 +28,14 @@ namespace WatiN.Core.Mozilla
         /// <summary>
         /// Initializes a new instance of the <see cref="TextField"/> class.
         /// </summary>
-        /// <param name="id">The id.</param>
+        /// <param name="elementVariable">The elementVariable.</param>
         /// <param name="clientPort">The client port.</param>
-        public TextField(string id, FireFoxClientPort clientPort) : base(id, clientPort)
+        public TextField(string elementVariable, FireFoxClientPort clientPort) : base(elementVariable, clientPort)
         {
+        	if (elementVariable == null)
+        	{
+        		throw new ArgumentNullException("elementVariable");
+        	}
         }        
 
         public string Value

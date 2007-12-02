@@ -36,6 +36,11 @@ namespace WatiN.Core.Mozilla
         public Button(string elementVariable, FireFoxClientPort clientPort)
             : base(elementVariable, clientPort)
         {
+        	if (elementVariable == null)
+        	{
+        		throw new ArgumentNullException("elementVariable");
+        	}
+
         }
 
         #endregion

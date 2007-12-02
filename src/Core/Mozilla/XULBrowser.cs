@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace WatiN.Core.Mozilla
 {
@@ -49,7 +50,7 @@ namespace WatiN.Core.Mozilla
         public void Back()
         {
             this.ClientPort.Write(string.Format("{0}.goBack();", FireFoxClientPort.BrowserVariableName));
-            this.ClientPort.InitializeDocument();
+            WaitForComplete();
         }
 
         /// <summary>
@@ -58,7 +59,7 @@ namespace WatiN.Core.Mozilla
         public void Forward()
         {
             this.ClientPort.Write(string.Format("{0}.goForward();", FireFoxClientPort.BrowserVariableName));
-            this.ClientPort.InitializeDocument();
+            WaitForComplete();
         }
 
         /// <summary>
@@ -67,9 +68,9 @@ namespace WatiN.Core.Mozilla
         /// <param name="url">The URL to laod.</param>
         public void LoadUri(Uri url)
         {
-            this.ClientPort.Write(string.Format("{0}.loadURI(\"{1}\");", FireFoxClientPort.BrowserVariableName, url));
-            this.ClientPort.InitializeDocument();
-        }
+        	this.ClientPort.Write(string.Format("{0}.loadURI(\"{1}\");", FireFoxClientPort.BrowserVariableName, url));
+            WaitForComplete();
+       }
 
         /// <summary>
         /// Reloads this instance.
@@ -77,9 +78,26 @@ namespace WatiN.Core.Mozilla
         public void Reload()
         {
             this.ClientPort.Write(string.Format("{0}.reload();", FireFoxClientPort.BrowserVariableName));
-            this.ClientPort.InitializeDocument();
+            WaitForComplete();
         }
 
+        /// <summary>
+        /// Waits until the document is loaded
+        /// </summary>
+        public void WaitForComplete()
+        {
+            string command = string.Format("{0}.webProgress.isLoadingDocument;", FireFoxClientPort.BrowserVariableName);
+        	this.ClientPort.Write(command);
+            
+        	while(this.clientPort.LastResponse == "true")
+        	{
+         		Thread.Sleep(200);
+             	command = string.Format("{0}.webProgress.isLoadingDocument;", FireFoxClientPort.BrowserVariableName);
+        		this.ClientPort.Write(command);
+       		}
+        	
+            this.ClientPort.InitializeDocument();
+        }
         #endregion        
     }
 }
