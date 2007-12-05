@@ -776,6 +776,16 @@ namespace WatiN.Core
             return Table(Find.ById(id));            
         }
 
+        ITableRow IElementsContainerTemp.TableRow(string id)
+        {
+            return TableRow(Find.ById(id));
+        }
+
+        ITableCell IElementsContainerTemp.TableCell(string id)
+        {
+            return TableCell(Find.ById(id));
+        }
+
         IWatiNElementCollection IElementsContainerTemp.Elements
         {
             get { return ElementsSupport.Elements(DomContainer, this); }

@@ -52,6 +52,11 @@ namespace WatiN.Core
 			get { return new TableCell(domContainer, (IHTMLTableCell) Elements[index]); }
 		}
 
+	    ITableCell ITableCellCollection.this[int index]
+	    {
+            get { return new TableCell(domContainer, (IHTMLTableCell)Elements[index]); }
+	    }
+
 		public TableCellCollection Filter(AttributeConstraint findBy)
 		{
 			return new TableCellCollection(domContainer, DoFilter(findBy));

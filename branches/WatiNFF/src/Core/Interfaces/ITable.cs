@@ -3,7 +3,7 @@ namespace WatiN.Core.Interfaces
     /// <summary>
     /// This class provides specialized functionality for a HTML table element.
     /// </summary>
-    public interface ITable
+    public interface ITable : IElement
     {
         /// <summary>
         /// Returns all rows in the first TBODY section of a table. If no

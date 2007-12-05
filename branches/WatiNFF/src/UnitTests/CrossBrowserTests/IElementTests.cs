@@ -36,7 +36,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void TagName()
         {
-            ExecuteTest(TagNameTest);    
+            ExecuteTest(TagNameTest, false);    
         }
 
         /// <summary>

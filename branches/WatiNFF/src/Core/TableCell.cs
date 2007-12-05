@@ -18,13 +18,14 @@
 
 using System.Collections;
 using mshtml;
+using WatiN.Core.Interfaces;
 
 namespace WatiN.Core
 {
 	/// <summary>
 	/// This class provides specialized functionality for a HTML td element.
 	/// </summary>
-	public class TableCell : ElementsContainer
+	public class TableCell : ElementsContainer, ITableCell
 	{
 		private static ArrayList elementTags;
 
@@ -60,7 +61,15 @@ namespace WatiN.Core
 		{
 			get { return (TableRow) Ancestor(typeof (TableRow)); }
 		}
-
+        
+        /// <summary>
+        /// Gets the parent <see cref="TableRow"/> of this <see cref="TableCell"/>.
+        /// </summary>
+        /// <value>The parent table row.</value>
+        ITableRow ITableCell.ParentTableRow
+        {
+            get { return (TableRow)Ancestor(typeof(TableRow)); }
+        }
 		/// <summary>
 		/// Gets the index of the <see cref="TableCell"/> in the <see cref="TableCellCollection"/> of the parent <see cref="TableRow"/>.
 		/// </summary>

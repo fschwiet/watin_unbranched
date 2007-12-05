@@ -16,6 +16,7 @@
 
 #endregion Copyright
 
+using System;
 using WatiN.Core;
 using WatiN.Core.Interfaces;
 
@@ -26,18 +27,22 @@ namespace WatiN.Core.Mozilla
     /// </summary>
     public class TableRow : ElementsContainer, ITableRow
     {
-        private readonly ITable parentTable;
-        private readonly int index;
-
-        public TableRow(string elementVariable, ITable parentTable, int index, FireFoxClientPort clientPort) : base(elementVariable, clientPort)
+        public TableRow(string elementVariable, FireFoxClientPort clientPort) : base(elementVariable, clientPort)
         {
-            this.parentTable = parentTable;
-            this.index = index;
         }
 
         public ITable ParentTable
         {
-            get { return parentTable; }
+            get 
+            {
+                Element parentElement = (Element) this.Parent;
+                if (!parentElement.TagName.Equals("table", StringComparison.OrdinalIgnoreCase))
+                {
+                    parentElement = (Element) parentElement.Parent;
+                }
+
+                return new Table(parentElement.ElementVariable, this.ClientPort); 
+            }
         }
 
         /// <summary>
@@ -46,12 +51,22 @@ namespace WatiN.Core.Mozilla
         /// <value>The index of the row.</value>
         public int Index
         {
-            get { return index; }
+            get
+            {
+                int index;
+                int.TryParse(this.GetProperty("rowIndex"), out index);
+
+                return index;
+            }
         }
 
         public ITableCellCollection TableCells
         {
-            get { throw new System.NotImplementedException(); }
+            get
+            {
+                TableCellCollection rows = new TableCellCollection(this, this.ClientPort, new ElementFinder(this, "td", null, this.ClientPort));
+                return rows;
+            }
         }
     }
 }

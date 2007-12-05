@@ -73,7 +73,7 @@ namespace WatiN.Core.Mozilla
                 /// <summary>
         /// Finds a button element using the specified regular expression.
         /// </summary>
-        /// <param name="regex)">The regular expression for the id of the button element being sought.</param>
+        /// <param name="regex">The regular expression for the id of the button element being sought.</param>
         /// <returns>The button element which id matches the regular expression, or null if none is found</returns>
         public IButton Button(Regex regex)
         {
@@ -81,10 +81,10 @@ namespace WatiN.Core.Mozilla
         }
 
         /// <summary>
-        /// Finds a button element using the specified <see cref="AttributeConstaint" />.
+        /// Finds a button element using the specified <see cref="AttributeConstraint" />.
         /// </summary>
-        /// <param name="constraint">The <see cref="AttributeConstaint" /> for the button element being sought.</param>
-        /// <returns>The button element for the matches the <see cref="AttributeConstaint" />, or null if none is found</returns>
+        /// <param name="constraint">The <see cref="AttributeConstraint" /> for the button element being sought.</param>
+        /// <returns>The button element for the matches the <see cref="AttributeConstraint" />, or null if none is found</returns>
         public IButton Button(AttributeConstraint constraint)
         {
         	Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "input", "button submit image reset", constraint, this.ClientPort);
@@ -136,6 +136,28 @@ namespace WatiN.Core.Mozilla
         }
 
         /// <summary>
+        /// Finds a table row using the specified Id.
+        /// </summary>
+        /// <param name="id">The id of the table row element being sought.</param>
+        /// <returns>The table row element for the corresponding id, or null if none is found</returns>
+        public ITableRow TableRow(string id)
+        {
+            Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "tr", Find.ById(id), this.ClientPort);
+            return new TableRow(finder.FindFirst(), this.ClientPort);
+        }
+
+        /// <summary>
+        /// Finds a table cell using the specified Id.
+        /// </summary>
+        /// <param name="id">The id of the table cell element being sought.</param>
+        /// <returns>The table cell element for the corresponding id, or null if none is found</returns>
+        public ITableCell TableCell(string id)
+        {
+            Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "td", Find.ById(id), this.ClientPort);
+            return new TableCell(finder.FindFirst(), this.ClientPort);
+        }
+
+        /// <summary>
         /// Finds a text field using the Id.
         /// </summary>
         /// <param name="id">The id.</param>
@@ -148,7 +170,7 @@ namespace WatiN.Core.Mozilla
 		/// <summary>
         /// Finds a text field element using the specified regular expression.
         /// </summary>
-        /// <param name="regex)">The regular expression for the id of the text field element being sought.</param>
+        /// <param name="regex">The regular expression for the id of the text field element being sought.</param>
         /// <returns>The text field element which id matches the regular expression, or null if none is found</returns>
         public ITextField TextField(Regex regex)
         {
@@ -156,10 +178,10 @@ namespace WatiN.Core.Mozilla
         }
 
         /// <summary>
-        /// Finds a text field element using the specified <see cref="AttributeConstaint" />.
+        /// Finds a text field element using the specified <see cref="AttributeConstraint" />.
         /// </summary>
-        /// <param name="constraint">The <see cref="AttributeConstaint" /> for the text field element being sought.</param>
-        /// <returns>The text field element for the matches the <see cref="AttributeConstaint" />, or null if none is found</returns>
+        /// <param name="constraint">The <see cref="AttributeConstraint" /> for the text field element being sought.</param>
+        /// <returns>The text field element for the matches the <see cref="AttributeConstraint" />, or null if none is found</returns>
         public ITextField TextField(AttributeConstraint constraint)
         {
         	Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "input", "text password textarea hidden", constraint, this.ClientPort);

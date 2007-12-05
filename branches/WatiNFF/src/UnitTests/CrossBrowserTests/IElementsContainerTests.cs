@@ -25,7 +25,7 @@ using WatiN.Core.Interfaces;
 namespace WatiN.Core.UnitTests.CrossBrowserTests
 {
     /// <summary>
-    /// Test the functionality of the <see cref="IElementsContainer"/> interface using both IE and FireFox
+    /// Test the functionality of the <see cref="IElementsContainerTemp"/> interface using both IE and FireFox
     /// implementations <see cref="WatiN.Core.Document">IE Document</see> and <see cref="WatiN.Core.Mozilla.Document">Mozilla Document</see>.
     /// </summary>
     [TestFixture]
@@ -41,6 +41,26 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         public void TableById()
         {
             ExecuteTest(TableByIdTest, false);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.TableRow(string)"/> method.
+        /// Tests that a button can be located based on the value of it's Id.
+        /// </summary>
+        [Test]
+        public void TableRowById()
+        {
+            ExecuteTest(TableRowByIdTest, false);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.TableCell(string)"/> method.
+        /// Tests that a button can be located based on the value of it's Id.
+        /// </summary>
+        [Test]
+        public void TableCellById()
+        {
+            ExecuteTest(TableCellByIdTest, false);
         }
 
         /// <summary>
@@ -127,6 +147,30 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
             ITable table = browser.Table("table1");
 
             Assert.IsNotNull(table, GetErrorMessage("The table with id table1 could not be found", browser));
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.TableRow(string)"/> method.
+        /// Tests that a table row can be located based on the value of it's Id.
+        /// </summary>
+        private static void TableRowByIdTest(IBrowser browser)
+        {
+            browser.GoTo(TablesURI);
+            ITableRow row = browser.TableRow("1");
+
+            Assert.IsNotNull(row, GetErrorMessage("The row with id 1 could not be found", browser));
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.TableCell(string)"/> method.
+        /// Tests that a table row can be located based on the value of it's Id.
+        /// </summary>
+        private static void TableCellByIdTest(IBrowser browser)
+        {
+            browser.GoTo(TablesURI);
+            ITableCell cell = browser.TableCell("innerCell1");
+
+            Assert.IsNotNull(cell, GetErrorMessage("The cell with id innerCell1 could not be found", browser));
         }
 
         /// <summary>
