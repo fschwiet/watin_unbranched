@@ -392,6 +392,7 @@ namespace WatiN.Core.Mozilla
         /// Writes the specified data to the jssh server.
         /// </summary>
         /// <param name="data">The data.</param>
+        /// <param name="args">Arguments to be passed to <see cref="string.Format(string,object[])"/></param>
         internal void Write(string data, params object[] args)
         {
         	this.Write(string.Format(data, args), true);

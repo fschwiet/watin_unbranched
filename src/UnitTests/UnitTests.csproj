@@ -167,6 +167,8 @@
     <Compile Include="CrossBrowserTests\IDocumentTests.cs" />
     <Compile Include="CrossBrowserTests\IElementsContainerTests.cs" />
     <Compile Include="CrossBrowserTests\IElementTests.cs" />
+    <Compile Include="CrossBrowserTests\ITableCellTests.cs" />
+    <Compile Include="CrossBrowserTests\ITableRowTests.cs" />
     <Compile Include="CrossBrowserTests\ITableTests.cs" />
     <Compile Include="DialogHandlerTests\AlertAndConfirmDialogHandlerTests.cs">
       <SubType>Code</SubType>

@@ -425,6 +425,7 @@
     <Compile Include="Interfaces\IWatiNElementCollection.cs" />
     <Compile Include="Interfaces\ITableBodyCollection.cs" />
     <Compile Include="Interfaces\ITableBody.cs" />
+    <Compile Include="Interfaces\ITableCell.cs" />
     <Compile Include="Label.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -469,6 +470,8 @@
     <Compile Include="Mozilla\Table.cs" />
     <Compile Include="Mozilla\TableBody.cs" />
     <Compile Include="Mozilla\TableBodyCollection.cs" />
+    <Compile Include="Mozilla\TableCell.cs" />
+    <Compile Include="Mozilla\TableCellCollection.cs" />
     <Compile Include="Mozilla\TableRow.cs" />
     <Compile Include="Mozilla\TableRowCollection.cs" />
     <Compile Include="Mozilla\TextField.cs" />

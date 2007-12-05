@@ -6,6 +6,6 @@ namespace WatiN.Core.Interfaces
         /// Gets the <see cref="TableCell"/> at the specified index.
         /// </summary>
         /// <value></value>
-        TableCell this[int index] { get; }
+        ITableCell this[int index] { get; }
     }
 }

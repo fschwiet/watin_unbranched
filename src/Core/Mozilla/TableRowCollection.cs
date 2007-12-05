@@ -52,7 +52,7 @@ namespace WatiN.Core.Mozilla
                 for(int i = 0; i < rowCount; i++)
                 {
                     Element rowElement = (Element) this.parentTable.GetElementByProperty(string.Format("rows[{0}]", i));
-                    elements.Add(new TableRow(rowElement.ElementVariable, this.parentTable, i, this.ClientPort));
+                    elements.Add(new TableRow(rowElement.ElementVariable, this.ClientPort));
                 }
             }
 

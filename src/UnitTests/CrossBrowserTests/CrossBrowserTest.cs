@@ -44,7 +44,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// <param name="testMethod">The test method.</param>
         protected void ExecuteTest(BrowserTest testMethod)
         {
-        	ExecuteTest(testMethod, true);
+        	ExecuteTest(testMethod, false);
         }
 
         /// <summary>

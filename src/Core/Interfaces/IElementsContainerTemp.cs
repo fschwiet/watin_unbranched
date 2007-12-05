@@ -49,15 +49,15 @@ namespace WatiN.Core.Interfaces
         /// <summary>
         /// Finds a button element using the specified regular expression.
         /// </summary>
-        /// <param name="regex)">The regular expression for the id of the button element being sought.</param>
+        /// <param name="regex">The regular expression for the id of the button element being sought.</param>
         /// <returns>The button element which id matches the regular expression, or null if none is found</returns>
         IButton Button(Regex regex);
 
         /// <summary>
-        /// Finds a button element using the specified <see cref="AttributeConstaint" />.
+        /// Finds a button element using the specified <see cref="AttributeConstraint" />.
         /// </summary>
-        /// <param name="constraint">The <see cref="AttributeConstaint" /> for the button element being sought.</param>
-        /// <returns>The button element for the matches the <see cref="AttributeConstaint" />, or null if none is found</returns>
+        /// <param name="constraint">The <see cref="AttributeConstraint" /> for the button element being sought.</param>
+        /// <returns>The button element for the matches the <see cref="AttributeConstraint" />, or null if none is found</returns>
         IButton Button(AttributeConstraint constraint);
 
         /// <summary>
@@ -89,6 +89,20 @@ namespace WatiN.Core.Interfaces
         ITable Table(string id);
 
         /// <summary>
+        /// Finds a table row using the specified Id.
+        /// </summary>
+        /// <param name="id">The id of the table row element being sought.</param>
+        /// <returns>The table row element for the corresponding id, or null if none is found</returns>
+        ITableRow TableRow(string id);
+
+        /// <summary>
+        /// Finds a table cell using the specified Id.
+        /// </summary>
+        /// <param name="id">The id of the table cell element being sought.</param>
+        /// <returns>The table cell element for the corresponding id, or null if none is found</returns>
+        ITableCell TableCell(string id);
+
+        /// <summary>
         /// Finds a text field using the Id.
         /// </summary>
         /// <param name="id">The id of the text field element being sought.</param>
@@ -98,15 +112,15 @@ namespace WatiN.Core.Interfaces
         /// <summary>
         /// Finds a text field element using the specified regular expression.
         /// </summary>
-        /// <param name="regex)">The regular expression for the id of the text field element being sought.</param>
+        /// <param name="regex">The regular expression for the id of the text field element being sought.</param>
         /// <returns>The text field element which id matches the regular expression, or null if none is found</returns>
         ITextField TextField(Regex regex);
 
         /// <summary>
-        /// Finds a text field element using the specified <see cref="AttributeConstaint" />.
+        /// Finds a text field element using the specified <see cref="AttributeConstraint" />.
         /// </summary>
-        /// <param name="constraint">The <see cref="AttributeConstaint" /> for the text field element being sought.</param>
-        /// <returns>The text field element for the matches the <see cref="AttributeConstaint" />, or null if none is found</returns>
+        /// <param name="constraint">The <see cref="AttributeConstraint" /> for the text field element being sought.</param>
+        /// <returns>The text field element for the matches the <see cref="AttributeConstraint" />, or null if none is found</returns>
         ITextField TextField(AttributeConstraint constraint);
 
         /// <summary>
