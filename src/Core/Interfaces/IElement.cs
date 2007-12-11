@@ -121,6 +121,18 @@ namespace WatiN.Core.Interfaces
         /// </summary>
         void Click();
 
+        // <summary>
+        /// Fires the specified <paramref name="eventName"/> on this element
+        /// and waits for it to complete.
+        /// </summary>
+        /// <param name="eventName">Name of the event.</param>
+        void FireEvent(string eventName);
+
+        /// <summary>
+        /// Only fires the specified <paramref name="eventName"/> on this element.
+        /// </summary>
+        void FireEventNoWait(string eventName);
+        
         #endregion
 
 

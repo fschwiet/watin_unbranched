@@ -19,6 +19,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using WatiN.Core.Interfaces;
 
 namespace WatiN.Core.Mozilla
@@ -55,6 +56,11 @@ namespace WatiN.Core.Mozilla
             this.elementFinder = elementFinder;
         }
 
+        protected BaseElementCollection(List<Element> elements, FireFoxClientPort clientPort) : this(clientPort, null)
+        {
+            this.elements = elements;
+        }
+
         #endregion
 
         #region Public instance properties
@@ -69,6 +75,30 @@ namespace WatiN.Core.Mozilla
             {
                 return this.Elements.Count;
             }
+        }
+
+        public bool Exists(Regex elementId)
+        {
+            return Exists(Find.ById(elementId));
+        }
+
+        public bool Exists(string elementId)
+        {
+            return Exists(Find.ById(elementId));
+        }
+
+        public bool Exists(AttributeConstraint findBy)
+        {            
+            foreach (Element element in Elements)
+            {
+                FireFoxElementAttributeBag attributeBag = new FireFoxElementAttributeBag(element.ElementVariable, this.ClientPort);
+                if (findBy.Compare(attributeBag))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         #endregion
@@ -132,6 +162,20 @@ namespace WatiN.Core.Mozilla
         public IEnumerator GetEnumerator()
         {
             throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region Internal instance methods
+
+        internal ArrayList ConvertToArrayList()
+        {
+            ArrayList array = new ArrayList(this.Length);
+            for (int i = 0; i < this.Length; i++)
+            {
+                array.Add(this.Elements[i]);
+            }
+            return array;
         }
 
         #endregion

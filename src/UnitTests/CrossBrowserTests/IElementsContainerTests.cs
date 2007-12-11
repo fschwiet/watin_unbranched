@@ -34,8 +34,28 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         #region Public test methods
 
         /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Label(string)"/> method.
+        /// Tests that a label can be located based on the value of it's Id.
+        /// </summary>
+        [Test]
+        public void LabelById()
+        {
+            ExecuteTest(LabelByIdTest, false);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.SelectList(string)"/> method.
+        /// Tests that a select list can be located based on the value of it's Id.
+        /// </summary>
+        [Test]
+        public void SelectListById()
+        {
+            ExecuteTest(SelectListByIdTest, false);
+        }
+
+        /// <summary>
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.Table(string)"/> method.
-        /// Tests that a button can be located based on the value of it's Id.
+        /// Tests that a table can be located based on the value of it's Id.
         /// </summary>
         [Test]
         public void TableById()
@@ -44,8 +64,18 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         }
 
         /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.TableBody(string)"/> method.
+        /// Tests that a table body can be located based on the value of it's Id.
+        /// </summary>
+        [Test]
+        public void TableBodyById()
+        {
+            ExecuteTest(TableBodyByIdTest, false);
+        }
+
+        /// <summary>
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.TableRow(string)"/> method.
-        /// Tests that a button can be located based on the value of it's Id.
+        /// Tests that a table row can be located based on the value of it's Id.
         /// </summary>
         [Test]
         public void TableRowById()
@@ -55,7 +85,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
 
         /// <summary>
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.TableCell(string)"/> method.
-        /// Tests that a button can be located based on the value of it's Id.
+        /// Tests that a table cell can be located based on the value of it's Id.
         /// </summary>
         [Test]
         public void TableCellById()
@@ -71,6 +101,26 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         public void ButtonById()
         {
             ExecuteTest(ButtonByIdTest, false);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.CheckBox(string)"/> method.
+        /// Tests that a check box can be located based on the value of it's Id.
+        /// </summary>
+        [Test]
+        public void CheckBoxById()
+        {
+            ExecuteTest(CheckBoxByIdTest, false);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Form(string)"/> method.
+        /// Tests that a form can be located based on the value of it's Id.
+        /// </summary>
+        [Test]
+        public void FormById()
+        {
+            ExecuteTest(FormByIdTest, false);
         }
 
         /// <summary>
@@ -101,6 +151,15 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         public void LinkById()
         {
             ExecuteTest(LinkByIdTest, false);
+        }
+
+        /// <summary>
+        /// Test that we can obtain a reference to an image using the elements Id to look it up using <see cref="IElementsContainerTemp.Image(string)"/>.
+        /// </summary>
+        [Test]
+        public void ImageById()
+        {
+            ExecuteTest(ImageByIdTest, false);
         }
 
         /// <summary>
@@ -138,6 +197,18 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         #region Private static methods
 
         /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Label(string)"/> method.
+        /// Tests that a label can be located based on the value of it's Id.
+        /// </summary>
+        private static void LabelByIdTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+            ILabel label = browser.Label("lblB");
+
+            Assert.IsNotNull(label, GetErrorMessage("The table with id lblB could not be found", browser));
+        }
+
+        /// <summary>
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.Table(string)"/> method.
         /// Tests that a table can be located based on the value of it's Id.
         /// </summary>
@@ -147,6 +218,18 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
             ITable table = browser.Table("table1");
 
             Assert.IsNotNull(table, GetErrorMessage("The table with id table1 could not be found", browser));
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.TableBody(string)"/> method.
+        /// Tests that a table body can be located based on the value of it's Id.
+        /// </summary>
+        private static void TableBodyByIdTest(IBrowser browser)
+        {
+            browser.GoTo(TablesURI);
+            ITableBody tableBody = browser.TableBody("tbody2");
+
+            Assert.IsNotNull(tableBody, GetErrorMessage("The table body with id tbody2 could not be found", browser));
         }
 
         /// <summary>
@@ -183,6 +266,28 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
             IButton button = browser.Button("helloid");
 
             Assert.IsNotNull(button, GetErrorMessage("The button with id helloid could not be found", browser));
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.CheckBox(string)"/> method.
+        /// Tests that a check box can be located based on the value of it's Id.
+        /// </summary>
+        private static void CheckBoxByIdTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+            ICheckBox checkBox = browser.CheckBox("Checkbox21");
+            Assert.IsNotNull(checkBox, GetErrorMessage("The checkbox with the id Checkbox21 could not be found.", browser));
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Form(string)"/> method.
+        /// Tests that a check box can be located based on the value of it's Id.
+        /// </summary>
+        private static void FormByIdTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+            IForm form = browser.Form("Form");
+            Assert.IsNotNull(form, GetErrorMessage("The form with the id \"Form\" could not be found.", browser));
         }
 
         /// <summary>
@@ -230,6 +335,16 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         }
 
         /// <summary>
+        /// Test that we can obtain a reference to an image using the elements Id to look it up using <see cref="IElementsContainerTemp.Image(string)"/>.
+        /// </summary>
+        private static void ImageByIdTest(IBrowser browser)
+        {
+            browser.GoTo(ImagesURI);
+            IImage imageElement = browser.Image("Image1");
+            Assert.IsNotNull(imageElement, GetErrorMessage("The image element with the id Image1 could not be found.", browser));
+        }
+
+        /// <summary>
         /// Test that we can obtain a reference to a div using the elements Id to look it up.
         /// Once the element is found we assert properties unique to the <see cref="IDiv"/> interface.
         /// </summary>
@@ -264,6 +379,18 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
             Assert.IsNotNull(element, GetErrorMessage("Element with id testElementAttributes could not be found.", browser));
             Assert.AreEqual("p1main", element.ClassName, GetErrorMessage("Css class name was not the expected value.", browser));
             Assert.AreEqual("testElementAttributes", element.Id, GetErrorMessage("Id attribute was not the expected value.", browser));
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.SelectList(string)"/> method.
+        /// Tests that a select list can be located based on the value of it's Id.
+        /// </summary>        
+        private static void SelectListByIdTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+            ISelectList selectList = browser.SelectList("Select1");
+            Assert.IsNotNull(selectList, GetErrorMessage("Select list with id \"Select1\" could not be found.", browser));
+            
         }
 
         #endregion     

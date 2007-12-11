@@ -67,7 +67,11 @@ function fnOpen()
                     <TD>Contains text in DIV</TD>
                 </TR>
                 <tr>
-                    <td><label accesskey="C" for="Checkbox21"> label for Checkbox21</label><label>Test label before: <INPUT id="Checkbox21" type="checkbox" CHECKED value="Effe teste" name="Checkbox21"> Test label after</label></td>
+                    <td>
+                    <label accesskey="C" for="Checkbox21"> label for Checkbox21</label><label>Test label before: <INPUT id="Checkbox21" type="checkbox" CHECKED value="Effe teste" name="Checkbox21"> Test label after</label>
+                    <label accesskey="B" id="lblB" for="txtLabelB"> label for txtLabelB</label> <input type="text" id="txtLabelB" />
+                    </td>
+                    
                 </tr>
             </TABLE>
         </DIV>
@@ -83,7 +87,18 @@ function fnOpen()
                 <OPTION value="2" selected>Second Listitem</OPTION>
                 <OPTION value="3">Third Listitem</OPTION>
                 <OPTION value="4">Fourth Listitem</OPTION>
-            </SELECT></P>
+            </SELECT>
+            <SELECT id="Select3" size="5" name="Select3">
+                <OPTION value="1">First text</OPTION>
+                <OPTION value="tweede tekst">Second text</OPTION>
+                <OPTION value="3">Third text</OPTION>
+            </SELECT>
+            <SELECT id="Select4" size="5" name="Select4" multiple>
+                <OPTION value="1" selected>First text</OPTION>
+                <OPTION value="tweede tekst" selected>Second text</OPTION>
+                <OPTION value="3" selected>Third text</OPTION>
+            </SELECT>
+            </P>
         <input type="file" id="upload"><span id="spanid1" style="COLOR: green"> File </span>
         <span id="Span1" style="COLOR: olive">upload</span> </p> <button id="buttonelementid" name="buttonelementname" value="ButtonElementValue">
             Button Element</button>

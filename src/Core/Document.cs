@@ -771,9 +771,29 @@ namespace WatiN.Core
             return Button(constraint);
         }
 
+        ICheckBox IElementsContainerTemp.CheckBox(string elementId)
+        {
+            return CheckBox(Find.ById(elementId));
+        }
+
+        IForm IElementsContainerTemp.Form(string id)
+        {
+            return Form(Find.ById(id));
+        }
+
+        ISelectList IElementsContainerTemp.SelectList(string id)
+        {
+            return SelectList(Find.ById(id));
+        }
+
         ITable IElementsContainerTemp.Table(string id)
         {
             return Table(Find.ById(id));            
+        }
+
+        ITableBody IElementsContainerTemp.TableBody(string id)
+        {
+            return TableBody(Find.ById(id));
         }
 
         ITableRow IElementsContainerTemp.TableRow(string id)
@@ -796,9 +816,19 @@ namespace WatiN.Core
             return Element(Find.ById(id));
         }
 
+        ILabel IElementsContainerTemp.Label(string id)
+        {
+            return Label(Find.ById(id));
+        }
+
         ILink IElementsContainerTemp.Link(string elementId)
         {
             return Link(Find.ById(elementId));
+        }
+
+        IImage IElementsContainerTemp.Image(string id)
+        {
+            return Image(Find.ById(id));
         }
 
         IPara IElementsContainerTemp.Para(string elementId)

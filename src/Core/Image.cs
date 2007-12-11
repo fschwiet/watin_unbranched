@@ -18,13 +18,14 @@
 
 using System.Collections;
 using mshtml;
+using WatiN.Core.Interfaces;
 
 namespace WatiN.Core
 {
 	/// <summary>
 	/// This class provides specialized functionality for a HTML img element.
 	/// </summary>
-	public class Image : Element
+	public class Image : Element, IImage
 	{
 		private static ArrayList elementTags;
 

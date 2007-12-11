@@ -18,13 +18,14 @@
 
 using System.Collections;
 using mshtml;
+using WatiN.Core.Interfaces;
 
 namespace WatiN.Core
 {
 	/// <summary>
 	/// A typed collection of <see cref="Option" /> elements within a <see cref="SelectList"/>.
 	/// </summary>
-	public class OptionCollection : BaseElementCollection
+	public class OptionCollection : BaseElementCollection, IOptionCollection
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="OptionCollection"/> class.
@@ -46,7 +47,7 @@ namespace WatiN.Core
 		/// Gets the <see cref="Span"/> at the specified index.
 		/// </summary>
 		/// <value></value>
-		public Option this[int index]
+		public IOption this[int index]
 		{
 			get { return new Option(domContainer, (IHTMLOptionElement) Elements[index]); }
 		}
@@ -56,7 +57,7 @@ namespace WatiN.Core
 		/// </summary>
 		/// <param name="findBy">The <see cref="AttributeConstraint"/> to filter this collection.</param>
 		/// <returns>A filtered <see cref="OptionCollection"/></returns>
-		public OptionCollection Filter(AttributeConstraint findBy)
+		public IOptionCollection Filter(AttributeConstraint findBy)
 		{
 			return new OptionCollection(domContainer, DoFilter(findBy));
 		}

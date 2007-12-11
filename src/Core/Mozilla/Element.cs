@@ -30,6 +30,14 @@ namespace WatiN.Core.Mozilla
         private readonly FireFoxClientPort clientPort;
         private readonly string elementVariable;
 
+        /// <summary>
+        /// List of html attributes that have to retrieved as properties in order to get the correct value.
+        /// I.e. for options myOption.getAttribute("selected"); returns nothing if it's selected. 
+        /// However  myOption.selected returns true.
+        /// </summary>
+        private static List<string> knownAttributeOverrides = new List<string>(new string[] { "selected" });
+        
+
         #region Constructors
 
         /// <summary>
@@ -219,8 +227,25 @@ namespace WatiN.Core.Mozilla
         /// </summary>
         public void Click()
         {
-            this.ExecuteMethod("click");
+            this.FireEvent("click");
             this.ClientPort.InitializeDocument();
+        }
+
+        /// Fires the specified <paramref name="eventName"/> on this element
+        /// and waits for it to complete.
+        /// </summary>
+        /// <param name="eventName">Name of the event.</param>
+        public void FireEvent(string eventName)
+        {
+            this.ExecuteMethod(eventName);
+        }
+
+        /// <summary>
+        /// Only fires the specified <paramref name="eventName"/> on this element.
+        /// </summary>
+        public void FireEventNoWait(string eventName)
+        {
+            throw new NotImplementedException();
         }
 
         public bool Exists
@@ -275,6 +300,16 @@ namespace WatiN.Core.Mozilla
                 throw new ArgumentNullException("attributeName", "Null or Empty not allowed.");
             }
 
+            if (string.IsNullOrEmpty(this.elementVariable))
+            {
+                throw new FireFoxException("Element does not exist, element variable was empty");
+            }
+
+            if (knownAttributeOverrides.Contains(attributeName))
+            {
+                return this.GetProperty(attributeName);
+            }
+
             string getAttributeWrite = string.Format("{0}.getAttribute(\"{1}\");", this.ElementVariable, attributeName);
             this.ClientPort.Write(getAttributeWrite);
 
@@ -298,6 +333,11 @@ namespace WatiN.Core.Mozilla
                 throw new ArgumentNullException("propertyName", "Null or Empty not allowed.");
             }
 
+            if (string.IsNullOrEmpty(this.elementVariable))
+            {
+                throw new FireFoxException("Element does not exist, element variable was empty");
+            }
+
             string command = string.Format("{0}.{1};", this.ElementVariable, propertyName);
             this.ClientPort.Write(command);
 
@@ -311,6 +351,16 @@ namespace WatiN.Core.Mozilla
         /// <returns>Returns the element that is returned by the specified property</returns>
         internal IElement GetElementByProperty(string propertyName)
         {
+            if (string.IsNullOrEmpty(propertyName))
+            {
+                throw new ArgumentNullException("propertyName");    
+            }
+
+            if (string.IsNullOrEmpty(this.elementVariable))
+            {
+                throw new FireFoxException("Element does not exist, element variable was empty");
+            }
+
             string elementvar = FireFoxClientPort.CreateVariableName();
             string command = string.Format("{0}={1}.{2};", elementvar, this.ElementVariable, propertyName);
             this.ClientPort.Write(command);
