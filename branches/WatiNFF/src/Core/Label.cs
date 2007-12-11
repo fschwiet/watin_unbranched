@@ -18,13 +18,14 @@
 
 using System.Collections;
 using mshtml;
+using WatiN.Core.Interfaces;
 
 namespace WatiN.Core
 {
 	/// <summary>
 	/// This class provides specialized functionality for a HTML label element.
 	/// </summary>
-	public class Label : ElementsContainer
+	public class Label : ElementsContainer, ILabel
 	{
 		private static ArrayList elementTags;
 

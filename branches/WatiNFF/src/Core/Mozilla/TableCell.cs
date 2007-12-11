@@ -16,39 +16,42 @@
 
 #endregion Copyright
 
+using WatiN.Core;
 using WatiN.Core.Interfaces;
 
 namespace WatiN.Core.Mozilla
 {
     /// <summary>
-    /// FireFox implementation of <see cref="ITableBody"/>
+    /// FireFox implementation of <see cref="ITableCell"/>.
     /// </summary>
-    public class TableBody : ElementsContainer, ITableBody
-    {        
-        public TableBody(string elementVariable, FireFoxClientPort clientPort) : base(elementVariable, clientPort)
+    public class TableCell : Element, ITableCell
+    {
+    
+        public TableCell(string elementVariable, FireFoxClientPort clientPort): base(elementVariable, clientPort)
         {
         }
 
         /// <summary>
-        /// Returns the table rows belonging to this table body (not including table rows 
-        /// from tables nested in this table body).
+        /// Gets the parent <see cref="Core.TableRow"/> of this <see cref="Core.TableCell"/>.
         /// </summary>
-        /// <value>The table rows.</value>
-        public ITableRowCollection TableRows
+        /// <value>The parent table row.</value>
+        public ITableRow ParentTableRow
+        {
+            get { return new TableRow(((Element)this.Parent).ElementVariable, this.ClientPort); }
+        }
+
+        /// <summary>
+        /// Gets the index of the <see cref="Core.TableCell"/> in the <see cref="Core.TableCellCollection"/> of the parent <see cref="Core.TableRow"/>.
+        /// </summary>
+        /// <value>The index of the cell.</value>
+        public int Index
         {
             get 
             {
-                TableRowCollection rows = new TableRowCollection(this, this.ClientPort, new ElementFinder(this, "tr", null, this.ClientPort));
-                return rows;
-            }
-        }
+                int index;
+                int.TryParse(this.GetProperty("rowIndex"), out index);
 
-        public ITable ParentTable
-        {
-            get
-            {
-                Element parentElement = (Element)this.Parent;
-                return new Table(parentElement.ElementVariable, this.ClientPort);
+                return index;
             }
         }
     }

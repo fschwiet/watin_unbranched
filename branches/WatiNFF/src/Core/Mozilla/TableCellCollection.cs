@@ -22,42 +22,42 @@ using WatiN.Core.Interfaces;
 namespace WatiN.Core.Mozilla
 {
     /// <summary>
-    /// FireFox implementation of the <see cref="ITableBodyCollection"/>
+    /// The FireFox implementation of <see cref="ITableCellCollection"/>.
     /// </summary>
-    public class TableBodyCollection : BaseElementCollection, ITableBodyCollection
+    public class TableCellCollection : BaseElementCollection, ITableCellCollection
     {
-        private readonly Table parentTable;
+        private readonly TableRow parentRow;
 
-        public TableBodyCollection(ITable parentTable, FireFoxClientPort clientPort, ElementFinder elementFinder)
+        public TableCellCollection(ITableRow row, FireFoxClientPort clientPort, ElementFinder elementFinder)
             : base(clientPort, elementFinder)
         {
-            this.parentTable = (Table) parentTable;
+            this.parentRow = (TableRow) row;
         }
 
         protected override List<Element> FindElements()
         {
-            int rowCount;
+            int cellCount;
             List<Element> elements = new List<Element>();
 
-            if (int.TryParse(this.parentTable.GetProperty("tBodies.length"), out rowCount))
+            if (int.TryParse(this.parentRow.GetProperty("cells.length"), out cellCount))
             {
-                for (int i = 0; i < rowCount; i++)
+                for (int i = 0; i < cellCount; i++)
                 {
-                    Element element = (Element)this.parentTable.GetElementByProperty(string.Format("tBodies[{0}]", i));
-                    elements.Add(new TableBody(element.ElementVariable, this.ClientPort));
+                    Element rowElement = (Element)this.parentRow.GetElementByProperty(string.Format("cells[{0}]", i));
+                    elements.Add(new TableCell(rowElement.ElementVariable, this.ClientPort));
                 }
             }
 
-            return elements;
+            return elements;    
         }
 
         /// <summary>
-        /// Gets the <see cref="ITableBody"/> at the specified index.
+        /// Gets the <see cref="TableCell"/> at the specified index.
         /// </summary>
         /// <value></value>
-        public ITableBody this[int index]
+        public ITableCell this[int index]
         {
-            get { throw new System.NotImplementedException(); }
+            get { return (ITableCell) this.Elements[index]; }
         }
     }
 }

@@ -167,6 +167,12 @@
     <Compile Include="CrossBrowserTests\IDocumentTests.cs" />
     <Compile Include="CrossBrowserTests\IElementsContainerTests.cs" />
     <Compile Include="CrossBrowserTests\IElementTests.cs" />
+    <Compile Include="CrossBrowserTests\IFormTests.cs" />
+    <Compile Include="CrossBrowserTests\IImageTests.cs" />
+    <Compile Include="CrossBrowserTests\ILabelTests.cs" />
+    <Compile Include="CrossBrowserTests\ILinkTests.cs" />
+    <Compile Include="CrossBrowserTests\ISelectListTests.cs" />
+    <Compile Include="CrossBrowserTests\ITableBodyTests.cs" />
     <Compile Include="CrossBrowserTests\ITableCellTests.cs" />
     <Compile Include="CrossBrowserTests\ITableRowTests.cs" />
     <Compile Include="CrossBrowserTests\ITableTests.cs" />

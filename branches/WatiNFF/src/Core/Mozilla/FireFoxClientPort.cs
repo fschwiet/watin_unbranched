@@ -148,6 +148,10 @@ namespace WatiN.Core.Mozilla
                 {
                     response = response.Substring(0, response.Length - 2);
                 }
+                else if (response.EndsWith(string.Format("?{0}> ", "\n")))
+                {
+                    response = response.Substring(0, response.Length - 4);
+                }
                 else if (response.EndsWith(string.Format("{0}> ", "\n")))
                 {
                     response = response.Substring(0, response.Length - 3);

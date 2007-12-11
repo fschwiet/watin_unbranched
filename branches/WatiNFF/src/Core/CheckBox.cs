@@ -18,6 +18,7 @@
 
 using System.Collections;
 using mshtml;
+using WatiN.Core.Interfaces;
 
 namespace WatiN.Core
 {
@@ -25,7 +26,7 @@ namespace WatiN.Core
 	/// This class provides specialized functionality for a HTML input element of type 
 	/// checkbox.
 	/// </summary>
-	public class CheckBox : RadioCheck
+	public class CheckBox : RadioCheck, ICheckBox
 	{
 		private static ArrayList elementTags;
 

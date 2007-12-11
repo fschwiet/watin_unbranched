@@ -92,6 +92,27 @@ namespace WatiN.Core.Mozilla
         }
 
         /// <summary>
+        /// Finds a checkbox element using the specified id.
+        /// </summary>
+        /// <param name="id">The id of the checkbox element being sought.</param>
+        /// <returns>The checkbox element for the corresponding id, or null if none is found</returns>
+        public ICheckBox CheckBox(string id)
+        {
+            return this.CheckBox(Find.ById(id));
+        }
+
+        /// <summary>
+        /// Finds a check box element using the specified <see cref="AttributeConstraint" />.
+        /// </summary>
+        /// <param name="constraint">The <see cref="AttributeConstraint" /> for the check box element being sought.</param>
+        /// <returns>The check box element for the matches the <see cref="AttributeConstraint" />, or null if none is found</returns>
+        public ICheckBox CheckBox(AttributeConstraint constraint)
+        {
+            Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "input", "checkbox", constraint, this.ClientPort);
+            return new CheckBox(finder.FindFirst(), this.ClientPort);
+        }
+
+        /// <summary>
         /// Finds a div element using the specified id.
         /// </summary>
         /// <param name="id">The id.</param>
@@ -100,6 +121,38 @@ namespace WatiN.Core.Mozilla
         {
         	Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "div", Find.ById(id), this.ClientPort);
         	return new Div(finder.FindFirst(), this.ClientPort);
+        }
+
+        /// <summary>
+        /// Finds a form element using the specified id.
+        /// </summary>
+        /// <param name="id">The id of the form element being sought.</param>
+        /// <returns>The form element for the corresponding id, or null if none is found</returns>
+        public IForm Form(string id)
+        {
+            return this.Form(Find.ById(id));
+        }
+
+        /// <summary>
+        /// Finds a form element using the specified <see cref="AttributeConstraint" />.
+        /// </summary>
+        /// <param name="constraint">The <see cref="AttributeConstraint" /> for the form element being sought.</param>
+        /// <returns>The form element for the matches the <see cref="AttributeConstraint" />, or null if none is found</returns>        
+        public IForm Form(AttributeConstraint constraint)
+        {
+            Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "form", constraint, this.ClientPort);
+            return new Form(finder.FindFirst(), this.ClientPort);
+        }
+
+        /// <summary>
+        /// Finds a label element using the specified id.
+        /// </summary>
+        /// <param name="id">The id of the label element being sought.</param>
+        /// <returns>The label element for the corresponding id, or null if none is found</returns>
+        public ILabel Label(string id)
+        {
+            Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "label", Find.ById(id), this.ClientPort);
+            return new Label(finder.FindFirst(), this.ClientPort);
         }
 
         /// <summary>
@@ -114,6 +167,17 @@ namespace WatiN.Core.Mozilla
         }
 
         /// <summary>
+        /// Finds an image element using the specified id.
+        /// </summary>
+        /// <param name="id">The id of the image element being sought.</param>
+        /// <returns>The image element for the corresponding id, or null if none is found</returns>
+        public IImage Image(string id)
+        {
+            Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "img", Find.ById(id), this.ClientPort);
+            return new Image(finder.FindFirst(), this.ClientPort);
+        }
+
+        /// <summary>
         /// Finds a paragraph element using the specified id.
         /// </summary>
         /// <param name="id">The id of the paragraph element being sought.</param>
@@ -125,6 +189,27 @@ namespace WatiN.Core.Mozilla
         }
 
         /// <summary>
+        /// Finds a select element using the specified id.
+        /// </summary>
+        /// <param name="id">The id of the select element being sought.</param>
+        /// <returns>The select element for the corresponding id, or null if none is found</returns>
+        public ISelectList SelectList(string id)
+        {
+            return this.SelectList(Find.ById(id));
+        }
+
+        /// <summary>
+        /// Finds a select list using the specified <see cref="AttributeConstraint" />.
+        /// </summary>
+        /// <param name="constraint">The <see cref="AttributeConstraint" /> for the select list being sought.</param>
+        /// <returns>The select list for the matches the <see cref="AttributeConstraint" />, or null if none is found</returns>
+        public ISelectList SelectList(AttributeConstraint constraint)
+        {
+            Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "select", constraint, this.ClientPort);
+            return new SelectList(finder.FindFirst(), this.ClientPort);
+        }
+
+        /// <summary>
         /// Finds a table using the specified Id.
         /// </summary>
         /// <param name="id">The id of the table element being sought.</param>
@@ -133,6 +218,17 @@ namespace WatiN.Core.Mozilla
         {
             Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "table", Find.ById(id), this.ClientPort);
             return new Table(finder.FindFirst(), this.ClientPort);
+        }
+
+        /// <summary>
+        /// Finds a table body using the specified Id.
+        /// </summary>
+        /// <param name="id">The id of the table body element being sought.</param>
+        /// <returns>The table body element for the corresponding id, or null if none is found</returns>
+        public ITableBody TableBody(string id)
+        {
+            Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "tbody", Find.ById(id), this.ClientPort);
+            return new TableBody(finder.FindFirst(), this.ClientPort);
         }
 
         /// <summary>

@@ -30,7 +30,7 @@ namespace WatiN.Core
 	/// <summary>
 	/// This class provides specialized functionality for a HTML select element.
 	/// </summary>
-	public class SelectList : Element
+	public class SelectList : Element, ISelectList
 	{
 		private static ArrayList elementTags;
 
@@ -82,7 +82,7 @@ namespace WatiN.Core
 		{
 			Logger.LogAction("Clearing selection(s) in " + GetType().Name + " '" + Id + "'");
 
-			OptionCollection options = Options.Filter(GetIsSelectedAttribute());
+			IOptionCollection options = Options.Filter(GetIsSelectedAttribute());
 
 			foreach (Option option in options)
 			{
@@ -162,7 +162,7 @@ namespace WatiN.Core
 			{
 				StringCollection items = new StringCollection();
 
-				foreach (Option option in Options)
+				foreach (IOption option in Options)
 				{
 					items.Add(option.Text);
 				}
@@ -176,7 +176,7 @@ namespace WatiN.Core
 		/// </summary>
 		/// <param name="text">The text.</param>
 		/// <returns><see cref="Options" /></returns>
-		public Option Option(string text)
+		public IOption Option(string text)
 		{
 			return Option(GetTextAttribute(text));
 		}
@@ -186,7 +186,7 @@ namespace WatiN.Core
 		/// </summary>
 		/// <param name="text">The text.</param>
 		/// <returns><see cref="Options" /></returns>
-		public Option Option(Regex text)
+		public IOption Option(Regex text)
 		{
 			return Option(Find.ByText(text));
 		}
@@ -196,7 +196,7 @@ namespace WatiN.Core
 		/// </summary>
 		/// <param name="findBy">The find by to use.</param>
 		/// <returns></returns>
-		public Option Option(AttributeConstraint findBy)
+		public IOption Option(AttributeConstraint findBy)
 		{
 			return ElementsSupport.Option(DomContainer, findBy, new ElementCollection(this));
 		}
@@ -204,7 +204,7 @@ namespace WatiN.Core
 		/// <summary>
 		/// Returns all the <see cref="Core.Option"/> elements in the <see cref="SelectList"/>.
 		/// </summary>
-		public OptionCollection Options
+		public IOptionCollection Options
 		{
 			get { return ElementsSupport.Options(DomContainer, new ElementCollection(this)); }
 		}
@@ -218,7 +218,7 @@ namespace WatiN.Core
 			{
 				ArrayList items = new ArrayList();
 
-				OptionCollection options = Options.Filter(GetIsSelectedAttribute());
+				IOptionCollection options = Options.Filter(GetIsSelectedAttribute());
 				foreach (Option option in options)
 				{
 					if (option.Selected)
@@ -240,7 +240,7 @@ namespace WatiN.Core
 			{
 				StringCollection items = new StringCollection();
 
-				OptionCollection options = Options.Filter(GetIsSelectedAttribute());
+				IOptionCollection options = Options.Filter(GetIsSelectedAttribute());
 				foreach (Option option in options)
 				{
 					items.Add(option.Text);
@@ -259,7 +259,7 @@ namespace WatiN.Core
 		{
 			get
 			{
-				Option option = SelectedOption;
+				IOption option = SelectedOption;
 				if (option == null) return null;
 
 				return option.Text;
@@ -271,11 +271,11 @@ namespace WatiN.Core
 		/// Use SelectedOptions to get an ArrayList of all selected options.
 		/// When there's no option selected, the return value will be null.
 		/// </summary>
-		public Option SelectedOption
+		public IOption SelectedOption
 		{
 			get
 			{
-				Option option = Option(GetIsSelectedAttribute());
+				IOption option = Option(GetIsSelectedAttribute());
 
 				if (option.Exists)
 				{
@@ -304,7 +304,7 @@ namespace WatiN.Core
 
 		private void SelectByTextOrValue(AttributeConstraint findBy)
 		{
-			OptionCollection options = Options.Filter(findBy);
+			IOptionCollection options = Options.Filter(findBy);
 
 			foreach (Option option in options)
 			{

@@ -21,34 +21,35 @@ using WatiN.Core.Interfaces;
 namespace WatiN.Core.Mozilla
 {
     /// <summary>
-    /// FireFox implementation of <see cref="ITableBody"/>
+    /// FireFox implementation of <see cref="IImage"/>.
     /// </summary>
-    public class TableBody : ElementsContainer, ITableBody
-    {        
-        public TableBody(string elementVariable, FireFoxClientPort clientPort) : base(elementVariable, clientPort)
+    public class Image : Element, IImage
+    {
+        public Image(string elementVariable, FireFoxClientPort clientPort) : base(elementVariable, clientPort)
         {
         }
 
-        /// <summary>
-        /// Returns the table rows belonging to this table body (not including table rows 
-        /// from tables nested in this table body).
-        /// </summary>
-        /// <value>The table rows.</value>
-        public ITableRowCollection TableRows
+        public string Src
         {
             get 
             {
-                TableRowCollection rows = new TableRowCollection(this, this.ClientPort, new ElementFinder(this, "tr", null, this.ClientPort));
-                return rows;
+                return GetAttributeValue("src");
             }
         }
 
-        public ITable ParentTable
+        public string Alt
+        {
+            get 
+            {
+                return GetAttributeValue("alt");
+            }
+        }
+
+        public string Name
         {
             get
             {
-                Element parentElement = (Element)this.Parent;
-                return new Table(parentElement.ElementVariable, this.ClientPort);
+                return GetAttributeValue("name");
             }
         }
     }

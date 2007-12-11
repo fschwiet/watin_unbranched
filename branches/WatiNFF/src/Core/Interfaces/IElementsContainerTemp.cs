@@ -61,6 +61,13 @@ namespace WatiN.Core.Interfaces
         IButton Button(AttributeConstraint constraint);
 
         /// <summary>
+        /// Finds a checkbox element using the specified id.
+        /// </summary>
+        /// <param name="id">The id of the checkbox element being sought.</param>
+        /// <returns>The checkbox element for the corresponding id, or null if none is found</returns>
+        ICheckBox CheckBox(string id);
+
+        /// <summary>
         /// Finds a div element using the specified id.
         /// </summary>
         /// <param name="id">The id of the div element being sought.</param>
@@ -68,12 +75,33 @@ namespace WatiN.Core.Interfaces
         IDiv Div(string id);
 
         /// <summary>
-        /// Finds a div element using the specified id.
+        /// Finds a form element using the specified id.
+        /// </summary>
+        /// <param name="id">The id of the form element being sought.</param>
+        /// <returns>The form element for the corresponding id, or null if none is found</returns>
+        IForm Form(string id);
+
+        /// <summary>
+        /// Finds a label element using the specified id.
+        /// </summary>
+        /// <param name="id">The id of the label element being sought.</param>
+        /// <returns>The label element for the corresponding id, or null if none is found</returns>
+        ILabel Label(string id);
+
+        /// <summary>
+        /// Finds a link element using the specified id.
         /// </summary>
         /// <param name="id">The id of the link element being sought.</param>
         /// <returns>The link element for the corresponding id, or null if none is found</returns>
         ILink Link(string id);
 
+        /// <summary>
+        /// Finds an image element using the specified id.
+        /// </summary>
+        /// <param name="id">The id of the image element being sought.</param>
+        /// <returns>The image element for the corresponding id, or null if none is found</returns>
+        IImage Image(string id);
+        
         /// <summary>
         /// Finds a paragraph element using the specified id.
         /// </summary>
@@ -82,12 +110,26 @@ namespace WatiN.Core.Interfaces
         IPara Para(string id);
 
         /// <summary>
+        /// Finds a select element using the specified id.
+        /// </summary>
+        /// <param name="id">The id of the select element being sought.</param>
+        /// <returns>The select element for the corresponding id, or null if none is found</returns>
+        ISelectList SelectList(string id);
+
+        /// <summary>
         /// Finds a table using the specified Id.
         /// </summary>
         /// <param name="id">The id of the table element being sought.</param>
         /// <returns>The table element for the corresponding id, or null if none is found</returns>
         ITable Table(string id);
 
+        /// <summary>
+        /// Finds a table body using the specified Id.
+        /// </summary>
+        /// <param name="id">The id of the table body element being sought.</param>
+        /// <returns>The table body element for the corresponding id, or null if none is found</returns>
+        ITableBody TableBody(string id);
+        
         /// <summary>
         /// Finds a table row using the specified Id.
         /// </summary>

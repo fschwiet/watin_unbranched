@@ -18,13 +18,14 @@
 
 using System.Collections;
 using mshtml;
+using WatiN.Core.Interfaces;
 
 namespace WatiN.Core
 {
 	/// <summary>
 	/// This class provides specialized functionality for a HTML option element.
 	/// </summary>
-	public class Option : Element
+	public class Option : Element, IOption
 	{
 		private static ArrayList elementTags;
 
@@ -157,7 +158,7 @@ namespace WatiN.Core
 		/// Gets the parent <see cref="SelectList"/>.
 		/// </summary>
 		/// <value>The parent <see cref="SelectList"/>.</value>
-		public SelectList ParentSelectList
+		public ISelectList ParentSelectList
 		{
 			get { return (SelectList) Ancestor(typeof (SelectList)); }
 		}
