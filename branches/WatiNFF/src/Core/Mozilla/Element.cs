@@ -17,6 +17,7 @@
 #endregion Copyright
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
@@ -35,10 +36,16 @@ namespace WatiN.Core.Mozilla
         /// I.e. for options myOption.getAttribute("selected"); returns nothing if it's selected. 
         /// However  myOption.selected returns true.
         /// </summary>
-        private static List<string> knownAttributeOverrides = new List<string>(new string[] { "selected" });
-        
+        private static List<string> knownAttributeOverrides = new List<string>(new string[] { "selected", "textContent" });
+
+        private static Dictionary<string, string> watiNAttributeMap = new Dictionary<string, string>();
 
         #region Constructors
+
+        static Element()
+        {
+            watiNAttributeMap.Add("innertext", "textContent");
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Element"/> class.
@@ -280,12 +287,10 @@ namespace WatiN.Core.Mozilla
         /// <param name="methodName">Name of the method.</param>
         protected void ExecuteMethod(string methodName)
         {
-            this.ClientPort.Write(
-                string.Format(
-                    "var event = {0}.createEvent(\"MouseEvents\");\n" +
-                    "event.initEvent(\"{1}\",true,true);\n" +
-                    "{2}.dispatchEvent(event)", FireFoxClientPort.DocumentVariableName,
-                    methodName, this.ElementVariable));
+            this.ClientPort.Write(                
+                    "var event = " + FireFoxClientPort.DocumentVariableName + ".createEvent(\"MouseEvents\");\n" +
+                    "event.initEvent(\"" + methodName + "\",true,true);\n" +
+                    "var res = " + this.ElementVariable + ".dispatchEvent(event); if(res){true;}else{false};");
         }
 
         /// <summary>
@@ -303,6 +308,11 @@ namespace WatiN.Core.Mozilla
             if (string.IsNullOrEmpty(this.elementVariable))
             {
                 throw new FireFoxException("Element does not exist, element variable was empty");
+            }
+
+            if (watiNAttributeMap.ContainsKey(attributeName))
+            {
+                attributeName = watiNAttributeMap[attributeName];
             }
 
             if (knownAttributeOverrides.Contains(attributeName))

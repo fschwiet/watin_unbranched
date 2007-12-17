@@ -288,6 +288,19 @@ namespace WatiN.Core.Mozilla
             }
         }
 
+        /// <summary>
+        /// Retruns the last reponse as a Boolen, default to false if converting <see cref="LastResponse"/> fails.
+        /// </summary>
+        public bool LastResponseAsBool
+        {
+            get
+            {
+                bool lastBoolResponse;
+                Boolean.TryParse(this.LastResponse, out lastBoolResponse);
+                return lastBoolResponse;
+            }
+        }
+
         ///<summary>
         ///Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         ///</summary>
@@ -414,7 +427,7 @@ namespace WatiN.Core.Mozilla
             NetworkStream stream = new NetworkStream(this.telnetSocket);
             while (!stream.DataAvailable)
             {
-                // #Hack need to work out a better way for this
+                // Hack: need to work out a better way for this
                 System.Threading.Thread.Sleep(200);
             }
 
