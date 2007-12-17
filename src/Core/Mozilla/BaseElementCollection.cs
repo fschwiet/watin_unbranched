@@ -161,7 +161,7 @@ namespace WatiN.Core.Mozilla
         ///<filterpriority>2</filterpriority>
         public IEnumerator GetEnumerator()
         {
-            throw new NotImplementedException();
+            return Elements.GetEnumerator();
         }
 
         #endregion

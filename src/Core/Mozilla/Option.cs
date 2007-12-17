@@ -16,6 +16,7 @@
 
 #endregion Copyright
 
+using System;
 using WatiN.Core;
 using WatiN.Core.Interfaces;
 
@@ -48,7 +49,11 @@ namespace WatiN.Core.Mozilla
         /// <value><c>true</c> if selected; otherwise, <c>false</c>.</value>
         public bool Selected
         {
-            get { throw new System.NotImplementedException(); }
+            get
+            {
+                this.ClientPort.Write("{0}.selected;", this.ElementVariable);
+                return this.ClientPort.LastResponseAsBool;
+            }
         }
 
         /// <summary>
@@ -57,7 +62,10 @@ namespace WatiN.Core.Mozilla
         /// <value>The index.</value>
         public int Index
         {
-            get { throw new System.NotImplementedException(); }
+            get
+            {
+                return Convert.ToInt32(this.GetProperty("index"));
+            }
         }
 
         /// <summary>
@@ -66,7 +74,7 @@ namespace WatiN.Core.Mozilla
         /// <value><c>true</c> if selected by default; otherwise, <c>false</c>.</value>
         public bool DefaultSelected
         {
-            get { throw new System.NotImplementedException(); }
+            get { return Convert.ToBoolean(this.GetProperty("defaultSelected")); }
         }
 
         /// <summary>
@@ -76,7 +84,10 @@ namespace WatiN.Core.Mozilla
         /// </summary>
         public void Clear()
         {
-            throw new System.NotImplementedException();
+            this.ClientPort.Write("{0}.selected=false;", this.ElementVariable);
+            
+            // TODO Is it necessary to fire the onchange event for FF?
+            //this.FireEvent("onChange");
         }
 
         /// <summary>
@@ -86,7 +97,10 @@ namespace WatiN.Core.Mozilla
         /// </summary>
         public void Select()
         {
-            throw new System.NotImplementedException();
+            this.ClientPort.Write("{0}.selected=true;", this.ElementVariable);
+            
+            // TODO Is it necessary to fire the onchange event for FF?
+            //this.FireEvent("onChange");
         }
 
         /// <summary>
@@ -95,7 +109,10 @@ namespace WatiN.Core.Mozilla
         /// <value>The parent <see cref="Core.SelectList"/>.</value>
         public ISelectList ParentSelectList
         {
-            get { throw new System.NotImplementedException(); }
+            get
+            {
+                return new SelectList(((Element) this.Parent).ElementVariable, this.ClientPort);
+            }
         }
 
         public void SelectNoWait()

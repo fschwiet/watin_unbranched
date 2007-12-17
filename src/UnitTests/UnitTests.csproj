@@ -171,6 +171,7 @@
     <Compile Include="CrossBrowserTests\IImageTests.cs" />
     <Compile Include="CrossBrowserTests\ILabelTests.cs" />
     <Compile Include="CrossBrowserTests\ILinkTests.cs" />
+    <Compile Include="CrossBrowserTests\IOptionTests.cs" />
     <Compile Include="CrossBrowserTests\ISelectListTests.cs" />
     <Compile Include="CrossBrowserTests\ITableBodyTests.cs" />
     <Compile Include="CrossBrowserTests\ITableCellTests.cs" />
