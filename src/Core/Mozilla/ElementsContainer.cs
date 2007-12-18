@@ -54,8 +54,37 @@ namespace WatiN.Core.Mozilla
         /// <returns></returns>
         public IArea Area(string id)
         {
-        	Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "area", Find.ById(id), this.ClientPort);
-        	return new Area(finder.FindFirst(), this.ClientPort);
+            return this.Area(Find.ById(id));
+        }
+
+        /// <summary>
+        /// Finds a area element using the specified regular expression to match the element id.
+        /// </summary>
+        /// <param name="id">The regular expression that matches the element id of the area element being sought.</param>
+        /// <returns>The area element for the corresponding regular expression, or null if none is found</returns>
+        public IArea Area(Regex id)
+        {
+            return this.Area(Find.ById(id));
+        }
+
+        /// <summary>
+        /// Finds a area element using the specified attribute constraint.
+        /// </summary>
+        /// <param name="findBy">The attibute contraint used to match an attribute of the area element being sought.</param>
+        /// <returns>The area element for the corresponding attribute constraint, or null if none is found</returns>
+        public IArea Area(AttributeConstraint findBy)
+        {
+            Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "area", findBy, this.ClientPort);
+            return new Area(finder.FindFirst(), this.ClientPort);
+        }
+
+        public IAreaCollection Areas
+        {
+            get 
+            {
+                Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "area", null, this.ClientPort);
+                return new AreaCollection(this.ClientPort, finder);
+            }
         }
 
         /// <summary>
@@ -196,6 +225,37 @@ namespace WatiN.Core.Mozilla
         public ISelectList SelectList(string id)
         {
             return this.SelectList(Find.ById(id));
+        }
+
+        /// <summary>
+        /// Finds a span element using the specified id.
+        /// </summary>
+        /// <param name="id">The id of the span element being sought.</param>
+        /// <returns>The span element for the corresponding id, or null if none is found</returns>
+        public ISpan Span(string id)
+        {
+            return this.Span(Find.ById(id));
+        }
+
+        /// <summary>
+        /// Finds a span element using the specified regular expression to match the element id.
+        /// </summary>
+        /// <param name="id">The regular expression that matches the element id of the span element being sought.</param>
+        /// <returns>The span element for the corresponding regular expression, or null if none is found</returns>
+        public ISpan Span(Regex id)
+        {
+            return this.Span(Find.ById(id));
+        }
+
+        /// <summary>
+        /// Finds a select span using the specified <see cref="AttributeConstraint" />.
+        /// </summary>
+        /// <param name="constraint">The <see cref="AttributeConstraint" /> for the span being sought.</param>
+        /// <returns>The span for the matches the <see cref="AttributeConstraint" />, or null if none is found</returns>
+        public ISpan Span(AttributeConstraint constraint)
+        {
+            Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "span", constraint, this.ClientPort);
+            return new Span(finder.FindFirst(), this.ClientPort);            
         }
 
         /// <summary>

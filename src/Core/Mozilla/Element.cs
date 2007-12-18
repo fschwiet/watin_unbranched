@@ -315,7 +315,7 @@ namespace WatiN.Core.Mozilla
                 attributeName = watiNAttributeMap[attributeName];
             }
 
-            if (knownAttributeOverrides.Contains(attributeName))
+            if (knownAttributeOverrides.Contains(attributeName) || attributeName.StartsWith("style", StringComparison.OrdinalIgnoreCase))
             {
                 return this.GetProperty(attributeName);
             }

@@ -40,6 +40,22 @@ namespace WatiN.Core.Interfaces
         IArea Area(string id);
 
         /// <summary>
+        /// Finds a area element using the specified regular expression to match the element id.
+        /// </summary>
+        /// <param name="id">The regular expression that matches the element id of the area element being sought.</param>
+        /// <returns>The area element for the corresponding regular expression, or null if none is found</returns>
+        IArea Area(Regex id);
+
+        /// <summary>
+        /// Finds a area element using the specified attribute constraint.
+        /// </summary>
+        /// <param name="findBy">The attibute contraint used to match an attribute of the area element being sought.</param>
+        /// <returns>The area element for the corresponding attribute constraint, or null if none is found</returns>
+        IArea Area(AttributeConstraint findBy);
+
+        IAreaCollection Areas { get;}
+
+        /// <summary>
         /// Finds a button element using the specified id.
         /// </summary>
         /// <param name="id">The id of the button element being sought.</param>
@@ -115,6 +131,27 @@ namespace WatiN.Core.Interfaces
         /// <param name="id">The id of the select element being sought.</param>
         /// <returns>The select element for the corresponding id, or null if none is found</returns>
         ISelectList SelectList(string id);
+
+        /// <summary>
+        /// Finds a span element using the specified id.
+        /// </summary>
+        /// <param name="id">The id of the span element being sought.</param>
+        /// <returns>The span element for the corresponding id, or null if none is found</returns>
+        ISpan Span(string id);
+
+        /// <summary>
+        /// Finds a span element using the specified regular expression to match the element id.
+        /// </summary>
+        /// <param name="id">The regular expression that matches the element id of the span element being sought.</param>
+        /// <returns>The span element for the corresponding regular expression, or null if none is found</returns>
+        ISpan Span(Regex id);
+
+        /// <summary>
+        /// Finds a span element using the specified attribute constraint.
+        /// </summary>
+        /// <param name="findBy">The attibute contraint used to match an attribute of the span element being sought.</param>
+        /// <returns>The span element for the corresponding attribute constraint, or null if none is found</returns>
+        ISpan Span(AttributeConstraint findBy);
 
         /// <summary>
         /// Finds a table using the specified Id.

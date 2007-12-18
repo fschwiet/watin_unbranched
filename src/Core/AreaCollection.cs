@@ -18,13 +18,14 @@
 
 using System.Collections;
 using mshtml;
+using WatiN.Core.Interfaces;
 
 namespace WatiN.Core
 {
 	/// <summary>
 	/// A typed collection of <see cref="Area" /> instances within a <see cref="Document" /> or <see cref="Element" />.
 	/// </summary>
-	public class AreaCollection : BaseElementCollection
+	public class AreaCollection : BaseElementCollection, IAreaCollection
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="AreaCollection" /> class.
@@ -47,7 +48,7 @@ namespace WatiN.Core
 		/// </summary>
 		/// <param name="findBy">The attribute to filter by.</param>
 		/// <returns>The filtered collection.</returns>
-		public AreaCollection Filter(AttributeConstraint findBy)
+		public IAreaCollection Filter(AttributeConstraint findBy)
 		{
 			return new AreaCollection(domContainer, DoFilter(findBy));
 		}
@@ -57,7 +58,7 @@ namespace WatiN.Core
 		/// </summary>
 		/// <param name="index">The index.</param>
 		/// <returns>The area.</returns>
-		public Area this[int index]
+		public IArea this[int index]
 		{
 			get { return new Area(domContainer, (IHTMLAreaElement) Elements[index]); }
 		}

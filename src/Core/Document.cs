@@ -756,6 +756,24 @@ namespace WatiN.Core
             return Area(Find.ById(elementId));
         }
 
+        IArea IElementsContainerTemp.Area(AttributeConstraint findBy)
+        {
+            return ElementsSupport.Area(DomContainer, findBy, this);
+        }
+
+        IArea IElementsContainerTemp.Area(Regex id)
+        {
+            return Area(Find.ById(id));
+        }
+
+	    IAreaCollection IElementsContainerTemp.Areas
+	    {
+	        get
+	        {
+                return ElementsSupport.Areas(DomContainer, this);
+	        }
+	    }
+
         IButton IElementsContainerTemp.Button(string id)
         {
             return Button(Find.ById(id));
@@ -784,6 +802,21 @@ namespace WatiN.Core
         ISelectList IElementsContainerTemp.SelectList(string id)
         {
             return SelectList(Find.ById(id));
+        }
+
+        ISpan IElementsContainerTemp.Span(string id)
+        {
+            return Span(Find.ById(id));
+        }
+
+        ISpan IElementsContainerTemp.Span(Regex id)
+        {
+            return Span(Find.ById(id));
+        }
+
+        ISpan IElementsContainerTemp.Span(AttributeConstraint findBy)
+        {
+            return ElementsSupport.Span(DomContainer, findBy, this);
         }
 
         ITable IElementsContainerTemp.Table(string id)

@@ -19,7 +19,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 using NUnit.Framework;
+using WatiN.Core;
 using WatiN.Core.Interfaces;
 
 namespace WatiN.Core.UnitTests.CrossBrowserTests
@@ -34,63 +36,40 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         #region Public test methods
 
         /// <summary>
-        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Label(string)"/> method.
-        /// Tests that a label can be located based on the value of it's Id.
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Area(string)"/> method.
+        /// Tests that an area can be located based on the value of it's Id.
         /// </summary>
         [Test]
-        public void LabelById()
+        public void AreaById()
         {
-            ExecuteTest(LabelByIdTest, false);
+            ExecuteTest(AreaByIdTest, false);
         }
 
         /// <summary>
-        /// Tests the behaviour of the <see cref="IElementsContainerTemp.SelectList(string)"/> method.
-        /// Tests that a select list can be located based on the value of it's Id.
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Area(Regex)"/> method.
         /// </summary>
         [Test]
-        public void SelectListById()
+        public void AreaByRegex()
         {
-            ExecuteTest(SelectListByIdTest, false);
+            ExecuteTest(AreaByRegexTest);
         }
 
         /// <summary>
-        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Table(string)"/> method.
-        /// Tests that a table can be located based on the value of it's Id.
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Area(AttributeConstraint)"/> method.
         /// </summary>
         [Test]
-        public void TableById()
+        public void AreaByAttributeContraint()
         {
-            ExecuteTest(TableByIdTest, false);
+            ExecuteTest(AreaByAttributeContraintTest);
         }
 
         /// <summary>
-        /// Tests the behaviour of the <see cref="IElementsContainerTemp.TableBody(string)"/> method.
-        /// Tests that a table body can be located based on the value of it's Id.
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Areas"/> property.
         /// </summary>
         [Test]
-        public void TableBodyById()
+        public void Areas()
         {
-            ExecuteTest(TableBodyByIdTest, false);
-        }
-
-        /// <summary>
-        /// Tests the behaviour of the <see cref="IElementsContainerTemp.TableRow(string)"/> method.
-        /// Tests that a table row can be located based on the value of it's Id.
-        /// </summary>
-        [Test]
-        public void TableRowById()
-        {
-            ExecuteTest(TableRowByIdTest, false);
-        }
-
-        /// <summary>
-        /// Tests the behaviour of the <see cref="IElementsContainerTemp.TableCell(string)"/> method.
-        /// Tests that a table cell can be located based on the value of it's Id.
-        /// </summary>
-        [Test]
-        public void TableCellById()
-        {
-            ExecuteTest(TableCellByIdTest, false);
+            ExecuteTest(AreasTest);
         }
 
         /// <summary>
@@ -104,6 +83,24 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         }
 
         /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Button(Regex)"/> method.
+        /// </summary>
+        [Test]
+        public void ButtonByRegex()
+        {
+            ExecuteTest(ButtonByRegexTest);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Button(AttributeConstraint)"/> method.
+        /// </summary>
+        [Test]
+        public void ButtonByAttributeContraint()
+        {
+            ExecuteTest(ButtonByAttributeContraintTest);
+        }
+
+        /// <summary>
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.CheckBox(string)"/> method.
         /// Tests that a check box can be located based on the value of it's Id.
         /// </summary>
@@ -111,6 +108,16 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         public void CheckBoxById()
         {
             ExecuteTest(CheckBoxByIdTest, false);
+        }
+
+        /// <summary>
+        /// Test that we can obtain a reference to a div using the elements Id to look it up.
+        /// Once the element is found we assert properties unique to the <see cref="IDiv"/> interface.
+        /// </summary>
+        [Test]
+        public void DivById()
+        {
+            ExecuteTest(DivByIdTest, false);
         }
 
         /// <summary>
@@ -124,13 +131,13 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         }
 
         /// <summary>
-        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Area(string)"/> method.
-        /// Tests that an area can be located based on the value of it's Id.
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Label(string)"/> method.
+        /// Tests that a label can be located based on the value of it's Id.
         /// </summary>
         [Test]
-        public void AreaById()
+        public void LabelById()
         {
-            ExecuteTest(AreaByIdTest, false);
+            ExecuteTest(LabelByIdTest, false);
         }
 
         /// <summary>
@@ -163,13 +170,80 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         }
 
         /// <summary>
-        /// Test that we can obtain a reference to a div using the elements Id to look it up.
-        /// Once the element is found we assert properties unique to the <see cref="IDiv"/> interface.
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.SelectList(string)"/> method.
+        /// Tests that a select list can be located based on the value of it's Id.
         /// </summary>
         [Test]
-        public void DivById()
+        public void SelectListById()
         {
-            ExecuteTest(DivByIdTest, false);
+            ExecuteTest(SelectListByIdTest, false);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Span(string)"/> method.
+        /// </summary>
+        [Test]
+        public void SpanById()
+        {
+            ExecuteTest(SpanByIdTest);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Span(AttributeConstraint)"/> method.
+        /// </summary>
+        [Test]
+        public void SpanByAttributeContraint()
+        {
+            ExecuteTest(SpanByAttributeContraintTest);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Span(Regex)"/> method.
+        /// </summary>
+        [Test]
+        public void SpanByRegex()
+        {
+            ExecuteTest(SpanByRegexTest);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Table(string)"/> method.
+        /// Tests that a table can be located based on the value of it's Id.
+        /// </summary>
+        [Test]
+        public void TableById()
+        {
+            ExecuteTest(TableByIdTest, false);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.TableBody(string)"/> method.
+        /// Tests that a table body can be located based on the value of it's Id.
+        /// </summary>
+        [Test]
+        public void TableBodyById()
+        {
+            ExecuteTest(TableBodyByIdTest, false);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.TableCell(string)"/> method.
+        /// Tests that a table cell can be located based on the value of it's Id.
+        /// </summary>
+        [Test]
+        public void TableCellById()
+        {
+            ExecuteTest(TableCellByIdTest, false);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.TableRow(string)"/> method.
+        /// Tests that a table row can be located based on the value of it's Id.
+        /// </summary>
+        [Test]
+        public void TableRowById()
+        {
+            ExecuteTest(TableRowByIdTest, false);
         }
 
         /// <summary>
@@ -195,6 +269,44 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         #endregion
 
         #region Private static methods
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Area(Regex)"/> method.
+        /// </summary>
+        private static void AreaByRegexTest(IBrowser browser)
+        {
+            browser.GoTo(ImagesURI);
+            IArea area = browser.Area(new Regex("^Are"));
+
+            Assert.IsNotNull(area, GetErrorMessage("The area with id Area1 could not be found", browser));
+            Assert.IsTrue(area.Exists);
+            Assert.AreEqual("Area1", area.Id);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Area(AttributeConstraint)"/> method.
+        /// </summary>        
+        private static void AreaByAttributeContraintTest(IBrowser browser)
+        {
+            browser.GoTo(ImagesURI);
+            IArea area = browser.Area(Find.ByAlt("WatiN"));
+
+            Assert.IsNotNull(area, GetErrorMessage("The area with id Area1 could not be found", browser));
+            Assert.IsTrue(area.Exists);
+            Assert.AreEqual("Area1", area.Id);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Areas"/> method.
+        /// </summary>
+        private static void AreasTest(IBrowser browser)
+        {
+            browser.GoTo(ImagesURI);
+            IAreaCollection areas = browser.Areas;
+
+            Assert.IsNotNull(areas, GetErrorMessage("The areas could not be found", browser));
+            Assert.AreEqual(2, areas.Length);
+        }
 
         /// <summary>
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.Label(string)"/> method.
@@ -233,6 +345,49 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         }
 
         /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Span(string)"/> method.
+        /// </summary>
+        private static void SpanByIdTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+
+            ISpan span = browser.Span("spanid1");
+            Assert.IsNotNull(span);
+            Assert.IsTrue(span.Exists);
+
+            Assert.AreEqual("File", span.Text.Trim(), GetErrorMessage("Incorrect value retrieved from span", browser));
+                 
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Span(AttributeConstraint)"/> method.
+        /// </summary>
+        private static void SpanByAttributeContraintTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+
+            ISpan span = browser.Span(Find.ByStyle("color", "green"));
+            Assert.IsNotNull(span);
+            Assert.IsTrue(span.Exists);
+
+            Assert.AreEqual("File", span.Text.Trim(), GetErrorMessage("Incorrect value retrieved from span", browser));
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Span(Regex)"/> method.
+        /// </summary>
+        private static void SpanByRegexTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+
+            ISpan span = browser.Span(new Regex("^spanid"));
+            Assert.IsNotNull(span);
+            Assert.IsTrue(span.Exists);
+
+            Assert.AreEqual("File", span.Text.Trim(), GetErrorMessage("Incorrect value retrieved from span", browser));
+        }
+
+        /// <summary>
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.TableRow(string)"/> method.
         /// Tests that a table row can be located based on the value of it's Id.
         /// </summary>
@@ -266,6 +421,32 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
             IButton button = browser.Button("helloid");
 
             Assert.IsNotNull(button, GetErrorMessage("The button with id helloid could not be found", browser));
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Button(Regex)"/> method.
+        /// </summary>
+        private static void ButtonByRegexTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+            IButton button = browser.Button(new Regex("^hello"));
+
+            Assert.IsNotNull(button, GetErrorMessage("The button sought using the regular expression ^Hello could not be found", browser));
+            Assert.IsTrue(button.Exists);
+            Assert.AreEqual("helloid", button.Id);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Button(AttributeConstraint)"/> method.
+        /// </summary>        
+        private static void ButtonByAttributeContraintTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+            IButton button = browser.Button(Find.ByValue("Show alert"));
+
+            Assert.IsNotNull(button, GetErrorMessage("The button sought using the regular expression ^Hello could not be found", browser));
+            Assert.IsTrue(button.Exists);
+            Assert.AreEqual("helloid", button.Id);
         }
 
         /// <summary>
