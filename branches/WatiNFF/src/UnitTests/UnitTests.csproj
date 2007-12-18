@@ -161,6 +161,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CrossBrowserTests\CrossBrowserTest.cs" />
+    <Compile Include="CrossBrowserTests\IAreaCollectionTests.cs" />
     <Compile Include="CrossBrowserTests\IAreaTests.cs" />
     <Compile Include="CrossBrowserTests\IBrowserTests.cs" />
     <Compile Include="CrossBrowserTests\IButtonTests.cs" />

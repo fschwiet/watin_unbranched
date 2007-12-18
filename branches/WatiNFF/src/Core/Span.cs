@@ -18,13 +18,14 @@
 
 using System.Collections;
 using mshtml;
+using WatiN.Core.Interfaces;
 
 namespace WatiN.Core
 {
 	/// <summary>
 	/// This class provides specialized functionality for a HTML span element.
 	/// </summary>
-	public class Span : ElementsContainer
+	public class Span : ElementsContainer, ISpan
 	{
 		private static ArrayList elementTags;
 
