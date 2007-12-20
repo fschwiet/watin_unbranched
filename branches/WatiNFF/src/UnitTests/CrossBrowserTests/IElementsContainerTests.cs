@@ -101,6 +101,15 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         }
 
         /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Buttons"/> property.
+        /// </summary>
+        [Test]
+        public void Buttons()
+        {
+            ExecuteTest(ButtonsTest);
+        }
+
+        /// <summary>
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.CheckBox(string)"/> method.
         /// Tests that a check box can be located based on the value of it's Id.
         /// </summary>
@@ -109,6 +118,60 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         {
             ExecuteTest(CheckBoxByIdTest, false);
         }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.CheckBox(Regex)"/> method.
+        /// </summary>
+        [Test]
+        public void CheckBoxByRegex()
+        {
+            ExecuteTest(CheckBoxByRegexTest);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.CheckBox(AttributeConstraint)"/> method.
+        /// </summary>
+        [Test]
+        public void CheckBoxByAttributeContraint()
+        {
+            ExecuteTest(CheckBoxByAttributeContraintTest);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.CheckBoxes"/> property.
+        /// </summary>
+        [Test]
+        public void CheckBoxes()
+        {
+            ExecuteTest(CheckBoxesTest);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Div(Regex)"/> method.
+        /// </summary>
+        [Test]
+        public void DivByRegex()
+        {
+            ExecuteTest(DivByRegexTest);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Div(AttributeConstraint)"/> method.
+        /// </summary>
+        [Test]
+        public void DivByAttributeContraint()
+        {
+            ExecuteTest(DivByAttributeContraintTest);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Divs"/> property.
+        /// </summary>
+        [Test]
+        public void Divs()
+        {
+            ExecuteTest(DivsTest);
+        }        
 
         /// <summary>
         /// Test that we can obtain a reference to a div using the elements Id to look it up.
@@ -309,6 +372,17 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         }
 
         /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Buttons"/> property.
+        /// </summary>
+        private static void ButtonsTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+            IButtonCollection buttons = browser.Buttons;
+
+            Assert.AreEqual(5, buttons.Length, GetErrorMessage("Incorrect no. of button elements returned." , browser));
+        }
+
+        /// <summary>
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.Label(string)"/> method.
         /// Tests that a label can be located based on the value of it's Id.
         /// </summary>
@@ -444,7 +518,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
             browser.GoTo(MainURI);
             IButton button = browser.Button(Find.ByValue("Show alert"));
 
-            Assert.IsNotNull(button, GetErrorMessage("The button sought using the regular expression ^Hello could not be found", browser));
+            Assert.IsNotNull(button, GetErrorMessage("The button sought using the value Show alert could not be found", browser));
             Assert.IsTrue(button.Exists);
             Assert.AreEqual("helloid", button.Id);
         }
@@ -458,6 +532,78 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
             browser.GoTo(MainURI);
             ICheckBox checkBox = browser.CheckBox("Checkbox21");
             Assert.IsNotNull(checkBox, GetErrorMessage("The checkbox with the id Checkbox21 could not be found.", browser));
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.CheckBox(Regex)"/> method.
+        /// </summary>
+        private static void CheckBoxByRegexTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+            ICheckBox checkBox = browser.CheckBox(new Regex("^Checkbox3"));
+
+            Assert.IsNotNull(checkBox, GetErrorMessage("The checkbox sought using the regular expression ^Checkbox3 could not be found", browser));
+            Assert.IsTrue(checkBox.Exists);
+            Assert.AreEqual("Checkbox3", checkBox.Id);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.CheckBox(AttributeConstraint)"/> method.
+        /// </summary>        
+        private static void CheckBoxByAttributeContraintTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+            ICheckBox checkBox = browser.CheckBox(Find.ByValue("Effe teste"));
+
+            Assert.IsNotNull(checkBox, GetErrorMessage("The checkbox sought using value Effe teste could not be found", browser));
+            Assert.IsTrue(checkBox.Exists);
+            Assert.AreEqual("Checkbox3", checkBox.Id);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.CheckBoxes"/> property.
+        /// </summary>
+        private static void CheckBoxesTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+            ICheckBoxCollection checkBoxes = browser.CheckBoxes;
+            Assert.AreEqual(5, checkBoxes.Length, GetErrorMessage("Incorrect no. of checkboxes returned", browser));
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Div(Regex)"/> method.
+        /// </summary>
+        private static void DivByRegexTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+            IDiv div = browser.Div(new Regex("^div"));
+
+            Assert.IsNotNull(div, GetErrorMessage("The div sought using the regular expression ^div could not be found", browser));
+            Assert.IsTrue(div.Exists);
+            Assert.AreEqual("divid", div.Id);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Div(AttributeConstraint)"/> method.
+        /// </summary>        
+        private static void DivByAttributeContraintTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+            IDiv div = browser.Div(Find.By("ms_positioning", "FlowLayout"));
+
+            Assert.IsNotNull(div, GetErrorMessage("The checkbox sought using attribute ms_positioning could not be found", browser));
+            Assert.IsTrue(div.Exists);
+            Assert.AreEqual("divid", div.Id);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Divs"/> property.
+        /// </summary>
+        private static void DivsTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+            IDivCollection divs = browser.Divs;
+            Assert.AreEqual(1, divs.Length, GetErrorMessage("Incorrect no. of divs returned", browser));
         }
 
         /// <summary>

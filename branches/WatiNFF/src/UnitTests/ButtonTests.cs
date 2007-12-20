@@ -21,6 +21,7 @@ using System.Collections;
 using System.Text.RegularExpressions;
 using NUnit.Framework;
 using WatiN.Core.Exceptions;
+using WatiN.Core.Interfaces;
 
 namespace WatiN.Core.UnitTests
 {
@@ -30,8 +31,8 @@ namespace WatiN.Core.UnitTests
 		[Test]
 		public void ButtonCollectionSecondFilterAndOthersShouldNeverThrowInvalidAttributeException()
 		{
-			ButtonCollection buttons = ie.Buttons.Filter(Find.ById("testlinkid"));
-			ButtonCollection buttons2 = buttons.Filter(Find.ByFor("Checkbox21"));
+			IButtonCollection buttons = ie.Buttons.Filter(Find.ById("testlinkid"));
+			IButtonCollection buttons2 = buttons.Filter(Find.ByFor("Checkbox21"));
 			Assert.AreEqual(0, buttons2.Length);
 		}
 
@@ -128,7 +129,7 @@ namespace WatiN.Core.UnitTests
 		[Test]
 		public void ButtonsFilterOnHTMLElementCollection()
 		{
-			ButtonCollection buttons = ie.Buttons.Filter(Find.ById(new Regex("le")));
+			IButtonCollection buttons = ie.Buttons.Filter(Find.ById(new Regex("le")));
 			Assert.AreEqual(2, buttons.Length);
 			Assert.AreEqual("disabledid", buttons[0].Id);
 			Assert.AreEqual("buttonelementid", buttons[1].Id);
@@ -137,7 +138,7 @@ namespace WatiN.Core.UnitTests
 		[Test]
 		public void ButtonsFilterOnArrayListElements()
 		{
-			ButtonCollection buttons = ie.Buttons;
+			IButtonCollection buttons = ie.Buttons;
 			Assert.AreEqual(5, buttons.Length);
 
 			buttons = ie.Buttons.Filter(Find.ById(new Regex("le")));

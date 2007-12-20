@@ -18,13 +18,14 @@
 
 using System.Collections;
 using mshtml;
+using WatiN.Core.Interfaces;
 
 namespace WatiN.Core
 {
 	/// <summary>
 	/// A typed collection of <see cref="Button" /> instances within a <see cref="Document"/> or <see cref="Element"/>.
 	/// </summary>
-	public class ButtonCollection : BaseElementCollection
+	public class ButtonCollection : BaseElementCollection, IButtonCollection
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ButtonCollection"/> class.
@@ -46,12 +47,12 @@ namespace WatiN.Core
 		/// Gets the <see cref="Button"/> at the specified index.
 		/// </summary>
 		/// <value></value>
-		public Button this[int index]
+		public IButton this[int index]
 		{
 			get { return new Button(domContainer, (IHTMLElement) Elements[index]); }
 		}
 
-		public ButtonCollection Filter(AttributeConstraint findBy)
+		public IButtonCollection Filter(AttributeConstraint findBy)
 		{
 			return new ButtonCollection(domContainer, DoFilter(findBy));
 		}

@@ -86,7 +86,7 @@ namespace WatiN.Core.UnitTests.Mozilla
 		{
 			using (FireFox browser = new FireFox(MainURI))
 			{
-				WatiN.Core.Mozilla.ElementFinder elementFinder = new WatiN.Core.Mozilla.ElementFinder(null, null, Find.ById("table2"), browser.ClientPort);
+				WatiN.Core.Mozilla.ElementFinder elementFinder = new WatiN.Core.Mozilla.ElementFinder(null, "*", Find.ById("table2"), browser.ClientPort);
 				string element = elementFinder.FindFirst();
 
 				Assert.That(element, Is.Not.Null, "Shouldn't be null");

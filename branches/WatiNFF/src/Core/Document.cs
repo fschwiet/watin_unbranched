@@ -412,6 +412,22 @@ namespace WatiN.Core
 			get { return ElementsSupport.CheckBoxes(DomContainer, this); }
 		}
 
+
+        IDiv IElementsContainerTemp.Div(Regex elementId)
+        {
+            return Div(Find.ById(elementId));
+        }
+
+        IDiv IElementsContainerTemp.Div(AttributeConstraint findBy)
+        {
+            return ElementsSupport.Div(DomContainer, findBy, this);
+        }
+
+        IDivCollection IElementsContainerTemp.Divs
+        {
+            get { return ElementsSupport.Divs(DomContainer, this); }
+        }
+
 		public Element Element(string elementId)
 		{
 			return Element(Find.ById(elementId));
@@ -789,9 +805,29 @@ namespace WatiN.Core
             return Button(constraint);
         }
 
+        IButtonCollection IElementsContainerTemp.Buttons
+        {
+            get { return ElementsSupport.Buttons(DomContainer, this); }
+        }
+
         ICheckBox IElementsContainerTemp.CheckBox(string elementId)
         {
             return CheckBox(Find.ById(elementId));
+        }
+
+        ICheckBox IElementsContainerTemp.CheckBox(Regex elementId)
+        {
+            return CheckBox(Find.ById(elementId));
+        }
+
+        ICheckBox IElementsContainerTemp.CheckBox(AttributeConstraint findBy)
+        {
+            return ElementsSupport.CheckBox(DomContainer, findBy, this);
+        }
+
+        ICheckBoxCollection IElementsContainerTemp.CheckBoxes
+        {
+            get { return ElementsSupport.CheckBoxes(DomContainer, this); }
         }
 
         IForm IElementsContainerTemp.Form(string id)

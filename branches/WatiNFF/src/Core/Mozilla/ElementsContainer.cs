@@ -37,7 +37,7 @@ namespace WatiN.Core.Mozilla
             get 
             {
 
-                WatiNElementCollection elements = new WatiNElementCollection(this.ClientPort, new ElementFinder(this, null, null, this.ClientPort));
+                WatiNElementCollection elements = new WatiNElementCollection(this.ClientPort, new ElementFinder(this, "*", null, this.ClientPort));
                 return elements;
             }
         }
@@ -121,11 +121,35 @@ namespace WatiN.Core.Mozilla
         }
 
         /// <summary>
+        /// Returns all the button elements for the current document
+        /// </summary>
+        public IButtonCollection Buttons
+        {
+            get
+            {
+                Mozilla.ElementFinder finder = new Mozilla.ElementFinder(
+                    this, 
+                    new List<ElementTag>(new ElementTag[] { new ElementTag("input", "button submit image reset"), new ElementTag("button") }), null, this.ClientPort);
+                return new ButtonCollection(this.ClientPort, finder);
+            }
+        }
+
+        /// <summary>
         /// Finds a checkbox element using the specified id.
         /// </summary>
         /// <param name="id">The id of the checkbox element being sought.</param>
         /// <returns>The checkbox element for the corresponding id, or null if none is found</returns>
         public ICheckBox CheckBox(string id)
+        {
+            return this.CheckBox(Find.ById(id));
+        }
+
+        /// <summary>
+        /// Finds a checkbox element using the specified regular expression to match the element id.
+        /// </summary>
+        /// <param name="id">The regular expression that matches the element id of the checkbox element being sought.</param>
+        /// <returns>The checkbox element for the corresponding regular expression, or null if none is found</returns>
+        public ICheckBox CheckBox(Regex id)
         {
             return this.CheckBox(Find.ById(id));
         }
@@ -142,6 +166,18 @@ namespace WatiN.Core.Mozilla
         }
 
         /// <summary>
+        /// Returns all the checkbox elements for the current document
+        /// </summary>
+        public ICheckBoxCollection CheckBoxes
+        {
+            get
+            {
+                Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "input", "checkbox", null, this.ClientPort);
+                return new CheckBoxCollection(this.ClientPort, finder);
+            }
+        }
+
+        /// <summary>
         /// Finds a div element using the specified id.
         /// </summary>
         /// <param name="id">The id.</param>
@@ -150,6 +186,39 @@ namespace WatiN.Core.Mozilla
         {
         	Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "div", Find.ById(id), this.ClientPort);
         	return new Div(finder.FindFirst(), this.ClientPort);
+        }
+
+        /// <summary>
+        /// Finds a div element using the specified regular expression to match the div's id.
+        /// </summary>
+        /// <param name="id">The regular expression that matches the element id of the div element being sought.</param>
+        /// <returns>The div element for the corresponding regular expression, or null if none is found</returns>
+        public IDiv Div(Regex id)
+        {
+            return this.Div(Find.ById(id));
+        }
+
+        /// <summary>
+        /// Finds a div element using the specified attribute constraint.
+        /// </summary>
+        /// <param name="findBy">The attibute contraint used to match an attribute of the div element being sought.</param>
+        /// <returns>The div element for the corresponding attribute constraint, or null if none is found</returns>
+        public IDiv Div(AttributeConstraint findBy)
+        {
+            Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "div", findBy, this.ClientPort);
+            return new Div(finder.FindFirst(), this.ClientPort);
+        }
+
+        /// <summary>
+        /// Returns all the div elements for the current document
+        /// </summary>
+        public IDivCollection Divs
+        {
+            get
+            {
+                Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "div", null, this.ClientPort);
+                return new DivCollection(this.ClientPort, finder);
+            }
         }
 
         /// <summary>
@@ -351,7 +420,7 @@ namespace WatiN.Core.Mozilla
         /// <returns></returns>
         public IElement Element(string id)
         {
-        	Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, null, Find.ById(id), this.ClientPort);
+        	Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "*", Find.ById(id), this.ClientPort);
         	return new Element(finder.FindFirst(), this.ClientPort);
         }
 

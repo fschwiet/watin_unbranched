@@ -18,13 +18,14 @@
 
 using System.Collections;
 using mshtml;
+using WatiN.Core.Interfaces;
 
 namespace WatiN.Core
 {
 	/// <summary>
 	/// A typed collection of <see cref="Div" /> instances within a <see cref="Document"/> or <see cref="Element"/>.
 	/// </summary>
-	public class DivCollection : BaseElementCollection
+	public class DivCollection : BaseElementCollection, IDivCollection
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="DivCollection"/> class.
@@ -46,12 +47,12 @@ namespace WatiN.Core
 		/// Gets the <see cref="Div"/> at the specified index.
 		/// </summary>
 		/// <value></value>
-		public Div this[int index]
+		public IDiv this[int index]
 		{
 			get { return new Div(domContainer, (IHTMLDivElement) Elements[index]); }
 		}
 
-		public DivCollection Filter(AttributeConstraint findBy)
+		public IDivCollection Filter(AttributeConstraint findBy)
 		{
 			return new DivCollection(domContainer, DoFilter(findBy));
 		}

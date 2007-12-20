@@ -160,11 +160,14 @@
     <Compile Include="ComparerTests\UriComparerTests.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CrossBrowserTests\IDivCollectionTests.cs" />
     <Compile Include="CrossBrowserTests\CrossBrowserTest.cs" />
     <Compile Include="CrossBrowserTests\IAreaCollectionTests.cs" />
     <Compile Include="CrossBrowserTests\IAreaTests.cs" />
     <Compile Include="CrossBrowserTests\IBrowserTests.cs" />
+    <Compile Include="CrossBrowserTests\IButtonCollectionTests.cs" />
     <Compile Include="CrossBrowserTests\IButtonTests.cs" />
+    <Compile Include="CrossBrowserTests\ICheckBoxCollectionTests.cs" />
     <Compile Include="CrossBrowserTests\IDocumentTests.cs" />
     <Compile Include="CrossBrowserTests\IElementsContainerTests.cs" />
     <Compile Include="CrossBrowserTests\IElementTests.cs" />

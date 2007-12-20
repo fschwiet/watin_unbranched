@@ -367,6 +367,9 @@
     <Compile Include="HtmlDialogCollection.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Interfaces\IDivCollection.cs" />
+    <Compile Include="Interfaces\ICheckBoxCollection.cs" />
+    <Compile Include="Interfaces\IButtonCollection.cs" />
     <Compile Include="Interfaces\IAreaCollection.cs" />
     <Compile Include="Interfaces\ICheckBox.cs" />
     <Compile Include="IForm.cs" />
@@ -463,8 +466,11 @@
     <Compile Include="Mozilla\AreaCollection.cs" />
     <Compile Include="Mozilla\BaseElementCollection.cs" />
     <Compile Include="Mozilla\Button.cs" />
+    <Compile Include="Mozilla\ButtonCollection.cs" />
     <Compile Include="Mozilla\CheckBox.cs" />
+    <Compile Include="Mozilla\CheckBoxCollection.cs" />
     <Compile Include="Mozilla\Div.cs" />
+    <Compile Include="Mozilla\DivCollection.cs" />
     <Compile Include="Mozilla\Document.cs" />
     <Compile Include="Mozilla\Element.cs" />
     <Compile Include="Mozilla\ElementFinder.cs" />

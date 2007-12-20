@@ -18,13 +18,14 @@
 
 using System.Collections;
 using mshtml;
+using WatiN.Core.Interfaces;
 
 namespace WatiN.Core
 {
 	/// <summary>
 	/// A typed collection of <see cref="CheckBox" /> instances within a <see cref="Document"/> or <see cref="Element"/>.
 	/// </summary>
-	public class CheckBoxCollection : BaseElementCollection
+	public class CheckBoxCollection : BaseElementCollection, ICheckBoxCollection
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="CheckBoxCollection"/> class.
@@ -46,12 +47,12 @@ namespace WatiN.Core
 		/// Gets the <see cref="CheckBox"/> at the specified index.
 		/// </summary>
 		/// <value></value>
-		public CheckBox this[int index]
+		public ICheckBox this[int index]
 		{
 			get { return new CheckBox(domContainer, (IHTMLInputElement) Elements[index]); }
 		}
 
-		public CheckBoxCollection Filter(AttributeConstraint findBy)
+		public ICheckBoxCollection Filter(AttributeConstraint findBy)
 		{
 			return new CheckBoxCollection(domContainer, DoFilter(findBy));
 		}
