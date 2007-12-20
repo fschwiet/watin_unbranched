@@ -53,6 +53,9 @@ namespace WatiN.Core.Interfaces
         /// <returns>The area element for the corresponding attribute constraint, or null if none is found</returns>
         IArea Area(AttributeConstraint findBy);
 
+        /// <summary>
+        /// Returns all the area elements for the current document
+        /// </summary>
         IAreaCollection Areas { get;}
 
         /// <summary>
@@ -77,6 +80,11 @@ namespace WatiN.Core.Interfaces
         IButton Button(AttributeConstraint constraint);
 
         /// <summary>
+        /// Returns all the button elements for the current document
+        /// </summary>
+        IButtonCollection Buttons { get; }
+
+        /// <summary>
         /// Finds a checkbox element using the specified id.
         /// </summary>
         /// <param name="id">The id of the checkbox element being sought.</param>
@@ -84,11 +92,49 @@ namespace WatiN.Core.Interfaces
         ICheckBox CheckBox(string id);
 
         /// <summary>
+        /// Finds a checkbox element using the specified regular expression to match the element id.
+        /// </summary>
+        /// <param name="id">The regular expression that matches the element id of the checkbox element being sought.</param>
+        /// <returns>The checkbox element for the corresponding regular expression, or null if none is found</returns>
+        ICheckBox CheckBox(Regex id);
+
+        /// <summary>
+        /// Finds a checkbox element using the specified attribute constraint.
+        /// </summary>
+        /// <param name="findBy">The attibute contraint used to match an attribute of the checkbox element being sought.</param>
+        /// <returns>The checkbox element for the corresponding attribute constraint, or null if none is found</returns>
+        ICheckBox CheckBox(AttributeConstraint findBy);
+
+        /// <summary>
+        /// Returns all the checkbox elements for the current document
+        /// </summary>
+        ICheckBoxCollection CheckBoxes { get; }
+
+        /// <summary>
         /// Finds a div element using the specified id.
         /// </summary>
         /// <param name="id">The id of the div element being sought.</param>
         /// <returns>The div element for the corresponding id, or null if none is found</returns>
         IDiv Div(string id);
+
+        /// <summary>
+        /// Finds a div element using the specified regular expression to match the div's id.
+        /// </summary>
+        /// <param name="id">The regular expression that matches the element id of the div element being sought.</param>
+        /// <returns>The div element for the corresponding regular expression, or null if none is found</returns>
+        IDiv Div(Regex id);
+
+        /// <summary>
+        /// Finds a div element using the specified attribute constraint.
+        /// </summary>
+        /// <param name="findBy">The attibute contraint used to match an attribute of the div element being sought.</param>
+        /// <returns>The div element for the corresponding attribute constraint, or null if none is found</returns>
+        IDiv Div(AttributeConstraint findBy);
+
+        /// <summary>
+        /// Returns all the div elements for the current document
+        /// </summary>
+        IDivCollection Divs { get; }
 
         /// <summary>
         /// Finds a form element using the specified id.
