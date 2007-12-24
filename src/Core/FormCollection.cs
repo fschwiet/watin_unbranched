@@ -18,13 +18,14 @@
 
 using System.Collections;
 using mshtml;
+using WatiN.Core.Interfaces;
 
 namespace WatiN.Core
 {
 	/// <summary>
 	/// A typed collection of <see cref="Form" /> instances within a <see cref="Document"/> or <see cref="Element"/>.
 	/// </summary>
-	public class FormCollection : BaseElementCollection
+	public class FormCollection : BaseElementCollection, IFormsCollection
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="FormCollection"/> class.
@@ -46,12 +47,12 @@ namespace WatiN.Core
 		/// Gets the <see cref="Form"/> at the specified index.
 		/// </summary>
 		/// <value></value>
-		public Form this[int index]
+		public IForm this[int index]
 		{
 			get { return new Form(domContainer, (IHTMLFormElement) Elements[index]); }
 		}
 
-		public FormCollection Filter(AttributeConstraint findBy)
+		public IFormsCollection Filter(AttributeConstraint findBy)
 		{
 			return new FormCollection(domContainer, DoFilter(findBy));
 		}

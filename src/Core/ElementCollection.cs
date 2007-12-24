@@ -52,7 +52,7 @@ namespace WatiN.Core
 			get { return New(domContainer, (IHTMLElement) Elements[index]); }
 		}
 
-		public ElementCollection Filter(AttributeConstraint findBy)
+		public IWatiNElementCollection Filter(AttributeConstraint findBy)
 		{
 			return new ElementCollection(domContainer, DoFilter(findBy));
 		}

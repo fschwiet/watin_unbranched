@@ -160,6 +160,9 @@
     <Compile Include="ComparerTests\UriComparerTests.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CrossBrowserTests\ILinkCollectionTests.cs" />
+    <Compile Include="CrossBrowserTests\ILabelCollectionTests.cs" />
+    <Compile Include="CrossBrowserTests\IImageCollectionTests.cs" />
     <Compile Include="CrossBrowserTests\IDivCollectionTests.cs" />
     <Compile Include="CrossBrowserTests\CrossBrowserTest.cs" />
     <Compile Include="CrossBrowserTests\IAreaCollectionTests.cs" />
@@ -171,6 +174,7 @@
     <Compile Include="CrossBrowserTests\IDocumentTests.cs" />
     <Compile Include="CrossBrowserTests\IElementsContainerTests.cs" />
     <Compile Include="CrossBrowserTests\IElementTests.cs" />
+    <Compile Include="CrossBrowserTests\IFormCollectionTests.cs" />
     <Compile Include="CrossBrowserTests\IFormTests.cs" />
     <Compile Include="CrossBrowserTests\IImageTests.cs" />
     <Compile Include="CrossBrowserTests\ILabelTests.cs" />
@@ -181,6 +185,7 @@
     <Compile Include="CrossBrowserTests\ITableCellTests.cs" />
     <Compile Include="CrossBrowserTests\ITableRowTests.cs" />
     <Compile Include="CrossBrowserTests\ITableTests.cs" />
+    <Compile Include="CrossBrowserTests\IWatiNElementCollectionTests.cs" />
     <Compile Include="DialogHandlerTests\AlertAndConfirmDialogHandlerTests.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -17,6 +17,7 @@
 #endregion Copyright
 
 using WatiN.Core;
+using WatiN.Core.Interfaces;
 
 namespace WatiN.Core.Mozilla
 {

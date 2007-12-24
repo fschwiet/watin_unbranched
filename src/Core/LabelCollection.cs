@@ -18,13 +18,14 @@
 
 using System.Collections;
 using mshtml;
+using WatiN.Core.Interfaces;
 
 namespace WatiN.Core
 {
 	/// <summary>
 	/// A typed collection of <see cref="Label" /> instances within a <see cref="Document"/> or <see cref="Element"/>.
 	/// </summary>
-	public class LabelCollection : BaseElementCollection
+	public class LabelCollection : BaseElementCollection, ILabelCollection
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="LabelCollection"/> class.
@@ -46,12 +47,12 @@ namespace WatiN.Core
 		/// Gets the <see cref="Label"/> at the specified index.
 		/// </summary>
 		/// <value></value>
-		public Label this[int index]
+		public ILabel this[int index]
 		{
 			get { return new Label(domContainer, (IHTMLLabelElement) Elements[index]); }
 		}
 
-		public LabelCollection Filter(AttributeConstraint findBy)
+		public ILabelCollection Filter(AttributeConstraint findBy)
 		{
 			return new LabelCollection(domContainer, DoFilter(findBy));
 		}

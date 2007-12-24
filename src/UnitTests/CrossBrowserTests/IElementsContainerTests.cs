@@ -184,6 +184,24 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         }
 
         /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Element(Regex)"/> method.
+        /// </summary>
+        [Test]
+        public void ElementByRegex()
+        {
+            ExecuteTest(ElementByRegexTest);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Element(AttributeConstraint)"/> method.
+        /// </summary>
+        [Test]
+        public void ElementByAttributeContraint()
+        {
+            ExecuteTest(ElementByAttributeContraintTest);
+        }
+
+        /// <summary>
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.Form(string)"/> method.
         /// Tests that a form can be located based on the value of it's Id.
         /// </summary>
@@ -194,6 +212,69 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         }
 
         /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Form(Regex)"/> method.
+        /// </summary>
+        [Test]
+        public void FormByRegex()
+        {
+            ExecuteTest(FormByRegexTest);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Form(AttributeConstraint)"/> method.
+        /// </summary>
+        [Test]
+        public void FormByAttributeContraint()
+        {
+            ExecuteTest(FormByAttributeContraintTest);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Forms"/> property.
+        /// </summary>
+        [Test]
+        public void Forms()
+        {
+            ExecuteTest(FormsTest);   
+        }
+
+        /// <summary>
+        /// Test that we can obtain a reference to an image using the elements Id to look it up using <see cref="IElementsContainerTemp.Image(string)"/>.
+        /// </summary>
+        [Test]
+        public void ImageById()
+        {
+            ExecuteTest(ImageByIdTest, false);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Image(Regex)"/> method.
+        /// </summary>
+        [Test]
+        public void ImageByRegex()
+        {
+            ExecuteTest(ImageByRegexTest);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Image(AttributeConstraint)"/> method.
+        /// </summary>
+        [Test]
+        public void ImageByAttributeContraint()
+        {
+            ExecuteTest(ImageByAttributeContraintTest);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Images"/> property.
+        /// </summary>
+        [Test]
+        public void Images()
+        {
+            ExecuteTest(ImagesTest);
+        }
+
+        /// <summary>
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.Label(string)"/> method.
         /// Tests that a label can be located based on the value of it's Id.
         /// </summary>
@@ -201,6 +282,60 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         public void LabelById()
         {
             ExecuteTest(LabelByIdTest, false);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Label(Regex)"/> method.
+        /// </summary>
+        [Test]
+        public void LabelByRegex()
+        {
+            ExecuteTest(LabelByRegexTest);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Label(AttributeConstraint)"/> method.
+        /// </summary>
+        [Test]
+        public void LabelByAttributeContraint()
+        {
+            ExecuteTest(LabelByAttributeContraintTest);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Labels"/> property.
+        /// </summary>
+        [Test]
+        public void Labels()
+        {
+            ExecuteTest(LabelsTest);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Link(Regex)"/> method.
+        /// </summary>
+        [Test]
+        public void LinkByRegex()
+        {
+            ExecuteTest(LinkByRegexTest);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Link(AttributeConstraint)"/> method.
+        /// </summary>
+        [Test]
+        public void LinkByAttributeContraint()
+        {
+            ExecuteTest(LinkByAttributeContraintTest);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Links"/> property.
+        /// </summary>
+        [Test]
+        public void Links()
+        {
+            ExecuteTest(LinksTest);
         }
 
         /// <summary>
@@ -221,15 +356,6 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         public void LinkById()
         {
             ExecuteTest(LinkByIdTest, false);
-        }
-
-        /// <summary>
-        /// Test that we can obtain a reference to an image using the elements Id to look it up using <see cref="IElementsContainerTemp.Image(string)"/>.
-        /// </summary>
-        [Test]
-        public void ImageById()
-        {
-            ExecuteTest(ImageByIdTest, false);
         }
 
         /// <summary>
@@ -392,6 +518,42 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
             ILabel label = browser.Label("lblB");
 
             Assert.IsNotNull(label, GetErrorMessage("The table with id lblB could not be found", browser));
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Label(Regex)"/> method.
+        /// </summary>
+        private static void LabelByRegexTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+            ILabel label = browser.Label(new Regex("^lblB"));
+
+            Assert.IsNotNull(label, GetErrorMessage("The label sought using the regular expression ^lblB could not be found", browser));
+            Assert.IsTrue(label.Exists);
+            Assert.AreEqual("lblB", label.Id);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Label(AttributeConstraint)"/> method.
+        /// </summary>        
+        private static void LabelByAttributeContraintTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+            ILabel label = browser.Label(Find.By("accesskey", "C"));
+
+            Assert.IsNotNull(label, GetErrorMessage("The label sought using attribute accesskey could not be found", browser));
+            Assert.IsTrue(label.Exists);
+            Assert.AreEqual("Checkbox21", label.For);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Labels"/> property.
+        /// </summary>
+        private static void LabelsTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+            ILabelCollection labels = browser.Labels;
+            Assert.AreEqual(3, labels.Length, GetErrorMessage("Incorrect no. of labels returned", browser));
         }
 
         /// <summary>
@@ -591,7 +753,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
             browser.GoTo(MainURI);
             IDiv div = browser.Div(Find.By("ms_positioning", "FlowLayout"));
 
-            Assert.IsNotNull(div, GetErrorMessage("The checkbox sought using attribute ms_positioning could not be found", browser));
+            Assert.IsNotNull(div, GetErrorMessage("The div sought using attribute ms_positioning could not be found", browser));
             Assert.IsTrue(div.Exists);
             Assert.AreEqual("divid", div.Id);
         }
@@ -607,6 +769,32 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         }
 
         /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Element(Regex)"/> method.
+        /// </summary>
+        private static void ElementByRegexTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+            IElement element = browser.Element(new Regex("^name"));
+
+            Assert.IsNotNull(element, GetErrorMessage("The element sought using the regular expression ^name could not be found", browser));
+            Assert.IsTrue(element.Exists);
+            Assert.AreEqual("name", element.Id);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Element(AttributeConstraint)"/> method.
+        /// </summary>        
+        private static void ElementByAttributeContraintTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+            IElement element = browser.Element(Find.ByTitle("Textfield title"));
+
+            Assert.IsNotNull(element, GetErrorMessage("The element sought using title \"Textfield title\" could not be found", browser));
+            Assert.IsTrue(element.Exists);
+            Assert.AreEqual("name", element.Id);
+        }
+
+        /// <summary>
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.Form(string)"/> method.
         /// Tests that a check box can be located based on the value of it's Id.
         /// </summary>
@@ -615,6 +803,114 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
             browser.GoTo(MainURI);
             IForm form = browser.Form("Form");
             Assert.IsNotNull(form, GetErrorMessage("The form with the id \"Form\" could not be found.", browser));
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Form(Regex)"/> method.
+        /// </summary>
+        private static void FormByRegexTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+            IForm form = browser.Form(new Regex("^For"));
+
+            Assert.IsNotNull(form, GetErrorMessage("The form sought using the regular expression ^For could not be found", browser));
+            Assert.IsTrue(form.Exists);
+            Assert.AreEqual("Form", form.Id);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Form(AttributeConstraint)"/> method.
+        /// </summary>        
+        private static void FormByAttributeContraintTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+            IForm form = browser.Form(Find.By("method", "get"));
+
+            Assert.IsNotNull(form, GetErrorMessage("The form sought using attribute method and the value get could not be found", browser));
+            Assert.IsTrue(form.Exists);
+            Assert.AreEqual("Form", form.Id);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Divs"/> property.
+        /// </summary>
+        private static void FormsTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+            IDivCollection divs = browser.Divs;
+            Assert.AreEqual(1, divs.Length, GetErrorMessage("Incorrect no. of divs returned", browser));
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Image(Regex)"/> method.
+        /// </summary>
+        private static void ImageByRegexTest(IBrowser browser)
+        {
+            browser.GoTo(ImagesURI);
+            IImage image = browser.Image(new Regex("^Image1"));
+
+            Assert.IsNotNull(image, GetErrorMessage("The image sought using the regular expression ^Image1 could not be found", browser));
+            Assert.IsTrue(image.Exists);
+            Assert.AreEqual("Image1", image.Id);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Image(AttributeConstraint)"/> method.
+        /// </summary>        
+        private static void ImageByAttributeContraintTest(IBrowser browser)
+        {
+            browser.GoTo(ImagesURI);
+            IImage image = browser.Image(Find.ByAlt("Picture does not exist."));
+
+            Assert.IsNotNull(image, GetErrorMessage("The image sought using attribute alt could not be found", browser));
+            Assert.IsTrue(image.Exists);
+            Assert.AreEqual("Image3", image.Id);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Images"/> property.
+        /// </summary>
+        private static void ImagesTest(IBrowser browser)
+        {
+            browser.GoTo(ImagesURI);
+            IImageCollection images = browser.Images;
+            Assert.AreEqual(4, images.Length, GetErrorMessage("Incorrect no. of images returned", browser));
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Link(Regex)"/> method.
+        /// </summary>
+        private static void LinkByRegexTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+            ILink link = browser.Link(new Regex("^testlink"));
+
+            Assert.IsNotNull(link, GetErrorMessage("The link sought using the regular expression ^testlink could not be found", browser));
+            Assert.IsTrue(link.Exists);
+            Assert.AreEqual("testlinkid", link.Id);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Link(AttributeConstraint)"/> method.
+        /// </summary>        
+        private static void LinkByAttributeContraintTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+            ILink link = browser.Link(Find.By("target", "_blank"));
+
+            Assert.IsNotNull(link, GetErrorMessage("The link sought using attribute target could not be found", browser));
+            Assert.IsTrue(link.Exists);
+            Assert.AreEqual("testlinkid", link.Id);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Links"/> property.
+        /// </summary>
+        private static void LinksTest(IBrowser browser)
+        {
+            browser.GoTo(MainURI);
+            ILinkCollection links = browser.Links;
+            Assert.AreEqual(3, links.Length, GetErrorMessage("Incorrect no. of links returned", browser));
         }
 
         /// <summary>

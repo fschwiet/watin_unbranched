@@ -428,6 +428,16 @@ namespace WatiN.Core
             get { return ElementsSupport.Divs(DomContainer, this); }
         }
 
+        IElement IElementsContainerTemp.Element(Regex elementId)
+        {
+            return Element(Find.ById(elementId));
+        }
+
+        IElement IElementsContainerTemp.Element(AttributeConstraint findBy)
+        {
+            return ElementsSupport.Element(DomContainer, findBy, this);
+        }
+
 		public Element Element(string elementId)
 		{
 			return Element(Find.ById(elementId));
@@ -492,6 +502,36 @@ namespace WatiN.Core
 		{
 			get { return ElementsSupport.Forms(DomContainer, this); }
 		}
+
+        IImage IElementsContainerTemp.Image(Regex elementId)
+        {
+            return Image(Find.ById(elementId));
+        }
+
+        IImage IElementsContainerTemp.Image(AttributeConstraint findBy)
+        {
+            return ElementsSupport.Image(DomContainer, findBy, this);
+        }
+
+        IImageCollection IElementsContainerTemp.Images
+        {
+            get { return ElementsSupport.Images(DomContainer, this); }
+        }
+
+        ILabel IElementsContainerTemp.Label(Regex elementId)
+        {
+            return Label(Find.ById(elementId));
+        }
+
+        ILabel IElementsContainerTemp.Label(AttributeConstraint findBy)
+        {
+            return ElementsSupport.Label(DomContainer, findBy, this);
+        }
+
+        ILabelCollection IElementsContainerTemp.Labels
+        {
+            get { return ElementsSupport.Labels(DomContainer, this); }
+        }
 
 		public Label Label(string elementId)
 		{
@@ -835,6 +875,21 @@ namespace WatiN.Core
             return Form(Find.ById(id));
         }
 
+        IForm IElementsContainerTemp.Form(Regex elementId)
+        {
+            return Form(Find.ById(elementId));
+        }
+
+        IForm IElementsContainerTemp.Form(AttributeConstraint findBy)
+        {
+            return ElementsSupport.Form(DomContainer, findBy, this);
+        }
+
+        IFormsCollection IElementsContainerTemp.Forms
+        {
+            get { return ElementsSupport.Forms(DomContainer, this); }
+        }
+
         ISelectList IElementsContainerTemp.SelectList(string id)
         {
             return SelectList(Find.ById(id));
@@ -893,6 +948,21 @@ namespace WatiN.Core
         ILink IElementsContainerTemp.Link(string elementId)
         {
             return Link(Find.ById(elementId));
+        }
+
+        ILink IElementsContainerTemp.Link(Regex elementId)
+        {
+            return Link(Find.ById(elementId));
+        }
+
+        ILink IElementsContainerTemp.Link(AttributeConstraint findBy)
+        {
+            return ElementsSupport.Link(DomContainer, findBy, this);
+        }
+
+        ILinkCollection IElementsContainerTemp.Links
+        {
+            get { return ElementsSupport.Links(DomContainer, this); }
         }
 
         IImage IElementsContainerTemp.Image(string id)

@@ -26,7 +26,8 @@ namespace WatiN.Core.Mozilla
 {
     public abstract class ElementsContainer : Element, IElementsContainerTemp
     {
-        protected ElementsContainer(string elementVariable, FireFoxClientPort clientPort) : base(elementVariable, clientPort)
+        protected ElementsContainer(string elementVariable, FireFoxClientPort clientPort)
+            : base(elementVariable, clientPort)
         {
         }
 
@@ -34,7 +35,7 @@ namespace WatiN.Core.Mozilla
 
         public IWatiNElementCollection Elements
         {
-            get 
+            get
             {
 
                 WatiNElementCollection elements = new WatiNElementCollection(this.ClientPort, new ElementFinder(this, "*", null, this.ClientPort));
@@ -80,7 +81,7 @@ namespace WatiN.Core.Mozilla
 
         public IAreaCollection Areas
         {
-            get 
+            get
             {
                 Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "area", null, this.ClientPort);
                 return new AreaCollection(this.ClientPort, finder);
@@ -96,17 +97,17 @@ namespace WatiN.Core.Mozilla
         /// </returns>
         public IButton Button(string id)
         {
-        	return this.Button(Find.ById(id));
+            return this.Button(Find.ById(id));
         }
 
-                /// <summary>
+        /// <summary>
         /// Finds a button element using the specified regular expression.
         /// </summary>
         /// <param name="regex">The regular expression for the id of the button element being sought.</param>
         /// <returns>The button element which id matches the regular expression, or null if none is found</returns>
         public IButton Button(Regex regex)
         {
-        	return this.Button(Find.ById(regex));
+            return this.Button(Find.ById(regex));
         }
 
         /// <summary>
@@ -116,7 +117,7 @@ namespace WatiN.Core.Mozilla
         /// <returns>The button element for the matches the <see cref="AttributeConstraint" />, or null if none is found</returns>
         public IButton Button(AttributeConstraint constraint)
         {
-        	Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "input", "button submit image reset", constraint, this.ClientPort);
+            Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "input", "button submit image reset", constraint, this.ClientPort);
             return new Button(finder.FindFirst(), this.ClientPort);
         }
 
@@ -128,7 +129,7 @@ namespace WatiN.Core.Mozilla
             get
             {
                 Mozilla.ElementFinder finder = new Mozilla.ElementFinder(
-                    this, 
+                    this,
                     new List<ElementTag>(new ElementTag[] { new ElementTag("input", "button submit image reset"), new ElementTag("button") }), null, this.ClientPort);
                 return new ButtonCollection(this.ClientPort, finder);
             }
@@ -184,8 +185,8 @@ namespace WatiN.Core.Mozilla
         /// <returns></returns>
         public IDiv Div(string id)
         {
-        	Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "div", Find.ById(id), this.ClientPort);
-        	return new Div(finder.FindFirst(), this.ClientPort);
+            Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "div", Find.ById(id), this.ClientPort);
+            return new Div(finder.FindFirst(), this.ClientPort);
         }
 
         /// <summary>
@@ -232,6 +233,16 @@ namespace WatiN.Core.Mozilla
         }
 
         /// <summary>
+        /// Finds a form element using the specified regular expression to match the forms's id.
+        /// </summary>
+        /// <param name="id">The regular expression that matches the element id of the form element being sought.</param>
+        /// <returns>The form element for the corresponding regular expression, or null if none is found</returns>
+        public IForm Form(Regex id)
+        {
+            return this.Form(Find.ById(id));
+        }
+
+        /// <summary>
         /// Finds a form element using the specified <see cref="AttributeConstraint" />.
         /// </summary>
         /// <param name="constraint">The <see cref="AttributeConstraint" /> for the form element being sought.</param>
@@ -243,25 +254,104 @@ namespace WatiN.Core.Mozilla
         }
 
         /// <summary>
+        /// Returns all the form elements for the current document
+        /// </summary>
+        public IFormsCollection Forms
+        {
+            get
+            {
+                Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "form", null, this.ClientPort);
+                return new FormsCollection(this.ClientPort, finder);
+            }
+        }
+
+        /// <summary>
         /// Finds a label element using the specified id.
         /// </summary>
         /// <param name="id">The id of the label element being sought.</param>
         /// <returns>The label element for the corresponding id, or null if none is found</returns>
         public ILabel Label(string id)
         {
-            Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "label", Find.ById(id), this.ClientPort);
+            return this.Label(Find.ById(id));
+        }
+
+        /// <summary>
+        /// Finds a label element using the specified regular expression to match the label's id.
+        /// </summary>
+        /// <param name="id">The regular expression that matches the element id of the label element being sought.</param>
+        /// <returns>The label element for the corresponding regular expression, or null if none is found</returns>
+        public ILabel Label(Regex id)
+        {
+            return this.Label(Find.ById(id));
+        }
+
+        /// <summary>
+        /// Finds a label element using the specified attribute constraint.
+        /// </summary>
+        /// <param name="findBy">The attibute contraint used to match an attribute of the label element being sought.</param>
+        /// <returns>The label element for the corresponding attribute constraint, or null if none is found</returns>
+        public ILabel Label(AttributeConstraint findBy)
+        {
+            Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "label", findBy, this.ClientPort);
             return new Label(finder.FindFirst(), this.ClientPort);
         }
 
         /// <summary>
-        /// Finds a div element using the specified id.
+        /// Returns all the label elements for the current document
+        /// </summary>
+        public ILabelCollection Labels
+        {
+            get
+            {
+                Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "label", null, this.ClientPort);
+                return new LabelCollection(this.ClientPort, finder);
+            }
+        }
+
+        /// <summary>
+        /// Finds a link element using the specified id.
         /// </summary>
         /// <param name="id">The id of the link element being sought.</param>
         /// <returns></returns>
         public ILink Link(string id)
         {
-        	Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "a", Find.ById(id), this.ClientPort);
-        	return new Link(finder.FindFirst(), this.ClientPort);
+            return this.Link(Find.ById(id));
+        }
+
+        /// <summary>
+        /// Finds a link element using the specified regular expression to match the link's id.
+        /// </summary>
+        /// <param name="id">The regular expression that matches the element id of the link element being sought.</param>
+        /// <returns>The link element for the corresponding regular expression, or null if none is found</returns>
+        public ILink Link(Regex id)
+        {
+            return this.Link(Find.ById(id));
+        }
+
+        /// <summary>
+        /// Finds a link element using the specified attribute constraint.
+        /// </summary>
+        /// <param name="findBy">The attibute contraint used to match an attribute of the link element being sought.</param>
+        /// <returns>The link element for the corresponding attribute constraint, or null if none is found</returns>
+        public ILink Link(AttributeConstraint findBy)
+        {
+            Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "a", findBy, this.ClientPort);
+            return new Link(finder.FindFirst(), this.ClientPort);
+        }
+
+        /// <summary>
+        /// Returns all the label elements for the current document
+        /// </summary>
+        public ILinkCollection Links
+        {
+            get
+            {
+                Mozilla.ElementFinder finder = new Mozilla.ElementFinder(
+                    this,
+                    new List<ElementTag>(new ElementTag[] { new ElementTag("a") }), null, this.ClientPort);
+
+                return new LinkCollection(this.ClientPort, finder);
+            }
         }
 
         /// <summary>
@@ -271,8 +361,43 @@ namespace WatiN.Core.Mozilla
         /// <returns>The image element for the corresponding id, or null if none is found</returns>
         public IImage Image(string id)
         {
-            Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "img", Find.ById(id), this.ClientPort);
+            return this.Image(Find.ById(id));
+        }
+
+        /// <summary>
+        /// Finds an image element using the specified regular expression to match the image's id.
+        /// </summary>
+        /// <param name="id">The regular expression that matches the element id of the image element being sought.</param>
+        /// <returns>The image element for the corresponding regular expression, or null if none is found</returns>
+        public IImage Image(Regex id)
+        {
+            return this.Image(Find.ById(id));
+        }
+
+        /// <summary>
+        /// Finds an image element using the specified attribute constraint.
+        /// </summary>
+        /// <param name="findBy">The attibute contraint used to match an attribute of the image element being sought.</param>
+        /// <returns>The image element for the corresponding attribute constraint, or null if none is found</returns>
+        public IImage Image(AttributeConstraint findBy)
+        {
+            Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "img", findBy, this.ClientPort);
             return new Image(finder.FindFirst(), this.ClientPort);
+        }
+
+        /// <summary>
+        /// Returns all the image elements for the current document
+        /// </summary>
+        public IImageCollection Images
+        {
+            get
+            {
+                Mozilla.ElementFinder finder = new Mozilla.ElementFinder(
+                    this,
+                    new List<ElementTag>(new ElementTag[] { new ElementTag("img"), new ElementTag("input", "image") }), null, this.ClientPort);
+
+                return new ImageCollection(this.ClientPort, finder);
+            }
         }
 
         /// <summary>
@@ -282,8 +407,8 @@ namespace WatiN.Core.Mozilla
         /// <returns></returns>
         public IPara Para(string id)
         {
-        	Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "p", Find.ById(id), this.ClientPort);
-        	return new Para(finder.FindFirst(), this.ClientPort);
+            Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "p", Find.ById(id), this.ClientPort);
+            return new Para(finder.FindFirst(), this.ClientPort);
         }
 
         /// <summary>
@@ -324,7 +449,7 @@ namespace WatiN.Core.Mozilla
         public ISpan Span(AttributeConstraint constraint)
         {
             Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "span", constraint, this.ClientPort);
-            return new Span(finder.FindFirst(), this.ClientPort);            
+            return new Span(finder.FindFirst(), this.ClientPort);
         }
 
         /// <summary>
@@ -389,17 +514,17 @@ namespace WatiN.Core.Mozilla
         /// <returns>A text field for the specified id</returns>
         public ITextField TextField(string id)
         {
-        	return this.TextField(Find.ById(id));
+            return this.TextField(Find.ById(id));
         }
 
-		/// <summary>
+        /// <summary>
         /// Finds a text field element using the specified regular expression.
         /// </summary>
         /// <param name="regex">The regular expression for the id of the text field element being sought.</param>
         /// <returns>The text field element which id matches the regular expression, or null if none is found</returns>
         public ITextField TextField(Regex regex)
         {
-        	return this.TextField(Find.ById(regex));
+            return this.TextField(Find.ById(regex));
         }
 
         /// <summary>
@@ -409,8 +534,8 @@ namespace WatiN.Core.Mozilla
         /// <returns>The text field element for the matches the <see cref="AttributeConstraint" />, or null if none is found</returns>
         public ITextField TextField(AttributeConstraint constraint)
         {
-        	Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "input", "text password textarea hidden", constraint, this.ClientPort);
-        	return new TextField(finder.FindFirst(), this.ClientPort);
+            Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "input", "text password textarea hidden", constraint, this.ClientPort);
+            return new TextField(finder.FindFirst(), this.ClientPort);
         }
 
         /// <summary>
@@ -420,8 +545,28 @@ namespace WatiN.Core.Mozilla
         /// <returns></returns>
         public IElement Element(string id)
         {
-        	Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "*", Find.ById(id), this.ClientPort);
-        	return new Element(finder.FindFirst(), this.ClientPort);
+            return this.Element(Find.ById(id));
+        }
+
+        /// <summary>
+        /// Finds an element using the specified regular expression to match the elements's id.
+        /// </summary>
+        /// <param name="id">The regular expression that matches the element id of the element being sought.</param>
+        /// <returns>The element for the corresponding regular expression, or null if none is found</returns>
+        public IElement Element(Regex id)
+        {
+            return this.Element(Find.ById(id));
+        }
+
+        /// <summary>
+        /// Finds an element using the specified attribute constraint.
+        /// </summary>
+        /// <param name="findBy">The attibute contraint used to match an attribute of the element being sought.</param>
+        /// <returns>The element for the corresponding attribute constraint, or null if none is found</returns>
+        public IElement Element(AttributeConstraint findBy)
+        {
+            Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "*", findBy, this.ClientPort);
+            return new Element(finder.FindFirst(), this.ClientPort);
         }
 
         #endregion
