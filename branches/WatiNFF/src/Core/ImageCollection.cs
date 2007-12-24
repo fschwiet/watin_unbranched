@@ -18,13 +18,14 @@
 
 using System.Collections;
 using mshtml;
+using WatiN.Core.Interfaces;
 
 namespace WatiN.Core
 {
 	/// <summary>
 	/// A typed collection of <see cref="Image" /> instances within a <see cref="Document"/> or <see cref="Element"/>.
 	/// </summary>
-	public class ImageCollection : BaseElementCollection
+	public class ImageCollection : BaseElementCollection, IImageCollection
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ImageCollection"/> class.
@@ -46,12 +47,12 @@ namespace WatiN.Core
 		/// Gets the <see cref="Image"/> at the specified index.
 		/// </summary>
 		/// <value></value>
-		public Image this[int index]
+		public IImage this[int index]
 		{
 			get { return new Image(domContainer, (IHTMLElement) Elements[index]); }
 		}
 
-		public ImageCollection Filter(AttributeConstraint findBy)
+		public IImageCollection Filter(AttributeConstraint findBy)
 		{
 			return new ImageCollection(domContainer, DoFilter(findBy));
 		}

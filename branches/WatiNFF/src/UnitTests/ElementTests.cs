@@ -387,8 +387,8 @@ namespace WatiN.Core.UnitTests
 		[Test]
 		public void ElementCollectionSecondFilterShouldNeverThrowInvalidAttributeException()
 		{
-			ElementCollection elements = ie.Elements.Filter(Find.ById("testlinkid"));
-			ElementCollection elements2 = elements.Filter(Find.ByFor("Checkbox21"));
+			ElementCollection elements = (ElementCollection) ie.Elements.Filter(Find.ById("testlinkid"));
+			ElementCollection elements2 = (ElementCollection) elements.Filter(Find.ByFor("Checkbox21"));
 			Assert.AreEqual(0, elements2.Length);
 		}
 

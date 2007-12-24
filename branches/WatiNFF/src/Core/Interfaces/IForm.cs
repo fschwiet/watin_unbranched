@@ -1,6 +1,6 @@
-namespace WatiN.Core
+namespace WatiN.Core.Interfaces
 {
-    public interface IForm
+    public interface IForm : IElement
     {
         void Submit();
 

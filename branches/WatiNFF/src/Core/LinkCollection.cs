@@ -18,13 +18,14 @@
 
 using System.Collections;
 using mshtml;
+using WatiN.Core.Interfaces;
 
 namespace WatiN.Core
 {
 	/// <summary>
 	/// A typed collection of <see cref="Link" /> instances within a <see cref="Document"/> or <see cref="Element"/>.
 	/// </summary>
-	public class LinkCollection : BaseElementCollection
+	public class LinkCollection : BaseElementCollection, ILinkCollection
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="LinkCollection"/> class.
@@ -46,12 +47,12 @@ namespace WatiN.Core
 		/// Gets the <see cref="Link"/> at the specified index.
 		/// </summary>
 		/// <value></value>
-		public Link this[int index]
+		public ILink this[int index]
 		{
 			get { return new Link(domContainer, (IHTMLAnchorElement) Elements[index]); }
 		}
 
-		public LinkCollection Filter(AttributeConstraint findBy)
+		public ILinkCollection Filter(AttributeConstraint findBy)
 		{
 			return new LinkCollection(domContainer, DoFilter(findBy));
 		}

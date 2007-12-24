@@ -367,12 +367,16 @@
     <Compile Include="HtmlDialogCollection.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Interfaces\ILinkCollection.cs" />
+    <Compile Include="Interfaces\IImageCollection.cs" />
+    <Compile Include="Interfaces\ILabelCollection.cs" />
+    <Compile Include="Interfaces\IFormsCollection.cs" />
     <Compile Include="Interfaces\IDivCollection.cs" />
     <Compile Include="Interfaces\ICheckBoxCollection.cs" />
     <Compile Include="Interfaces\IButtonCollection.cs" />
     <Compile Include="Interfaces\IAreaCollection.cs" />
     <Compile Include="Interfaces\ICheckBox.cs" />
-    <Compile Include="IForm.cs" />
+    <Compile Include="Interfaces\IForm.cs" />
     <Compile Include="Interfaces\ILabel.cs" />
     <Compile Include="Interfaces\IImage.cs" />
     <Compile Include="Interfaces\IBaseElementCollection.cs" />
@@ -394,7 +398,7 @@
     <Compile Include="Interfaces\IDiv.cs" />
     <Compile Include="Interfaces\IElementsContainerTemp.cs" />
     <Compile Include="Interfaces\IIE.cs" />
-    <Compile Include="Image.cs">
+    <Compile Include="Interfaces\Image.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ImageCollection.cs">
@@ -483,9 +487,13 @@
     <Compile Include="Interfaces\IElement.cs" />
     <Compile Include="Interfaces\ITextField.cs" />
     <Compile Include="Mozilla\Form.cs" />
+    <Compile Include="Mozilla\FormsCollection.cs" />
     <Compile Include="Mozilla\Image.cs" />
+    <Compile Include="Mozilla\ImageCollection.cs" />
     <Compile Include="Mozilla\Label.cs" />
+    <Compile Include="Mozilla\LabelCollection.cs" />
     <Compile Include="Mozilla\Link.cs" />
+    <Compile Include="Mozilla\LinkCollection.cs" />
     <Compile Include="Mozilla\Option.cs" />
     <Compile Include="Mozilla\OptionCollection.cs" />
     <Compile Include="Mozilla\Para.cs" />

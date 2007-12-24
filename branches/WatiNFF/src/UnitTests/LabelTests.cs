@@ -76,7 +76,7 @@ namespace WatiN.Core.UnitTests
 			LabelCollection labelCollection = ie.Labels;
 			Assert.AreEqual(2, ie.Labels.Length, "Unexpected number of labels");
 
-			Label label = labelCollection[1];
+			Label label = (Label) labelCollection[1];
 
 			Assert.AreEqual(null, label.For, "Unexpected label.For id");
 			Assert.AreEqual("Test label before:  Test label after", label.Text, "Unexpected label.Text");

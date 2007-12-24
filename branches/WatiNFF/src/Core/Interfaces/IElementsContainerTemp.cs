@@ -137,11 +137,77 @@ namespace WatiN.Core.Interfaces
         IDivCollection Divs { get; }
 
         /// <summary>
+        /// Finds an element matching the specified id.
+        /// </summary>
+        /// <param name="id">The id.</param>
+        /// <returns>The element for the corresponding id, or null if none is found</returns>
+        IElement Element(string id);
+
+        /// <summary>
+        /// Finds an element using the specified regular expression to match the elements's id.
+        /// </summary>
+        /// <param name="id">The regular expression that matches the element id of the element being sought.</param>
+        /// <returns>The element for the corresponding regular expression, or null if none is found</returns>
+        IElement Element(Regex id);
+
+        /// <summary>
+        /// Finds an element using the specified attribute constraint.
+        /// </summary>
+        /// <param name="findBy">The attibute contraint used to match an attribute of the element being sought.</param>
+        /// <returns>The element for the corresponding attribute constraint, or null if none is found</returns>
+        IElement Element(AttributeConstraint findBy);
+      
+        /// <summary>
         /// Finds a form element using the specified id.
         /// </summary>
         /// <param name="id">The id of the form element being sought.</param>
         /// <returns>The form element for the corresponding id, or null if none is found</returns>
         IForm Form(string id);
+
+        /// <summary>
+        /// Finds a form element using the specified regular expression to match the forms's id.
+        /// </summary>
+        /// <param name="id">The regular expression that matches the element id of the form element being sought.</param>
+        /// <returns>The form element for the corresponding regular expression, or null if none is found</returns>
+        IForm Form(Regex id);
+
+        /// <summary>
+        /// Finds a form element using the specified attribute constraint.
+        /// </summary>
+        /// <param name="findBy">The attibute contraint used to match an attribute of the form element being sought.</param>
+        /// <returns>The form element for the corresponding attribute constraint, or null if none is found</returns>
+        IForm Form(AttributeConstraint findBy);
+
+        /// <summary>
+        /// Returns all the form elements for the current document
+        /// </summary>
+        IFormsCollection Forms { get; }
+
+        /// <summary>
+        /// Finds an image element using the specified id.
+        /// </summary>
+        /// <param name="id">The id of the image element being sought.</param>
+        /// <returns>The image element for the corresponding id, or null if none is found</returns>
+        IImage Image(string id);
+
+        /// <summary>
+        /// Finds an image element using the specified regular expression to match the image's id.
+        /// </summary>
+        /// <param name="id">The regular expression that matches the element id of the image element being sought.</param>
+        /// <returns>The image element for the corresponding regular expression, or null if none is found</returns>
+        IImage Image(Regex id);
+
+        /// <summary>
+        /// Finds an image element using the specified attribute constraint.
+        /// </summary>
+        /// <param name="findBy">The attibute contraint used to match an attribute of the image element being sought.</param>
+        /// <returns>The image element for the corresponding attribute constraint, or null if none is found</returns>
+        IImage Image(AttributeConstraint findBy);
+
+        /// <summary>
+        /// Returns all the image elements for the current document
+        /// </summary>
+        IImageCollection Images { get; }
 
         /// <summary>
         /// Finds a label element using the specified id.
@@ -151,6 +217,25 @@ namespace WatiN.Core.Interfaces
         ILabel Label(string id);
 
         /// <summary>
+        /// Finds a label element using the specified regular expression to match the label's id.
+        /// </summary>
+        /// <param name="id">The regular expression that matches the element id of the label element being sought.</param>
+        /// <returns>The label element for the corresponding regular expression, or null if none is found</returns>
+        ILabel Label(Regex id);
+
+        /// <summary>
+        /// Finds a label element using the specified attribute constraint.
+        /// </summary>
+        /// <param name="findBy">The attibute contraint used to match an attribute of the label element being sought.</param>
+        /// <returns>The label element for the corresponding attribute constraint, or null if none is found</returns>
+        ILabel Label(AttributeConstraint findBy);
+
+        /// <summary>
+        /// Returns all the label elements for the current document
+        /// </summary>
+        ILabelCollection Labels { get; }
+
+        /// <summary>
         /// Finds a link element using the specified id.
         /// </summary>
         /// <param name="id">The id of the link element being sought.</param>
@@ -158,12 +243,24 @@ namespace WatiN.Core.Interfaces
         ILink Link(string id);
 
         /// <summary>
-        /// Finds an image element using the specified id.
+        /// Finds a link element using the specified regular expression to match the link's id.
         /// </summary>
-        /// <param name="id">The id of the image element being sought.</param>
-        /// <returns>The image element for the corresponding id, or null if none is found</returns>
-        IImage Image(string id);
-        
+        /// <param name="id">The regular expression that matches the element id of the link element being sought.</param>
+        /// <returns>The link element for the corresponding regular expression, or null if none is found</returns>
+        ILink Link(Regex id);
+
+        /// <summary>
+        /// Finds a link element using the specified attribute constraint.
+        /// </summary>
+        /// <param name="findBy">The attibute contraint used to match an attribute of the link element being sought.</param>
+        /// <returns>The link element for the corresponding attribute constraint, or null if none is found</returns>
+        ILink Link(AttributeConstraint findBy);
+
+        /// <summary>
+        /// Returns all the label elements for the current document
+        /// </summary>
+        ILinkCollection Links { get; }
+
         /// <summary>
         /// Finds a paragraph element using the specified id.
         /// </summary>
@@ -212,7 +309,7 @@ namespace WatiN.Core.Interfaces
         /// <param name="id">The id of the table body element being sought.</param>
         /// <returns>The table body element for the corresponding id, or null if none is found</returns>
         ITableBody TableBody(string id);
-        
+
         /// <summary>
         /// Finds a table row using the specified Id.
         /// </summary>
@@ -247,12 +344,5 @@ namespace WatiN.Core.Interfaces
         /// <param name="constraint">The <see cref="AttributeConstraint" /> for the text field element being sought.</param>
         /// <returns>The text field element for the matches the <see cref="AttributeConstraint" />, or null if none is found</returns>
         ITextField TextField(AttributeConstraint constraint);
-
-        /// <summary>
-        /// Finds an element matching the specified id.
-        /// </summary>
-        /// <param name="id">The id.</param>
-        /// <returns>The element for the corresponding id, or null if none is found</returns>
-        IElement Element(string id);
     }
 }
