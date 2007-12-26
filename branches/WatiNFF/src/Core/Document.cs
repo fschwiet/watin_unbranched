@@ -935,14 +935,59 @@ namespace WatiN.Core
             return TableBody(Find.ById(id));
         }
 
+        ITableBody IElementsContainerTemp.TableBody(Regex id)
+        {
+            return TableBody(Find.ById(id));
+        }
+
+        ITableBody IElementsContainerTemp.TableBody(AttributeConstraint findBy)
+        {
+            return ElementsSupport.TableBody(DomContainer, findBy, this);
+        }
+
+        ITableBodyCollection IElementsContainerTemp.TableBodies
+        {
+            get { return ElementsSupport.TableBodies(DomContainer, this); }
+        }
+
         ITableRow IElementsContainerTemp.TableRow(string id)
         {
             return TableRow(Find.ById(id));
         }
 
+        ITableRow IElementsContainerTemp.TableRow(Regex id)
+        {
+            return TableRow(Find.ById(id));
+        }
+
+        ITableRow IElementsContainerTemp.TableRow(AttributeConstraint findBy)
+        {
+            return ElementsSupport.TableRow(DomContainer, findBy, this);
+        }
+
+        ITableRowCollection IElementsContainerTemp.TableRows
+        {
+            get { return ElementsSupport.TableRows(DomContainer, this); }
+        }
+
         ITableCell IElementsContainerTemp.TableCell(string id)
         {
             return TableCell(Find.ById(id));
+        }
+
+        ITableCell IElementsContainerTemp.TableCell(Regex id)
+        {
+            return TableCell(Find.ById(id));
+        }
+
+        ITableCell IElementsContainerTemp.TableCell(AttributeConstraint findBy)
+        {
+            return ElementsSupport.TableCell(DomContainer, findBy, this);
+        }
+
+        ITableCellCollection IElementsContainerTemp.TableCells
+        {
+            get { return ElementsSupport.TableCells(DomContainer, this); }
         }
 
         IWatiNElementCollection IElementsContainerTemp.Elements
@@ -1005,6 +1050,26 @@ namespace WatiN.Core
             get { return ElementsSupport.Paras(DomContainer, this); }
         }
 
+        IRadioButton IElementsContainerTemp.RadioButton(string elementId)
+        {
+            return RadioButton(Find.ById(elementId));
+        }
+
+        IRadioButton IElementsContainerTemp.RadioButton(Regex elementId)
+        {
+            return RadioButton(Find.ById(elementId));
+        }
+
+        IRadioButton IElementsContainerTemp.RadioButton(AttributeConstraint findBy)
+        {
+            return ElementsSupport.RadioButton(DomContainer, findBy, this);
+        }
+
+        IRadioButtonCollection IElementsContainerTemp.RadioButtons
+        {
+            get { return ElementsSupport.RadioButtons(DomContainer, this); }
+        }
+
         ISelectList IElementsContainerTemp.SelectList(Regex elementId)
         {
             return SelectList(Find.ById(elementId));
@@ -1044,6 +1109,12 @@ namespace WatiN.Core
         {
             return TextField(constraint);
         }
+
+        ITextFieldCollection IElementsContainerTemp.TextFields
+        {
+            get { return ElementsSupport.TextFields(DomContainer, this); }
+        }
+
         #endregion
 
         protected DomContainer DomContainer

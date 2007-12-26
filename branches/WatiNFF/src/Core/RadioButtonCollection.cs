@@ -18,13 +18,14 @@
 
 using System.Collections;
 using mshtml;
+using WatiN.Core.Interfaces;
 
 namespace WatiN.Core
 {
 	/// <summary>
 	/// A typed collection of <see cref="RadioButton" /> instances within a <see cref="Document"/> or <see cref="Element"/>.
 	/// </summary>
-	public class RadioButtonCollection : BaseElementCollection
+	public class RadioButtonCollection : BaseElementCollection, IRadioButtonCollection
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="RadioButtonCollection"/> class.
@@ -46,12 +47,12 @@ namespace WatiN.Core
 		/// Gets the <see cref="RadioButton"/> at the specified index.
 		/// </summary>
 		/// <value></value>
-		public RadioButton this[int index]
+		public IRadioButton this[int index]
 		{
 			get { return new RadioButton(domContainer, (IHTMLInputElement) Elements[index]); }
 		}
 
-		public RadioButtonCollection Filter(AttributeConstraint findBy)
+		public IRadioButtonCollection Filter(AttributeConstraint findBy)
 		{
 			return new RadioButtonCollection(domContainer, DoFilter(findBy));
 		}

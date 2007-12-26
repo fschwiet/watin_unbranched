@@ -288,6 +288,32 @@ namespace WatiN.Core.Interfaces
         IParaCollection Paras { get; }
 
         /// <summary>
+        /// Finds a radio button element using the specified id.
+        /// </summary>
+        /// <param name="id">The id of the radio button element being sought.</param>
+        /// <returns>The radio button element for the corresponding id, or null if none is found</returns>
+        IRadioButton RadioButton(string id);
+
+        /// <summary>
+        /// Finds a radio button element using the specified regular expression to match the paragraph's id.
+        /// </summary>
+        /// <param name="id">The regular expression that matches the element id of the radio button element being sought.</param>
+        /// <returns>The radio button element for the corresponding regular expression, or null if none is found</returns>
+        IRadioButton RadioButton(Regex id);
+
+        /// <summary>
+        /// Finds a radio button element using the specified attribute constraint.
+        /// </summary>
+        /// <param name="findBy">The attibute contraint used to match an attribute of the radio button element being sought.</param>
+        /// <returns>The radio button element for the corresponding attribute constraint, or null if none is found</returns>
+        IRadioButton RadioButton(AttributeConstraint findBy);
+
+        /// <summary>
+        /// Returns all the radio button elements for the current document
+        /// </summary>
+        IRadioButtonCollection RadioButtons { get; }
+
+        /// <summary>
         /// Finds a select element using the specified id.
         /// </summary>
         /// <param name="id">The id of the select element being sought.</param>
@@ -373,6 +399,25 @@ namespace WatiN.Core.Interfaces
         ITableBody TableBody(string id);
 
         /// <summary>
+        /// Finds a table body element using the specified regular expression to match the element id.
+        /// </summary>
+        /// <param name="id">The regular expression that matches the element id of the table body element being sought.</param>
+        /// <returns>The table body element for the corresponding regular expression, or null if none is found</returns>
+        ITableBody TableBody(Regex id);
+
+        /// <summary>
+        /// Finds a table body element using the specified attribute constraint.
+        /// </summary>
+        /// <param name="findBy">The attibute contraint used to match an attribute of the table body element being sought.</param>
+        /// <returns>The table body element for the corresponding attribute constraint, or null if none is found</returns>
+        ITableBody TableBody(AttributeConstraint findBy);
+
+        /// <summary>
+        /// Returns all the table body elements for the current document
+        /// </summary>
+        ITableBodyCollection TableBodies { get; }
+
+        /// <summary>
         /// Finds a table row using the specified Id.
         /// </summary>
         /// <param name="id">The id of the table row element being sought.</param>
@@ -380,11 +425,49 @@ namespace WatiN.Core.Interfaces
         ITableRow TableRow(string id);
 
         /// <summary>
+        /// Finds a table row element using the specified regular expression to match the element id.
+        /// </summary>
+        /// <param name="id">The regular expression that matches the element id of the table row element being sought.</param>
+        /// <returns>The table row element for the corresponding regular expression, or null if none is found</returns>
+        ITableRow TableRow(Regex id);
+
+        /// <summary>
+        /// Finds a table row element using the specified attribute constraint.
+        /// </summary>
+        /// <param name="findBy">The attibute contraint used to match an attribute of the table row element being sought.</param>
+        /// <returns>The table row element for the corresponding attribute constraint, or null if none is found</returns>
+        ITableRow TableRow(AttributeConstraint findBy);
+
+        /// <summary>
+        /// Returns all the table row elements for the current document
+        /// </summary>
+        ITableRowCollection TableRows { get; }
+
+        /// <summary>
         /// Finds a table cell using the specified Id.
         /// </summary>
         /// <param name="id">The id of the table cell element being sought.</param>
         /// <returns>The table cell element for the corresponding id, or null if none is found</returns>
         ITableCell TableCell(string id);
+
+        /// <summary>
+        /// Finds a table cell element using the specified regular expression to match the element id.
+        /// </summary>
+        /// <param name="id">The regular expression that matches the element id of the table cell element being sought.</param>
+        /// <returns>The table cell element for the corresponding regular expression, or null if none is found</returns>
+        ITableCell TableCell(Regex id);
+
+        /// <summary>
+        /// Finds a table cell element using the specified attribute constraint.
+        /// </summary>
+        /// <param name="findBy">The attibute contraint used to match an attribute of the table cell element being sought.</param>
+        /// <returns>The table cell element for the corresponding attribute constraint, or null if none is found</returns>
+        ITableCell TableCell(AttributeConstraint findBy);
+
+        /// <summary>
+        /// Returns all the table cell elements for the current document
+        /// </summary>
+        ITableCellCollection TableCells { get; }
 
         /// <summary>
         /// Finds a text field using the Id.
@@ -406,5 +489,10 @@ namespace WatiN.Core.Interfaces
         /// <param name="constraint">The <see cref="AttributeConstraint" /> for the text field element being sought.</param>
         /// <returns>The text field element for the matches the <see cref="AttributeConstraint" />, or null if none is found</returns>
         ITextField TextField(AttributeConstraint constraint);
+
+        /// <summary>
+        /// Returns all the text fields elements for the current document
+        /// </summary>
+        ITextFieldCollection TextFields { get; }
     }
 }

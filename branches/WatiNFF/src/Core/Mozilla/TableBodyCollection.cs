@@ -34,12 +34,23 @@ namespace WatiN.Core.Mozilla
             this.parentTable = (Table) parentTable;
         }
 
+        public TableBodyCollection(FireFoxClientPort clientPort, ElementFinder elementFinder) : base(clientPort, elementFinder)
+        {
+        }
+
         protected override List<Element> FindElements()
         {
             int rowCount;
             List<Element> elements = new List<Element>();
 
-            if (int.TryParse(this.parentTable.GetProperty("tBodies.length"), out rowCount))
+            if (this.parentTable == null)
+            {
+                foreach (string tbodyVariable in this.ElementFinder.FindAll())
+                {
+                    elements.Add(new TableBody(tbodyVariable, this.ClientPort));
+                }
+            }
+            else if (int.TryParse(this.parentTable.GetProperty("tBodies.length"), out rowCount))
             {
                 for (int i = 0; i < rowCount; i++)
                 {
@@ -57,7 +68,7 @@ namespace WatiN.Core.Mozilla
         /// <value></value>
         public ITableBody this[int index]
         {
-            get { throw new System.NotImplementedException(); }
+            get { return (ITableBody) this.Elements[index]; }
         }
     }
 }

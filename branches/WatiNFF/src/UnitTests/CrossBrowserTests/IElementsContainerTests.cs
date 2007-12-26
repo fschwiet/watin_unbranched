@@ -386,6 +386,42 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         }
 
         /// <summary>
+        /// Test that we can obtain a reference to a radio button using the elements Id to look it up.
+        /// </summary>
+        [Test]
+        public void RadioButtonById()
+        {
+            ExecuteTest(RadioButtonByIdTest, false);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.RadioButton(Regex)"/> method.
+        /// </summary>
+        [Test]
+        public void RadioButtonByRegex()
+        {
+            ExecuteTest(RadioButtonByRegexTest);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.RadioButton(AttributeConstraint)"/> method.
+        /// </summary>
+        [Test]
+        public void RadioButtonByAttributeConstraint()
+        {
+            ExecuteTest(RadioButtonByAttributeConstraintTest);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.RadioButtons"/> property.
+        /// </summary>
+        [Test]
+        public void RadioButtons()
+        {
+            ExecuteTest(RadioButtonsTest);
+        }
+
+        /// <summary>
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.SelectList(string)"/> method.
         /// Tests that a select list can be located based on the value of it's Id.
         /// </summary>
@@ -506,6 +542,33 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         }
 
         /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.TableBody(AttributeConstraint)"/> method.
+        /// </summary>
+        [Test]
+        public void TableBodyByAttributeConstraint()
+        {
+            ExecuteTest(TableBodyByAttributeConstraintTest);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.TableBody(Regex)"/> method.
+        /// </summary>
+        [Test]
+        public void TableBodyByRegex()
+        {
+            ExecuteTest(TableBodyByRegexTest);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.TableBodies"/> property.
+        /// </summary>
+        [Test]
+        public void TableBodies()
+        {
+            ExecuteTest(TableBodiesTest);
+        }
+
+        /// <summary>
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.TableCell(string)"/> method.
         /// Tests that a table cell can be located based on the value of it's Id.
         /// </summary>
@@ -513,6 +576,33 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         public void TableCellById()
         {
             ExecuteTest(TableCellByIdTest, false);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.TableCell(AttributeConstraint)"/> method.
+        /// </summary>
+        [Test]
+        public void TableCellByAttributeConstraint()
+        {
+            ExecuteTest(TableCellByAttributeConstraintTest);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.TableCell(Regex)"/> method.
+        /// </summary>
+        [Test]
+        public void TableCellByRegex()
+        {
+            ExecuteTest(TableCellByRegexTest);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.TableCells"/> property.
+        /// </summary>
+        [Test]
+        public void TableCells()
+        {
+            ExecuteTest(TableCellsTest);
         }
 
         /// <summary>
@@ -526,6 +616,33 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         }
 
         /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.TableRow(AttributeConstraint)"/> method.
+        /// </summary>
+        [Test]
+        public void TableRowByAttributeConstraint()
+        {
+            ExecuteTest(TableRowByAttributeConstraintTest);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.TableRow(Regex)"/> method.
+        /// </summary>
+        [Test]
+        public void TableRowByRegex()
+        {
+            ExecuteTest(TableRowByRegexTest);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.TableRows"/> property.
+        /// </summary>
+        [Test]
+        public void TableRows()
+        {
+            ExecuteTest(TableRowsTest);
+        }
+
+        /// <summary>
         /// Test that we can obtain a reference to a text field using the elements Id to look it up.
         /// Once the element is found we assert properties unique to the <see cref="ITextField"/> interface.
         /// </summary>
@@ -533,6 +650,33 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         public void TextFieldById()
         {
             ExecuteTest(TextFieldByIdTest, false);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.TextField(AttributeConstraint)"/> method.
+        /// </summary>
+        [Test]
+        public void TextFieldByAttributeConstraint()
+        {
+            ExecuteTest(TextFieldByAttributeConstraintTest);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.TextField(Regex)"/> method.
+        /// </summary>
+        [Test]
+        public void TextFieldByRegex()
+        {
+            ExecuteTest(TextFieldByRegexTest);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.TextFields"/> property.
+        /// </summary>
+        [Test]
+        public void TextFields()
+        {
+            ExecuteTest(TextFieldsTest);
         }
 
         /// <summary>
@@ -752,6 +896,44 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         }
 
         /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.TableBody(AttributeConstraint)"/> method.
+        /// </summary>
+        private static void TableBodyByAttributeConstraintTest(IBrowser browser)
+        {
+            GoTo(TablesURI, browser);
+
+            ITableBody tableBody = browser.TableBody(Find.ByClass("tclass1"));
+            Assert.IsNotNull(tableBody);
+            Assert.IsTrue(tableBody.Exists);
+
+            Assert.AreEqual("tbody1", tableBody.Id, GetErrorMessage("Incorrect id retrieved from table body", browser));
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.TableBody(Regex)"/> method.
+        /// </summary>
+        private static void TableBodyByRegexTest(IBrowser browser)
+        {
+            GoTo(TablesURI, browser);
+
+            ITableBody tableBody = browser.TableBody(new Regex("^tbody1"));
+            Assert.IsNotNull(tableBody);
+            Assert.IsTrue(tableBody.Exists);
+
+            Assert.AreEqual("tbody1", tableBody.Id, GetErrorMessage("Incorrect id retrieved from table body", browser));
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.TableBodies"/> property.
+        /// </summary>
+        private static void TableBodiesTest(IBrowser browser)
+        {
+            GoTo(TablesURI, browser);
+            ITableBodyCollection tableBodies = browser.TableBodies;
+            Assert.AreEqual(3, tableBodies.Length, GetErrorMessage("Incorrect no. of table bodies returned", browser));
+        }
+
+        /// <summary>
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.TableRow(string)"/> method.
         /// Tests that a table row can be located based on the value of it's Id.
         /// </summary>
@@ -764,6 +946,44 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         }
 
         /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.TableRow(AttributeConstraint)"/> method.
+        /// </summary>
+        private static void TableRowByAttributeConstraintTest(IBrowser browser)
+        {
+            GoTo(TablesURI, browser);
+
+            ITableRow tableRow = browser.TableRow(Find.By("align", "center"));
+            Assert.IsNotNull(tableRow);
+            Assert.IsTrue(tableRow.Exists);
+
+            Assert.AreEqual("4", tableRow.Id, GetErrorMessage("Incorrect id retrieved from table row", browser));
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.TableRow(Regex)"/> method.
+        /// </summary>
+        private static void TableRowByRegexTest(IBrowser browser)
+        {
+            GoTo(TablesURI, browser);
+
+            ITableRow tableRow = browser.TableRow(new Regex("^2"));
+            Assert.IsNotNull(tableRow);
+            Assert.IsTrue(tableRow.Exists);
+
+            Assert.AreEqual("2", tableRow.Id, GetErrorMessage("Incorrect id retrieved from table row", browser));
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.TableRows"/> property.
+        /// </summary>
+        private static void TableRowsTest(IBrowser browser)
+        {
+            GoTo(TablesURI, browser);
+            ITableRowCollection tableRows = browser.TableRows;
+            Assert.AreEqual(4, tableRows.Length, GetErrorMessage("Incorrect no. of table rows returned", browser));
+        }
+
+        /// <summary>
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.TableCell(string)"/> method.
         /// Tests that a table row can be located based on the value of it's Id.
         /// </summary>
@@ -773,6 +993,44 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
             ITableCell cell = browser.TableCell("innerCell1");
 
             Assert.IsNotNull(cell, GetErrorMessage("The cell with id innerCell1 could not be found", browser));
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.TableCell(AttributeConstraint)"/> method.
+        /// </summary>
+        private static void TableCellByAttributeConstraintTest(IBrowser browser)
+        {
+            GoTo(TablesURI, browser);
+
+            ITableCell tableCell = browser.TableCell(Find.By("align", "left"));
+            Assert.IsNotNull(tableCell);
+            Assert.IsTrue(tableCell.Exists);
+
+            Assert.AreEqual("innerCell1", tableCell.Id, GetErrorMessage("Incorrect id retrieved from table cell", browser));
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.TableCell(Regex)"/> method.
+        /// </summary>
+        private static void TableCellByRegexTest(IBrowser browser)
+        {
+            GoTo(TablesURI, browser);
+
+            ITableCell tableCell = browser.TableCell(new Regex("^inner"));
+            Assert.IsNotNull(tableCell);
+            Assert.IsTrue(tableCell.Exists);
+
+            Assert.AreEqual("innerCell1", tableCell.Id, GetErrorMessage("Incorrect id retrieved from table cell", browser));
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.TableCells"/> property.
+        /// </summary>
+        private static void TableCellsTest(IBrowser browser)
+        {
+            GoTo(TablesURI, browser);
+            ITableCellCollection tableCells = browser.TableCells;
+            Assert.AreEqual(4, tableCells.Length, GetErrorMessage("Incorrect no. of table cells returned", browser));
         }
 
         /// <summary>
@@ -1042,6 +1300,25 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         }
 
         /// <summary>
+        /// Test that we can obtain a reference to a paragraph using the elements Id to look it up.
+        /// Once the element is found we assert properties unique to the <see cref="IPara"/> interface.
+        /// </summary>
+        private static void ParaByIdTest(IBrowser browser)
+        {
+            GoTo(MainURI, browser);
+
+            IPara linkPara = browser.Para("links");
+            Assert.IsNotNull(linkPara, GetErrorMessage("The link element could not be found.", browser));
+            Assert.AreEqual("links", linkPara.Id, GetErrorMessage("The paragraph id had an incorrect value.", browser));
+
+            // Test that we can get a reference to the inner link
+            ILink linkElement = linkPara.Link("testlinkid1");
+            Assert.IsNotNull(linkElement, GetErrorMessage("The link element could not be found.", browser));
+            Assert.AreEqual("testlinkid1", linkElement.Id, GetErrorMessage("The link id had an incorrect value.", browser));
+            Assert.AreEqual("http://www.microsoft.com/", linkElement.Url, GetErrorMessage("The link url had an incorrect value.", browser));
+        }
+
+        /// <summary>
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.Para(Regex)"/> method.
         /// </summary>
         private static void ParaByRegexTest(IBrowser browser)
@@ -1078,6 +1355,55 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         }
 
         /// <summary>
+        /// Test that we can obtain a reference to a radio button using the elements Id to look it up.
+        /// </summary>
+        private static void RadioButtonByIdTest(IBrowser browser)
+        {
+            GoTo(MainURI, browser);
+
+            IRadioButton radioButton = browser.RadioButton("Radio1");
+            Assert.IsNotNull(radioButton, GetErrorMessage("The radio button element could not be found.", browser));
+            Assert.IsTrue(radioButton.Exists);
+            Assert.IsTrue(radioButton.Checked, GetErrorMessage("Radio button returned incorrect value for checked" , browser));
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.RadioButton(Regex)"/> method.
+        /// </summary>
+        private static void RadioButtonByRegexTest(IBrowser browser)
+        {
+            GoTo(MainURI, browser);
+            IRadioButton radioButton = browser.RadioButton(new Regex("^Radio2"));
+
+            Assert.IsNotNull(radioButton, GetErrorMessage("The radio button sought using the regular expression ^Radio2 could not be found", browser));
+            Assert.IsTrue(radioButton.Exists);
+            Assert.AreEqual("Radio2", radioButton.Id);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.RadioButton(AttributeConstraint)"/> method.
+        /// </summary>        
+        private static void RadioButtonByAttributeConstraintTest(IBrowser browser)
+        {
+            GoTo(MainURI, browser);
+            IRadioButton radioButton = browser.RadioButton(Find.ByName("RadioGroup"));
+
+            Assert.IsNotNull(radioButton, GetErrorMessage("The radio button sought using name attribute could not be found", browser));
+            Assert.IsTrue(radioButton.Exists);
+            Assert.AreEqual("Radio1", radioButton.Id);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.RadioButtons"/> property.
+        /// </summary>
+        private static void RadioButtonsTest(IBrowser browser)
+        {
+            GoTo(MainURI, browser);
+            IRadioButtonCollection radioButtons = browser.RadioButtons;
+            Assert.AreEqual(3, radioButtons.Length, GetErrorMessage("Incorrect no. of radio buttons returned", browser));
+        }
+
+        /// <summary>
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.Area(string)"/> method.
         /// Tests that an area can be located based on the value of it's Id.
         /// </summary>
@@ -1087,25 +1413,6 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
             IArea area = browser.Area("Area1");
 
             Assert.IsNotNull(area, GetErrorMessage("The area with id Area1 could not be found", browser));
-        }
-
-        /// <summary>
-        /// Test that we can obtain a reference to a paragraph using the elements Id to look it up.
-        /// Once the element is found we assert properties unique to the <see cref="IPara"/> interface.
-        /// </summary>
-        private static void ParaByIdTest(IBrowser browser)
-        {
-            GoTo(MainURI, browser);
-
-            IPara linkPara = browser.Para("links");
-            Assert.IsNotNull(linkPara, GetErrorMessage("The link element could not be found.", browser));
-            Assert.AreEqual("links", linkPara.Id, GetErrorMessage("The paragraph id had an incorrect value.", browser));
-
-            // Test that we can get a reference to the inner link
-            ILink linkElement = linkPara.Link("testlinkid1");
-            Assert.IsNotNull(linkElement, GetErrorMessage("The link element could not be found.", browser));
-            Assert.AreEqual("testlinkid1", linkElement.Id, GetErrorMessage("The link id had an incorrect value.", browser));
-            Assert.AreEqual("http://www.microsoft.com/", linkElement.Url, GetErrorMessage("The link url had an incorrect value.", browser));
         }
 
         /// <summary>
@@ -1153,6 +1460,44 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
             ITextField textField = browser.TextField("readonlytext");
             Assert.IsNotNull(textField, GetErrorMessage("The text field could not be found.", browser));
             Assert.AreEqual("readonly", textField.Value, GetErrorMessage("The text field had an incorrect value.", browser));
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.TextField(AttributeConstraint)"/> method.
+        /// </summary>
+        private static void TextFieldByAttributeConstraintTest(IBrowser browser)
+        {
+            GoTo(MainURI, browser);
+
+            ITextField textFields = browser.TextField(Find.By("rows", "2"));
+            Assert.IsNotNull(textFields);
+            Assert.IsTrue(textFields.Exists);
+
+            Assert.AreEqual("Textarea1", textFields.Id, GetErrorMessage("Incorrect id retrieved from table", browser));
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.TextField(Regex)"/> method.
+        /// </summary>
+        private static void TextFieldByRegexTest(IBrowser browser)
+        {
+            GoTo(MainURI, browser);
+
+            ITextField textField = browser.TextField(new Regex("^Text"));
+            Assert.IsNotNull(textField);
+            Assert.IsTrue(textField.Exists);
+
+            Assert.AreEqual("Textarea1", textField.Id, GetErrorMessage("Incorrect id retrieved from text field", browser));
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.TextFields"/> property.
+        /// </summary>
+        private static void TextFieldsTest(IBrowser browser)
+        {
+            GoTo(MainURI, browser);
+            ITextFieldCollection textFields = browser.TextFields;
+            Assert.AreEqual(7, textFields.Length, GetErrorMessage("Incorrect no. of text fields returned", browser));
         }
 
         /// <summary>

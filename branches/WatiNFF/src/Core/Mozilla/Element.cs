@@ -397,6 +397,17 @@ namespace WatiN.Core.Mozilla
             this.ClientPort.Write(command);
         }
 
+        /// <summary>
+        /// Sets the property.
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <param name="value">The value.</param>
+        protected void SetProperty(string propertyName, string value)
+        {
+            string command = string.Format("{0}.{1} = \"{2}\";", this.ElementVariable, propertyName, value);
+            this.ClientPort.Write(command);
+        }
+
         #endregion
 
         #region private instance methods

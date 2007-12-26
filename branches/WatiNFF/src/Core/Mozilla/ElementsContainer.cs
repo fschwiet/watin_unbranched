@@ -444,6 +444,49 @@ namespace WatiN.Core.Mozilla
         }
 
         /// <summary>
+        /// Finds a radio button element using the specified id.
+        /// </summary>
+        /// <param name="id">The id of the radio button element being sought.</param>
+        /// <returns>The radio button element for the corresponding id, or null if none is found</returns>
+        public IRadioButton RadioButton(string id)
+        {
+            return this.RadioButton(Find.ById(id));
+        }
+
+        /// <summary>
+        /// Finds a radio button element using the specified regular expression to match the paragraph's id.
+        /// </summary>
+        /// <param name="id">The regular expression that matches the element id of the radio button element being sought.</param>
+        /// <returns>The radio button element for the corresponding regular expression, or null if none is found</returns>
+        public IRadioButton RadioButton(Regex id)
+        {
+            return this.RadioButton(Find.ById(id));
+        }
+
+        /// <summary>
+        /// Finds a radio button element using the specified attribute constraint.
+        /// </summary>
+        /// <param name="findBy">The attibute contraint used to match an attribute of the radio button element being sought.</param>
+        /// <returns>The radio button element for the corresponding attribute constraint, or null if none is found</returns>
+        public IRadioButton RadioButton(AttributeConstraint findBy)
+        {
+            Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "input", "radio", findBy, this.ClientPort);
+            return new RadioButton(finder.FindFirst(), this.ClientPort);
+        }
+
+        /// <summary>
+        /// Returns all the radio button elements for the current document
+        /// </summary>
+        public IRadioButtonCollection RadioButtons
+        {
+            get
+            {
+                Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "input", "radio", null, this.ClientPort);
+                return new RadioButtonCollection(this.ClientPort, finder);
+            }
+        }
+
+        /// <summary>
         /// Finds a select element using the specified id.
         /// </summary>
         /// <param name="id">The id of the select element being sought.</param>
@@ -579,8 +622,40 @@ namespace WatiN.Core.Mozilla
         /// <returns>The table body element for the corresponding id, or null if none is found</returns>
         public ITableBody TableBody(string id)
         {
-            Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "tbody", Find.ById(id), this.ClientPort);
+            return this.TableBody(Find.ById(id));
+        }
+
+        /// <summary>
+        /// Finds a table body element using the specified regular expression to match the element id.
+        /// </summary>
+        /// <param name="id">The regular expression that matches the element id of the table body element being sought.</param>
+        /// <returns>The table body element for the corresponding regular expression, or null if none is found</returns>
+        public ITableBody TableBody(Regex id)
+        {
+            return this.TableBody(Find.ById(id));
+        }
+
+        /// <summary>
+        /// Finds a table body element using the specified attribute constraint.
+        /// </summary>
+        /// <param name="findBy">The attibute contraint used to match an attribute of the table body element being sought.</param>
+        /// <returns>The table body element for the corresponding attribute constraint, or null if none is found</returns>
+        public ITableBody TableBody(AttributeConstraint findBy)
+        {
+            Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "tbody", findBy, this.ClientPort);
             return new TableBody(finder.FindFirst(), this.ClientPort);
+        }
+
+        /// <summary>
+        /// Returns all the table body elements for the current document
+        /// </summary>
+        public ITableBodyCollection TableBodies
+        {
+            get
+            {
+                Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "tbody", null, this.ClientPort);
+                return new TableBodyCollection(this.ClientPort, finder);
+            }
         }
 
         /// <summary>
@@ -590,8 +665,40 @@ namespace WatiN.Core.Mozilla
         /// <returns>The table row element for the corresponding id, or null if none is found</returns>
         public ITableRow TableRow(string id)
         {
-            Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "tr", Find.ById(id), this.ClientPort);
+            return this.TableRow(Find.ById(id));
+        }
+
+        /// <summary>
+        /// Finds a table row element using the specified regular expression to match the element id.
+        /// </summary>
+        /// <param name="id">The regular expression that matches the element id of the table row element being sought.</param>
+        /// <returns>The table row element for the corresponding regular expression, or null if none is found</returns>
+        public ITableRow TableRow(Regex id)
+        {
+            return this.TableRow(Find.ById(id));
+        }
+
+        /// <summary>
+        /// Finds a table row element using the specified attribute constraint.
+        /// </summary>
+        /// <param name="findBy">The attibute contraint used to match an attribute of the table row element being sought.</param>
+        /// <returns>The table row element for the corresponding attribute constraint, or null if none is found</returns>
+        public ITableRow TableRow(AttributeConstraint findBy)
+        {
+            Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "tr", findBy, this.ClientPort);
             return new TableRow(finder.FindFirst(), this.ClientPort);
+        }
+
+        /// <summary>
+        /// Returns all the table row elements for the current document
+        /// </summary>
+        public ITableRowCollection TableRows
+        {
+            get
+            {
+                Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "tr", null, this.ClientPort);
+                return new TableRowCollection(this.ClientPort, finder);
+            }
         }
 
         /// <summary>
@@ -601,8 +708,40 @@ namespace WatiN.Core.Mozilla
         /// <returns>The table cell element for the corresponding id, or null if none is found</returns>
         public ITableCell TableCell(string id)
         {
-            Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "td", Find.ById(id), this.ClientPort);
+            return this.TableCell(Find.ById(id));
+        }
+
+        /// <summary>
+        /// Finds a table cell element using the specified regular expression to match the element id.
+        /// </summary>
+        /// <param name="id">The regular expression that matches the element id of the table cell element being sought.</param>
+        /// <returns>The table cell element for the corresponding regular expression, or null if none is found</returns>
+        public ITableCell TableCell(Regex id)
+        {
+            return this.TableCell(Find.ById(id));
+        }
+
+        /// <summary>
+        /// Finds a table cell element using the specified attribute constraint.
+        /// </summary>
+        /// <param name="findBy">The attibute contraint used to match an attribute of the table cell element being sought.</param>
+        /// <returns>The table cell element for the corresponding attribute constraint, or null if none is found</returns>
+        public ITableCell TableCell(AttributeConstraint findBy)
+        {
+            Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "td", findBy, this.ClientPort);
             return new TableCell(finder.FindFirst(), this.ClientPort);
+        }
+
+        /// <summary>
+        /// Returns all the table cell elements for the current document
+        /// </summary>
+        public ITableCellCollection TableCells
+        {
+            get
+            {
+                Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "td", null, this.ClientPort);
+                return new TableCellCollection(this.ClientPort, finder);
+            }
         }
 
         /// <summary>
@@ -632,8 +771,26 @@ namespace WatiN.Core.Mozilla
         /// <returns>The text field element for the matches the <see cref="AttributeConstraint" />, or null if none is found</returns>
         public ITextField TextField(AttributeConstraint constraint)
         {
-            Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "input", "text password textarea hidden", constraint, this.ClientPort);
+            Mozilla.ElementFinder finder = new Mozilla.ElementFinder(
+                    this,
+                    new List<ElementTag>(new ElementTag[] { new ElementTag("input", "text password textarea hidden"), new ElementTag("textarea") }), constraint, this.ClientPort);
+            
             return new TextField(finder.FindFirst(), this.ClientPort);
+        }
+
+        /// <summary>
+        /// Returns all the text fields elements for the current document
+        /// </summary>
+        public ITextFieldCollection TextFields
+        {
+            get
+            {                
+                Mozilla.ElementFinder finder = new Mozilla.ElementFinder(
+                    this,
+                    new List<ElementTag>(new ElementTag[] { new ElementTag("input", "text password textarea hidden"), new ElementTag("textarea") }), null, this.ClientPort);
+             
+                return new TextFieldCollection(this.ClientPort, finder);
+            }
         }
 
         /// <summary>

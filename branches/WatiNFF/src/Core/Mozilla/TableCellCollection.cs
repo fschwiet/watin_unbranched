@@ -34,12 +34,24 @@ namespace WatiN.Core.Mozilla
             this.parentRow = (TableRow) row;
         }
 
+        public TableCellCollection(FireFoxClientPort clientPort, ElementFinder elementFinder) : base(clientPort, elementFinder)
+        {
+            
+        }
+
         protected override List<Element> FindElements()
         {
             int cellCount;
             List<Element> elements = new List<Element>();
 
-            if (int.TryParse(this.parentRow.GetProperty("cells.length"), out cellCount))
+            if (this.parentRow == null)
+            {
+                foreach (string cellVariable in this.ElementFinder.FindAll())
+                {
+                    elements.Add(new TableCell(cellVariable, this.ClientPort));
+                }
+            }
+            else if (int.TryParse(this.parentRow.GetProperty("cells.length"), out cellCount))
             {
                 for (int i = 0; i < cellCount; i++)
                 {
