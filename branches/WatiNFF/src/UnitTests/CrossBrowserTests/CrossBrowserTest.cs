@@ -107,5 +107,38 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
 			
            	return browser;
         }
+
+        /// <summary>
+        /// Navigates to the specified <paramref name="url"/> if the <paramref name="browser"/> is not currently
+        /// on that url.
+        /// </summary>
+        /// <param name="url">Url to navigate to.</param>
+        /// <param name="browser">browser to navigate with.</param>
+        protected static void GoTo(Uri url, IBrowser browser)
+        {
+            GoTo(url.ToString(), browser);
+        }
+
+        /// <summary>
+        /// Navigates to the specified <paramref name="url"/> if the <paramref name="browser"/> is not currently
+        /// on that url.
+        /// </summary>
+        /// <param name="url">Url to navigate to.</param>
+        /// <param name="browser">browser to navigate with.</param>
+        protected static void GoTo(string url, IBrowser browser)
+        {
+            string currentUrl = browser.Url;
+            
+            if (browser.BrowserType == BrowserType.InternetExplorer && currentUrl.StartsWith("file://"))
+            {
+                currentUrl = "file:///" + currentUrl.Substring(7).Replace('\\', '/');
+            }
+
+            if (!currentUrl.Equals(url, StringComparison.OrdinalIgnoreCase))
+            {
+                Logger.LogAction("Navigating to {0}", url);
+                browser.GoTo(url);
+            }
+        }
     }
 }

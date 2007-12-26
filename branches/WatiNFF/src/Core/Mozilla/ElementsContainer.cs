@@ -407,8 +407,40 @@ namespace WatiN.Core.Mozilla
         /// <returns></returns>
         public IPara Para(string id)
         {
-            Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "p", Find.ById(id), this.ClientPort);
-            return new Para(finder.FindFirst(), this.ClientPort);
+            return this.Para(Find.ById(id));
+        }
+
+        /// <summary>
+        /// Finds a paragraph element using the specified regular expression to match the paragraph's id.
+        /// </summary>
+        /// <param name="id">The regular expression that matches the element id of the paragraph element being sought.</param>
+        /// <returns>The paragraph element for the corresponding regular expression, or null if none is found</returns>
+        public IPara Para(Regex id)
+        {
+            return this.Para(Find.ById(id));
+        }
+
+        /// <summary>
+        /// Finds a paragraph element using the specified attribute constraint.
+        /// </summary>
+        /// <param name="findBy">The attibute contraint used to match an attribute of the paragraph element being sought.</param>
+        /// <returns>The paragraph element for the corresponding attribute constraint, or null if none is found</returns>
+        public IPara Para(AttributeConstraint findBy)
+        {
+            Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "p", findBy, this.ClientPort);
+            return new Para(finder.FindFirst(), this.ClientPort);            
+        }
+
+        /// <summary>
+        /// Returns all the paragraph elements for the current document
+        /// </summary>
+        public IParaCollection Paras
+        {
+            get
+            {
+                Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "p", null, this.ClientPort);
+                return new ParaCollection(this.ClientPort, finder);
+            }
         }
 
         /// <summary>
@@ -419,6 +451,39 @@ namespace WatiN.Core.Mozilla
         public ISelectList SelectList(string id)
         {
             return this.SelectList(Find.ById(id));
+        }
+
+        /// <summary>
+        /// Finds a select list element using the specified regular expression to match the select list's id.
+        /// </summary>
+        /// <param name="id">The regular expression that matches the element id of the select list element being sought.</param>
+        /// <returns>The select list element for the corresponding regular expression, or null if none is found</returns>
+        public ISelectList SelectList(Regex id)
+        {
+            return this.SelectList(Find.ById(id));
+        }
+
+        /// <summary>
+        /// Finds a select list using the specified <see cref="AttributeConstraint" />.
+        /// </summary>
+        /// <param name="constraint">The <see cref="AttributeConstraint" /> for the select list being sought.</param>
+        /// <returns>The select list for the matches the <see cref="AttributeConstraint" />, or null if none is found</returns>
+        public ISelectList SelectList(AttributeConstraint constraint)
+        {
+            Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "select", constraint, this.ClientPort);
+            return new SelectList(finder.FindFirst(), this.ClientPort);
+        }
+
+        /// <summary>
+        /// Returns all the select list elements for the current document
+        /// </summary>
+        public ISelectListCollection SelectLists
+        {
+            get 
+            {
+                Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "select", null, this.ClientPort);
+                return new SelectListCollection(this.ClientPort, finder);
+            }
         }
 
         /// <summary>
@@ -453,14 +518,15 @@ namespace WatiN.Core.Mozilla
         }
 
         /// <summary>
-        /// Finds a select list using the specified <see cref="AttributeConstraint" />.
+        /// Returns all the span elements for the current document
         /// </summary>
-        /// <param name="constraint">The <see cref="AttributeConstraint" /> for the select list being sought.</param>
-        /// <returns>The select list for the matches the <see cref="AttributeConstraint" />, or null if none is found</returns>
-        public ISelectList SelectList(AttributeConstraint constraint)
+        public ISpanCollection Spans
         {
-            Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "select", constraint, this.ClientPort);
-            return new SelectList(finder.FindFirst(), this.ClientPort);
+            get
+            {
+                Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "span", null, this.ClientPort);
+                return new SpanCollection(this.ClientPort, finder);
+            }
         }
 
         /// <summary>
@@ -470,8 +536,40 @@ namespace WatiN.Core.Mozilla
         /// <returns>The table element for the corresponding id, or null if none is found</returns>
         public ITable Table(string id)
         {
-            Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "table", Find.ById(id), this.ClientPort);
+            return this.Table(Find.ById(id));            
+        }
+
+        /// <summary>
+        /// Finds a table element using the specified regular expression to match the element id.
+        /// </summary>
+        /// <param name="id">The regular expression that matches the element id of the table element being sought.</param>
+        /// <returns>The table element for the corresponding regular expression, or null if none is found</returns>
+        public ITable Table(Regex id)
+        {
+            return this.Table(Find.ById(id));
+        }
+
+        /// <summary>
+        /// Finds a table element using the specified attribute constraint.
+        /// </summary>
+        /// <param name="findBy">The attibute contraint used to match an attribute of the table element being sought.</param>
+        /// <returns>The table element for the corresponding attribute constraint, or null if none is found</returns>
+        public ITable Table(AttributeConstraint findBy)
+        {
+            Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "table", findBy, this.ClientPort);
             return new Table(finder.FindFirst(), this.ClientPort);
+        }
+
+        /// <summary>
+        /// Returns all the table elements for the current document
+        /// </summary>
+        public ITableCollection Tables
+        {
+            get
+            {
+                Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "table", null, this.ClientPort);
+                return new TableCollection(this.ClientPort, finder);
+            }
         }
 
         /// <summary>

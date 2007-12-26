@@ -18,13 +18,14 @@
 
 using System.Collections;
 using mshtml;
+using WatiN.Core.Interfaces;
 
 namespace WatiN.Core
 {
 	/// <summary>
 	/// A typed collection of <see cref="Para" /> instances within a <see cref="Document"/> or <see cref="Element"/>.
 	/// </summary>
-	public class ParaCollection : BaseElementCollection
+	public class ParaCollection : BaseElementCollection, IParaCollection
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ParaCollection"/> class.
@@ -46,12 +47,12 @@ namespace WatiN.Core
 		/// Gets the <see cref="Para"/> at the specified index.
 		/// </summary>
 		/// <value></value>
-		public Para this[int index]
+		public IPara this[int index]
 		{
 			get { return new Para(domContainer, (IHTMLParaElement) Elements[index]); }
 		}
 
-		public ParaCollection Filter(AttributeConstraint findBy)
+		public IParaCollection Filter(AttributeConstraint findBy)
 		{
 			return new ParaCollection(domContainer, DoFilter(findBy));
 		}

@@ -18,13 +18,14 @@
 
 using System.Collections;
 using mshtml;
+using WatiN.Core.Interfaces;
 
 namespace WatiN.Core
 {
 	/// <summary>
 	/// A typed collection of <see cref="SelectList" /> instances within a <see cref="Document"/> or <see cref="Element"/>.
 	/// </summary>
-	public class SelectListCollection : BaseElementCollection
+	public class SelectListCollection : BaseElementCollection, ISelectListCollection
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="SelectListCollection"/> class.
@@ -46,12 +47,12 @@ namespace WatiN.Core
 		/// Gets the <see cref="SelectList"/> at the specified index.
 		/// </summary>
 		/// <value></value>
-		public SelectList this[int index]
+		public ISelectList this[int index]
 		{
 			get { return new SelectList(domContainer, (IHTMLElement) Elements[index]); }
 		}
 
-		public SelectListCollection Filter(AttributeConstraint findBy)
+		public ISelectListCollection Filter(AttributeConstraint findBy)
 		{
 			return new SelectListCollection(domContainer, DoFilter(findBy));
 		}

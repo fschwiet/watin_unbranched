@@ -652,9 +652,39 @@ namespace WatiN.Core
             get { return ElementsSupport.Links(DomContainer, this); }
         }
 
+        IPara IElementsContainerTemp.Para(Regex elementId)
+        {
+            return Para(Find.ById(elementId));
+        }
+
+        IPara IElementsContainerTemp.Para(AttributeConstraint findBy)
+        {
+            return ElementsSupport.Para(DomContainer, findBy, this);
+        }
+
+        IParaCollection IElementsContainerTemp.Paras
+        {
+            get { return ElementsSupport.Paras(DomContainer, this); }
+        }
+
         ISelectList IElementsContainerTemp.SelectList(string id)
         {
             return SelectList(Find.ById(id));
+        }
+
+        ISelectList IElementsContainerTemp.SelectList(Regex elementId)
+        {
+            return SelectList(Find.ById(elementId));
+        }
+
+        ISelectList IElementsContainerTemp.SelectList(AttributeConstraint findBy)
+        {
+            return ElementsSupport.SelectList(DomContainer, findBy, this);
+        }
+
+        ISelectListCollection IElementsContainerTemp.SelectLists
+        {
+            get { return ElementsSupport.SelectLists(DomContainer, this); }
         }
 
         ISpan IElementsContainerTemp.Span(string id)
@@ -672,9 +702,29 @@ namespace WatiN.Core
             return ElementsSupport.Span(DomContainer, findBy, this);
         }
 
+        ISpanCollection IElementsContainerTemp.Spans
+        {
+            get { return ElementsSupport.Spans(DomContainer, this); }
+        }
+
         ITable IElementsContainerTemp.Table(string id)
         {
             return Table(Find.ById(id));
+        }
+
+        ITable IElementsContainerTemp.Table(Regex id)
+        {
+            return Table(Find.ById(id));
+        }
+
+        ITable IElementsContainerTemp.Table(AttributeConstraint findBy)
+        {
+            return ElementsSupport.Table(DomContainer, findBy, this);
+        }
+
+        ITableCollection IElementsContainerTemp.Tables
+        {
+            get { return ElementsSupport.Tables(DomContainer, this); }
         }
 
         ITableBody IElementsContainerTemp.TableBody(string id)
