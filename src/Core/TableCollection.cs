@@ -18,13 +18,14 @@
 
 using System.Collections;
 using mshtml;
+using WatiN.Core.Interfaces;
 
 namespace WatiN.Core
 {
 	/// <summary>
 	/// A typed collection of <see cref="Table" /> instances within a <see cref="Document"/> or <see cref="Element"/>.
 	/// </summary>
-	public class TableCollection : BaseElementCollection
+	public class TableCollection : BaseElementCollection, ITableCollection
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="TableCollection"/> class.
@@ -46,12 +47,12 @@ namespace WatiN.Core
 		/// Gets the <see cref="Table"/> at the specified index.
 		/// </summary>
 		/// <value></value>
-		public Table this[int index]
+		public ITable this[int index]
 		{
 			get { return new Table(domContainer, (IHTMLTable) Elements[index]); }
 		}
 
-		public TableCollection Filter(AttributeConstraint findBy)
+		public ITableCollection Filter(AttributeConstraint findBy)
 		{
 			return new TableCollection(domContainer, DoFilter(findBy));
 		}

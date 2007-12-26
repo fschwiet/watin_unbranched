@@ -442,6 +442,10 @@
     <Compile Include="Interfaces\IOptionCollection.cs" />
     <Compile Include="Interfaces\IOption.cs" />
     <Compile Include="Interfaces\ISpan.cs" />
+    <Compile Include="Interfaces\IParaCollection.cs" />
+    <Compile Include="Interfaces\ISelectListCollection.cs" />
+    <Compile Include="Interfaces\ISpanCollection.cs" />
+    <Compile Include="Interfaces\ITableCollection.cs" />
     <Compile Include="Label.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -497,13 +501,17 @@
     <Compile Include="Mozilla\Option.cs" />
     <Compile Include="Mozilla\OptionCollection.cs" />
     <Compile Include="Mozilla\Para.cs" />
+    <Compile Include="Mozilla\ParaCollection.cs" />
     <Compile Include="Mozilla\SelectList.cs" />
+    <Compile Include="Mozilla\SelectListCollection.cs" />
     <Compile Include="Mozilla\Span.cs" />
+    <Compile Include="Mozilla\SpanCollection.cs" />
     <Compile Include="Mozilla\Table.cs" />
     <Compile Include="Mozilla\TableBody.cs" />
     <Compile Include="Mozilla\TableBodyCollection.cs" />
     <Compile Include="Mozilla\TableCell.cs" />
     <Compile Include="Mozilla\TableCellCollection.cs" />
+    <Compile Include="Mozilla\TableCollection.cs" />
     <Compile Include="Mozilla\TableRow.cs" />
     <Compile Include="Mozilla\TableRowCollection.cs" />
     <Compile Include="Mozilla\TextField.cs" />

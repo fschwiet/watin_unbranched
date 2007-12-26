@@ -36,15 +36,16 @@ namespace WatiN.Core.Mozilla
         /// I.e. for options myOption.getAttribute("selected"); returns nothing if it's selected. 
         /// However  myOption.selected returns true.
         /// </summary>
-        private static List<string> knownAttributeOverrides = new List<string>(new string[] { "selected", "textContent" });
+        private static readonly List<string> knownAttributeOverrides = new List<string>(new string[] { "selected", "textContent", "className" });
 
-        private static Dictionary<string, string> watiNAttributeMap = new Dictionary<string, string>();
+        private static readonly Dictionary<string, string> watiNAttributeMap = new Dictionary<string, string>();
 
         #region Constructors
 
         static Element()
         {
             watiNAttributeMap.Add("innertext", "textContent");
+            watiNAttributeMap.Add("classname", "className");
         }
 
         /// <summary>

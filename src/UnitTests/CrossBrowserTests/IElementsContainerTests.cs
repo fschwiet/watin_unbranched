@@ -58,9 +58,9 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.Area(AttributeConstraint)"/> method.
         /// </summary>
         [Test]
-        public void AreaByAttributeContraint()
+        public void AreaByAttributeConstraint()
         {
-            ExecuteTest(AreaByAttributeContraintTest);
+            ExecuteTest(AreaByAttributeConstraintTest);
         }
 
         /// <summary>
@@ -95,9 +95,9 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.Button(AttributeConstraint)"/> method.
         /// </summary>
         [Test]
-        public void ButtonByAttributeContraint()
+        public void ButtonByAttributeConstraint()
         {
-            ExecuteTest(ButtonByAttributeContraintTest);
+            ExecuteTest(ButtonByAttributeConstraintTest);
         }
 
         /// <summary>
@@ -132,9 +132,9 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.CheckBox(AttributeConstraint)"/> method.
         /// </summary>
         [Test]
-        public void CheckBoxByAttributeContraint()
+        public void CheckBoxByAttributeConstraint()
         {
-            ExecuteTest(CheckBoxByAttributeContraintTest);
+            ExecuteTest(CheckBoxByAttributeConstraintTest);
         }
 
         /// <summary>
@@ -159,9 +159,9 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.Div(AttributeConstraint)"/> method.
         /// </summary>
         [Test]
-        public void DivByAttributeContraint()
+        public void DivByAttributeConstraint()
         {
-            ExecuteTest(DivByAttributeContraintTest);
+            ExecuteTest(DivByAttributeConstraintTest);
         }
 
         /// <summary>
@@ -196,9 +196,9 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.Element(AttributeConstraint)"/> method.
         /// </summary>
         [Test]
-        public void ElementByAttributeContraint()
+        public void ElementByAttributeConstraint()
         {
-            ExecuteTest(ElementByAttributeContraintTest);
+            ExecuteTest(ElementByAttributeConstraintTest);
         }
 
         /// <summary>
@@ -224,9 +224,9 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.Form(AttributeConstraint)"/> method.
         /// </summary>
         [Test]
-        public void FormByAttributeContraint()
+        public void FormByAttributeConstraint()
         {
-            ExecuteTest(FormByAttributeContraintTest);
+            ExecuteTest(FormByAttributeConstraintTest);
         }
 
         /// <summary>
@@ -260,9 +260,9 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.Image(AttributeConstraint)"/> method.
         /// </summary>
         [Test]
-        public void ImageByAttributeContraint()
+        public void ImageByAttributeConstraint()
         {
-            ExecuteTest(ImageByAttributeContraintTest);
+            ExecuteTest(ImageByAttributeConstraintTest);
         }
 
         /// <summary>
@@ -297,9 +297,9 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.Label(AttributeConstraint)"/> method.
         /// </summary>
         [Test]
-        public void LabelByAttributeContraint()
+        public void LabelByAttributeConstraint()
         {
-            ExecuteTest(LabelByAttributeContraintTest);
+            ExecuteTest(LabelByAttributeConstraintTest);
         }
 
         /// <summary>
@@ -309,6 +309,16 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         public void Labels()
         {
             ExecuteTest(LabelsTest);
+        }
+
+        /// <summary>
+        /// Test that we can obtain a reference to a link using the elements Id to look it up.
+        /// Once the element is found we assert properties unique to the <see cref="ILink"/> interface.
+        /// </summary>
+        [Test]
+        public void LinkById()
+        {
+            ExecuteTest(LinkByIdTest, false);
         }
 
         /// <summary>
@@ -324,9 +334,9 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.Link(AttributeConstraint)"/> method.
         /// </summary>
         [Test]
-        public void LinkByAttributeContraint()
+        public void LinkByAttributeConstraint()
         {
-            ExecuteTest(LinkByAttributeContraintTest);
+            ExecuteTest(LinkByAttributeConstraintTest);
         }
 
         /// <summary>
@@ -349,13 +359,30 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         }
 
         /// <summary>
-        /// Test that we can obtain a reference to a link using the elements Id to look it up.
-        /// Once the element is found we assert properties unique to the <see cref="ILink"/> interface.
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Para(Regex)"/> method.
         /// </summary>
         [Test]
-        public void LinkById()
+        public void ParaByRegex()
         {
-            ExecuteTest(LinkByIdTest, false);
+            ExecuteTest(ParaByRegexTest);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Para(AttributeConstraint)"/> method.
+        /// </summary>
+        [Test]
+        public void ParaByAttributeConstraint()
+        {
+            ExecuteTest(ParaByAttributeConstraintTest);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Paras"/> property.
+        /// </summary>
+        [Test]
+        public void Paras()
+        {
+            ExecuteTest(ParasTest);
         }
 
         /// <summary>
@@ -366,6 +393,33 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         public void SelectListById()
         {
             ExecuteTest(SelectListByIdTest, false);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.SelectList(Regex)"/> method.
+        /// </summary>
+        [Test]
+        public void SelectListByRegex()
+        {
+            ExecuteTest(SelectListByRegexTest);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.SelectList(AttributeConstraint)"/> method.
+        /// </summary>
+        [Test]
+        public void SelectListByAttributeConstraint()
+        {
+            ExecuteTest(SelectListByAttributeConstraintTest);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.SelectLists"/> property.
+        /// </summary>
+        [Test]
+        public void SelectLists()
+        {
+            ExecuteTest(SelectListsTest);
         }
 
         /// <summary>
@@ -381,9 +435,9 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.Span(AttributeConstraint)"/> method.
         /// </summary>
         [Test]
-        public void SpanByAttributeContraint()
+        public void SpanByAttributeConstraint()
         {
-            ExecuteTest(SpanByAttributeContraintTest);
+            ExecuteTest(SpanByAttributeConstraintTest);
         }
 
         /// <summary>
@@ -396,6 +450,15 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         }
 
         /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Spans"/> property.
+        /// </summary>
+        [Test]
+        public void Spans()
+        {
+            ExecuteTest(SpansTest);
+        }
+
+        /// <summary>
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.Table(string)"/> method.
         /// Tests that a table can be located based on the value of it's Id.
         /// </summary>
@@ -403,6 +466,33 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         public void TableById()
         {
             ExecuteTest(TableByIdTest, false);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Table(AttributeConstraint)"/> method.
+        /// </summary>
+        [Test]
+        public void TableByAttributeConstraint()
+        {
+            ExecuteTest(TableByAttributeConstraintTest);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Table(Regex)"/> method.
+        /// </summary>
+        [Test]
+        public void TableByRegex()
+        {
+            ExecuteTest(TableByRegexTest);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Tables"/> property.
+        /// </summary>
+        [Test]
+        public void Tables()
+        {
+            ExecuteTest(TablesTest);
         }
 
         /// <summary>
@@ -464,7 +554,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// </summary>
         private static void AreaByRegexTest(IBrowser browser)
         {
-            browser.GoTo(ImagesURI);
+            GoTo(ImagesURI, browser);
             IArea area = browser.Area(new Regex("^Are"));
 
             Assert.IsNotNull(area, GetErrorMessage("The area with id Area1 could not be found", browser));
@@ -475,9 +565,9 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// <summary>
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.Area(AttributeConstraint)"/> method.
         /// </summary>        
-        private static void AreaByAttributeContraintTest(IBrowser browser)
+        private static void AreaByAttributeConstraintTest(IBrowser browser)
         {
-            browser.GoTo(ImagesURI);
+            GoTo(ImagesURI, browser);
             IArea area = browser.Area(Find.ByAlt("WatiN"));
 
             Assert.IsNotNull(area, GetErrorMessage("The area with id Area1 could not be found", browser));
@@ -490,7 +580,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// </summary>
         private static void AreasTest(IBrowser browser)
         {
-            browser.GoTo(ImagesURI);
+            GoTo(ImagesURI, browser);
             IAreaCollection areas = browser.Areas;
 
             Assert.IsNotNull(areas, GetErrorMessage("The areas could not be found", browser));
@@ -502,7 +592,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// </summary>
         private static void ButtonsTest(IBrowser browser)
         {
-            browser.GoTo(MainURI);
+            GoTo(MainURI, browser);
             IButtonCollection buttons = browser.Buttons;
 
             Assert.AreEqual(5, buttons.Length, GetErrorMessage("Incorrect no. of button elements returned." , browser));
@@ -514,7 +604,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// </summary>
         private static void LabelByIdTest(IBrowser browser)
         {
-            browser.GoTo(MainURI);
+            GoTo(MainURI, browser);
             ILabel label = browser.Label("lblB");
 
             Assert.IsNotNull(label, GetErrorMessage("The table with id lblB could not be found", browser));
@@ -525,7 +615,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// </summary>
         private static void LabelByRegexTest(IBrowser browser)
         {
-            browser.GoTo(MainURI);
+            GoTo(MainURI, browser);
             ILabel label = browser.Label(new Regex("^lblB"));
 
             Assert.IsNotNull(label, GetErrorMessage("The label sought using the regular expression ^lblB could not be found", browser));
@@ -536,9 +626,9 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// <summary>
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.Label(AttributeConstraint)"/> method.
         /// </summary>        
-        private static void LabelByAttributeContraintTest(IBrowser browser)
+        private static void LabelByAttributeConstraintTest(IBrowser browser)
         {
-            browser.GoTo(MainURI);
+            GoTo(MainURI, browser);
             ILabel label = browser.Label(Find.By("accesskey", "C"));
 
             Assert.IsNotNull(label, GetErrorMessage("The label sought using attribute accesskey could not be found", browser));
@@ -551,7 +641,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// </summary>
         private static void LabelsTest(IBrowser browser)
         {
-            browser.GoTo(MainURI);
+            GoTo(MainURI, browser);
             ILabelCollection labels = browser.Labels;
             Assert.AreEqual(3, labels.Length, GetErrorMessage("Incorrect no. of labels returned", browser));
         }
@@ -562,7 +652,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// </summary>
         private static void TableByIdTest(IBrowser browser)
         {
-            browser.GoTo(MainURI);
+            GoTo(MainURI, browser);
             ITable table = browser.Table("table1");
 
             Assert.IsNotNull(table, GetErrorMessage("The table with id table1 could not be found", browser));
@@ -574,7 +664,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// </summary>
         private static void TableBodyByIdTest(IBrowser browser)
         {
-            browser.GoTo(TablesURI);
+            GoTo(TablesURI, browser);
             ITableBody tableBody = browser.TableBody("tbody2");
 
             Assert.IsNotNull(tableBody, GetErrorMessage("The table body with id tbody2 could not be found", browser));
@@ -585,7 +675,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// </summary>
         private static void SpanByIdTest(IBrowser browser)
         {
-            browser.GoTo(MainURI);
+            GoTo(MainURI, browser);
 
             ISpan span = browser.Span("spanid1");
             Assert.IsNotNull(span);
@@ -598,9 +688,9 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// <summary>
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.Span(AttributeConstraint)"/> method.
         /// </summary>
-        private static void SpanByAttributeContraintTest(IBrowser browser)
+        private static void SpanByAttributeConstraintTest(IBrowser browser)
         {
-            browser.GoTo(MainURI);
+            GoTo(MainURI, browser);
 
             ISpan span = browser.Span(Find.ByStyle("color", "green"));
             Assert.IsNotNull(span);
@@ -614,7 +704,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// </summary>
         private static void SpanByRegexTest(IBrowser browser)
         {
-            browser.GoTo(MainURI);
+            GoTo(MainURI, browser);
 
             ISpan span = browser.Span(new Regex("^spanid"));
             Assert.IsNotNull(span);
@@ -624,12 +714,50 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         }
 
         /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Table(AttributeConstraint)"/> method.
+        /// </summary>
+        private static void TableByAttributeConstraintTest(IBrowser browser)
+        {
+            GoTo(TablesURI, browser);
+
+            ITable table = browser.Table(Find.By("cellSpacing", "5"));
+            Assert.IsNotNull(table);
+            Assert.IsTrue(table.Exists);
+
+            Assert.AreEqual("Table1", table.Id, GetErrorMessage("Incorrect id retrieved from table", browser));
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Table(Regex)"/> method.
+        /// </summary>
+        private static void TableByRegexTest(IBrowser browser)
+        {
+            GoTo(TablesURI, browser);
+
+            ITable table = browser.Table(new Regex("^Table2"));
+            Assert.IsNotNull(table);
+            Assert.IsTrue(table.Exists);
+
+            Assert.AreEqual("Table2", table.Id, GetErrorMessage("Incorrect id retrieved from table", browser));
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Tables"/> property.
+        /// </summary>
+        private static void TablesTest(IBrowser browser)
+        {
+            GoTo(TablesURI, browser);
+            ITableCollection tables = browser.Tables;
+            Assert.AreEqual(2, tables.Length, GetErrorMessage("Incorrect no. of tables returned", browser));
+        }
+
+        /// <summary>
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.TableRow(string)"/> method.
         /// Tests that a table row can be located based on the value of it's Id.
         /// </summary>
         private static void TableRowByIdTest(IBrowser browser)
         {
-            browser.GoTo(TablesURI);
+            GoTo(TablesURI, browser);
             ITableRow row = browser.TableRow("1");
 
             Assert.IsNotNull(row, GetErrorMessage("The row with id 1 could not be found", browser));
@@ -641,7 +769,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// </summary>
         private static void TableCellByIdTest(IBrowser browser)
         {
-            browser.GoTo(TablesURI);
+            GoTo(TablesURI, browser);
             ITableCell cell = browser.TableCell("innerCell1");
 
             Assert.IsNotNull(cell, GetErrorMessage("The cell with id innerCell1 could not be found", browser));
@@ -653,7 +781,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// </summary>
         private static void ButtonByIdTest(IBrowser browser)
         {
-            browser.GoTo(MainURI);
+            GoTo(MainURI, browser);
             IButton button = browser.Button("helloid");
 
             Assert.IsNotNull(button, GetErrorMessage("The button with id helloid could not be found", browser));
@@ -664,7 +792,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// </summary>
         private static void ButtonByRegexTest(IBrowser browser)
         {
-            browser.GoTo(MainURI);
+            GoTo(MainURI, browser);
             IButton button = browser.Button(new Regex("^hello"));
 
             Assert.IsNotNull(button, GetErrorMessage("The button sought using the regular expression ^Hello could not be found", browser));
@@ -675,9 +803,9 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// <summary>
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.Button(AttributeConstraint)"/> method.
         /// </summary>        
-        private static void ButtonByAttributeContraintTest(IBrowser browser)
+        private static void ButtonByAttributeConstraintTest(IBrowser browser)
         {
-            browser.GoTo(MainURI);
+            GoTo(MainURI, browser);
             IButton button = browser.Button(Find.ByValue("Show alert"));
 
             Assert.IsNotNull(button, GetErrorMessage("The button sought using the value Show alert could not be found", browser));
@@ -691,7 +819,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// </summary>
         private static void CheckBoxByIdTest(IBrowser browser)
         {
-            browser.GoTo(MainURI);
+            GoTo(MainURI, browser);
             ICheckBox checkBox = browser.CheckBox("Checkbox21");
             Assert.IsNotNull(checkBox, GetErrorMessage("The checkbox with the id Checkbox21 could not be found.", browser));
         }
@@ -701,7 +829,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// </summary>
         private static void CheckBoxByRegexTest(IBrowser browser)
         {
-            browser.GoTo(MainURI);
+            GoTo(MainURI, browser);
             ICheckBox checkBox = browser.CheckBox(new Regex("^Checkbox3"));
 
             Assert.IsNotNull(checkBox, GetErrorMessage("The checkbox sought using the regular expression ^Checkbox3 could not be found", browser));
@@ -712,9 +840,9 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// <summary>
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.CheckBox(AttributeConstraint)"/> method.
         /// </summary>        
-        private static void CheckBoxByAttributeContraintTest(IBrowser browser)
+        private static void CheckBoxByAttributeConstraintTest(IBrowser browser)
         {
-            browser.GoTo(MainURI);
+            GoTo(MainURI, browser);
             ICheckBox checkBox = browser.CheckBox(Find.ByValue("Effe teste"));
 
             Assert.IsNotNull(checkBox, GetErrorMessage("The checkbox sought using value Effe teste could not be found", browser));
@@ -727,7 +855,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// </summary>
         private static void CheckBoxesTest(IBrowser browser)
         {
-            browser.GoTo(MainURI);
+            GoTo(MainURI, browser);
             ICheckBoxCollection checkBoxes = browser.CheckBoxes;
             Assert.AreEqual(5, checkBoxes.Length, GetErrorMessage("Incorrect no. of checkboxes returned", browser));
         }
@@ -737,7 +865,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// </summary>
         private static void DivByRegexTest(IBrowser browser)
         {
-            browser.GoTo(MainURI);
+            GoTo(MainURI, browser);
             IDiv div = browser.Div(new Regex("^div"));
 
             Assert.IsNotNull(div, GetErrorMessage("The div sought using the regular expression ^div could not be found", browser));
@@ -748,9 +876,9 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// <summary>
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.Div(AttributeConstraint)"/> method.
         /// </summary>        
-        private static void DivByAttributeContraintTest(IBrowser browser)
+        private static void DivByAttributeConstraintTest(IBrowser browser)
         {
-            browser.GoTo(MainURI);
+            GoTo(MainURI, browser);
             IDiv div = browser.Div(Find.By("ms_positioning", "FlowLayout"));
 
             Assert.IsNotNull(div, GetErrorMessage("The div sought using attribute ms_positioning could not be found", browser));
@@ -763,7 +891,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// </summary>
         private static void DivsTest(IBrowser browser)
         {
-            browser.GoTo(MainURI);
+            GoTo(MainURI, browser);
             IDivCollection divs = browser.Divs;
             Assert.AreEqual(1, divs.Length, GetErrorMessage("Incorrect no. of divs returned", browser));
         }
@@ -773,7 +901,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// </summary>
         private static void ElementByRegexTest(IBrowser browser)
         {
-            browser.GoTo(MainURI);
+            GoTo(MainURI, browser);
             IElement element = browser.Element(new Regex("^name"));
 
             Assert.IsNotNull(element, GetErrorMessage("The element sought using the regular expression ^name could not be found", browser));
@@ -784,9 +912,9 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// <summary>
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.Element(AttributeConstraint)"/> method.
         /// </summary>        
-        private static void ElementByAttributeContraintTest(IBrowser browser)
+        private static void ElementByAttributeConstraintTest(IBrowser browser)
         {
-            browser.GoTo(MainURI);
+            GoTo(MainURI, browser);
             IElement element = browser.Element(Find.ByTitle("Textfield title"));
 
             Assert.IsNotNull(element, GetErrorMessage("The element sought using title \"Textfield title\" could not be found", browser));
@@ -800,7 +928,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// </summary>
         private static void FormByIdTest(IBrowser browser)
         {
-            browser.GoTo(MainURI);
+            GoTo(MainURI, browser);
             IForm form = browser.Form("Form");
             Assert.IsNotNull(form, GetErrorMessage("The form with the id \"Form\" could not be found.", browser));
         }
@@ -810,7 +938,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// </summary>
         private static void FormByRegexTest(IBrowser browser)
         {
-            browser.GoTo(MainURI);
+            GoTo(MainURI, browser);
             IForm form = browser.Form(new Regex("^For"));
 
             Assert.IsNotNull(form, GetErrorMessage("The form sought using the regular expression ^For could not be found", browser));
@@ -821,9 +949,9 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// <summary>
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.Form(AttributeConstraint)"/> method.
         /// </summary>        
-        private static void FormByAttributeContraintTest(IBrowser browser)
+        private static void FormByAttributeConstraintTest(IBrowser browser)
         {
-            browser.GoTo(MainURI);
+            GoTo(MainURI, browser);
             IForm form = browser.Form(Find.By("method", "get"));
 
             Assert.IsNotNull(form, GetErrorMessage("The form sought using attribute method and the value get could not be found", browser));
@@ -836,7 +964,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// </summary>
         private static void FormsTest(IBrowser browser)
         {
-            browser.GoTo(MainURI);
+            GoTo(MainURI, browser);
             IDivCollection divs = browser.Divs;
             Assert.AreEqual(1, divs.Length, GetErrorMessage("Incorrect no. of divs returned", browser));
         }
@@ -846,7 +974,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// </summary>
         private static void ImageByRegexTest(IBrowser browser)
         {
-            browser.GoTo(ImagesURI);
+            GoTo(ImagesURI, browser);
             IImage image = browser.Image(new Regex("^Image1"));
 
             Assert.IsNotNull(image, GetErrorMessage("The image sought using the regular expression ^Image1 could not be found", browser));
@@ -857,9 +985,9 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// <summary>
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.Image(AttributeConstraint)"/> method.
         /// </summary>        
-        private static void ImageByAttributeContraintTest(IBrowser browser)
+        private static void ImageByAttributeConstraintTest(IBrowser browser)
         {
-            browser.GoTo(ImagesURI);
+            GoTo(ImagesURI, browser);
             IImage image = browser.Image(Find.ByAlt("Picture does not exist."));
 
             Assert.IsNotNull(image, GetErrorMessage("The image sought using attribute alt could not be found", browser));
@@ -872,7 +1000,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// </summary>
         private static void ImagesTest(IBrowser browser)
         {
-            browser.GoTo(ImagesURI);
+            GoTo(ImagesURI, browser);
             IImageCollection images = browser.Images;
             Assert.AreEqual(4, images.Length, GetErrorMessage("Incorrect no. of images returned", browser));
         }
@@ -882,7 +1010,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// </summary>
         private static void LinkByRegexTest(IBrowser browser)
         {
-            browser.GoTo(MainURI);
+            GoTo(MainURI, browser);
             ILink link = browser.Link(new Regex("^testlink"));
 
             Assert.IsNotNull(link, GetErrorMessage("The link sought using the regular expression ^testlink could not be found", browser));
@@ -893,9 +1021,9 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// <summary>
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.Link(AttributeConstraint)"/> method.
         /// </summary>        
-        private static void LinkByAttributeContraintTest(IBrowser browser)
+        private static void LinkByAttributeConstraintTest(IBrowser browser)
         {
-            browser.GoTo(MainURI);
+            GoTo(MainURI, browser);
             ILink link = browser.Link(Find.By("target", "_blank"));
 
             Assert.IsNotNull(link, GetErrorMessage("The link sought using attribute target could not be found", browser));
@@ -908,9 +1036,45 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// </summary>
         private static void LinksTest(IBrowser browser)
         {
-            browser.GoTo(MainURI);
+            GoTo(MainURI, browser);
             ILinkCollection links = browser.Links;
             Assert.AreEqual(3, links.Length, GetErrorMessage("Incorrect no. of links returned", browser));
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Para(Regex)"/> method.
+        /// </summary>
+        private static void ParaByRegexTest(IBrowser browser)
+        {
+            GoTo(MainURI, browser);
+            IPara para = browser.Para(new Regex("^testElement"));
+
+            Assert.IsNotNull(para, GetErrorMessage("The paragraph sought using the regular expression ^testlink could not be found", browser));
+            Assert.IsTrue(para.Exists);
+            Assert.AreEqual("testElementAttributes", para.Id);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Para(AttributeConstraint)"/> method.
+        /// </summary>        
+        private static void ParaByAttributeConstraintTest(IBrowser browser)
+        {
+            GoTo(MainURI, browser);
+            IPara para = browser.Para(Find.ByClass("p1main"));
+
+            Assert.IsNotNull(para, GetErrorMessage("The paragraph sought using class attribute could not be found", browser));
+            Assert.IsTrue(para.Exists);
+            Assert.AreEqual("testElementAttributes", para.Id);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Paras"/> property.
+        /// </summary>
+        private static void ParasTest(IBrowser browser)
+        {
+            GoTo(MainURI, browser);
+            IParaCollection paras = browser.Paras;
+            Assert.AreEqual(9, paras.Length, GetErrorMessage("Incorrect no. of paragraphs returned", browser));
         }
 
         /// <summary>
@@ -919,7 +1083,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// </summary>
         private static void AreaByIdTest(IBrowser browser)
         {
-            browser.GoTo(ImagesURI);
+            GoTo(ImagesURI, browser);
             IArea area = browser.Area("Area1");
 
             Assert.IsNotNull(area, GetErrorMessage("The area with id Area1 could not be found", browser));
@@ -931,7 +1095,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// </summary>
         private static void ParaByIdTest(IBrowser browser)
         {
-            browser.GoTo(MainURI);
+            GoTo(MainURI, browser);
 
             IPara linkPara = browser.Para("links");
             Assert.IsNotNull(linkPara, GetErrorMessage("The link element could not be found.", browser));
@@ -950,7 +1114,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// </summary>
         private static void LinkByIdTest(IBrowser browser)
         {
-            browser.GoTo(MainURI);
+            GoTo(MainURI, browser);
             ILink linkElement = browser.Link("testlinkid1");
             Assert.IsNotNull(linkElement, GetErrorMessage("The link element could not be found.", browser));
             Assert.AreEqual("testlinkid1", linkElement.Id, GetErrorMessage("The link id had an incorrect value.", browser));
@@ -962,7 +1126,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// </summary>
         private static void ImageByIdTest(IBrowser browser)
         {
-            browser.GoTo(ImagesURI);
+            GoTo(ImagesURI, browser);
             IImage imageElement = browser.Image("Image1");
             Assert.IsNotNull(imageElement, GetErrorMessage("The image element with the id Image1 could not be found.", browser));
         }
@@ -973,7 +1137,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// </summary>
         private static void DivByIdTest(IBrowser browser)
         {
-            browser.GoTo(MainURI);
+            GoTo(MainURI, browser);
             IDiv divElement = browser.Div("divid");
             Assert.IsNotNull(divElement, GetErrorMessage("The div element could not be found.", browser));
             Assert.AreEqual("divid", divElement.Id, GetErrorMessage("The div id had an incorrect value.", browser));
@@ -985,7 +1149,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// <param name="browser">The browser.</param>
         private static void TextFieldByIdTest(IBrowser browser)
         {
-            browser.GoTo(MainURI);
+            GoTo(MainURI, browser);
             ITextField textField = browser.TextField("readonlytext");
             Assert.IsNotNull(textField, GetErrorMessage("The text field could not be found.", browser));
             Assert.AreEqual("readonly", textField.Value, GetErrorMessage("The text field had an incorrect value.", browser));
@@ -997,7 +1161,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// <param name="browser">The browser.</param>
         private static void ElementTest(IBrowser browser)
         {
-            browser.GoTo(MainURI);
+            GoTo(MainURI, browser);
             IElement element = browser.Element("testElementAttributes");
             Assert.IsNotNull(element, GetErrorMessage("Element with id testElementAttributes could not be found.", browser));
             Assert.AreEqual("p1main", element.ClassName, GetErrorMessage("Css class name was not the expected value.", browser));
@@ -1010,10 +1174,55 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// </summary>        
         private static void SelectListByIdTest(IBrowser browser)
         {
-            browser.GoTo(MainURI);
+            GoTo(MainURI, browser);
             ISelectList selectList = browser.SelectList("Select1");
-            Assert.IsNotNull(selectList, GetErrorMessage("Select list with id \"Select1\" could not be found.", browser));
-            
+            Assert.IsNotNull(selectList, GetErrorMessage("Select list with id \"Select1\" could not be found.", browser));            
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.SelectList(Regex)"/>.
+        /// </summary>
+        private static void SelectListByRegexTest(IBrowser browser)
+        {
+            GoTo(MainURI, browser);
+            ISelectList selectList = browser.SelectList(new Regex("^Select1"));
+
+            Assert.IsNotNull(selectList, GetErrorMessage("The select list sought using the regular expression ^Select1 could not be found", browser));
+            Assert.IsTrue(selectList.Exists);
+            Assert.AreEqual("Select1", selectList.Id);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.SelectList(AttributeConstraint)"/> method.
+        /// </summary>        
+        private static void SelectListByAttributeConstraintTest(IBrowser browser)
+        {
+            GoTo(MainURI, browser);
+            ISelectList selectList = browser.SelectList(Find.By("size", "2"));
+
+            Assert.IsNotNull(selectList, GetErrorMessage("The select list sought using size attribute could not be found", browser));
+            Assert.IsTrue(selectList.Exists);
+            Assert.AreEqual("Select2", selectList.Id);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.SelectLists"/> property.
+        /// </summary>
+        private static void SelectListsTest(IBrowser browser)
+        {
+            GoTo(MainURI, browser);
+            ISelectListCollection selectListCollection = browser.SelectLists;
+            Assert.AreEqual(5, selectListCollection.Length, GetErrorMessage("Incorrect no. of select lists returned", browser));
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Spans"/> property.
+        /// </summary>
+        private static void SpansTest(IBrowser browser)
+        {
+            GoTo(MainURI, browser);
+            ISpanCollection spanCollection = browser.Spans;
+            Assert.AreEqual(2, spanCollection.Length, GetErrorMessage("Incorrect no. of spans returned", browser));
         }
 
         #endregion     

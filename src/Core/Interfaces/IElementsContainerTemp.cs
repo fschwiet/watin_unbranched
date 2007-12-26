@@ -269,11 +269,49 @@ namespace WatiN.Core.Interfaces
         IPara Para(string id);
 
         /// <summary>
+        /// Finds a paragraph element using the specified regular expression to match the paragraph's id.
+        /// </summary>
+        /// <param name="id">The regular expression that matches the element id of the paragraph element being sought.</param>
+        /// <returns>The paragraph element for the corresponding regular expression, or null if none is found</returns>
+        IPara Para(Regex id);
+
+        /// <summary>
+        /// Finds a paragraph element using the specified attribute constraint.
+        /// </summary>
+        /// <param name="findBy">The attibute contraint used to match an attribute of the paragraph element being sought.</param>
+        /// <returns>The paragraph element for the corresponding attribute constraint, or null if none is found</returns>
+        IPara Para(AttributeConstraint findBy);
+
+        /// <summary>
+        /// Returns all the paragraph elements for the current document
+        /// </summary>
+        IParaCollection Paras { get; }
+
+        /// <summary>
         /// Finds a select element using the specified id.
         /// </summary>
         /// <param name="id">The id of the select element being sought.</param>
         /// <returns>The select element for the corresponding id, or null if none is found</returns>
         ISelectList SelectList(string id);
+
+        /// <summary>
+        /// Finds a select list element using the specified regular expression to match the select list's id.
+        /// </summary>
+        /// <param name="id">The regular expression that matches the element id of the select list element being sought.</param>
+        /// <returns>The select list element for the corresponding regular expression, or null if none is found</returns>
+        ISelectList SelectList(Regex id);
+
+        /// <summary>
+        /// Finds a select list element using the specified attribute constraint.
+        /// </summary>
+        /// <param name="findBy">The attibute contraint used to match an attribute of the select list element being sought.</param>
+        /// <returns>The select list element for the corresponding attribute constraint, or null if none is found</returns>
+        ISelectList SelectList(AttributeConstraint findBy);
+
+        /// <summary>
+        /// Returns all the select list elements for the current document
+        /// </summary>
+        ISelectListCollection SelectLists { get; }
 
         /// <summary>
         /// Finds a span element using the specified id.
@@ -297,11 +335,35 @@ namespace WatiN.Core.Interfaces
         ISpan Span(AttributeConstraint findBy);
 
         /// <summary>
+        /// Returns all the span elements for the current document
+        /// </summary>
+        ISpanCollection Spans { get; }
+
+        /// <summary>
         /// Finds a table using the specified Id.
         /// </summary>
         /// <param name="id">The id of the table element being sought.</param>
         /// <returns>The table element for the corresponding id, or null if none is found</returns>
         ITable Table(string id);
+
+        /// <summary>
+        /// Finds a table element using the specified regular expression to match the element id.
+        /// </summary>
+        /// <param name="id">The regular expression that matches the element id of the table element being sought.</param>
+        /// <returns>The table element for the corresponding regular expression, or null if none is found</returns>
+        ITable Table(Regex id);
+
+        /// <summary>
+        /// Finds a table element using the specified attribute constraint.
+        /// </summary>
+        /// <param name="findBy">The attibute contraint used to match an attribute of the table element being sought.</param>
+        /// <returns>The table element for the corresponding attribute constraint, or null if none is found</returns>
+        ITable Table(AttributeConstraint findBy);
+
+        /// <summary>
+        /// Returns all the table elements for the current document
+        /// </summary>
+        ITableCollection Tables { get; }
 
         /// <summary>
         /// Finds a table body using the specified Id.

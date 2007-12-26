@@ -18,13 +18,14 @@
 
 using System.Collections;
 using mshtml;
+using WatiN.Core.Interfaces;
 
 namespace WatiN.Core
 {
 	/// <summary>
 	/// A typed collection of <see cref="Span" /> instances within a <see cref="Document"/> or <see cref="Element"/>.
 	/// </summary>
-	public class SpanCollection : BaseElementCollection
+	public class SpanCollection : BaseElementCollection, ISpanCollection
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="SpanCollection"/> class.
@@ -46,12 +47,12 @@ namespace WatiN.Core
 		/// Gets the <see cref="Span"/> at the specified index.
 		/// </summary>
 		/// <value></value>
-		public Span this[int index]
+		public ISpan this[int index]
 		{
 			get { return new Span(domContainer, (IHTMLSpanElement) Elements[index]); }
 		}
 
-		public SpanCollection Filter(AttributeConstraint findBy)
+		public ISpanCollection Filter(AttributeConstraint findBy)
 		{
 			return new SpanCollection(domContainer, DoFilter(findBy));
 		}
