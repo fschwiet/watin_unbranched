@@ -446,6 +446,10 @@
     <Compile Include="Interfaces\ISelectListCollection.cs" />
     <Compile Include="Interfaces\ISpanCollection.cs" />
     <Compile Include="Interfaces\ITableCollection.cs" />
+    <Compile Include="Interfaces\IRadioCheck.cs" />
+    <Compile Include="Interfaces\IRadioButton.cs" />
+    <Compile Include="Interfaces\IRadioButtonCollection.cs" />
+    <Compile Include="Interfaces\ITextFieldCollection.cs" />
     <Compile Include="Label.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -502,6 +506,8 @@
     <Compile Include="Mozilla\OptionCollection.cs" />
     <Compile Include="Mozilla\Para.cs" />
     <Compile Include="Mozilla\ParaCollection.cs" />
+    <Compile Include="Mozilla\RadioButton.cs" />
+    <Compile Include="Mozilla\RadioButtonCollection.cs" />
     <Compile Include="Mozilla\SelectList.cs" />
     <Compile Include="Mozilla\SelectListCollection.cs" />
     <Compile Include="Mozilla\Span.cs" />
@@ -515,6 +521,7 @@
     <Compile Include="Mozilla\TableRow.cs" />
     <Compile Include="Mozilla\TableRowCollection.cs" />
     <Compile Include="Mozilla\TextField.cs" />
+    <Compile Include="Mozilla\TextFieldCollection.cs" />
     <Compile Include="Mozilla\WatiNElementCollection.cs" />
     <Compile Include="Mozilla\Window.cs" />
     <Compile Include="Mozilla\XULBrowser.cs" />

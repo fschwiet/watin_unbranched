@@ -160,6 +160,9 @@
     <Compile Include="ComparerTests\UriComparerTests.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CrossBrowserTests\ITableBodyCollectionTests.cs" />
+    <Compile Include="CrossBrowserTests\IRadioButtonCollectionTests.cs" />
+    <Compile Include="CrossBrowserTests\IRadioButtonTests.cs" />
     <Compile Include="CrossBrowserTests\ITableCollectionTests.cs" />
     <Compile Include="CrossBrowserTests\ISpanCollectionTests.cs" />
     <Compile Include="CrossBrowserTests\ISelectListsCollectionTests.cs" />

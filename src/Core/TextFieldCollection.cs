@@ -18,13 +18,14 @@
 
 using System.Collections;
 using mshtml;
+using WatiN.Core.Interfaces;
 
 namespace WatiN.Core
 {
 	/// <summary>
 	/// A typed collection of <see cref="TextField" /> instances within a <see cref="Document"/> or <see cref="Element"/>.
 	/// </summary>
-	public class TextFieldCollection : BaseElementCollection
+	public class TextFieldCollection : BaseElementCollection, ITextFieldCollection
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="TextFieldCollection"/> class.
@@ -46,12 +47,12 @@ namespace WatiN.Core
 		/// Gets the <see cref="TextField"/> at the specified index.
 		/// </summary>
 		/// <value></value>
-		public TextField this[int index]
+		public ITextField this[int index]
 		{
 			get { return new TextField(domContainer, (IHTMLElement) Elements[index]); }
 		}
 
-		public TextFieldCollection Filter(AttributeConstraint findBy)
+		public ITextFieldCollection Filter(AttributeConstraint findBy)
 		{
 			return new TextFieldCollection(domContainer, DoFilter(findBy));
 		}

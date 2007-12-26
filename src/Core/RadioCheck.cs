@@ -18,6 +18,7 @@
 
 using System.Collections;
 using mshtml;
+using WatiN.Core.Interfaces;
 using WatiN.Core.Logging;
 
 namespace WatiN.Core
@@ -26,7 +27,7 @@ namespace WatiN.Core
 	/// Base class for <see cref="CheckBox"/> and <see cref="RadioButton"/> provides
 	/// support for common functionality.
 	/// </summary>
-	public class RadioCheck : Element
+	public class RadioCheck : Element, IRadioCheck
 	{
 		public RadioCheck(DomContainer ie, IHTMLInputElement inputElement) : base(ie, (IHTMLElement) inputElement) {}
 

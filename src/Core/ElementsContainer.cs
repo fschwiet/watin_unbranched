@@ -469,27 +469,22 @@ namespace WatiN.Core
             return Image(Find.ById(id));
         }
 
-        IPara IElementsContainerTemp.Para(string elementId)
-        {
-            return Para(Find.ById(elementId));
-        }
-
 	    IArea IElementsContainerTemp.Area(string id)
 	    {
             return Area(Find.ById(id));
 	    }
 
-        IArea IElementsContainerTemp.Area(AttributeConstraint findBy)
+	    IArea IElementsContainerTemp.Area(AttributeConstraint findBy)
         {
             return ElementsSupport.Area(DomContainer, findBy, this);
         }
 
-        IArea IElementsContainerTemp.Area(Regex id)
+	    IArea IElementsContainerTemp.Area(Regex id)
         {
             return Area(Find.ById(id));
         }
 
-        IAreaCollection IElementsContainerTemp.Areas
+	    IAreaCollection IElementsContainerTemp.Areas
         {
             get
             {
@@ -497,7 +492,7 @@ namespace WatiN.Core
             }
         }
 
-        IWatiNElementCollection IElementsContainerTemp.Elements
+	    IWatiNElementCollection IElementsContainerTemp.Elements
         {
             get { return ElementsSupport.Elements(DomContainer, this); }
         }
@@ -507,167 +502,197 @@ namespace WatiN.Core
             return Div(Find.ById(id));
         }
 
-        ITextField IElementsContainerTemp.TextField(string id)
+	    ITextField IElementsContainerTemp.TextField(string id)
         {
             return TextField(Find.ById(id));
         }
 
-        ITextField IElementsContainerTemp.TextField(Regex regex)
+	    ITextField IElementsContainerTemp.TextField(Regex regex)
         {
             return TextField(Find.ById(regex));
         }
 
-		ITextField IElementsContainerTemp.TextField(AttributeConstraint constraint)
+	    ITextField IElementsContainerTemp.TextField(AttributeConstraint constraint)
         {
             return TextField(constraint);
         }
 
-        IButton IElementsContainerTemp.Button(string id)
+        ITextFieldCollection IElementsContainerTemp.TextFields
+        {
+            get { return ElementsSupport.TextFields(DomContainer, this); }
+        }
+
+	    IButton IElementsContainerTemp.Button(string id)
         {
             return Button(Find.ById(id));
         }
 
-        IButton IElementsContainerTemp.Button(Regex regex)
+	    IButton IElementsContainerTemp.Button(Regex regex)
         {
             return Button(Find.ById(regex));
         }
 
-		IButton IElementsContainerTemp.Button(AttributeConstraint constraint)
+	    IButton IElementsContainerTemp.Button(AttributeConstraint constraint)
         {
             return Button(constraint);
         }
 
-        IButtonCollection IElementsContainerTemp.Buttons
+	    IButtonCollection IElementsContainerTemp.Buttons
         {
             get { return ElementsSupport.Buttons(DomContainer, this); }
         }
 
-        ICheckBox IElementsContainerTemp.CheckBox(string elementId)
+	    ICheckBox IElementsContainerTemp.CheckBox(string elementId)
         {
             return CheckBox(Find.ById(elementId));
         }
 
-        ICheckBox IElementsContainerTemp.CheckBox(Regex elementId)
+	    ICheckBox IElementsContainerTemp.CheckBox(Regex elementId)
         {
             return CheckBox(Find.ById(elementId));
         }
 
-        ICheckBox IElementsContainerTemp.CheckBox(AttributeConstraint findBy)
+	    ICheckBox IElementsContainerTemp.CheckBox(AttributeConstraint findBy)
         {
             return ElementsSupport.CheckBox(DomContainer, findBy, this);
         }
 
-        ICheckBoxCollection IElementsContainerTemp.CheckBoxes
+	    ICheckBoxCollection IElementsContainerTemp.CheckBoxes
         {
             get { return ElementsSupport.CheckBoxes(DomContainer, this); }
         }
 
-        IDiv IElementsContainerTemp.Div(Regex elementId)
+	    IDiv IElementsContainerTemp.Div(Regex elementId)
         {
             return Div(Find.ById(elementId));
         }
 
-        IDiv IElementsContainerTemp.Div(AttributeConstraint findBy)
+	    IDiv IElementsContainerTemp.Div(AttributeConstraint findBy)
         {
             return ElementsSupport.Div(DomContainer, findBy, this);
         }
 
-        IDivCollection IElementsContainerTemp.Divs
+	    IDivCollection IElementsContainerTemp.Divs
         {
             get { return ElementsSupport.Divs(DomContainer, this); }
         }
 
-        IElement IElementsContainerTemp.Element(Regex elementId)
+	    IElement IElementsContainerTemp.Element(Regex elementId)
         {
             return Element(Find.ById(elementId));
         }
 
-        IElement IElementsContainerTemp.Element(AttributeConstraint findBy)
+	    IElement IElementsContainerTemp.Element(AttributeConstraint findBy)
         {
             return ElementsSupport.Element(DomContainer, findBy, this);
         }
 
-        IForm IElementsContainerTemp.Form(string id)
+	    IForm IElementsContainerTemp.Form(string id)
         {
             return Form(Find.ById(id));
         }
 
-        IForm IElementsContainerTemp.Form(Regex elementId)
+	    IForm IElementsContainerTemp.Form(Regex elementId)
         {
             return Form(Find.ById(elementId));
         }
 
-        IForm IElementsContainerTemp.Form(AttributeConstraint findBy)
+	    IForm IElementsContainerTemp.Form(AttributeConstraint findBy)
         {
             return ElementsSupport.Form(DomContainer, findBy, this);
         }
 
-        IFormsCollection IElementsContainerTemp.Forms
+	    IFormsCollection IElementsContainerTemp.Forms
         {
             get { return ElementsSupport.Forms(DomContainer, this); }
         }
 
-        IImage IElementsContainerTemp.Image(Regex elementId)
+	    IImage IElementsContainerTemp.Image(Regex elementId)
         {
             return Image(Find.ById(elementId));
         }
 
-        IImage IElementsContainerTemp.Image(AttributeConstraint findBy)
+	    IImage IElementsContainerTemp.Image(AttributeConstraint findBy)
         {
             return ElementsSupport.Image(DomContainer, findBy, this);
         }
 
-        IImageCollection IElementsContainerTemp.Images
+	    IImageCollection IElementsContainerTemp.Images
         {
             get { return ElementsSupport.Images(DomContainer, this); }
         }
 
-        ILabel IElementsContainerTemp.Label(Regex elementId)
+	    ILabel IElementsContainerTemp.Label(Regex elementId)
         {
             return Label(Find.ById(elementId));
         }
 
-        ILabel IElementsContainerTemp.Label(AttributeConstraint findBy)
+	    ILabel IElementsContainerTemp.Label(AttributeConstraint findBy)
         {
             return ElementsSupport.Label(DomContainer, findBy, this);
         }
 
-        ILabelCollection IElementsContainerTemp.Labels
+	    ILabelCollection IElementsContainerTemp.Labels
         {
             get { return ElementsSupport.Labels(DomContainer, this); }
         }
 
-        ILink IElementsContainerTemp.Link(Regex elementId)
+	    ILink IElementsContainerTemp.Link(Regex elementId)
         {
             return Link(Find.ById(elementId));
         }
 
-        ILink IElementsContainerTemp.Link(AttributeConstraint findBy)
+	    ILink IElementsContainerTemp.Link(AttributeConstraint findBy)
         {
             return ElementsSupport.Link(DomContainer, findBy, this);
         }
 
-        ILinkCollection IElementsContainerTemp.Links
+	    ILinkCollection IElementsContainerTemp.Links
         {
             get { return ElementsSupport.Links(DomContainer, this); }
         }
 
-        IPara IElementsContainerTemp.Para(Regex elementId)
+	    IPara IElementsContainerTemp.Para(string elementId)
+	    {
+	        return Para(Find.ById(elementId));
+	    }
+
+	    IPara IElementsContainerTemp.Para(Regex elementId)
         {
             return Para(Find.ById(elementId));
         }
 
-        IPara IElementsContainerTemp.Para(AttributeConstraint findBy)
+	    IPara IElementsContainerTemp.Para(AttributeConstraint findBy)
         {
             return ElementsSupport.Para(DomContainer, findBy, this);
         }
 
-        IParaCollection IElementsContainerTemp.Paras
+	    IParaCollection IElementsContainerTemp.Paras
         {
             get { return ElementsSupport.Paras(DomContainer, this); }
         }
 
-        ISelectList IElementsContainerTemp.SelectList(string id)
+        IRadioButton IElementsContainerTemp.RadioButton(string elementId)
+        {
+            return RadioButton(Find.ById(elementId));
+        }
+
+        IRadioButton IElementsContainerTemp.RadioButton(Regex elementId)
+        {
+            return RadioButton(Find.ById(elementId));
+        }
+
+        IRadioButton IElementsContainerTemp.RadioButton(AttributeConstraint findBy)
+        {
+            return ElementsSupport.RadioButton(DomContainer, findBy, this);
+        }
+
+        IRadioButtonCollection IElementsContainerTemp.RadioButtons
+        {
+            get { return ElementsSupport.RadioButtons(DomContainer, this); }
+        }
+
+	    ISelectList IElementsContainerTemp.SelectList(string id)
         {
             return SelectList(Find.ById(id));
         }
@@ -732,14 +757,59 @@ namespace WatiN.Core
             return TableBody(Find.ById(id));
         }
 
+        ITableBody IElementsContainerTemp.TableBody(Regex id)
+        {
+            return TableBody(Find.ById(id));
+        }
+
+        ITableBody IElementsContainerTemp.TableBody(AttributeConstraint findBy)
+        {
+            return ElementsSupport.TableBody(DomContainer, findBy, this);
+        }
+
+        ITableBodyCollection IElementsContainerTemp.TableBodies
+        {
+            get { return ElementsSupport.TableBodies(DomContainer, this); }
+        }
+
         ITableRow IElementsContainerTemp.TableRow(string id)
         {
             return TableRow(Find.ById(id));
         }
 
+        ITableRow IElementsContainerTemp.TableRow(Regex id)
+        {
+            return TableRow(Find.ById(id));
+        }
+
+        ITableRow IElementsContainerTemp.TableRow(AttributeConstraint findBy)
+        {
+            return ElementsSupport.TableRow(DomContainer, findBy, this);
+        }
+
+        ITableRowCollection IElementsContainerTemp.TableRows
+        {
+            get { return ElementsSupport.TableRows(DomContainer, this); }
+        }
+
         ITableCell IElementsContainerTemp.TableCell(string id)
         {
             return TableCell(Find.ById(id));
+        }
+
+        ITableCell IElementsContainerTemp.TableCell(Regex id)
+        {
+            return TableCell(Find.ById(id));
+        }
+
+        ITableCell IElementsContainerTemp.TableCell(AttributeConstraint findBy)
+        {
+            return ElementsSupport.TableCell(DomContainer, findBy, this);
+        }
+
+        ITableCellCollection IElementsContainerTemp.TableCells
+        {
+            get { return ElementsSupport.TableCells(DomContainer, this); }
         }
 
         #endregion

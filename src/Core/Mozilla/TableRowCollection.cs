@@ -30,7 +30,11 @@ namespace WatiN.Core.Mozilla
 
         public TableRowCollection(Element parentTable, FireFoxClientPort clientPort, ElementFinder elementFinder) : base(clientPort, elementFinder)
         {
-            this.parent= parentTable;
+            this.parent = parentTable;
+        }
+
+        public TableRowCollection(FireFoxClientPort clientPort, ElementFinder elementFinder) : base(clientPort, elementFinder)
+        {            
         }
 
         /// <summary>
@@ -47,7 +51,14 @@ namespace WatiN.Core.Mozilla
             int rowCount;
             List<Element> elements = new List<Element>();
 
-            if (int.TryParse(this.parent.GetProperty("rows.length"), out rowCount))
+            if (this.parent == null)
+            {
+                foreach (string rowVariable in this.ElementFinder.FindAll())
+                {
+                    elements.Add(new TableRow(rowVariable, this.ClientPort));
+                }
+            }
+            else if (int.TryParse(this.parent.GetProperty("rows.length"), out rowCount))
             {
                 for(int i = 0; i < rowCount; i++)
                 {

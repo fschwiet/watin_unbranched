@@ -18,6 +18,7 @@
 
 using System.Collections;
 using mshtml;
+using WatiN.Core.Interfaces;
 
 namespace WatiN.Core
 {
@@ -25,7 +26,7 @@ namespace WatiN.Core
 	/// This class provides specialized functionality for a HTML input element of type 
 	/// radio.
 	/// </summary>
-	public class RadioButton : RadioCheck
+	public class RadioButton : RadioCheck, IRadioButton
 	{
 		private static ArrayList elementTags;
 
