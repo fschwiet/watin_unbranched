@@ -18,7 +18,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
+using System.Text.RegularExpressions;
 using NUnit.Framework;
 using WatiN.Core.Interfaces;
 
@@ -39,12 +41,48 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         }
 
         /// <summary>
+        /// Tests the behaviour of the <see cref="IBrowser.BringToFront"/> method.
+        /// </summary>
+        [Test]
+        public void BringToFront()
+        {
+            ExecuteTest(BringToFrontTest);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IBrowser.ContainsText(string)"/> and <see cref="IBrowser.ContainsText(Regex)"/>
+        /// </summary>        
+        [Test]
+        public void ContainsText()
+        {
+            ExecuteTest(ContainsTextTest);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IBrowser.Eval"/> method.
+        /// </summary>
+        [Test]
+        public void Eval()
+        {
+            ExecuteTest(EvalTest);
+        }
+
+        /// <summary>
         /// Tests the behaviour of the <see cref="IBrowser.Forward()"/> method.
         /// </summary>
         [Test]
         public void Forward()
         {
             ExecuteTest(ForwardTest, false);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IBrowser.hWnd"/> property.
+        /// </summary>
+        [Test]
+        public void hWnd()
+        {
+            ExecuteTest(hWndTest);
         }
 
         /// <summary>
@@ -65,18 +103,87 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
             ExecuteTest(ReopenTest, false);
         }
 
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IBrowser.RunScript"/> method.
+        /// </summary>
+        [Test]
+        public void RunScript()
+        {
+            ExecuteTest(RunScriptTest);
+        }
+
         #endregion
 
         #region Private static methods
 
         /// <summary>
-        /// Tests the behaviour of the <see cref="IBrowser.Reopen()"/> method.
+        /// Tests the behaviour of the <see cref="IBrowser.Back()"/> method.
         /// </summary>
-        private static void ReopenTest(IBrowser browser)
+        /// <param name="browser">The browser.</param>
+        private static void BackTest(IBrowser browser)
         {
-            browser.GoTo(MainURI);
-            browser.Reopen();
-            Assert.AreEqual("about:blank", browser.Url, GetErrorMessage("Incorrect Url found after a Reopen action was performed.", browser));
+            GoTo(MainURI, browser);
+            GoTo(ImagesURI, browser);
+            browser.Back();
+
+            Assert.AreEqual(MainURI, browser.Url, GetErrorMessage("Url not the expected value, Back action failed", browser));
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IBrowser.BringToFront"/> method.
+        /// </summary>
+        private static void BringToFrontTest(IBrowser browser)
+        {
+
+            browser.BringToFront();
+
+            Assert.IsTrue(NativeMethods.GetForegroundWindow().Equals(browser.hWnd),
+                          GetErrorMessage("IBrowser.BringToFront() failed to operate as expected.", browser));
+
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IBrowser.ContainsText(string)"/> and <see cref="IBrowser.ContainsText(Regex)"/>
+        /// </summary>        
+        private static void ContainsTextTest(IBrowser browser)
+        {
+            GoTo(MainURI, browser);
+            Assert.IsFalse(browser.ContainsText("This text does not exist."), GetErrorMessage("IBrowser.ContainsText returned an incorrect value.", browser));
+            Assert.IsTrue(browser.ContainsText("label for txtLabelB"), GetErrorMessage("IBrowser.ContainsText returned an incorrect value.", browser));
+
+            Assert.IsFalse(browser.ContainsText(new Regex("This text does not exist.")), GetErrorMessage("IBrowser.ContainsText returned an incorrect value.", browser));
+            Assert.IsTrue(browser.ContainsText(new Regex("label for txtLabelB")), GetErrorMessage("IBrowser.ContainsText returned an incorrect value.", browser));
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IBrowser.Eval"/> method.
+        /// </summary>
+        private static void EvalTest(IBrowser browser)
+        {
+            GoTo(MainURI, browser);
+            string result = browser.Eval("2 + 2");
+            Assert.AreEqual("4", result, GetErrorMessage("IBrowser.Eval returned an incorrect result", browser));
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IBrowser.Forward()"/> method.
+        /// </summary>
+        public void ForwardTest(IBrowser browser)
+        {
+            GoTo(MainURI, browser);
+            GoTo(ImagesURI, browser);
+            browser.Back();
+            browser.Forward();
+
+            Assert.AreEqual(ImagesURI, browser.Url, GetErrorMessage("Url not the expected value, Forward action failed", browser));
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IBrowser.hWnd"/> property.
+        /// </summary>        
+        private static void hWndTest(IBrowser browser)
+        {
+            Assert.AreNotEqual(IntPtr.Zero, browser.hWnd, GetErrorMessage("window handle should not be zero", browser));
         }
 
         /// <summary>
@@ -85,35 +192,30 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// <param name="browser">The browser.</param>
         private static void RefreshTest(IBrowser browser)
         {
-            browser.GoTo(MainURI);
+            GoTo(MainURI, browser);
             browser.Refresh();
         }
 
-
         /// <summary>
-        /// Tests the behaviour of the <see cref="IBrowser.Back()"/> method.
+        /// Tests the behaviour of the <see cref="IBrowser.Reopen()"/> method.
         /// </summary>
-        /// <param name="browser">The browser.</param>
-        private static void BackTest(IBrowser browser)
+        private static void ReopenTest(IBrowser browser)
         {
-            browser.GoTo(MainURI);
-            browser.GoTo(ImagesURI);
-            browser.Back();
-
-            Assert.AreEqual(MainURI, browser.Url, GetErrorMessage("Url not the expected value, Back action failed", browser));
+            GoTo(MainURI, browser);
+            browser.Reopen();
+            Assert.AreEqual("about:blank", browser.Url, GetErrorMessage("Incorrect Url found after a Reopen action was performed.", browser));
         }
 
         /// <summary>
-        /// Tests the behaviour of the <see cref="IBrowser.Forward()"/> method.
+        /// Tests the behaviour of the <see cref="IBrowser.RunScript"/> method.
         /// </summary>
-        public void ForwardTest(IBrowser browser)
+        private static void RunScriptTest(IBrowser browser)
         {
-            browser.GoTo(MainURI);
-            browser.GoTo(ImagesURI);
-            browser.Back();
-            browser.Forward();
+            GoTo(MainURI, browser);
 
-            Assert.AreEqual(ImagesURI, browser.Url, GetErrorMessage("Url not the expected value, Forward action failed", browser));
+            Assert.IsFalse(browser.ContainsText("java script has run"));
+            browser.RunScript("window.document.write('java script has run');");
+            Assert.IsTrue(browser.ContainsText("java script has run"), GetErrorMessage("IBrowser.RunScript method failed to complete correctly.", browser));
         }
 
         #endregion
