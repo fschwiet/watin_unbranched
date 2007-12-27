@@ -96,7 +96,7 @@ namespace WatiN.Core.Mozilla
         /// <summary>
         /// Name of the javascript variable that references the DOM:window object.
         /// </summary>
-        public const string WindowVariableName = "wContent";
+        public const string WindowVariableName = "window";
 
         #endregion
 
@@ -118,6 +118,77 @@ namespace WatiN.Core.Mozilla
 
         #endregion
 
+        #region Public instance properties
+
+        /// <summary>
+        /// Gets the path to FireFox executable.
+        /// </summary>
+        /// <value>The path to exe.</value>
+        public string PathToExe
+        {
+            get { return this.pathToExe; }
+        }
+
+        /// <summary>
+        /// <c>true</c> if we have successfully connected to FireFox
+        /// </summary>
+        public bool Connected
+        {
+            get { return connected; }
+        }
+
+        /// <summary>
+        /// The last reponse recieved from the jssh server
+        /// </summary>
+        public string LastResponse
+        {
+            get { return lastResponse; }
+        }
+
+        /// <summary>
+        /// The entire response from the jssh server so far.
+        /// </summary>
+        public string Response
+        {
+            get { return response.ToString(); }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether last response is null.
+        /// </summary>
+        /// <value><c>true</c> if last response is null; otherwise, <c>false</c>.</value>
+        public bool LastResponseIsNull
+        {
+            get
+            {
+                return this.LastResponse.Equals("null", StringComparison.OrdinalIgnoreCase);
+            }
+        }
+
+        /// <summary>
+        /// Retruns the last reponse as a Boolen, default to false if converting <see cref="LastResponse"/> fails.
+        /// </summary>
+        public bool LastResponseAsBool
+        {
+            get
+            {
+                bool lastBoolResponse;
+                Boolean.TryParse(this.LastResponse, out lastBoolResponse);
+                return lastBoolResponse;
+            }
+        }
+
+        #endregion
+
+        #region Internal instance properties
+
+        internal Process Process
+        {
+            get { return this.ffProcess; }
+        }
+
+        #endregion
+
         #region Public static methods
 
         /// <summary>
@@ -131,6 +202,113 @@ namespace WatiN.Core.Mozilla
         }
 
         #endregion
+        
+        #region Public instance methods
+
+        /// <summary>
+        /// Reloads the javascript variables that are scoped at the document level.
+        /// </summary>
+        public void InitializeDocument()
+        {
+            this.Write(string.Format("var {0} = {1}.document;", DocumentVariableName, WindowVariableName));
+        }
+
+        public void Connect()
+        {
+            if (!this.connected)
+            {
+                this.disposed = false;
+                Logger.LogAction("Attempting to connect to jssh server on localhost port 9997.");
+                this.lastResponse = string.Empty;
+                this.response = new StringBuilder();
+
+                this.ffProcess = new Process();
+                this.ffProcess.StartInfo.FileName = this.PathToExe;
+                this.ffProcess.StartInfo.Arguments = "-jssh";
+                this.ffProcess.Start();                
+                this.ffProcess.WaitForInputIdle(100);
+
+                this.telnetSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
+                try
+                {
+                    this.telnetSocket.Connect(IPAddress.Parse("127.0.0.1"), 9997);
+                }
+                catch(SocketException sockException)
+                {
+                    Logger.LogAction(string.Format("Failed connecting to jssh server.\nError code:{0}\nError message:{1}", sockException.ErrorCode, sockException.Message));
+                    throw new FireFoxException("Unable to connect to jssh server, please make sure you have correctly installed the jssh.xpi plugin", sockException);
+                }
+
+                this.telnetClient = new Thought.Net.Telnet.TelnetClient(this.telnetSocket);                
+                this.WriteLine();
+                Logger.LogAction("Successfully connected to FireFox using jssh.");
+                this.DefineDefaultJSVariables();
+            }
+
+            this.connected = true;
+        }
+
+        ///<summary>
+        ///Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        ///</summary>
+        ///<filterpriority>2</filterpriority>
+        public void Dispose()
+        {
+            Dispose(true);
+
+            // This object will be cleaned up by the Dispose method.
+            // Therefore, you should call GC.SupressFinalize to
+            // take this object off the finalization queue 
+            // and prevent finalization code for this object
+            // from executing a second time.
+            GC.SuppressFinalize(this);
+        }
+
+        #endregion Public instance methods
+
+        #region Protected instance methods
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        protected void Dispose(bool disposing)
+        {
+            // Check to see if Dispose has already been called.
+            if (!this.disposed)
+            {
+                // If disposing equals true, dispose all managed 
+                // and unmanaged resources.
+                if (disposing)
+                {
+                    // Dispose managed resources.
+                    if (this.telnetClient != null && this.telnetSocket.Connected)
+                    {
+                        Logger.LogAction("Closing connection to jssh");
+                        this.Write(string.Format("{0}.close()", WindowVariableName), false);
+                        this.telnetClient.Close();
+                        this.ffProcess.WaitForExit(5000);
+                    }
+                }
+
+                // Call the appropriate methods to clean up 
+                // unmanaged resources here.
+                if (this.ffProcess != null)
+                {
+                    if (!this.ffProcess.HasExited)
+                    {
+                        Logger.LogAction("Closing FireFox");
+                        this.ffProcess.Kill();
+                    }
+                }
+            }
+
+            this.disposed = true;
+            this.connected = false;
+        }
+
+        #endregion Protected instance methods
 
         #region Private static methods
 
@@ -196,171 +374,6 @@ namespace WatiN.Core.Mozilla
         }
 
         #endregion
-
-        #region Public instance methods
-
-        /// <summary>
-        /// Reloads the javascript variables that are scoped at the document level.
-        /// </summary>
-        public void InitializeDocument()
-        {
-            this.Write(string.Format("var {0} = {1}.document;", DocumentVariableName, WindowVariableName));
-        }
-
-        public void Connect()
-        {
-            if (!this.connected)
-            {
-                this.disposed = false;
-                Logger.LogAction("Attempting to connect to jssh server on localhost port 9997.");
-                this.lastResponse = string.Empty;
-                this.response = new StringBuilder();
-
-                this.ffProcess = new Process();
-                this.ffProcess.StartInfo.FileName = this.PathToExe;
-                this.ffProcess.StartInfo.Arguments = "-jssh";
-                this.ffProcess.Start();
-                this.ffProcess.WaitForInputIdle(100);
-
-                this.telnetSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-
-                try
-                {
-                    this.telnetSocket.Connect(IPAddress.Parse("127.0.0.1"), 9997);
-                }
-                catch(SocketException sockException)
-                {
-                    Logger.LogAction(string.Format("Failed connecting to jssh server.\nError code:{0}\nError message:{1}", sockException.ErrorCode, sockException.Message));
-                    throw new FireFoxException("Unable to connect to jssh server, please make sure you have correctly installed the jssh.xpi plugin", sockException);
-                }
-
-                this.telnetClient = new Thought.Net.Telnet.TelnetClient(this.telnetSocket);                
-                this.WriteLine();
-                Logger.LogAction("Successfully connected to FireFox using jssh.");
-                this.DefineDefaultJSVariables();
-            }
-
-            this.connected = true;
-        }
-
-        /// <summary>
-        /// Gets the path to FireFox executable.
-        /// </summary>
-        /// <value>The path to exe.</value>
-        public string PathToExe
-        {
-            get { return this.pathToExe; }
-        }
-
-        /// <summary>
-        /// <c>true</c> if we have successfully connected to FireFox
-        /// </summary>
-        public bool Connected
-        {
-            get { return connected; }
-        }
-
-        /// <summary>
-        /// The last reponse recieved from the jssh server
-        /// </summary>
-        public string LastResponse
-        {
-            get { return lastResponse; }
-        }
-
-        /// <summary>
-        /// The entire response from the jssh server so far.
-        /// </summary>
-        public string Response
-        {
-            get { return response.ToString(); }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether last response is null.
-        /// </summary>
-        /// <value><c>true</c> if last response is null; otherwise, <c>false</c>.</value>
-        public bool LastResponseIsNull
-        {
-            get
-            {
-                return this.LastResponse.Equals("null", StringComparison.OrdinalIgnoreCase);
-            }
-        }
-
-        /// <summary>
-        /// Retruns the last reponse as a Boolen, default to false if converting <see cref="LastResponse"/> fails.
-        /// </summary>
-        public bool LastResponseAsBool
-        {
-            get
-            {
-                bool lastBoolResponse;
-                Boolean.TryParse(this.LastResponse, out lastBoolResponse);
-                return lastBoolResponse;
-            }
-        }
-
-        ///<summary>
-        ///Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        ///</summary>
-        ///<filterpriority>2</filterpriority>
-        public void Dispose()
-        {
-            Dispose(true);
-
-            // This object will be cleaned up by the Dispose method.
-            // Therefore, you should call GC.SupressFinalize to
-            // take this object off the finalization queue 
-            // and prevent finalization code for this object
-            // from executing a second time.
-            GC.SuppressFinalize(this);
-        }
-
-        #endregion Public instance methods
-
-        #region Protected instance methods
-
-        /// <summary>
-        /// Releases unmanaged and - optionally - managed resources
-        /// </summary>
-        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        protected void Dispose(bool disposing)
-        {
-            // Check to see if Dispose has already been called.
-            if (!this.disposed)
-            {
-                // If disposing equals true, dispose all managed 
-                // and unmanaged resources.
-                if (disposing)
-                {
-                    // Dispose managed resources.
-                    if (this.telnetClient != null && this.telnetSocket.Connected)
-                    {
-                        Logger.LogAction("Closing connection to jssh");
-                        this.Write(string.Format("{0}.close()", WindowVariableName), false);
-                        this.telnetClient.Close();
-                        this.ffProcess.WaitForExit(5000);
-                    }
-                }
-
-                // Call the appropriate methods to clean up 
-                // unmanaged resources here.
-                if (this.ffProcess != null)
-                {
-                    if (!this.ffProcess.HasExited)
-                    {
-                        Logger.LogAction("Closing FireFox");
-                        this.ffProcess.Kill();
-                    }
-                }
-            }
-
-            this.disposed = true;
-            this.connected = false;
-        }
-
-        #endregion Protected instance methods
 
         #region Private instance methods
 

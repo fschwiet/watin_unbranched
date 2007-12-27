@@ -19,6 +19,8 @@
 using System;       
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
+using WatiN.Core.Exceptions;
 
 namespace WatiN.Core.Interfaces
 {
@@ -34,10 +36,50 @@ namespace WatiN.Core.Interfaces
         void Back();
 
         /// <summary>
+        /// Brings the current browser to the front (makes it the top window)
+        /// </summary>
+        void BringToFront();
+
+        /// <summary>
         /// Gets the type of the browser.
         /// </summary>
         /// <value>The type of the browser.</value>
         BrowserType BrowserType { get; }
+
+        /// <summary>
+        /// Determines whether the text inside the HTML Body element contains the given <paramref name="text" />.
+        /// </summary>
+        /// <param name="text">The text.</param>
+        /// <returns>
+        ///     <c>true</c> if the specified text is contained in <see cref="IDocument.Html"/>; otherwise, <c>false</c>.
+        /// </returns>
+        bool ContainsText(string text);
+
+        /// <summary>
+        /// Determines whether the text inside the HTML Body element contains the given <paramref name="regex" />.
+        /// </summary>
+        /// <param name="regex">The regular expression to match with.</param>
+        /// <returns>
+        ///     <c>true</c> if the specified text is contained in <see cref="IDocument.Html"/>; otherwise, <c>false</c>.
+        /// </returns>
+        bool ContainsText(Regex regex);
+
+        /// <summary>
+        /// Evaluates the specified JavaScript code within the scope of this
+        /// document. Returns the value computed by the last expression in the
+        /// code block after implicit conversion to a string.
+        /// </summary>
+        /// <example>
+        /// The following example shows an alert dialog then returns the string "4".
+        /// <code>
+        /// Eval("window.alert('Hello world!'); 2 + 2");
+        /// </code>
+        /// </example>
+        /// <param name="javaScriptCode">The JavaScript code</param>
+        /// <returns>The result converted to a string</returns>
+        /// <exception cref="JavaScriptException">Thrown when the JavaScript code cannot be evaluated
+        /// or throws an exception during evaluation</exception>
+        string Eval(string javaScriptCode);
 
         /// <summary>
         /// Navigates the browser forward to the next displayed Url (like the forward
@@ -97,6 +139,8 @@ namespace WatiN.Core.Interfaces
         /// </example>
         void GoTo(Uri url);
 
+        IntPtr hWnd { get; }
+
         /// <summary>
         /// Reloads the currently displayed webpage.
         /// </summary>
@@ -109,7 +153,13 @@ namespace WatiN.Core.Interfaces
         /// Useful when clearing the cookie cache and continuing execution to a test.
         /// </remarks>
         void Reopen();
-        
+
+        /// <summary>
+        /// Runs the javascript code in the current browser.
+        /// </summary>
+        /// <param name="javaScriptCode">The javascript code.</param>
+        void RunScript(string javaScriptCode);
+
         /// <summary>
         /// Waits until the document is fully loaded
         /// </summary>

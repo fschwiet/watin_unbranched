@@ -17,6 +17,8 @@
 #endregion Copyright
 
 using System;
+using System.Text.RegularExpressions;
+using WatiN.Core.Exceptions;
 using WatiN.Core.Interfaces;
 using WatiN.Core.Logging;
 
@@ -82,6 +84,59 @@ namespace WatiN.Core.Mozilla
             get { return Core.BrowserType.FireFox; }
         }
 
+        /// <summary>
+        /// Determines whether the text inside the HTML Body element contains the given <paramref name="text" />.
+        /// </summary>
+        /// <param name="text">The text.</param>
+        /// <returns>
+        ///     <c>true</c> if the specified text is contained in <see cref="IDocument.Html"/>; otherwise, <c>false</c>.
+        /// </returns>
+        public bool ContainsText(string text)
+        {
+            string innertext = Text;
+
+            if (innertext == null) return false;
+
+            return (innertext.IndexOf(text) >= 0);
+        }
+
+        /// <summary>
+        /// Determines whether the text inside the HTML Body element contains the given <paramref name="regex" />.
+        /// </summary>
+        /// <param name="regex">The regular expression to match with.</param>
+        /// <returns>
+        ///     <c>true</c> if the specified text is contained in <see cref="IDocument.Html"/>; otherwise, <c>false</c>.
+        /// </returns>
+        public bool ContainsText(Regex regex)
+        {
+            string innertext = Text;
+
+            if (innertext == null) return false;
+
+            return (regex.Match(innertext).Success);
+        }
+
+        /// <summary>
+        /// Evaluates the specified JavaScript code within the scope of this
+        /// document. Returns the value computed by the last expression in the
+        /// code block after implicit conversion to a string.
+        /// </summary>
+        /// <example>
+        /// The following example shows an alert dialog then returns the string "4".
+        /// <code>
+        /// Eval("window.alert('Hello world!'); 2 + 2");
+        /// </code>
+        /// </example>
+        /// <param name="javaScriptCode">The JavaScript code</param>
+        /// <returns>The result converted to a string</returns>
+        /// <exception cref="JavaScriptException">Thrown when the JavaScript code cannot be evaluated
+        /// or throws an exception during evaluation</exception>
+        public string Eval(string javaScriptCode)
+        {
+            this.ClientPort.Write(javaScriptCode);
+            return this.ClientPort.LastResponse;
+        }
+
         #endregion Public instance properties
 
         #region Public instance methods
@@ -93,6 +148,14 @@ namespace WatiN.Core.Mozilla
         public void Back()
         {
             this.xulBrowser.Back();
+        }
+
+        /// <summary>
+        /// Brings the current browser to the front (makes it the top window)
+        /// </summary>
+        public void BringToFront()
+        {
+            this.xulBrowser.BringToFront();
         }
 
         /// <summary>
@@ -162,6 +225,11 @@ namespace WatiN.Core.Mozilla
             this.xulBrowser.LoadUri(url);
         }
 
+        public IntPtr hWnd
+        {
+            get { return this.xulBrowser.Handle; }
+        }
+
         /// <summary>
         /// Reloads the currently displayed webpage.
         /// </summary>
@@ -180,6 +248,15 @@ namespace WatiN.Core.Mozilla
         {
             this.ClientPort.Dispose();
             this.ClientPort.Connect();
+        }
+
+        /// <summary>
+        /// Runs the javascript code in the current browser.
+        /// </summary>
+        /// <param name="javaScriptCode">The javascript code.</param>
+        public void RunScript(string javaScriptCode)
+        {
+            this.ClientPort.Write(javaScriptCode);
         }
 
         /// <summary>

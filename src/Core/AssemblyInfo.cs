@@ -17,6 +17,8 @@
 #endregion Copyright
 
 using System.Reflection;
+using System.Runtime.CompilerServices;
+
 //
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
@@ -69,6 +71,4 @@ using System.Reflection;
 //   (*) Delay Signing is an advanced option - see the Microsoft .NET Framework
 //       documentation for more information on this.
 //
-[assembly : AssemblyDelaySign(false)]
-[assembly : AssemblyKeyFile("")]
-[assembly : AssemblyKeyName("")]
+[assembly : InternalsVisibleTo("WatiN.Core.UnitTests")]

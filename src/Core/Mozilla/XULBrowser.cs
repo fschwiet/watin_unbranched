@@ -40,6 +40,11 @@ namespace WatiN.Core.Mozilla
             get { return clientPort; }
         }
 
+        public IntPtr Handle
+        {
+            get { return this.ClientPort.Process.MainWindowHandle; }
+        }
+
         #endregion
 
         #region Public instance methods
@@ -51,6 +56,14 @@ namespace WatiN.Core.Mozilla
         {
             this.ClientPort.Write(string.Format("{0}.goBack();", FireFoxClientPort.BrowserVariableName));
             WaitForComplete();
+        }
+
+        public void BringToFront()
+        {
+            if (NativeMethods.GetForegroundWindow() != this.Handle)
+            {
+                NativeMethods.SetForegroundWindow(this.Handle);
+            }
         }
 
         /// <summary>
@@ -98,6 +111,6 @@ namespace WatiN.Core.Mozilla
         	
             this.ClientPort.InitializeDocument();
         }
-        #endregion        
+        #endregion
     }
 }
