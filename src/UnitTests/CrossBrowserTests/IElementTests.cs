@@ -31,30 +31,30 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         #region Public instance test methods
 
         /// <summary>
-        /// Tests the behaviour of the <see cref="IElement.TagName"/> property.
+        /// Tests the behaviour of the <see cref="IElement.Enabled"/> property.
         /// </summary>
         [Test]
-        public void TagName()
+        public void Enabled()
         {
-            ExecuteTest(TagNameTest, false);    
+            ExecuteTest(EnabledTest);    
         }
 
         /// <summary>
-        /// Tests the behaviour of the <see cref="IElement.PreviousSibling"/>
+        /// Tests the behaviour of the <see cref="IElement.Focus"/> method.
         /// </summary>
         [Test]
-        public void PreviousSibling()
+        public void Focus()
         {
-            ExecuteTest(PreviousSiblingTest, false);
+            ExecuteTest(FocusTest);
         }
 
         /// <summary>
-        /// Tests that the previous sibling for the first node is null.
+        /// Tests the behaviour of the <see cref="IElement.InnerHtml"/> property.
         /// </summary>
         [Test]
-        public void PreviousSiblingShouldBeNullForFirstNode()
+        public void InnerHtml()
         {
-            ExecuteTest(PreviousSiblingIsNullTest, false);
+            ExecuteTest(InnerHtmlTest, false);
         }
 
         /// <summary>
@@ -85,12 +85,30 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         }
 
         /// <summary>
-        /// Tests the behaviour of the <see cref="IElement.InnerHtml"/> property.
+        /// Tests the behaviour of the <see cref="IElement.PreviousSibling"/>
         /// </summary>
         [Test]
-        public void InnerHtml()
+        public void PreviousSibling()
         {
-            ExecuteTest(InnerHtmlTest, false);
+            ExecuteTest(PreviousSiblingTest, false);
+        }
+
+        /// <summary>
+        /// Tests that the previous sibling for the first node is null.
+        /// </summary>
+        [Test]
+        public void PreviousSiblingShouldBeNullForFirstNode()
+        {
+            ExecuteTest(PreviousSiblingIsNullTest, false);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElement.TagName"/> property.
+        /// </summary>
+        [Test]
+        public void TagName()
+        {
+            ExecuteTest(TagNameTest, false);    
         }
 
         /// <summary>
@@ -114,6 +132,27 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         #endregion
 
         #region private static test methods
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElement.Enabled"/> property.
+        /// </summary>
+        private static void EnabledTest(IBrowser browser)
+        {
+            GoTo(MainURI, browser);
+            Assert.IsTrue(browser.Element("name").Enabled, GetErrorMessage("Element with id name should report as being enabled", browser));
+            Assert.IsFalse(browser.Element("disabledid").Enabled, GetErrorMessage("Element with id disableid should report as not being enabled", browser));
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElement.Focus"/> method.
+        /// </summary>
+        private static void FocusTest(IBrowser browser)
+        {
+            GoTo(MainURI, browser);
+            browser.Element("popupid").Focus();
+
+            Assert.AreEqual("popupid", browser.ActiveElement.Id, GetErrorMessage("Focus method did not operate as expected", browser));
+        }
 
         /// <summary>
         /// Tests the behaviour of the <see cref="IElement.TagName"/> property.

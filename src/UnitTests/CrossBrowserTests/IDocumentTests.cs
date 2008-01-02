@@ -34,6 +34,27 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
     public class IDocumentTests : CrossBrowserTest
     {
         /// <summary>
+        /// Tests the behaviour of the <see cref="IDocument.ActiveElement"/> property.
+        /// </summary>
+        [Test]
+        public void ActiveElement()
+        {
+            ExecuteTest(ActiveElementTest);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IDocument.ActiveElement"/> property.
+        /// </summary>
+        private static void ActiveElementTest(IBrowser browser)
+        {
+            GoTo(MainURI, browser);
+
+            IElement activeElement = browser.ActiveElement;
+            Assert.AreEqual("body", activeElement.TagName.ToLowerInvariant(), GetErrorMessage("ActiveElement when the document first loads for main.html should be body.", browser));
+            
+        }
+
+        /// <summary>
         /// Tests the behaviour of the <see cref="IDocument.Html"/> method.
         /// </summary>
         [Test]

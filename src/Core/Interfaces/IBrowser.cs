@@ -82,10 +82,23 @@ namespace WatiN.Core.Interfaces
         string Eval(string javaScriptCode);
 
         /// <summary>
+        /// Gets the text inside the HTML Body element that matches the regular expression.
+        /// </summary>
+        /// <param name="regex">The regular expression to match with.</param>
+        /// <returns>The matching text, or null if none.</returns>
+        string FindText(Regex regex);
+
+        /// <summary>
         /// Navigates the browser forward to the next displayed Url (like the forward
         /// button in Internet Explorer). 
         /// </summary>
         void Forward();
+
+        /// <summary>
+        /// Gets the window style.
+        /// </summary>
+        /// <returns>The style currently applied to the ie window.</returns>
+        NativeMethods.WindowShowStyle GetWindowStyle();
 
         /// <summary>
         /// Navigates to the given <paramref name="url" />.
@@ -142,6 +155,18 @@ namespace WatiN.Core.Interfaces
         IntPtr hWnd { get; }
 
         /// <summary>
+        /// Sends a Tab key to the current browser window to simulate tabbing through
+        /// the elements (and address bar).
+        /// </summary>
+        void PressTab();
+
+        /// <summary>
+		/// Gets the process ID the current browser is running in.
+		/// </summary>
+		/// <value>The process ID the current browser is running in.</value>
+        int ProcessID { get; }
+
+        /// <summary>
         /// Reloads the currently displayed webpage.
         /// </summary>
         void Refresh();
@@ -159,6 +184,12 @@ namespace WatiN.Core.Interfaces
         /// </summary>
         /// <param name="javaScriptCode">The javascript code.</param>
         void RunScript(string javaScriptCode);
+
+        /// <summary>
+        /// Make the current browser window full screen, minimized, maximized and more.
+        /// </summary>
+        /// <param name="showStyle">The style to apply.</param>
+        void ShowWindow(NativeMethods.WindowShowStyle showStyle);
 
         /// <summary>
         /// Waits until the document is fully loaded

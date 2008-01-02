@@ -299,7 +299,7 @@ namespace WatiN.Core
 		/// Gets the active element in this webpage.
 		/// </summary>
 		/// <value>The active element or <c>null</c> if no element has the focus.</value>
-		public Element ActiveElement
+		public IElement ActiveElement
 		{
 			get
 			{

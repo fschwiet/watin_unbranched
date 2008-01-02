@@ -22,6 +22,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 using MIL.Html;
+using WatiN.Core;
+using WatiN.Core.Exceptions;
 using WatiN.Core.Interfaces;
 
 namespace WatiN.Core.Mozilla
@@ -89,7 +91,7 @@ namespace WatiN.Core.Mozilla
                     for (int i = 0; i < childNodeCount; i++)
                     {
                         Element element = (Element)this.GetElementByProperty(string.Format("childNodes[{0}]", i));
-                        
+
                         if (element.NodeType != Mozilla.NodeType.Text)
                         {
                             childNodes.Add(element);
@@ -216,6 +218,34 @@ namespace WatiN.Core.Mozilla
             }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="IElement"/> is enabled.
+        /// </summary>
+        /// <value><c>true</c> if enabled; otherwise, <c>false</c>.</value>
+        public bool Enabled
+        {
+            get
+            {
+                bool disabled;
+                Boolean.TryParse(GetProperty("disabled"), out disabled);
+                return !disabled;
+            }
+        }
+
+        /// <summary>
+        /// Gives the element focus.
+        /// </summary>
+        /// <exception cref="ElementDisabledException">if the element is disabled and can not recieve focus.</exception>
+        public void Focus()
+        {
+            if (!Enabled)
+            {
+                throw new ElementDisabledException(Id);
+            }
+
+            ExecuteMethod("focus");
+        }
+
         #endregion
 
         #region Public instance methods
@@ -245,7 +275,7 @@ namespace WatiN.Core.Mozilla
         /// <param name="eventName">Name of the event.</param>
         public void FireEvent(string eventName)
         {
-            this.ExecuteMethod(eventName);
+            this.ExecuteEvent(eventName);
         }
 
         /// <summary>
@@ -258,14 +288,14 @@ namespace WatiN.Core.Mozilla
 
         public bool Exists
         {
-        	get
-        	{
-        		if (UtilityClass.IsNullOrEmpty(elementVariable)) return false;
-        		
-	            string command = string.Format("{0} != null; ", elementVariable);
-	            this.ClientPort.Write(command);
-	            return this.clientPort.LastResponse == "true";
-        	}
+            get
+            {
+                if (UtilityClass.IsNullOrEmpty(elementVariable)) return false;
+
+                string command = string.Format("{0} != null; ", elementVariable);
+                this.ClientPort.Write(command);
+                return this.clientPort.LastResponse == "true";
+            }
         }
 
         #endregion
@@ -283,15 +313,24 @@ namespace WatiN.Core.Mozilla
         #region Protected instance methods
 
         /// <summary>
-        /// Executes the method.
+        /// Executes the event.
         /// </summary>
-        /// <param name="methodName">Name of the method.</param>
+        /// <param name="eventName">Name of the event to fire.</param>
+        protected void ExecuteEvent(string eventName)
+        {
+            this.ClientPort.Write(
+                    "var event = " + FireFoxClientPort.DocumentVariableName + ".createEvent(\"MouseEvents\");\n" +
+                    "event.initEvent(\"" + eventName + "\",true,true);\n" +
+                    "var res = " + this.ElementVariable + ".dispatchEvent(event); if(res){true;}else{false};");
+        }
+
+        /// <summary>
+        /// Executes a method with no parameters.
+        /// </summary>
+        /// <param name="methodName">Name of the method to execute.</param>
         protected void ExecuteMethod(string methodName)
         {
-            this.ClientPort.Write(                
-                    "var event = " + FireFoxClientPort.DocumentVariableName + ".createEvent(\"MouseEvents\");\n" +
-                    "event.initEvent(\"" + methodName + "\",true,true);\n" +
-                    "var res = " + this.ElementVariable + ".dispatchEvent(event); if(res){true;}else{false};");
+            this.ClientPort.Write("{0}.{1}();", this.elementVariable, methodName);
         }
 
         /// <summary>
@@ -364,7 +403,7 @@ namespace WatiN.Core.Mozilla
         {
             if (string.IsNullOrEmpty(propertyName))
             {
-                throw new ArgumentNullException("propertyName");    
+                throw new ArgumentNullException("propertyName");
             }
 
             if (string.IsNullOrEmpty(this.elementVariable))

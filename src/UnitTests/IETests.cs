@@ -92,12 +92,12 @@ namespace WatiN.Core.UnitTests
 			{
 				ie.TextField("name").Focus();
 
-				Element element = ie.ActiveElement;
+				Element element = (Element) ie.ActiveElement;
 				Assert.AreEqual("name", element.Id);
 
 				ie.PressTab();
 
-				element = ie.ActiveElement;
+				element = (Element) ie.ActiveElement;
 				Assert.AreEqual("popupid", element.Id);
 			}
 		}

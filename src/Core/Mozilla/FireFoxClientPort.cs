@@ -210,7 +210,14 @@ namespace WatiN.Core.Mozilla
         /// </summary>
         public void InitializeDocument()
         {
+            // Sets up the document variable
             this.Write(string.Format("var {0} = {1}.document;", DocumentVariableName, WindowVariableName));
+            
+            // Javascript to implement document.activeElement currently not support by Mozilla
+            this.Write("var allElements = " + DocumentVariableName + ".getElementsByTagName(\"*\");\n" +
+                       "for (i = 0; i < allElements.length; i++)\n{\n" +
+                       "allElements[i].addEventListener(\"focus\", function (event) {\n" +
+                       DocumentVariableName + ".activeElement = event.target;}, false);\n}");
         }
 
         public void Connect()

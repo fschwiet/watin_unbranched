@@ -37,6 +37,18 @@ namespace WatiN.Core.Mozilla
         #region Public instance properties
 
         /// <summary>
+        /// Gets the active element in this webpage.
+        /// </summary>
+        /// <value>The active element or <c>null</c> if no element has the focus.</value>
+        public IElement ActiveElement
+        {
+            get 
+            {
+                return GetElementByProperty("activeElement");
+            }
+        }
+
+        /// <summary>
         /// Gets the HTML of the Body part of the webpage.
         /// </summary>
         /// <value>The HTML of the Body part of the webpage.</value>
@@ -144,7 +156,33 @@ namespace WatiN.Core.Mozilla
 
         #endregion
 
-        #region Public instance methods        
+        #region Internal instance methods        
+
+        /// <summary>
+        /// Gets the element by property.
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <returns>Returns the element that is returned by the specified property</returns>
+        internal new IElement GetElementByProperty(string propertyName)
+        {
+            if (string.IsNullOrEmpty(propertyName))
+            {
+                throw new ArgumentNullException("propertyName");
+            }
+
+            string elementvar = FireFoxClientPort.CreateVariableName();
+            string command = string.Format("{0}={1}.{2};{0}==null", elementvar, FireFoxClientPort.DocumentVariableName, propertyName);
+            this.ClientPort.Write(command);
+
+            if (!this.ClientPort.LastResponseAsBool)
+            {
+                return new Element(elementvar, this.ClientPort);
+            }
+            else
+            {
+                return null;
+            }
+        }
 
         #endregion
     }

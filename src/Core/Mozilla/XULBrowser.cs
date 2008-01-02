@@ -45,6 +45,11 @@ namespace WatiN.Core.Mozilla
             get { return this.ClientPort.Process.MainWindowHandle; }
         }
 
+        public int ProcessId
+        {
+            get { return this.ClientPort.Process.Id; }
+        }
+
         #endregion
 
         #region Public instance methods
