@@ -23,6 +23,12 @@ namespace WatiN.Core.Interfaces
     public interface IDocument : IElementsContainerTemp
     {
         /// <summary>
+        /// Gets the active element in this webpage.
+        /// </summary>
+        /// <value>The active element or <c>null</c> if no element has the focus.</value>
+        IElement ActiveElement { get;}
+
+        /// <summary>
         /// Gets the HTML of the Body part of the webpage.
         /// </summary>
         /// <value>The HTML of the Body part of the webpage.</value>

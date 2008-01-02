@@ -68,6 +68,15 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         }
 
         /// <summary>
+        /// Tests the behaviour of the <see cref="IBrowser.FindText"/> method.
+        /// </summary>
+        [Test]
+        public void FindText()
+        {
+            ExecuteTest(FindTextTest);
+        }
+
+        /// <summary>
         /// Tests the behaviour of the <see cref="IBrowser.Forward()"/> method.
         /// </summary>
         [Test]
@@ -83,6 +92,21 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         public void hWnd()
         {
             ExecuteTest(hWndTest);
+        }
+
+        [Test]
+        public void PressTab()
+        {
+            ExecuteTest(PressTabTest);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IBrowser.ProcessID"/> property.
+        /// </summary>
+        [Test]
+        public void ProcessID()
+        {
+            ExecuteTest(ProcessIDTest);
         }
 
         /// <summary>
@@ -110,6 +134,12 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         public void RunScript()
         {
             ExecuteTest(RunScriptTest);
+        }
+
+        [Test]
+        public void WindowStyle()
+        {
+            ExecuteTest(WindowStyleTest);
         }
 
         #endregion
@@ -166,6 +196,16 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         }
 
         /// <summary>
+        /// Tests the behaviour of the <see cref="IBrowser.FindText"/> method.
+        /// </summary>
+        private static void FindTextTest(IBrowser browser)
+        {
+            GoTo(MainURI, browser);
+
+            Assert.AreEqual("Contains text in DIV", browser.FindText(new Regex("Contains .* in DIV")), "IBrowser.FindText did not find the expected text.");
+        }
+
+        /// <summary>
         /// Tests the behaviour of the <see cref="IBrowser.Forward()"/> method.
         /// </summary>
         public void ForwardTest(IBrowser browser)
@@ -184,6 +224,30 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         private static void hWndTest(IBrowser browser)
         {
             Assert.AreNotEqual(IntPtr.Zero, browser.hWnd, GetErrorMessage("window handle should not be zero", browser));
+        }
+
+        private static void PressTabTest(IBrowser browser)
+        {
+            GoTo(MainURI, browser);
+            browser.BringToFront();
+            browser.TextField("name").Focus();
+
+            IElement element = browser.ActiveElement;
+            Assert.AreEqual("name", element.Id);
+
+            browser.PressTab();
+
+            element = browser.ActiveElement;
+            Assert.AreEqual("popupid", element.Id, GetErrorMessage("Active element not changed appears press tab did not operate as expected", browser));
+
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IBrowser.ProcessID"/> property.
+        /// </summary>
+        private static void ProcessIDTest(IBrowser browser)
+        {
+            Assert.AreNotEqual(0, browser.ProcessID);
         }
 
         /// <summary>
@@ -216,6 +280,26 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
             Assert.IsFalse(browser.ContainsText("java script has run"));
             browser.RunScript("window.document.write('java script has run');");
             Assert.IsTrue(browser.ContainsText("java script has run"), GetErrorMessage("IBrowser.RunScript method failed to complete correctly.", browser));
+        }
+
+        private static void WindowStyleTest(IBrowser browser)
+        {
+            GoTo(MainURI, browser);
+
+            NativeMethods.WindowShowStyle currentStyle = browser.GetWindowStyle();
+
+            browser.ShowWindow(NativeMethods.WindowShowStyle.Maximize);
+            Assert.AreEqual(NativeMethods.WindowShowStyle.Maximize.ToString(), browser.GetWindowStyle().ToString(), "Not maximized");
+
+            browser.ShowWindow(NativeMethods.WindowShowStyle.Restore);
+            Assert.AreEqual(currentStyle.ToString(), browser.GetWindowStyle().ToString(), "Not Restored");
+
+            browser.ShowWindow(NativeMethods.WindowShowStyle.Minimize);
+            Assert.AreEqual(NativeMethods.WindowShowStyle.ShowMinimized.ToString(), browser.GetWindowStyle().ToString(), "Not Minimize");
+
+            browser.ShowWindow(NativeMethods.WindowShowStyle.ShowNormal);
+            Assert.AreEqual(NativeMethods.WindowShowStyle.ShowNormal.ToString(), browser.GetWindowStyle().ToString(), "Not ShowNormal");
+
         }
 
         #endregion

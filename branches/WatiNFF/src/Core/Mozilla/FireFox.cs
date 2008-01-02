@@ -17,6 +17,8 @@
 #endregion Copyright
 
 using System;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using WatiN.Core.Exceptions;
 using WatiN.Core.Interfaces;
@@ -137,6 +139,18 @@ namespace WatiN.Core.Mozilla
             return this.ClientPort.LastResponse;
         }
 
+        /// <summary>
+        /// Gets the text inside the HTML Body element that matches the regular expression.
+        /// </summary>
+        /// <param name="regex">The regular expression to match with.</param>
+        /// <returns>The matching text, or null if none.</returns>
+        public string FindText(Regex regex)
+        {
+            Match match = regex.Match(Text);
+
+            return match.Success ? match.Value : null;
+        }
+
         #endregion Public instance properties
 
         #region Public instance methods
@@ -165,6 +179,20 @@ namespace WatiN.Core.Mozilla
         public void Forward()
         {
             this.xulBrowser.Forward();    
+        }
+
+        /// <summary>
+        /// Gets the window style.
+        /// </summary>
+        /// <returns>The style currently applied to the ie window.</returns>
+        public NativeMethods.WindowShowStyle GetWindowStyle()
+        {
+            NativeMethods.WINDOWPLACEMENT placement = new NativeMethods.WINDOWPLACEMENT();
+            placement.length = Marshal.SizeOf(placement);
+
+            NativeMethods.GetWindowPlacement(hWnd, ref placement);
+
+            return (NativeMethods.WindowShowStyle)placement.showCmd;
         }
 
         /// <summary>
@@ -231,6 +259,45 @@ namespace WatiN.Core.Mozilla
         }
 
         /// <summary>
+        /// Sends a Tab key to the current browser window to simulate tabbing through
+        /// the elements (and address bar).
+        /// </summary>
+        public void PressTab()
+        {
+            if (!Debugger.IsAttached)
+            {
+                int intThreadIDIE;
+                int intCurrentThreadID;
+
+                NativeMethods.WindowShowStyle currentStyle = GetWindowStyle();
+
+                ShowWindow(NativeMethods.WindowShowStyle.Restore);
+                BringToFront();
+
+                intThreadIDIE = ProcessID;
+                intCurrentThreadID = NativeMethods.GetCurrentThreadId();
+
+                NativeMethods.AttachThreadInput(intCurrentThreadID, intThreadIDIE, true);
+
+                NativeMethods.keybd_event(NativeMethods.KEYEVENTF_TAB, 0x45, NativeMethods.KEYEVENTF_EXTENDEDKEY, 0);
+                NativeMethods.keybd_event(NativeMethods.KEYEVENTF_TAB, 0x45, NativeMethods.KEYEVENTF_EXTENDEDKEY | NativeMethods.KEYEVENTF_KEYUP, 0);
+
+                NativeMethods.AttachThreadInput(intCurrentThreadID, intThreadIDIE, false);
+
+                ShowWindow(currentStyle);
+            }
+        }
+
+        /// <summary>
+        /// Gets the process ID the current browser is running in.
+        /// </summary>
+        /// <value>The process ID the current browser is running in.</value>
+        public int ProcessID
+        {
+            get { return this.xulBrowser.ProcessId; }
+        }
+
+        /// <summary>
         /// Reloads the currently displayed webpage.
         /// </summary>
         public void Refresh()
@@ -257,6 +324,15 @@ namespace WatiN.Core.Mozilla
         public void RunScript(string javaScriptCode)
         {
             this.ClientPort.Write(javaScriptCode);
+        }
+
+        /// <summary>
+        /// Make the referenced Internet Explorer full screen, minimized, maximized and more.
+        /// </summary>
+        /// <param name="showStyle">The style to apply.</param>
+        public void ShowWindow(NativeMethods.WindowShowStyle showStyle)
+        {
+            NativeMethods.ShowWindow(hWnd, (int)showStyle);
         }
 
         /// <summary>

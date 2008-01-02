@@ -16,6 +16,8 @@
 
 #endregion Copyright
 
+using WatiN.Core.Exceptions;
+
 namespace WatiN.Core.Interfaces
 {
     public interface IElement
@@ -23,17 +25,29 @@ namespace WatiN.Core.Interfaces
         #region Properties
 
         /// <summary>
+        /// Gets the name of the element's css class.
+        /// </summary>
+        /// <value>The name of the element's class.</value>
+        string ClassName { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="Element"/> is enabled.
+        /// </summary>
+        /// <value><c>true</c> if enabled; otherwise, <c>false</c>.</value>
+        bool Enabled { get; }
+
+        /// <summary>
+        /// Gives the element focus.
+        /// </summary>
+        /// <exception cref="ElementDisabledException">if the element is disabled and can not recieve focus.</exception>
+        void Focus();
+        
+        /// <summary>
         /// Gets the id.
         /// </summary>
         /// <value>The id.</value>
         string Id { get; }
 
-        /// <summary>
-        /// Gets the name of the element's css class.
-        /// </summary>
-        /// <value>The name of the element's class.</value>
-        string ClassName { get; }
-        
         /// <summary>
         /// Gets the value of the attribute
         /// </summary>
@@ -134,7 +148,5 @@ namespace WatiN.Core.Interfaces
         void FireEventNoWait(string eventName);
         
         #endregion
-
-
     }
 }
