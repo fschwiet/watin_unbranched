@@ -868,7 +868,7 @@ namespace WatiN.Core
         ICheckBoxCollection IElementsContainerTemp.CheckBoxes
         {
             get { return ElementsSupport.CheckBoxes(DomContainer, this); }
-        }
+        }        
 
         IForm IElementsContainerTemp.Form(string id)
         {
@@ -888,6 +888,26 @@ namespace WatiN.Core
         IFormsCollection IElementsContainerTemp.Forms
         {
             get { return ElementsSupport.Forms(DomContainer, this); }
+        }
+
+        IFrame IElementsContainerTemp.Frame(string id)
+        {
+            return Frame(Find.ById(id));
+        }
+
+        IFrame IElementsContainerTemp.Frame(Regex elementId)
+        {
+            return Frame(Find.ById(elementId));
+        }
+
+        IFrame IElementsContainerTemp.Frame(AttributeConstraint findBy)
+        {
+            return Core.Frame.Find(Frames, findBy);
+        }
+
+        IFrameCollection IElementsContainerTemp.Frames
+        {
+            get { return new FrameCollection(DomContainer, HtmlDocument); }
         }
 
         ISelectList IElementsContainerTemp.SelectList(string id)

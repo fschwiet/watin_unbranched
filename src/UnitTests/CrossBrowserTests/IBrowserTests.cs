@@ -235,6 +235,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
             IElement element = browser.ActiveElement;
             Assert.AreEqual("name", element.Id);
 
+            browser.BringToFront();
             browser.PressTab();
 
             element = browser.ActiveElement;

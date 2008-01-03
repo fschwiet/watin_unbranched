@@ -17,14 +17,16 @@
 #endregion Copyright
 
 using System.Collections;
+using System.Text.RegularExpressions;
 using mshtml;
+using WatiN.Core.Interfaces;
 
 namespace WatiN.Core
 {
 	/// <summary>
 	/// A typed collection of <see cref="Frame" /> instances within a <see cref="Document"/>.
 	/// </summary>
-	public class FrameCollection : IEnumerable
+	public class FrameCollection : IFrameCollection, IEnumerable
 	{
 		private ArrayList elements;
 
@@ -42,7 +44,7 @@ namespace WatiN.Core
 			get { return elements.Count; }
 		}
 
-		public Frame this[int index]
+		public IFrame this[int index]
 		{
 			get { return (Frame) elements[index]; }
 		}
@@ -61,7 +63,17 @@ namespace WatiN.Core
 			return false;
 		}
 
-		/// <exclude />
+	    public bool Exists(Regex elementId)
+	    {
+	        return this.Exists(Find.ById(elementId));
+	    }
+
+	    public bool Exists(string elementId)
+	    {
+            return this.Exists(Find.ById(elementId));
+	    }
+
+	    /// <exclude />
 		public Enumerator GetEnumerator()
 		{
 			return new Enumerator(elements);

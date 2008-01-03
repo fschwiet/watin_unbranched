@@ -266,6 +266,49 @@ namespace WatiN.Core.Mozilla
         }
 
         /// <summary>
+        /// Finds a frame element using the specified id.
+        /// </summary>
+        /// <param name="id">The id of the frame element being sought.</param>
+        /// <returns>The frame element for the corresponding id, or null if none is found</returns>
+        public IFrame Frame(string id)
+        {
+            return this.Frame(Find.ById(id));
+        }
+
+        /// <summary>
+        /// Finds a frame element using the specified regular expression to match the frame's id.
+        /// </summary>
+        /// <param name="id">The regular expression that matches the element id of the frame element being sought.</param>
+        /// <returns>The frame element for the corresponding regular expression, or null if none is found</returns>
+        public IFrame Frame(Regex id)
+        {
+            return this.Frame(Find.ById(id));
+        }
+
+        /// <summary>
+        /// Finds a frame element using the specified attribute constraint.
+        /// </summary>
+        /// <param name="findBy">The attibute contraint used to match an attribute of the frame element being sought.</param>
+        /// <returns>The frame element for the corresponding attribute constraint, or null if none is found</returns>
+        public IFrame Frame(AttributeConstraint findBy)
+        {
+            Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "frame", findBy, this.ClientPort);
+            return new Frame(finder.FindFirst(), this.ClientPort);
+        }
+
+        /// <summary>
+        /// Returns all the frame elements for the current document
+        /// </summary>
+        public IFrameCollection Frames
+        {
+            get
+            {
+                Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "frame", null, this.ClientPort);
+                return new FrameCollection(this.ClientPort, finder);
+            }
+        }
+
+        /// <summary>
         /// Finds a label element using the specified id.
         /// </summary>
         /// <param name="id">The id of the label element being sought.</param>
