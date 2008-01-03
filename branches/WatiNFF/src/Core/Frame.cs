@@ -29,7 +29,7 @@ namespace WatiN.Core
 	/// <summary>
 	/// This class provides specialized functionality for a Frame or IFrame.
 	/// </summary>
-	public class Frame : Document, IAttributeBag
+	public class Frame : Document, IFrame
 	{
 		private IHTMLDocument3 _frameSetParent;
 		private string _frameElementUniqueId;

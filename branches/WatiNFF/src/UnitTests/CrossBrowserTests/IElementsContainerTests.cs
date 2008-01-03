@@ -239,6 +239,43 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         }
 
         /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Frame(string)"/> method.
+        /// Tests that a frame can be located based on the value of it's Id.
+        /// </summary>
+        [Test]
+        public void FrameById()
+        {
+            ExecuteTest(FrameByIdTest, false);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Frame(Regex)"/> method.
+        /// </summary>
+        [Test]
+        public void FrameByRegex()
+        {
+            ExecuteTest(FrameByRegexTest);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Frame(AttributeConstraint)"/> method.
+        /// </summary>
+        [Test]
+        public void FrameByAttributeConstraint()
+        {
+            ExecuteTest(FrameByAttributeConstraintTest);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Frames"/> property.
+        /// </summary>
+        [Test]
+        public void Frames()
+        {
+            ExecuteTest(FramesTest);
+        }
+
+        /// <summary>
         /// Test that we can obtain a reference to an image using the elements Id to look it up using <see cref="IElementsContainerTemp.Image(string)"/>.
         /// </summary>
         [Test]
@@ -1182,7 +1219,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
 
         /// <summary>
         /// Tests the behaviour of the <see cref="IElementsContainerTemp.Form(string)"/> method.
-        /// Tests that a check box can be located based on the value of it's Id.
+        /// Tests that a form can be located based on the value of it's Id.
         /// </summary>
         private static void FormByIdTest(IBrowser browser)
         {
@@ -1218,13 +1255,58 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         }
 
         /// <summary>
-        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Divs"/> property.
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Forms"/> property.
         /// </summary>
         private static void FormsTest(IBrowser browser)
         {
             GoTo(MainURI, browser);
-            IDivCollection divs = browser.Divs;
-            Assert.AreEqual(1, divs.Length, GetErrorMessage("Incorrect no. of divs returned", browser));
+            IFormsCollection forms = browser.Forms;
+            Assert.AreEqual(6, forms.Length, GetErrorMessage("Incorrect no. of forms returned", browser));
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Frame(string)"/> method.
+        /// Tests that a frame can be located based on the value of it's Id.
+        /// </summary>
+        private static void FrameByIdTest(IBrowser browser)
+        {
+            GoTo(FramesetURI, browser);
+            IFrame frame = browser.Frame("mainid");
+            Assert.IsNotNull(frame, GetErrorMessage("The frame with the id \"mainid\" could not be found.", browser));
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Frame(Regex)"/> method.
+        /// </summary>
+        private static void FrameByRegexTest(IBrowser browser)
+        {
+            GoTo(FramesetURI, browser);
+            IFrame frame = browser.Frame(new Regex("^main"));
+
+            Assert.IsNotNull(frame, GetErrorMessage("The frame sought using the regular expression ^miain could not be found", browser));
+            Assert.AreEqual("mainid", frame.Id);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Frame(AttributeConstraint)"/> method.
+        /// </summary>        
+        private static void FrameByAttributeConstraintTest(IBrowser browser)
+        {
+            GoTo(FramesetURI, browser);
+            IFrame frame = browser.Frame(Find.By("mycustomattribute", "WatiN"));
+
+            Assert.IsNotNull(frame, GetErrorMessage("The frame sought using attribute \"mycustomattribute\" and the value \"WatiN\" could not be found", browser));
+            Assert.AreEqual("mainid", frame.Id);
+        }
+
+        /// <summary>
+        /// Tests the behaviour of the <see cref="IElementsContainerTemp.Frames"/> property.
+        /// </summary>
+        private static void FramesTest(IBrowser browser)
+        {
+            GoTo(FramesetURI, browser);
+            IFrameCollection frames = browser.Frames;
+            Assert.AreEqual(2, frames.Length, GetErrorMessage("Incorrect no. of frames returned", browser));
         }
 
         /// <summary>

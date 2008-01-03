@@ -19,6 +19,7 @@
 using System.Collections;
 using System.Text.RegularExpressions;
 using mshtml;
+using WatiN.Core.Exceptions;
 using WatiN.Core.Interfaces;
 
 namespace WatiN.Core
@@ -33,6 +34,44 @@ namespace WatiN.Core
 		public ElementsContainer(DomContainer ie, ElementFinder finder) : base(ie, finder) {}
 
 		public ElementsContainer(Element element, ArrayList elementTags) : base(element, elementTags) {}
+
+        /// <summary>
+        /// Gets the specified frame by its id.
+        /// </summary>
+        /// <param name="id">The id of the frame.</param>
+        /// <exception cref="FrameNotFoundException">Thrown if the given <paramref name="id" /> isn't found.</exception>
+        public Frame Frame(string id)
+        {
+            return Frame(Find.ById(id));
+        }
+
+        /// <summary>
+        /// Gets the specified frame by its id.
+        /// </summary>
+        /// <param name="id">The regular expression to match with the id of the frame.</param>
+        /// <exception cref="FrameNotFoundException">Thrown if the given <paramref name="id" /> isn't found.</exception>
+        public Frame Frame(Regex id)
+        {
+            return Frame(Find.ById(id));
+        }
+
+        /// <summary>
+        /// Gets the specified frame by its name.
+        /// </summary>
+        /// <param name="findBy">The name of the frame.</param>
+        /// <exception cref="FrameNotFoundException">Thrown if the given name isn't found.</exception>
+        public Frame Frame(AttributeConstraint findBy)
+        {
+            return Core.Frame.Find(Frames, findBy);
+        }
+
+        /// <summary>
+        /// Gets a typed collection of <see cref="WatiN.Core.Frame"/> opend within this <see cref="Document"/>.
+        /// </summary>
+        public FrameCollection Frames
+        {
+            get { return new FrameCollection(DomContainer, this.DomContainer.HtmlDocument); }
+        }
 
 		#region IElementsContainer
 
@@ -605,6 +644,26 @@ namespace WatiN.Core
 	    IFormsCollection IElementsContainerTemp.Forms
         {
             get { return ElementsSupport.Forms(DomContainer, this); }
+        }
+
+        IFrame IElementsContainerTemp.Frame(string id)
+        {
+            return this.Frame(Find.ById(id));
+        }
+
+        IFrame IElementsContainerTemp.Frame(Regex elementId)
+        {
+            return this.Frame(Find.ById(elementId));
+        }
+
+        IFrame IElementsContainerTemp.Frame(AttributeConstraint findBy)
+        {
+            return Core.Frame.Find((FrameCollection) this.Frames, findBy);
+        }
+
+	    IFrameCollection IElementsContainerTemp.Frames
+        {
+            get { return new FrameCollection(this.DomContainer, this.DomContainer.HtmlDocument); }
         }
 
 	    IImage IElementsContainerTemp.Image(Regex elementId)

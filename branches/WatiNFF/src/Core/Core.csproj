@@ -367,6 +367,8 @@
     <Compile Include="HtmlDialogCollection.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Interfaces\IFrameCollection.cs" />
+    <Compile Include="Interfaces\IFrame.cs" />
     <Compile Include="Interfaces\ILinkCollection.cs" />
     <Compile Include="Interfaces\IImageCollection.cs" />
     <Compile Include="Interfaces\ILabelCollection.cs" />
@@ -496,6 +498,8 @@
     <Compile Include="Interfaces\ITextField.cs" />
     <Compile Include="Mozilla\Form.cs" />
     <Compile Include="Mozilla\FormsCollection.cs" />
+    <Compile Include="Mozilla\Frame.cs" />
+    <Compile Include="Mozilla\FrameCollection.cs" />
     <Compile Include="Mozilla\Image.cs" />
     <Compile Include="Mozilla\ImageCollection.cs" />
     <Compile Include="Mozilla\Label.cs" />

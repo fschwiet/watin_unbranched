@@ -156,7 +156,7 @@ namespace WatiN.Core.Interfaces
         /// <param name="findBy">The attibute contraint used to match an attribute of the element being sought.</param>
         /// <returns>The element for the corresponding attribute constraint, or null if none is found</returns>
         IElement Element(AttributeConstraint findBy);
-      
+
         /// <summary>
         /// Finds a form element using the specified id.
         /// </summary>
@@ -182,6 +182,32 @@ namespace WatiN.Core.Interfaces
         /// Returns all the form elements for the current document
         /// </summary>
         IFormsCollection Forms { get; }
+
+        /// <summary>
+        /// Finds a frame element using the specified id.
+        /// </summary>
+        /// <param name="id">The id of the frame element being sought.</param>
+        /// <returns>The frame element for the corresponding id, or null if none is found</returns>
+        IFrame Frame(string id);
+
+        /// <summary>
+        /// Finds a frame element using the specified regular expression to match the frame's id.
+        /// </summary>
+        /// <param name="id">The regular expression that matches the element id of the frame element being sought.</param>
+        /// <returns>The frame element for the corresponding regular expression, or null if none is found</returns>
+        IFrame Frame(Regex id);
+
+        /// <summary>
+        /// Finds a frame element using the specified attribute constraint.
+        /// </summary>
+        /// <param name="findBy">The attibute contraint used to match an attribute of the frame element being sought.</param>
+        /// <returns>The frame element for the corresponding attribute constraint, or null if none is found</returns>
+        IFrame Frame(AttributeConstraint findBy);
+
+        /// <summary>
+        /// Returns all the frame elements for the current document
+        /// </summary>
+        IFrameCollection Frames { get; }
 
         /// <summary>
         /// Finds an image element using the specified id.

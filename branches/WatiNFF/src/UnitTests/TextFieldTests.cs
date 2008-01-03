@@ -138,7 +138,7 @@ namespace WatiN.Core.UnitTests
 		{
 			using (IE ie1 = new IE(FramesetURI))
 			{
-				Frame frame = ie1.Frames[1];
+				Frame frame = (Frame) ie1.Frames[1];
 				frame.RunScript("window.document.location.href='TestEvents.html';");
 
 				Assert.IsFalse(frame.CheckBox("chkKeyDown").Checked, "KeyDown false expected");
