@@ -1,3 +1,5 @@
+using WatiN.Core.Constraints;
+
 namespace WatiN.Core.Interfaces
 {
     public interface IDivCollection : IBaseElementCollection
@@ -8,6 +10,6 @@ namespace WatiN.Core.Interfaces
         /// <value></value>
         IDiv this[int index] { get; }
 
-        IDivCollection Filter(AttributeConstraint findBy);
+        IDivCollection Filter(BaseConstraint findBy);
     }
 }

@@ -1,6 +1,6 @@
-#region WatiN Copyright (C) 2006-2007 Jeroen van Menen
+#region WatiN Copyright (C) 2006-2008 Jeroen van Menen
 
-//Copyright 2006-2007 Jeroen van Menen
+//Copyright 2006-2008 Jeroen van Menen
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -19,8 +19,8 @@
 namespace WatiN.Core.Interfaces
 {
 	/// <summary>
-	/// This interface is used by <see cref="AttributeConstraint"/> to compare a searched attribute
-	/// with a given AttributeConstraint.
+	/// This interface is used by <see cref="BaseConstraint"/> to compare a searched attribute
+	/// with a given BaseConstraint.
 	/// </summary>
 	public interface ICompare
 	{

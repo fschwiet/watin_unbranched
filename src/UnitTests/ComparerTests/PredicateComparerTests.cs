@@ -1,6 +1,6 @@
-#region WatiN Copyright (C) 2006-2007 Jeroen van Menen
+#region WatiN Copyright (C) 2006-2008 Jeroen van Menen
 
-//Copyright 2006-2007 Jeroen van Menen
+//Copyright 2006-2008 Jeroen van Menen
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ namespace WatiN.Core.UnitTests
     }
   	
     [Test]
-    public void PredicateShouldBeCalledAndReturnTrue()
+    public void StringPredicateShouldBeCalledAndReturnTrue()
     {
       _returnValue = true;
       PredicateComparer comparer = new PredicateComparer(CallThisMethod);
@@ -49,7 +49,7 @@ namespace WatiN.Core.UnitTests
     }
   	
     [Test]
-    public void PredicateShouldBeCalledAndReturnFalse()
+    public void StringPredicateShouldBeCalledAndReturnFalse()
     {
       _returnValue = false;
       PredicateComparer comparer = new PredicateComparer(CallThisMethod);
@@ -64,6 +64,32 @@ namespace WatiN.Core.UnitTests
       _called = true;
       _value = value;
       return _returnValue;
+    }
+ 
+    [Test]
+    public void ElementPredicateShouldBeCalledAndReturnTrue()
+    {
+      _returnValue = true;
+      PredicateComparer comparer = new PredicateComparer(CallElementCompareMethod);
+  		 
+      Assert.That(comparer.Compare(new Element((DomContainer)null,(ElementFinder) null)), Is.True);
+      Assert.That(_called, Is.True);
+    }
+  	
+    [Test]
+    public void ElementPredicateShouldBeCalledAndReturnFalse()
+    {
+      _returnValue = false;
+      PredicateComparer comparer = new PredicateComparer(CallElementCompareMethod);
+  		
+      Assert.That(comparer.Compare(new Element((DomContainer)null,(ElementFinder) null)), Is.False);
+      Assert.That(_called, Is.True);
+    }
+
+    public bool CallElementCompareMethod(Element element)
+    {
+    	_called = true;
+    	return _returnValue;
     }
   }
 #endif

@@ -1,3 +1,5 @@
+using WatiN.Core.Constraints;
+
 namespace WatiN.Core.Interfaces
 {
     public interface IAreaCollection : IBaseElementCollection
@@ -7,7 +9,7 @@ namespace WatiN.Core.Interfaces
         /// </summary>
         /// <param name="findBy">The attribute to filter by.</param>
         /// <returns>The filtered collection.</returns>
-        IAreaCollection Filter(AttributeConstraint findBy);
+        IAreaCollection Filter(BaseConstraint findBy);
 
         /// <summary>
         /// Gets the <see cref="Area" /> at the specified index.

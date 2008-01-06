@@ -1,6 +1,6 @@
-#region WatiN Copyright (C) 2006-2007 Jeroen van Menen
+#region WatiN Copyright (C) 2006-2008 Jeroen van Menen
 
-//Copyright 2006-2007 Jeroen van Menen
+//Copyright 2006-2008 Jeroen van Menen
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -138,11 +138,20 @@ namespace WatiN.Core
 		}
 
 		/// <summary>
-		/// Waits for the page to be completely loaded
+		/// Waits for the page to be completely loaded using the IE.Settings.WaitForCompleteTimeOut setting
 		/// </summary>
 		public virtual void WaitForComplete()
 		{
 			WaitForComplete(new WaitForComplete(this));
+		}
+
+		/// <summary>
+        /// Waits for the page to be completely loaded.
+		/// </summary>
+		/// <param name="waitForCompleteTimeOut">The number of seconds to wait before timing out</param>
+		public virtual void WaitForComplete(int waitForCompleteTimeOut)
+		{
+			WaitForComplete(new WaitForComplete(this, waitForCompleteTimeOut));
 		}
 
 		/// <summary>

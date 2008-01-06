@@ -6,13 +6,14 @@ using System.Configuration;
 using System.Text;
 using WatiN.Core;
 using WatiN.Core.Interfaces;
+using WatiN.Core.Constraints;
 
 namespace WatiN.Core.Mozilla
 {
     public class ElementFinder
     {
         private readonly List<ElementTag> tagNames;
-        private readonly AttributeConstraint constraint;
+        private readonly BaseConstraint constraint;
         private readonly FireFoxClientPort clientPort;
         private readonly Element parentElement;
 
@@ -23,7 +24,7 @@ namespace WatiN.Core.Mozilla
         /// <param name="tagname">the tagname of the element to be found</param>
         /// <param name="constraint">The constraint which should be met</param>
         /// <param name="clientPort"></param>
-        public ElementFinder(Element parentElement, string tagname, AttributeConstraint constraint, FireFoxClientPort clientPort) :
+        public ElementFinder(Element parentElement, string tagname, BaseConstraint constraint, FireFoxClientPort clientPort) :
             this(parentElement, tagname, null, constraint, clientPort)
         { }
 
@@ -35,7 +36,7 @@ namespace WatiN.Core.Mozilla
         /// <param name="type">The type(s) the input element should match with</param>
         /// <param name="constraint">The constraint which should be met</param>
         /// <param name="clientPort"></param>
-        public ElementFinder(Element parentElement, string tagname, string type, AttributeConstraint constraint, FireFoxClientPort clientPort) :
+        public ElementFinder(Element parentElement, string tagname, string type, BaseConstraint constraint, FireFoxClientPort clientPort) :
             this(parentElement, new List<ElementTag>(new ElementTag[] { new ElementTag(tagname, type) }), constraint, clientPort)
         {
         }
@@ -47,7 +48,7 @@ namespace WatiN.Core.Mozilla
         /// <param name="tagnames">A list of the tagnames of the element to be found</param>
         /// <param name="constraint">The constraint which should be met</param>
         /// <param name="clientPort"></param>
-        public ElementFinder(Element parentElement, List<ElementTag> tagnames, AttributeConstraint constraint, FireFoxClientPort clientPort)
+        public ElementFinder(Element parentElement, List<ElementTag> tagnames, BaseConstraint constraint, FireFoxClientPort clientPort)
         {
             this.parentElement = parentElement;
 

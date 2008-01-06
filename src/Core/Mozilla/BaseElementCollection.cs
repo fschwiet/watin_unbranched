@@ -21,6 +21,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using WatiN.Core.Interfaces;
+using WatiN.Core.Constraints;
 
 namespace WatiN.Core.Mozilla
 {
@@ -87,7 +88,7 @@ namespace WatiN.Core.Mozilla
             return Exists(Find.ById(elementId));
         }
 
-        public bool Exists(AttributeConstraint findBy)
+        public bool Exists(BaseConstraint findBy)
         {            
             foreach (Element element in Elements)
             {

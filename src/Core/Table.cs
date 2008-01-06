@@ -1,6 +1,6 @@
-#region WatiN Copyright (C) 2006-2007 Jeroen van Menen
+#region WatiN Copyright (C) 2006-2008 Jeroen van Menen
 
-//Copyright 2006-2007 Jeroen van Menen
+//Copyright 2006-2008 Jeroen van Menen
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@
 using System.Collections;
 using System.Text.RegularExpressions;
 using mshtml;
+using WatiN.Core.Constraints;
 using WatiN.Core.Interfaces;
 using WatiN.Core.Logging;
 
@@ -88,7 +89,7 @@ namespace WatiN.Core
 		/// </summary>
 		/// <param name="findBy">The find by.</param>
 		/// <returns></returns>
-		public override TableBody TableBody(AttributeConstraint findBy)
+		public override TableBody TableBody(BaseConstraint findBy)
 		{
 			return ElementsSupport.TableBody(DomContainer, findBy, new TBodies(this));
 		}
@@ -114,9 +115,9 @@ namespace WatiN.Core
 		{
 			Logger.LogAction("Searching for '" + findText + "' in column " + inColumn + " of " + GetType().Name + " '" + Id + "'");
 
-			TableRowAttributeConstraint attributeConstraint = new TableRowAttributeConstraint(findText, inColumn);
+			TableRowAttributeConstraint constraint = new TableRowAttributeConstraint(findText, inColumn);
 
-			return findRow(attributeConstraint);
+			return findRow(constraint);
 		}
 
 		/// <summary>
@@ -130,9 +131,9 @@ namespace WatiN.Core
 		{
 			Logger.LogAction("Matching regular expression'" + findTextRegex + "' with text in column " + inColumn + " of " + GetType().Name + " '" + Id + "'");
 
-			TableRowAttributeConstraint attributeConstraint = new TableRowAttributeConstraint(findTextRegex, inColumn);
+			TableRowAttributeConstraint constraint = new TableRowAttributeConstraint(findTextRegex, inColumn);
 
-			return FindRow(attributeConstraint);
+			return FindRow(constraint);
 		}
 
 		private TableRow findRow(TableRowAttributeConstraint attributeConstraint)

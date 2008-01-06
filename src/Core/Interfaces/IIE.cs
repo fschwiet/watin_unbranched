@@ -4,6 +4,7 @@ using WatiN.Core.DialogHandlers;
 using WatiN.Core.Interfaces;
 using System.Text.RegularExpressions;
 using WatiN.Core.Exceptions;
+using WatiN.Core.Constraints;
 
 namespace WatiN.Core
 {
@@ -331,7 +332,7 @@ namespace WatiN.Core
         /// Find.ByUrl and Find.ByTitle are supported.
         /// </summary>
         /// <param name="findBy">The url of the html page shown in the dialog</param>
-        HtmlDialog HtmlDialog(AttributeConstraint findBy);
+        HtmlDialog HtmlDialog(BaseConstraint findBy);
 
         /// <summary>
         /// Find a HtmlDialog by an attribute within the given <paramref name="timeout" /> period.
@@ -339,7 +340,7 @@ namespace WatiN.Core
         /// </summary>
         /// <param name="findBy">The url of the html page shown in the dialog</param>
         /// <param name="timeout">Number of seconds before the search times out.</param>
-        HtmlDialog HtmlDialog(AttributeConstraint findBy, int timeout);
+        HtmlDialog HtmlDialog(BaseConstraint findBy, int timeout);
 
         IntPtr hWnd { get; }
 
@@ -537,7 +538,7 @@ namespace WatiN.Core
         /// </summary>
         /// <param name="findBy">The name of the frame.</param>
         /// <exception cref="FrameNotFoundException">Thrown if the given name isn't found.</exception>
-        Frame Frame(AttributeConstraint findBy);
+        Frame Frame(BaseConstraint findBy);
 
         /// <summary>
         /// Gets a typed collection of <see cref="WatiN.Core.Frame"/> opend within this <see cref="Document"/>.
@@ -546,86 +547,86 @@ namespace WatiN.Core
 
         Area Area(string elementId);
         Area Area(Regex elementId);
-        Area Area(AttributeConstraint findBy);
+        Area Area(BaseConstraint findBy);
 
         AreaCollection Areas { get; }
 
         Button Button(string elementId);
         Button Button(Regex elementId);
-        Button Button(AttributeConstraint findBy);
+        Button Button(BaseConstraint findBy);
 
         ButtonCollection Buttons { get; }
 
         CheckBox CheckBox(string elementId);
         CheckBox CheckBox(Regex elementId);
-        CheckBox CheckBox(AttributeConstraint findBy);
+        CheckBox CheckBox(BaseConstraint findBy);
 
         CheckBoxCollection CheckBoxes { get; }
 
         Element Element(string elementId);
         Element Element(Regex elementId);
-        Element Element(AttributeConstraint findBy);
-        Element Element(string tagname, AttributeConstraint findBy, params string[] inputtypes);
+        Element Element(BaseConstraint findBy);
+        Element Element(string tagname, BaseConstraint findBy, params string[] inputtypes);
 
         ElementCollection Elements { get; }
 
         FileUpload FileUpload(string elementId);
         FileUpload FileUpload(Regex elementId);
-        FileUpload FileUpload(AttributeConstraint findBy);
+        FileUpload FileUpload(BaseConstraint findBy);
 
         FileUploadCollection FileUploads { get; }
 
         Form Form(string elementId);
         Form Form(Regex elementId);
-        Form Form(AttributeConstraint findBy);
+        Form Form(BaseConstraint findBy);
 
         FormCollection Forms { get; }
 
         Label Label(string elementId);
         Label Label(Regex elementId);
-        Label Label(AttributeConstraint findBy);
+        Label Label(BaseConstraint findBy);
 
         LabelCollection Labels { get; }
 
         Link Link(string elementId);
         Link Link(Regex elementId);
-        Link Link(AttributeConstraint findBy);
+        Link Link(BaseConstraint findBy);
 
         LinkCollection Links { get; }
 
         Para Para(string elementId);
         Para Para(Regex elementId);
-        Para Para(AttributeConstraint findBy);
+        Para Para(BaseConstraint findBy);
 
         ParaCollection Paras { get; }
 
         RadioButton RadioButton(string elementId);
         RadioButton RadioButton(Regex elementId);
-        RadioButton RadioButton(AttributeConstraint findBy);
+        RadioButton RadioButton(BaseConstraint findBy);
 
         RadioButtonCollection RadioButtons { get; }
 
         SelectList SelectList(string elementId);
         SelectList SelectList(Regex elementId);
-        SelectList SelectList(AttributeConstraint findBy);
+        SelectList SelectList(BaseConstraint findBy);
 
         SelectListCollection SelectLists { get; }
 
         Table Table(string elementId);
         Table Table(Regex elementId);
-        Table Table(AttributeConstraint findBy);
+        Table Table(BaseConstraint findBy);
 
         TableCollection Tables { get; }
 
         TableBody TableBody(string elementId);
         TableBody TableBody(Regex elementId);
-        TableBody TableBody(AttributeConstraint findBy);
+        TableBody TableBody(BaseConstraint findBy);
 
         TableBodyCollection TableBodies { get; }
 
         TableCell TableCell(string elementId);
         TableCell TableCell(Regex elementId);
-        TableCell TableCell(AttributeConstraint findBy);
+        TableCell TableCell(BaseConstraint findBy);
         TableCell TableCell(string elementId, int index);
         TableCell TableCell(Regex elementId, int index);
 
@@ -633,31 +634,31 @@ namespace WatiN.Core
 
         TableRow TableRow(string elementId);
         TableRow TableRow(Regex elementId);
-        TableRow TableRow(AttributeConstraint findBy);
+        TableRow TableRow(BaseConstraint findBy);
 
         TableRowCollection TableRows { get; }
 
         TextField TextField(string elementId);
         TextField TextField(Regex elementId);
-        TextField TextField(AttributeConstraint findBy);
+        TextField TextField(BaseConstraint findBy);
 
         TextFieldCollection TextFields { get; }
 
         Span Span(string elementId);
         Span Span(Regex elementId);
-        Span Span(AttributeConstraint findBy);
+        Span Span(BaseConstraint findBy);
 
         SpanCollection Spans { get; }
 
         Div Div(string elementId);
         Div Div(Regex elementId);
-        Div Div(AttributeConstraint findBy);
+        Div Div(BaseConstraint findBy);
 
         DivCollection Divs { get; }
 
         Image Image(string elementId);
         Image Image(Regex elementId);
-        Image Image(AttributeConstraint findBy);
+        Image Image(BaseConstraint findBy);
 
         ImageCollection Images { get; }
 

@@ -1,6 +1,6 @@
-#region WatiN Copyright (C) 2006-2007 Jeroen van Menen
+#region WatiN Copyright (C) 2006-2008 Jeroen van Menen
 
-//Copyright 2006-2007 Jeroen van Menen
+//Copyright 2006-2008 Jeroen van Menen
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ namespace WatiN.Core.Exceptions
 	/// </summary>
 	public class SelectListItemNotFoundException : WatiNException
 	{
-		public SelectListItemNotFoundException(string value) :
-			base("No item with text or value '" + value + "' was found in the selectlist") {}
+		public SelectListItemNotFoundException(string constraint) :
+			base("No item was found in the selectlist matching constraint: " + constraint) {}
 	}
 }

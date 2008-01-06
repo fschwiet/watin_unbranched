@@ -1,6 +1,6 @@
-#region WatiN Copyright (C) 2006-2007 Jeroen van Menen
+#region WatiN Copyright (C) 2006-2008 Jeroen van Menen
 
-//Copyright 2006-2007 Jeroen van Menen
+//Copyright 2006-2008 Jeroen van Menen
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@
 using System.Collections;
 using mshtml;
 using WatiN.Core.Interfaces;
+using WatiN.Core.Constraints;
 
 namespace WatiN.Core
 {
@@ -44,11 +45,11 @@ namespace WatiN.Core
 		public AreaCollection(DomContainer domContainer, ElementFinder finder) : base(domContainer, finder, new CreateElementInstance(New)) {}
 
 		/// <summary>
-		/// Returns a new <see cref="AreaCollection" /> filtered by the <see cref="AttributeConstraint" />.
+		/// Returns a new <see cref="AreaCollection" /> filtered by the <see cref="BaseConstraint" />.
 		/// </summary>
 		/// <param name="findBy">The attribute to filter by.</param>
 		/// <returns>The filtered collection.</returns>
-		public IAreaCollection Filter(AttributeConstraint findBy)
+		public IAreaCollection Filter(BaseConstraint findBy)
 		{
 			return new AreaCollection(domContainer, DoFilter(findBy));
 		}

@@ -1,6 +1,6 @@
-#region WatiN Copyright (C) 2006-2007 Jeroen van Menen
+#region WatiN Copyright (C) 2006-2008 Jeroen van Menen
 
-//Copyright 2006-2007 Jeroen van Menen
+//Copyright 2006-2008 Jeroen van Menen
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ using System.Collections.Specialized;
 using System.Text.RegularExpressions;
 using mshtml;
 using WatiN.Core.Comparers;
+using WatiN.Core.Constraints;
 using WatiN.Core.Exceptions;
 using WatiN.Core.Interfaces;
 using WatiN.Core.Logging;
@@ -196,7 +197,7 @@ namespace WatiN.Core
 		/// </summary>
 		/// <param name="findBy">The find by to use.</param>
 		/// <returns></returns>
-		public IOption Option(AttributeConstraint findBy)
+		public IOption Option(BaseConstraint findBy)
 		{
 			return ElementsSupport.Option(DomContainer, findBy, new ElementCollection(this));
 		}
@@ -302,7 +303,7 @@ namespace WatiN.Core
 			return new AttributeConstraint("selected", true.ToString());
 		}
 
-		private void SelectByTextOrValue(AttributeConstraint findBy)
+		private void SelectByTextOrValue(BaseConstraint findBy)
 		{
 			IOptionCollection options = Options.Filter(findBy);
 
@@ -313,7 +314,7 @@ namespace WatiN.Core
 
 			if (options.Length == 0)
 			{
-				throw new SelectListItemNotFoundException(findBy.Value);
+				throw new SelectListItemNotFoundException(findBy.ConstraintToString());
 			}
 		}
 

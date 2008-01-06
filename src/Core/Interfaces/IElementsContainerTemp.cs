@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using WatiN.Core.Mozilla;
+using WatiN.Core.Constraints;
 
 namespace WatiN.Core.Interfaces
 {
@@ -51,7 +52,7 @@ namespace WatiN.Core.Interfaces
         /// </summary>
         /// <param name="findBy">The attibute contraint used to match an attribute of the area element being sought.</param>
         /// <returns>The area element for the corresponding attribute constraint, or null if none is found</returns>
-        IArea Area(AttributeConstraint findBy);
+        IArea Area(BaseConstraint findBy);
 
         /// <summary>
         /// Returns all the area elements for the current document
@@ -73,11 +74,11 @@ namespace WatiN.Core.Interfaces
         IButton Button(Regex regex);
 
         /// <summary>
-        /// Finds a button element using the specified <see cref="AttributeConstraint" />.
+        /// Finds a button element using the specified <see cref="BaseConstraint" />.
         /// </summary>
-        /// <param name="constraint">The <see cref="AttributeConstraint" /> for the button element being sought.</param>
-        /// <returns>The button element for the matches the <see cref="AttributeConstraint" />, or null if none is found</returns>
-        IButton Button(AttributeConstraint constraint);
+        /// <param name="constraint">The <see cref="BaseConstraint" /> for the button element being sought.</param>
+        /// <returns>The button element for the matches the <see cref="BaseConstraint" />, or null if none is found</returns>
+        IButton Button(BaseConstraint constraint);
 
         /// <summary>
         /// Returns all the button elements for the current document
@@ -103,7 +104,7 @@ namespace WatiN.Core.Interfaces
         /// </summary>
         /// <param name="findBy">The attibute contraint used to match an attribute of the checkbox element being sought.</param>
         /// <returns>The checkbox element for the corresponding attribute constraint, or null if none is found</returns>
-        ICheckBox CheckBox(AttributeConstraint findBy);
+        ICheckBox CheckBox(BaseConstraint findBy);
 
         /// <summary>
         /// Returns all the checkbox elements for the current document
@@ -129,7 +130,7 @@ namespace WatiN.Core.Interfaces
         /// </summary>
         /// <param name="findBy">The attibute contraint used to match an attribute of the div element being sought.</param>
         /// <returns>The div element for the corresponding attribute constraint, or null if none is found</returns>
-        IDiv Div(AttributeConstraint findBy);
+        IDiv Div(BaseConstraint findBy);
 
         /// <summary>
         /// Returns all the div elements for the current document
@@ -155,7 +156,7 @@ namespace WatiN.Core.Interfaces
         /// </summary>
         /// <param name="findBy">The attibute contraint used to match an attribute of the element being sought.</param>
         /// <returns>The element for the corresponding attribute constraint, or null if none is found</returns>
-        IElement Element(AttributeConstraint findBy);
+        IElement Element(BaseConstraint findBy);
 
         /// <summary>
         /// Finds a form element using the specified id.
@@ -176,7 +177,7 @@ namespace WatiN.Core.Interfaces
         /// </summary>
         /// <param name="findBy">The attibute contraint used to match an attribute of the form element being sought.</param>
         /// <returns>The form element for the corresponding attribute constraint, or null if none is found</returns>
-        IForm Form(AttributeConstraint findBy);
+        IForm Form(BaseConstraint findBy);
 
         /// <summary>
         /// Returns all the form elements for the current document
@@ -202,7 +203,7 @@ namespace WatiN.Core.Interfaces
         /// </summary>
         /// <param name="findBy">The attibute contraint used to match an attribute of the frame element being sought.</param>
         /// <returns>The frame element for the corresponding attribute constraint, or null if none is found</returns>
-        IFrame Frame(AttributeConstraint findBy);
+        IFrame Frame(BaseConstraint findBy);
 
         /// <summary>
         /// Returns all the frame elements for the current document
@@ -228,7 +229,7 @@ namespace WatiN.Core.Interfaces
         /// </summary>
         /// <param name="findBy">The attibute contraint used to match an attribute of the image element being sought.</param>
         /// <returns>The image element for the corresponding attribute constraint, or null if none is found</returns>
-        IImage Image(AttributeConstraint findBy);
+        IImage Image(BaseConstraint findBy);
 
         /// <summary>
         /// Returns all the image elements for the current document
@@ -254,7 +255,7 @@ namespace WatiN.Core.Interfaces
         /// </summary>
         /// <param name="findBy">The attibute contraint used to match an attribute of the label element being sought.</param>
         /// <returns>The label element for the corresponding attribute constraint, or null if none is found</returns>
-        ILabel Label(AttributeConstraint findBy);
+        ILabel Label(BaseConstraint findBy);
 
         /// <summary>
         /// Returns all the label elements for the current document
@@ -280,7 +281,7 @@ namespace WatiN.Core.Interfaces
         /// </summary>
         /// <param name="findBy">The attibute contraint used to match an attribute of the link element being sought.</param>
         /// <returns>The link element for the corresponding attribute constraint, or null if none is found</returns>
-        ILink Link(AttributeConstraint findBy);
+        ILink Link(BaseConstraint findBy);
 
         /// <summary>
         /// Returns all the label elements for the current document
@@ -306,7 +307,7 @@ namespace WatiN.Core.Interfaces
         /// </summary>
         /// <param name="findBy">The attibute contraint used to match an attribute of the paragraph element being sought.</param>
         /// <returns>The paragraph element for the corresponding attribute constraint, or null if none is found</returns>
-        IPara Para(AttributeConstraint findBy);
+        IPara Para(BaseConstraint findBy);
 
         /// <summary>
         /// Returns all the paragraph elements for the current document
@@ -332,7 +333,7 @@ namespace WatiN.Core.Interfaces
         /// </summary>
         /// <param name="findBy">The attibute contraint used to match an attribute of the radio button element being sought.</param>
         /// <returns>The radio button element for the corresponding attribute constraint, or null if none is found</returns>
-        IRadioButton RadioButton(AttributeConstraint findBy);
+        IRadioButton RadioButton(BaseConstraint findBy);
 
         /// <summary>
         /// Returns all the radio button elements for the current document
@@ -358,7 +359,7 @@ namespace WatiN.Core.Interfaces
         /// </summary>
         /// <param name="findBy">The attibute contraint used to match an attribute of the select list element being sought.</param>
         /// <returns>The select list element for the corresponding attribute constraint, or null if none is found</returns>
-        ISelectList SelectList(AttributeConstraint findBy);
+        ISelectList SelectList(BaseConstraint findBy);
 
         /// <summary>
         /// Returns all the select list elements for the current document
@@ -384,7 +385,7 @@ namespace WatiN.Core.Interfaces
         /// </summary>
         /// <param name="findBy">The attibute contraint used to match an attribute of the span element being sought.</param>
         /// <returns>The span element for the corresponding attribute constraint, or null if none is found</returns>
-        ISpan Span(AttributeConstraint findBy);
+        ISpan Span(BaseConstraint findBy);
 
         /// <summary>
         /// Returns all the span elements for the current document
@@ -410,7 +411,7 @@ namespace WatiN.Core.Interfaces
         /// </summary>
         /// <param name="findBy">The attibute contraint used to match an attribute of the table element being sought.</param>
         /// <returns>The table element for the corresponding attribute constraint, or null if none is found</returns>
-        ITable Table(AttributeConstraint findBy);
+        ITable Table(BaseConstraint findBy);
 
         /// <summary>
         /// Returns all the table elements for the current document
@@ -436,7 +437,7 @@ namespace WatiN.Core.Interfaces
         /// </summary>
         /// <param name="findBy">The attibute contraint used to match an attribute of the table body element being sought.</param>
         /// <returns>The table body element for the corresponding attribute constraint, or null if none is found</returns>
-        ITableBody TableBody(AttributeConstraint findBy);
+        ITableBody TableBody(BaseConstraint findBy);
 
         /// <summary>
         /// Returns all the table body elements for the current document
@@ -462,7 +463,7 @@ namespace WatiN.Core.Interfaces
         /// </summary>
         /// <param name="findBy">The attibute contraint used to match an attribute of the table row element being sought.</param>
         /// <returns>The table row element for the corresponding attribute constraint, or null if none is found</returns>
-        ITableRow TableRow(AttributeConstraint findBy);
+        ITableRow TableRow(BaseConstraint findBy);
 
         /// <summary>
         /// Returns all the table row elements for the current document
@@ -488,7 +489,7 @@ namespace WatiN.Core.Interfaces
         /// </summary>
         /// <param name="findBy">The attibute contraint used to match an attribute of the table cell element being sought.</param>
         /// <returns>The table cell element for the corresponding attribute constraint, or null if none is found</returns>
-        ITableCell TableCell(AttributeConstraint findBy);
+        ITableCell TableCell(BaseConstraint findBy);
 
         /// <summary>
         /// Returns all the table cell elements for the current document
@@ -510,11 +511,11 @@ namespace WatiN.Core.Interfaces
         ITextField TextField(Regex regex);
 
         /// <summary>
-        /// Finds a text field element using the specified <see cref="AttributeConstraint" />.
+        /// Finds a text field element using the specified <see cref="BaseConstraint" />.
         /// </summary>
-        /// <param name="constraint">The <see cref="AttributeConstraint" /> for the text field element being sought.</param>
-        /// <returns>The text field element for the matches the <see cref="AttributeConstraint" />, or null if none is found</returns>
-        ITextField TextField(AttributeConstraint constraint);
+        /// <param name="constraint">The <see cref="BaseConstraint" /> for the text field element being sought.</param>
+        /// <returns>The text field element for the matches the <see cref="BaseConstraint" />, or null if none is found</returns>
+        ITextField TextField(BaseConstraint constraint);
 
         /// <summary>
         /// Returns all the text fields elements for the current document

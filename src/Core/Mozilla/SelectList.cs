@@ -24,6 +24,7 @@ using WatiN.Core;
 using WatiN.Core.Comparers;
 using WatiN.Core.Exceptions;
 using WatiN.Core.Interfaces;
+using WatiN.Core.Constraints;
 
 namespace WatiN.Core.Mozilla
 {
@@ -78,7 +79,7 @@ namespace WatiN.Core.Mozilla
         /// </summary>
         /// <param name="findBy">The find by to use.</param>
         /// <returns></returns>
-        public IOption Option(AttributeConstraint findBy)
+        public IOption Option(BaseConstraint findBy)
         {
             IOptionCollection filteredOptions = this.Options.Filter(findBy);
 

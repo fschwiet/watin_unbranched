@@ -1,6 +1,6 @@
-#region WatiN Copyright (C) 2006-2007 Jeroen van Menen
+#region WatiN Copyright (C) 2006-2008 Jeroen van Menen
 
-//Copyright 2006-2007 Jeroen van Menen
+//Copyright 2006-2008 Jeroen van Menen
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 #endregion Copyright
 
+using System;
 using System.Collections;
 using System.Text.RegularExpressions;
 using NUnit.Framework;
@@ -91,6 +92,11 @@ namespace WatiN.Core.UnitTests
 
 			Assert.IsFalse(ParaEnumerator.MoveNext(), "Expected last item");
 			Assert.AreEqual(expectedParasCount, count);
+		}
+
+		public override Uri TestPageUri
+		{
+			get { return MainURI; }
 		}
 	}
 }

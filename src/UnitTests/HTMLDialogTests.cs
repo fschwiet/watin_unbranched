@@ -1,6 +1,6 @@
-#region WatiN Copyright (C) 2006-2007 Jeroen van Menen
+#region WatiN Copyright (C) 2006-2008 Jeroen van Menen
 
-//Copyright 2006-2007 Jeroen van Menen
+//Copyright 2006-2008 Jeroen van Menen
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@
 using System;
 using System.Threading;
 using NUnit.Framework;
+using WatiN.Core.Constraints;
 using WatiN.Core.Exceptions;
 
 namespace WatiN.Core.UnitTests
@@ -66,7 +67,7 @@ namespace WatiN.Core.UnitTests
 		{
 			using (IE ie = new IE(MainURI))
 			{
-				AttributeConstraint findBy = Find.ByUrl(PopUpURI);
+				BaseConstraint findBy = Find.ByUrl(PopUpURI);
 				Assert.IsFalse(ie.HtmlDialogs.Exists(findBy));
 
 				ie.Button("modalid").ClickNoWait();
@@ -84,7 +85,7 @@ namespace WatiN.Core.UnitTests
 			{
 				DateTime startTime = DateTime.Now;
 				const int timeoutTime = 5;
-				string expectedMessage = "Could not find a HTMLDialog by title with value 'popuptest'. (Search expired after '5' seconds)";
+				string expectedMessage = "Could not find a HTMLDialog matching criteria: Attribute 'title' with value 'popuptest'. (Search expired after '5' seconds). Is there a popup blocker active?";
 
 				try
 				{

@@ -1,3 +1,5 @@
+using WatiN.Core.Constraints;
+
 namespace WatiN.Core.Interfaces
 {
     public interface ILabelCollection : IBaseElementCollection
@@ -8,6 +10,6 @@ namespace WatiN.Core.Interfaces
         /// <value></value>
         ILabel this[int index] { get; }
 
-        ILabelCollection Filter(AttributeConstraint findBy);
+        ILabelCollection Filter(BaseConstraint findBy);
     }
 }

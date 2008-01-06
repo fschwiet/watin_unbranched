@@ -143,21 +143,6 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AttributeConstraints\AlwaysTrueAttributeConstraint.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="AttributeConstraints\AttributeConstraint.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="AttributeConstraints\IndexAttributeConstraint.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="AttributeConstraints\NotAttributeConstraint.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="AttributeConstraints\TableRowAttributeConstraint.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="BaseElementCollection.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -202,6 +187,14 @@
     <Compile Include="Comparers\UriComparer.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Constraints\AlwaysTrueConstraint.cs" />
+    <Compile Include="Constraints\AttributeConstraint.cs" />
+    <Compile Include="Constraints\BaseConstraint.cs" />
+    <Compile Include="Constraints\ElementConstraint.cs" />
+    <Compile Include="Constraints\IndexConstraint.cs" />
+    <Compile Include="Constraints\NotConstraint.cs" />
+    <Compile Include="Constraints\ObsoleteConstraints.cs" />
+    <Compile Include="Constraints\TableRowAttributeConstraint.cs" />
     <Compile Include="DialogHandlers\AlertAndConfirmDialogHandler.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -367,6 +360,7 @@
     <Compile Include="HtmlDialogCollection.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Interfaces\ICompareElement.cs" />
     <Compile Include="Interfaces\IFrameCollection.cs" />
     <Compile Include="Interfaces\IFrame.cs" />
     <Compile Include="Interfaces\ILinkCollection.cs" />

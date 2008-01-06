@@ -1,6 +1,6 @@
-#region WatiN Copyright (C) 2006-2007 Jeroen van Menen
+#region WatiN Copyright (C) 2006-2008 Jeroen van Menen
 
-//Copyright 2006-2007 Jeroen van Menen
+//Copyright 2006-2008 Jeroen van Menen
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -70,7 +70,33 @@ namespace WatiN.Core.UnitTests
 			_mockRepository.Verify(_mockWait);
 		}
 
-		[Test]
+	    [Test]
+	    public void WaitForCompleteShouldUseTimeOutProvidedThroughtTheConstructor()
+	    {
+	        WaitForCompleteMock waitForCompleteMock = new WaitForCompleteMock(_ie, 333);
+
+            Assert.That(waitForCompleteMock, NUnit.Framework.SyntaxHelpers.Is.InstanceOfType(typeof(WaitForComplete)),"Should inherit WaitForComplete");
+
+            waitForCompleteMock.DoWait();
+            
+            Assert.That(waitForCompleteMock.Timeout, NUnit.Framework.SyntaxHelpers.Is.EqualTo(333), "Unexpected timeout");
+	    }
+
+	    [Test]
+	    public void WaitForCompleteShouldUseWaitForCompleteTimeOutSetting()
+	    {
+	        int expectedWaitForCompleteTimeOut = IE.Settings.WaitForCompleteTimeOut;
+
+	        WaitForCompleteMock waitForCompleteMock = new WaitForCompleteMock(_ie);
+
+            Assert.That(waitForCompleteMock, NUnit.Framework.SyntaxHelpers.Is.InstanceOfType(typeof(WaitForComplete)),"Should inherit WaitForComplete");
+
+            waitForCompleteMock.DoWait();
+
+            Assert.That(waitForCompleteMock.Timeout, NUnit.Framework.SyntaxHelpers.Is.EqualTo(expectedWaitForCompleteTimeOut), "Unexpected timeout");
+	    }
+
+	    [Test]
 		public void DomContainerIsDocument()
 		{
 			Assert.IsInstanceOfType(typeof (Document), _ie);
@@ -106,4 +132,29 @@ namespace WatiN.Core.UnitTests
 			IE.Settings.Reset();
 		}
 	}
+
+    public class WaitForCompleteMock : WaitForComplete
+    {
+        private int _timeout;
+
+        public WaitForCompleteMock(DomContainer domContainer) : base(domContainer) {}
+
+        public WaitForCompleteMock(DomContainer domContainer, int waitForCompleteTimeOut) : base(domContainer, waitForCompleteTimeOut) {}
+
+        protected override SimpleTimer InitTimeout()
+        {
+            _timeout = base.InitTimeout().Timeout;
+            return null;
+        }
+
+        protected override void WaitForCompleteOrTimeout()
+        {
+            // Finished;
+        }
+
+        public int Timeout
+        {
+            get { return _timeout; }
+        }
+    }
 }

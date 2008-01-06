@@ -18,6 +18,7 @@
 
 using System.Collections.Generic;
 using WatiN.Core.Interfaces;
+using WatiN.Core.Constraints;
 
 namespace WatiN.Core.Mozilla
 {
@@ -55,7 +56,7 @@ namespace WatiN.Core.Mozilla
             get { return (IRadioButton)this.Elements[index]; }
         }
 
-        public IRadioButtonCollection Filter(AttributeConstraint findBy)
+        public IRadioButtonCollection Filter(BaseConstraint findBy)
         {
             List<Element> filteredElements = new List<Element>();
 

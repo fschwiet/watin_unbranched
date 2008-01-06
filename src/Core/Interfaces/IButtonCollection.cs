@@ -1,3 +1,5 @@
+using WatiN.Core.Constraints;
+
 namespace WatiN.Core.Interfaces
 {
     public interface IButtonCollection : IBaseElementCollection
@@ -8,6 +10,6 @@ namespace WatiN.Core.Interfaces
         /// <value></value>
         IButton this[int index] { get; }
 
-        IButtonCollection Filter(AttributeConstraint findBy);
+        IButtonCollection Filter(BaseConstraint findBy);
     }
 }

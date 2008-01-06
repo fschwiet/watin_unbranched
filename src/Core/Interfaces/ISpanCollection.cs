@@ -1,3 +1,4 @@
+using WatiN.Core.Constraints;
 
 namespace WatiN.Core.Interfaces
 {
@@ -9,6 +10,6 @@ namespace WatiN.Core.Interfaces
         /// <value></value>
         ISpan this[int index] { get; }
 
-        ISpanCollection Filter(AttributeConstraint findBy);
+        ISpanCollection Filter(BaseConstraint findBy);
     }
 }

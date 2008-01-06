@@ -1,6 +1,6 @@
-#region WatiN Copyright (C) 2006-2007 Jeroen van Menen
+#region WatiN Copyright (C) 2006-2008 Jeroen van Menen
 
-//Copyright 2006-2007 Jeroen van Menen
+//Copyright 2006-2008 Jeroen van Menen
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -16,42 +16,49 @@
 
 #endregion Copyright
 
+using System;
 using NUnit.Framework;
 using WatiN.Core.Logging;
 
 namespace WatiN.Core.UnitTests
 {
-	public class BaseElementsTests : WatiNTest
+	public abstract class BaseElementsTests : WatiNTest
 	{
 		protected IE ie;
 		private Settings backupSettings;
 
 		[TestFixtureSetUp]
-		public void FixtureSetup()
+		public virtual void FixtureSetup()
 		{
 			Logger.LogWriter = new ConsoleLogWriter();
 			
 			backupSettings = IE.Settings.Clone();
 			IE.Settings = new StealthSettings();
+			IE.Settings.MakeNewIeInstanceVisible = true;
 
-			ie = new IE(MainURI);
+			ie = new IE(TestPageUri);
 		}
 
 		[TestFixtureTearDown]
-		public void FixtureTearDown()
+		public virtual void FixtureTearDown()
 		{
 			IE.Settings = backupSettings;
 			ie.Close();
 		}
 
 		[SetUp]
-		public void TestSetUp()
+		public virtual void TestSetUp()
 		{
 			IE.Settings.Reset();
-			if (!ie.Uri.Equals(MainURI))
+			if (!ie.Uri.Equals(TestPageUri))
 			{
-				ie.GoTo(MainURI);
+				ie.GoTo(TestPageUri);
 			}
+		}
+
+		public abstract Uri TestPageUri
+		{
+			get;
 		}
 	}
 

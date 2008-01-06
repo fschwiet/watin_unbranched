@@ -1,3 +1,5 @@
+using WatiN.Core.Constraints;
+
 namespace WatiN.Core.Interfaces
 {
     public interface ITableCollection : IBaseElementCollection
@@ -8,6 +10,6 @@ namespace WatiN.Core.Interfaces
         /// <value></value>
         ITable this[int index] { get; }
 
-        ITableCollection Filter(AttributeConstraint findBy);
+        ITableCollection Filter(BaseConstraint findBy);
     }
 }

@@ -1,3 +1,5 @@
+using WatiN.Core.Constraints;
+
 namespace WatiN.Core.Interfaces
 {
     public interface IImageCollection : IBaseElementCollection
@@ -8,6 +10,6 @@ namespace WatiN.Core.Interfaces
         /// <value></value>
         IImage this[int index] { get; }
 
-        IImageCollection Filter(AttributeConstraint findBy);
+        IImageCollection Filter(BaseConstraint findBy);
     }
 }

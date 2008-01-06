@@ -1,3 +1,5 @@
+using WatiN.Core.Constraints;
+
 namespace WatiN.Core.Interfaces
 {
     public interface ICheckBoxCollection : IBaseElementCollection
@@ -8,6 +10,6 @@ namespace WatiN.Core.Interfaces
         /// <value></value>
         ICheckBox this[int index] { get; }
 
-        ICheckBoxCollection Filter(AttributeConstraint findBy);
+        ICheckBoxCollection Filter(BaseConstraint findBy);
     }
 }

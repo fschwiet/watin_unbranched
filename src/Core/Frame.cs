@@ -1,6 +1,6 @@
-#region WatiN Copyright (C) 2006-2007 Jeroen van Menen
+#region WatiN Copyright (C) 2006-2008 Jeroen van Menen
 
-//Copyright 2006-2007 Jeroen van Menen
+//Copyright 2006-2008 Jeroen van Menen
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ using System;
 using System.Globalization;
 using mshtml;
 using SHDocVw;
+using WatiN.Core.Constraints;
 using StringComparer = WatiN.Core.Comparers.StringComparer;
 using WatiN.Core.Exceptions;
 using WatiN.Core.Interfaces;
@@ -55,12 +56,12 @@ namespace WatiN.Core
 		/// </summary>
 		/// <param name="frames">Collection of frames to find the frame in</param>
 		/// <param name="findBy">The <see cref="AttributeConstraint"/> of the Frame to find (Find.ByUrl, Find.ByName and Find.ById are supported)</param>
-		public static Frame Find(FrameCollection frames, AttributeConstraint findBy)
+		public static Frame Find(FrameCollection frames, BaseConstraint findBy)
 		{
 			return findFrame(frames, findBy);
 		}
 
-		private static Frame findFrame(FrameCollection frames, AttributeConstraint findBy)
+		private static Frame findFrame(FrameCollection frames, BaseConstraint findBy)
 		{
 			foreach (Frame frame in frames)
 			{
@@ -71,7 +72,7 @@ namespace WatiN.Core
 				}
 			}
 
-			throw new FrameNotFoundException(findBy.AttributeName, findBy.Value);
+			throw new FrameNotFoundException(findBy.ConstraintToString());
 		}
 
 		public string Name

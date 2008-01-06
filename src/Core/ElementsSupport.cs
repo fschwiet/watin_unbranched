@@ -1,6 +1,6 @@
-#region WatiN Copyright (C) 2006-2007 Jeroen van Menen
+#region WatiN Copyright (C) 2006-2008 Jeroen van Menen
 
-//Copyright 2006-2007 Jeroen van Menen
+//Copyright 2006-2008 Jeroen van Menen
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 #endregion Copyright
 
 using System.Text.RegularExpressions;
+using WatiN.Core.Constraints;
 using WatiN.Core.Interfaces;
 
 namespace WatiN.Core
@@ -35,7 +36,7 @@ namespace WatiN.Core
 		/// </summary>
 		private ElementsSupport() {}
 
-		public static Area Area(DomContainer domContainer, AttributeConstraint findBy, IElementCollection elements)
+		public static Area Area(DomContainer domContainer, BaseConstraint findBy, IElementCollection elements)
 		{
 			return new Area(domContainer, new ElementFinder(Core.Area.ElementTags, findBy, elements));
 		}
@@ -45,7 +46,7 @@ namespace WatiN.Core
 			return new AreaCollection(domContainer, new ElementFinder(Core.Area.ElementTags, elements));
 		}
 
-		public static Button Button(DomContainer ie, AttributeConstraint findBy, IElementCollection elements)
+		public static Button Button(DomContainer ie, BaseConstraint findBy, IElementCollection elements)
 		{
 			return new Button(ie, new ElementFinder(Core.Button.ElementTags, findBy, elements));
 		}
@@ -55,7 +56,7 @@ namespace WatiN.Core
 			return new ButtonCollection(ie, new ElementFinder(Core.Button.ElementTags, elements));
 		}
 
-		public static CheckBox CheckBox(DomContainer ie, AttributeConstraint findBy, IElementCollection elements)
+		public static CheckBox CheckBox(DomContainer ie, BaseConstraint findBy, IElementCollection elements)
 		{
 			return new CheckBox(ie, new ElementFinder(Core.CheckBox.ElementTags, findBy, elements));
 		}
@@ -65,12 +66,12 @@ namespace WatiN.Core
 			return new CheckBoxCollection(ie, new ElementFinder(Core.CheckBox.ElementTags, elements));
 		}
 
-		public static Element Element(DomContainer ie, AttributeConstraint findBy, IElementCollection elements)
+		public static Element Element(DomContainer ie, BaseConstraint findBy, IElementCollection elements)
 		{
 			return new ElementsContainer(ie, new ElementFinder(null, findBy, elements));
 		}
 
-		public static Element Element(DomContainer domContainer, string tagname, AttributeConstraint findBy, IElementCollection elements, params string[] inputtypes)
+		public static Element Element(DomContainer domContainer, string tagname, BaseConstraint findBy, IElementCollection elements, params string[] inputtypes)
 		{
 			string inputtypesString = UtilityClass.StringArrayToString(inputtypes, ",");
 
@@ -82,7 +83,7 @@ namespace WatiN.Core
 			return new ElementCollection(ie, new ElementFinder(null, elements));
 		}
 
-		public static FileUpload FileUpload(DomContainer ie, AttributeConstraint findBy, IElementCollection elements)
+		public static FileUpload FileUpload(DomContainer ie, BaseConstraint findBy, IElementCollection elements)
 		{
 			return new FileUpload(ie, new ElementFinder(Core.FileUpload.ElementTags, findBy, elements));
 		}
@@ -92,7 +93,7 @@ namespace WatiN.Core
 			return new FileUploadCollection(ie, new ElementFinder(Core.FileUpload.ElementTags, elements));
 		}
 
-		public static Form Form(DomContainer ie, AttributeConstraint findBy, IElementCollection elements)
+		public static Form Form(DomContainer ie, BaseConstraint findBy, IElementCollection elements)
 		{
 			return new Form(ie, new ElementFinder(Core.Form.ElementTags, findBy, elements));
 		}
@@ -102,7 +103,7 @@ namespace WatiN.Core
 			return new FormCollection(ie, new ElementFinder(Core.Form.ElementTags, elements));
 		}
 
-		public static Label Label(DomContainer ie, AttributeConstraint findBy, IElementCollection elements)
+		public static Label Label(DomContainer ie, BaseConstraint findBy, IElementCollection elements)
 		{
 			return new Label(ie, new ElementFinder(Core.Label.ElementTags, findBy, elements));
 		}
@@ -112,7 +113,7 @@ namespace WatiN.Core
 			return new LabelCollection(ie, new ElementFinder(Core.Label.ElementTags, elements));
 		}
 
-		public static Link Link(DomContainer ie, AttributeConstraint findBy, IElementCollection elements)
+		public static Link Link(DomContainer ie, BaseConstraint findBy, IElementCollection elements)
 		{
 			return new Link(ie, new ElementFinder(Core.Link.ElementTags, findBy, elements));
 		}
@@ -122,7 +123,7 @@ namespace WatiN.Core
 			return new LinkCollection(ie, new ElementFinder(Core.Link.ElementTags, elements));
 		}
 
-		public static Option Option(DomContainer ie, AttributeConstraint findBy, IElementCollection elements)
+		public static Option Option(DomContainer ie, BaseConstraint findBy, IElementCollection elements)
 		{
 			return new Option(ie, new ElementFinder(Core.Option.ElementTags, findBy, elements));
 		}
@@ -132,7 +133,7 @@ namespace WatiN.Core
 			return new OptionCollection(ie, new ElementFinder(Core.Option.ElementTags, elements));
 		}
 
-		public static Para Para(DomContainer ie, AttributeConstraint findBy, IElementCollection elements)
+		public static Para Para(DomContainer ie, BaseConstraint findBy, IElementCollection elements)
 		{
 			return new Para(ie, new ElementFinder(Core.Para.ElementTags, findBy, elements));
 		}
@@ -142,7 +143,7 @@ namespace WatiN.Core
 			return new ParaCollection(ie, new ElementFinder(Core.Para.ElementTags, elements));
 		}
 
-		public static RadioButton RadioButton(DomContainer ie, AttributeConstraint findBy, IElementCollection elements)
+		public static RadioButton RadioButton(DomContainer ie, BaseConstraint findBy, IElementCollection elements)
 		{
 			return new RadioButton(ie, new ElementFinder(Core.RadioButton.ElementTags, findBy, elements));
 		}
@@ -152,7 +153,7 @@ namespace WatiN.Core
 			return new RadioButtonCollection(ie, new ElementFinder(Core.RadioButton.ElementTags, elements));
 		}
 
-		public static SelectList SelectList(DomContainer ie, AttributeConstraint findBy, IElementCollection elements)
+		public static SelectList SelectList(DomContainer ie, BaseConstraint findBy, IElementCollection elements)
 		{
 			return new SelectList(ie, new ElementFinder(Core.SelectList.ElementTags, findBy, elements));
 		}
@@ -162,7 +163,7 @@ namespace WatiN.Core
 			return new SelectListCollection(ie, new ElementFinder(Core.SelectList.ElementTags, elements));
 		}
 
-		public static Table Table(DomContainer ie, AttributeConstraint findBy, IElementCollection elements)
+		public static Table Table(DomContainer ie, BaseConstraint findBy, IElementCollection elements)
 		{
 			return new Table(ie, new ElementFinder(Core.Table.ElementTags, findBy, elements));
 		}
@@ -178,7 +179,7 @@ namespace WatiN.Core
 //      return new TableSectionCollection(ie, elements);
 //    }
 
-		public static TableCell TableCell(DomContainer ie, AttributeConstraint findBy, IElementCollection elements)
+		public static TableCell TableCell(DomContainer ie, BaseConstraint findBy, IElementCollection elements)
 		{
 			return new TableCell(ie, new ElementFinder(Core.TableCell.ElementTags, findBy, elements));
 		}
@@ -198,7 +199,7 @@ namespace WatiN.Core
 			return new TableCellCollection(ie, new ElementFinder(Core.TableCell.ElementTags, elements));
 		}
 
-		public static TableRow TableRow(DomContainer ie, AttributeConstraint findBy, IElementCollection elements)
+		public static TableRow TableRow(DomContainer ie, BaseConstraint findBy, IElementCollection elements)
 		{
 			return new TableRow(ie, new ElementFinder(Core.TableRow.ElementTags, findBy, elements));
 		}
@@ -208,7 +209,7 @@ namespace WatiN.Core
 			return new TableRowCollection(ie, new ElementFinder(Core.TableRow.ElementTags, elements));
 		}
 
-		public static TableBody TableBody(DomContainer ie, AttributeConstraint findBy, IElementCollection elements)
+		public static TableBody TableBody(DomContainer ie, BaseConstraint findBy, IElementCollection elements)
 		{
 			return new TableBody(ie, new ElementFinder(Core.TableBody.ElementTags, findBy, elements));
 		}
@@ -218,7 +219,7 @@ namespace WatiN.Core
 			return new TableBodyCollection(ie, new ElementFinder(Core.TableBody.ElementTags, elements));
 		}
 
-		public static TextField TextField(DomContainer ie, AttributeConstraint findBy, IElementCollection elements)
+		public static TextField TextField(DomContainer ie, BaseConstraint findBy, IElementCollection elements)
 		{
 			return new TextField(ie, new ElementFinder(Core.TextField.ElementTags, findBy, elements));
 		}
@@ -228,7 +229,7 @@ namespace WatiN.Core
 			return new TextFieldCollection(ie, new ElementFinder(Core.TextField.ElementTags, elements));
 		}
 
-		public static Span Span(DomContainer ie, AttributeConstraint findBy, IElementCollection elements)
+		public static Span Span(DomContainer ie, BaseConstraint findBy, IElementCollection elements)
 		{
 			return new Span(ie, new ElementFinder(Core.Span.ElementTags, findBy, elements));
 		}
@@ -238,7 +239,7 @@ namespace WatiN.Core
 			return new SpanCollection(ie, new ElementFinder(Core.Span.ElementTags, elements));
 		}
 
-		public static Div Div(DomContainer ie, AttributeConstraint findBy, IElementCollection elements)
+		public static Div Div(DomContainer ie, BaseConstraint findBy, IElementCollection elements)
 		{
 			return new Div(ie, new ElementFinder(Core.Div.ElementTags, findBy, elements));
 		}
@@ -248,7 +249,7 @@ namespace WatiN.Core
 			return new DivCollection(ie, new ElementFinder(Core.Div.ElementTags, elements));
 		}
 
-		public static Image Image(DomContainer ie, AttributeConstraint findBy, IElementCollection elements)
+		public static Image Image(DomContainer ie, BaseConstraint findBy, IElementCollection elements)
 		{
 			return new Image(ie, new ElementFinder(Core.Image.ElementTags, findBy, elements));
 		}

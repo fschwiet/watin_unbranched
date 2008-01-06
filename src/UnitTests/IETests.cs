@@ -23,6 +23,7 @@ using System.Threading;
 using System.Windows.Forms;
 using NUnit.Framework;
 using SHDocVw;
+using WatiN.Core.Constraints;
 using WatiN.Core.DialogHandlers;
 using WatiN.Core.Exceptions;
 using WatiN.Core.Logging;
@@ -538,7 +539,7 @@ namespace WatiN.Core.UnitTests
 			IEExistsAsserts(Find.ByTitle("Ai"));
 		}
 
-		private static void IEExistsAsserts(AttributeConstraint findByUrl)
+		private static void IEExistsAsserts(BaseConstraint findByUrl)
 		{
 			Assert.IsFalse(IE.Exists(findByUrl));
 
@@ -625,7 +626,7 @@ namespace WatiN.Core.UnitTests
 			DateTime startTime = DateTime.Now;
 			const int timeoutTime = 5;
 			const string ieTitle = "Non Existing IE Title";
-			const string expectedMessage = "Could not find an IE window by title with value 'non existing ie title'. (Search expired after '5' seconds)";
+			const string expectedMessage = "Could not find an IE window matching constraint: Attribute 'title' with value 'non existing ie title'. Search expired after '5' seconds.";
 
 			try
 			{
@@ -640,6 +641,7 @@ namespace WatiN.Core.UnitTests
 				Assert.IsInstanceOfType(typeof (IENotFoundException), e);
 				// add 1 second to give it some slack.
 				Assert.Greater(timeoutTime + 1, DateTime.Now.Subtract(startTime).TotalSeconds);
+				Console.WriteLine(e.Message);
 				Assert.AreEqual(expectedMessage, e.Message, "Unexpected exception message");
 			}
 		}

@@ -1,6 +1,6 @@
-#region WatiN Copyright (C) 2006-2007 Jeroen van Menen
+#region WatiN Copyright (C) 2006-2008 Jeroen van Menen
 
-//Copyright 2006-2007 Jeroen van Menen
+//Copyright 2006-2008 Jeroen van Menen
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -197,7 +197,7 @@ namespace WatiN.Core.UnitTests
 			textField.TypeText("This should go wrong");
 		}
 
-		[Test, ExpectedException(typeof (ElementNotFoundException), ExpectedMessage = "Could not find a 'INPUT (text password textarea hidden) or TEXTAREA' tag containing attribute id with value 'noneexistingtextfieldid'")]
+		[Test, ExpectedException(typeof (ElementNotFoundException), ExpectedMessage = "Could not find INPUT (text password textarea hidden) or TEXTAREA element tag matching criteria: Attribute 'id' with value 'noneexistingtextfieldid'")]
 		public void TextFieldElementNotFoundException()
 		{
 			IE.Settings.WaitUntilExistsTimeOut = 1;
@@ -239,6 +239,11 @@ namespace WatiN.Core.UnitTests
 			Assert.IsFalse(textfieldEnumerator.MoveNext(), "Expected last item");
 
 			Assert.AreEqual(1, count);
+		}
+
+		public override Uri TestPageUri
+		{
+			get { return MainURI; }
 		}
 	}
 }

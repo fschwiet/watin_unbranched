@@ -1,3 +1,5 @@
+using WatiN.Core.Constraints;
+
 namespace WatiN.Core.Interfaces
 {
     public interface IOptionCollection : IBaseElementCollection
@@ -8,6 +10,6 @@ namespace WatiN.Core.Interfaces
         /// <value></value>
         IOption this[int index] { get; }
 
-        IOptionCollection Filter(AttributeConstraint constraint);        
+        IOptionCollection Filter(BaseConstraint constraint);        
     }
 }
