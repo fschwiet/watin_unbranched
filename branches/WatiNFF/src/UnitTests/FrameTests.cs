@@ -1,6 +1,6 @@
-#region WatiN Copyright (C) 2006-2007 Jeroen van Menen
+#region WatiN Copyright (C) 2006-2008 Jeroen van Menen
 
-//Copyright 2006-2007 Jeroen van Menen
+//Copyright 2006-2008 Jeroen van Menen
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using WatiN.Core.Exceptions;
 using WatiN.Core.Logging;
+using WatiN.Core.Constraints;
 
 namespace WatiN.Core.UnitTests
 {
@@ -58,7 +59,7 @@ namespace WatiN.Core.UnitTests
 			Assert.IsInstanceOfType(typeof (Document), ie.Frame("mainid"));
 		}
 
-		[Test, ExpectedException(typeof (FrameNotFoundException), ExpectedMessage = "Could not find a Frame or IFrame by id with value 'NonExistingFrameID'")]
+		[Test, ExpectedException(typeof (FrameNotFoundException), ExpectedMessage = "Could not find a Frame or IFrame matching constraint: Attribute 'id' with value 'NonExistingFrameID'")]
 		public void ExpectFrameNotFoundException()
 		{
 			ie.Frame(Find.ById("NonExistingFrameID"));

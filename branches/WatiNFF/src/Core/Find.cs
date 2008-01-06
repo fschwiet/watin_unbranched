@@ -1,6 +1,6 @@
-#region WatiN Copyright (C) 2006-2007 Jeroen van Menen
+#region WatiN Copyright (C) 2006-2008 Jeroen van Menen
 
-//Copyright 2006-2007 Jeroen van Menen
+//Copyright 2006-2008 Jeroen van Menen
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ using System;
 using System.Text.RegularExpressions;
 using WatiN.Core.Comparers;
 using WatiN.Core.Interfaces;
+using WatiN.Core.Constraints;
 
 namespace WatiN.Core
 {
@@ -262,9 +263,9 @@ namespace WatiN.Core
 		/// </summary>
 		/// <param name="index">The index.</param>
 		/// <returns></returns>
-		public static IndexAttributeConstraint ByIndex(int index)
+		public static IndexConstraint ByIndex(int index)
 		{
-			return new IndexAttributeConstraint(index);
+			return new IndexConstraint(index);
 		}
 
 		/// <summary>
@@ -414,7 +415,7 @@ namespace WatiN.Core
 		/// <example>
 		/// <code>ie.Link(Find.ByUrl(new Regex("pattern goes here"))).Url</code>
 		/// </example>
-		public static AttributeConstraint ByUrl(Regex regex)
+        public static AttributeConstraint ByUrl(Regex regex)
 		{
 			return new AttributeConstraint(hrefAttribute, regex);
 		}
@@ -678,18 +679,41 @@ namespace WatiN.Core
 		}
 
 #if NET20
-	/// <param name="styleAttributeName">Name of the style attribute.</param>
-	/// <param name="predicate">The predicate method to call to make the comparison.</param>
-	/// <returns>The AttributeConstraint</returns>
-	/// <example>
-	/// <code>
-	/// Link link = ie.Link(Find.ByStyle("font-family", MyOwnCompareMethod));
-	/// </code>
-	/// </example>
-	public static AttributeConstraint ByStyle(string styleAttributeName, Predicate<string> predicate)
-	{
-		return new AttributeConstraint(styleBaseAttribute + styleAttributeName, new PredicateComparer(predicate));
-	}
+		/// <param name="styleAttributeName">Name of the style attribute.</param>
+		/// <param name="predicate">The predicate method to call to make the comparison.</param>
+		/// <returns>The AttributeConstraint</returns>
+		/// <example>
+		/// <code>
+		/// Link link = ie.Link(Find.ByStyle("font-family", MyOwnCompareMethod));
+		/// </code>
+		/// </example>
+		public static AttributeConstraint ByStyle(string styleAttributeName, Predicate<string> predicate)
+		{
+			return new AttributeConstraint(styleBaseAttribute + styleAttributeName, new PredicateComparer(predicate));
+		}
 #endif
+
+		/// <summary>
+		/// Find an Element by using a specialized Element comparer
+		/// </summary>
+		/// <param name="comparer">The comparer</param>
+		/// <returns>An ElementConstraint instance</returns>
+		public static ElementConstraint ByElement(ICompareElement comparer)
+		{
+			return new ElementConstraint(comparer);
+		}
+
+#if NET20
+		/// <summary>
+		/// Find an Element by calling the predicate for each element that
+		/// needs to be evaluated.
+		/// </summary>
+		/// <param name="predicate">The predicate</param>
+		/// <returns>An ElementConstraint instance</returns>
+		public static ElementConstraint ByElement(Predicate<Element> predicate)
+		{
+			return new ElementConstraint(new PredicateComparer(predicate));
+		}
+#endif	
 	}
 }

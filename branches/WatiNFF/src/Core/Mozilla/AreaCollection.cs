@@ -19,6 +19,7 @@
 using System.Collections.Generic;
 using WatiN.Core;
 using WatiN.Core.Interfaces;
+using WatiN.Core.Constraints;
 
 namespace WatiN.Core.Mozilla
 {
@@ -49,11 +50,11 @@ namespace WatiN.Core.Mozilla
         }
 
         /// <summary>
-        /// Returns a new <see cref="Core.AreaCollection" /> filtered by the <see cref="AttributeConstraint" />.
+        /// Returns a new <see cref="Core.AreaCollection" /> filtered by the <see cref="BaseConstraint" />.
         /// </summary>
         /// <param name="findBy">The attribute to filter by.</param>
         /// <returns>The filtered collection.</returns>
-        public IAreaCollection Filter(AttributeConstraint findBy)
+        public IAreaCollection Filter(BaseConstraint findBy)
         {
             List<Element> filteredElements = new List<Element>();
 

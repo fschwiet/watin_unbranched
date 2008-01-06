@@ -19,6 +19,7 @@
 using System.Collections.Generic;
 using WatiN.Core;
 using WatiN.Core.Interfaces;
+using WatiN.Core.Constraints;
 
 namespace WatiN.Core.Mozilla
 {
@@ -59,7 +60,7 @@ namespace WatiN.Core.Mozilla
             }
         }
 
-        public IButtonCollection Filter(AttributeConstraint findBy)
+        public IButtonCollection Filter(BaseConstraint findBy)
         {
             List<Element> filteredElements = new List<Element>();
 

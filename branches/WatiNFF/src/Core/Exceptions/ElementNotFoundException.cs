@@ -1,6 +1,6 @@
-#region WatiN Copyright (C) 2006-2007 Jeroen van Menen
+#region WatiN Copyright (C) 2006-2008 Jeroen van Menen
 
-//Copyright 2006-2007 Jeroen van Menen
+//Copyright 2006-2008 Jeroen van Menen
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -25,15 +25,22 @@ namespace WatiN.Core.Exceptions
 	/// </summary>
 	public class ElementNotFoundException : WatiNException
 	{
-		public ElementNotFoundException(string tagName, string attributeName, string value) :
-			base(createMessage(attributeName, tagName, value)) {}
+		public ElementNotFoundException(string tagName, string criteria) :
+			base(CreateMessage(tagName, criteria)) {}
 
-		public ElementNotFoundException(string tagName, string attributeName, string value, Exception innerexception) :
-			base(createMessage(attributeName, tagName, value), innerexception) {}
+		public ElementNotFoundException(string tagName, string criteria, Exception innerexception) :
+			base(CreateMessage(tagName, criteria), innerexception) {}
 
-		private static string createMessage(string attributeName, string tagName, string value)
+		private static string CreateMessage(string tagName, string criteria)
 		{
-			return "Could not find a '" + UtilityClass.ToString(tagName) + "' tag containing attribute " + attributeName + " with value '" + value + "'";
+			string message = "Could not find " + UtilityClass.ToString(tagName) + " element tag";
+
+			if (UtilityClass.IsNotNullOrEmpty(criteria))
+			{
+				message += " matching criteria: " + criteria;
+			}
+			
+			return message;
 		}
 	}
 }

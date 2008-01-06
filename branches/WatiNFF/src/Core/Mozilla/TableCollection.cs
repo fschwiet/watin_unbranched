@@ -18,6 +18,7 @@
 
 using System.Collections.Generic;
 using WatiN.Core.Interfaces;
+using WatiN.Core.Constraints;
 
 namespace WatiN.Core.Mozilla
 {
@@ -55,7 +56,7 @@ namespace WatiN.Core.Mozilla
             get { return (ITable)this.Elements[index]; }
         }
 
-        public ITableCollection Filter(AttributeConstraint findBy)
+        public ITableCollection Filter(BaseConstraint findBy)
         {
             List<Element> filteredElements = new List<Element>();
 

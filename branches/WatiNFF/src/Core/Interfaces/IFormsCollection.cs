@@ -1,3 +1,5 @@
+using WatiN.Core.Constraints;
+
 namespace WatiN.Core.Interfaces
 {
     public interface IFormsCollection : IBaseElementCollection
@@ -8,6 +10,6 @@ namespace WatiN.Core.Interfaces
         /// <value></value>
         IForm this[int index] { get; }
 
-        IFormsCollection Filter(AttributeConstraint findBy);
+        IFormsCollection Filter(BaseConstraint findBy);
     }
 }

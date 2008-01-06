@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Text.RegularExpressions;
+using WatiN.Core.Constraints;
 
 namespace WatiN.Core.Interfaces
 {
@@ -11,7 +12,7 @@ namespace WatiN.Core.Interfaces
         /// <value>The length.</value>
         int Length { get; }
 
-        bool Exists(AttributeConstraint constraint);
+        bool Exists(BaseConstraint constraint);
 
         bool Exists(Regex elementId);
 

@@ -1,6 +1,6 @@
-#region WatiN Copyright (C) 2006-2007 Jeroen van Menen
+#region WatiN Copyright (C) 2006-2008 Jeroen van Menen
 
-//Copyright 2006-2007 Jeroen van Menen
+//Copyright 2006-2008 Jeroen van Menen
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -42,7 +42,7 @@ namespace WatiN.Core.UnitTests
 			ie.Button("disabledid").Click();
 		}
 
-		[Test, ExpectedException(typeof (ElementNotFoundException), ExpectedMessage = "Could not find a 'INPUT (button submit image reset) or BUTTON' tag containing attribute id with value 'noneexistingbuttonid'")]
+		[Test, ExpectedException(typeof (ElementNotFoundException), ExpectedMessage = "Could not find INPUT (button submit image reset) or BUTTON element tag matching criteria: Attribute 'id' with value 'noneexistingbuttonid'")]
 		public void ButtonElementNotFoundException()
 		{
 			IE.Settings.WaitUntilExistsTimeOut = 1;
@@ -199,6 +199,11 @@ namespace WatiN.Core.UnitTests
 			Assert.AreEqual(Value, ie.Button(Find.ByValue("Button Element")).Value);
 
 			Assert.IsTrue(ie.Button(new Regex("buttonelementid")).Exists);
+		}
+
+		public override Uri TestPageUri
+		{
+			get { return MainURI; }
 		}
 	}
 }

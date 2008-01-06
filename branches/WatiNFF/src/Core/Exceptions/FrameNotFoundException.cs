@@ -1,6 +1,6 @@
-#region WatiN Copyright (C) 2006-2007 Jeroen van Menen
+#region WatiN Copyright (C) 2006-2008 Jeroen van Menen
 
-//Copyright 2006-2007 Jeroen van Menen
+//Copyright 2006-2008 Jeroen van Menen
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ namespace WatiN.Core.Exceptions
 	/// </summary>
 	public class FrameNotFoundException : WatiNException
 	{
-		public FrameNotFoundException(string attributeName, string value) :
-			base("Could not find a Frame or IFrame by " + attributeName + " with value '" + value + "'") {}
+		public FrameNotFoundException(string constraint) :
+			base("Could not find a Frame or IFrame matching constraint: " + constraint) {}
 	}
 }

@@ -1,3 +1,5 @@
+using WatiN.Core.Constraints;
+
 namespace WatiN.Core.Interfaces
 {
     public interface IParaCollection : IBaseElementCollection
@@ -8,6 +10,6 @@ namespace WatiN.Core.Interfaces
         /// <value></value>
         IPara this[int index] { get; }
 
-        IParaCollection Filter(AttributeConstraint findBy);
+        IParaCollection Filter(BaseConstraint findBy);
     }
 }

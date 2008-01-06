@@ -16,6 +16,7 @@
 
 #endregion Copyright
 
+using System;
 using System.Collections;
 using mshtml;
 using WatiN.Core.Interfaces;
@@ -59,16 +60,22 @@ namespace WatiN.Core
 			get
 			{
 				return GetAttributeValue("src");
-//        return ((IHTMLImgElement) HTMLElement).src;
 			}
 		}
 
-		public string Alt
+        public Uri Uri
+        {
+            get
+            {
+                return new Uri(Src);
+            }
+        }
+        
+        public string Alt
 		{
 			get
 			{
 				return GetAttributeValue("alt");
-//        return ((IHTMLImgElement) HTMLElement).alt;
 			}
 		}
 
@@ -77,7 +84,6 @@ namespace WatiN.Core
 			get
 			{
 				return GetAttributeValue("name");
-//        return ((IHTMLImgElement) HTMLElement).name;
 			}
 		}
 	}

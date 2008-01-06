@@ -1,6 +1,6 @@
-#region WatiN Copyright (C) 2006-2007 Jeroen van Menen
+#region WatiN Copyright (C) 2006-2008 Jeroen van Menen
 
-//Copyright 2006-2007 Jeroen van Menen
+//Copyright 2006-2008 Jeroen van Menen
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 using System;
 using WatiN.Core.Interfaces;
 
-namespace WatiN.Core
+namespace WatiN.Core.Constraints
 {
 	/// <summary>
 	/// Class to find an element by the n-th index.
@@ -28,17 +28,17 @@ namespace WatiN.Core
 	/// <example>
 	/// This example will get the second link of the collection of links
 	/// which have "linkname" as their name value. 
-	/// <code>ie.Link(new IndexAttributeConstraint(1) &amp;&amp; Find.ByName("linkname"))</code>
+	/// <code>ie.Link(new IndexConstraint(1) &amp;&amp; Find.ByName("linkname"))</code>
 	/// You could also consider filtering the Links collection and getting
 	/// the second item in the collection, like this:
 	/// <code>ie.Links.Filter(Find.ByName("linkname"))[1]</code>
 	/// </example>
-	public class IndexAttributeConstraint : AttributeConstraint
+	public class IndexConstraint : BaseConstraint
 	{
 		private int index;
 		private int counter = -1;
 
-		public IndexAttributeConstraint(int index) : base("index", index.ToString())
+		public IndexConstraint(int index)
 		{
 			if (index < 0)
 			{
@@ -48,44 +48,35 @@ namespace WatiN.Core
 			this.index = index;
 		}
 
-		public override bool Compare(IAttributeBag attributeBag)
+		protected override bool DoCompare(IAttributeBag attributeBag)
 		{
-			base.LockCompare();
-
 			bool resultOr;
 
-			try
+			bool resultAnd = false;
+			resultOr = false;
+
+			if (_andBaseConstraint != null)
 			{
-				bool resultAnd = false;
-				resultOr = false;
-
-				if (andAttributeConstraint != null)
-				{
-					resultAnd = andAttributeConstraint.Compare(attributeBag);
-				}
-
-				if (resultAnd || andAttributeConstraint == null)
-				{
-					counter++;
-				}
-
-				if (orAttributeConstraint != null && resultAnd == false)
-				{
-					resultOr = orAttributeConstraint.Compare(attributeBag);
-				}
+				resultAnd = _andBaseConstraint.Compare(attributeBag);
 			}
-			finally
+
+			if (resultAnd || _andBaseConstraint == null)
 			{
-				base.UnLockCompare();
+				counter++;
+			}
+
+			if (_orBaseConstraint != null && resultAnd == false)
+			{
+				resultOr = _orBaseConstraint.Compare(attributeBag);
 			}
 
 			return (counter == index) || resultOr;
 		}
-	}
 
-	[Obsolete]
-	public class Index : IndexAttributeConstraint
-	{
-		public Index(int index) : base(index) {}
+		public override string ConstraintToString()
+		{
+			return "Index = " + index;
+		}
+
 	}
 }

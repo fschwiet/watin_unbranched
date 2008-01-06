@@ -1,6 +1,6 @@
-#region WatiN Copyright (C) 2006-2007 Jeroen van Menen
+#region WatiN Copyright (C) 2006-2008 Jeroen van Menen
 
-//Copyright 2006-2007 Jeroen van Menen
+//Copyright 2006-2008 Jeroen van Menen
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@
 using System;
 using System.Collections;
 using System.Diagnostics;
+using WatiN.Core.Constraints;
 
 namespace WatiN.Core
 {
@@ -84,7 +85,7 @@ namespace WatiN.Core
 			}
 		}
 
-		public bool Exists(AttributeConstraint findBy)
+		public bool Exists(BaseConstraint findBy)
 		{
 			foreach (HtmlDialog htmlDialog in htmlDialogs)
 			{

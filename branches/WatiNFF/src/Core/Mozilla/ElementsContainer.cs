@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using WatiN.Core.Interfaces;
+using WatiN.Core.Constraints;
 
 namespace WatiN.Core.Mozilla
 {
@@ -73,7 +74,7 @@ namespace WatiN.Core.Mozilla
         /// </summary>
         /// <param name="findBy">The attibute contraint used to match an attribute of the area element being sought.</param>
         /// <returns>The area element for the corresponding attribute constraint, or null if none is found</returns>
-        public IArea Area(AttributeConstraint findBy)
+        public IArea Area(BaseConstraint findBy)
         {
             Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "area", findBy, this.ClientPort);
             return new Area(finder.FindFirst(), this.ClientPort);
@@ -111,11 +112,11 @@ namespace WatiN.Core.Mozilla
         }
 
         /// <summary>
-        /// Finds a button element using the specified <see cref="AttributeConstraint" />.
+        /// Finds a button element using the specified <see cref="BaseConstraint" />.
         /// </summary>
-        /// <param name="constraint">The <see cref="AttributeConstraint" /> for the button element being sought.</param>
-        /// <returns>The button element for the matches the <see cref="AttributeConstraint" />, or null if none is found</returns>
-        public IButton Button(AttributeConstraint constraint)
+        /// <param name="constraint">The <see cref="BaseConstraint" /> for the button element being sought.</param>
+        /// <returns>The button element for the matches the <see cref="BaseConstraint" />, or null if none is found</returns>
+        public IButton Button(BaseConstraint constraint)
         {
             Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "input", "button submit image reset", constraint, this.ClientPort);
             return new Button(finder.FindFirst(), this.ClientPort);
@@ -156,11 +157,11 @@ namespace WatiN.Core.Mozilla
         }
 
         /// <summary>
-        /// Finds a check box element using the specified <see cref="AttributeConstraint" />.
+        /// Finds a check box element using the specified <see cref="BaseConstraint" />.
         /// </summary>
-        /// <param name="constraint">The <see cref="AttributeConstraint" /> for the check box element being sought.</param>
-        /// <returns>The check box element for the matches the <see cref="AttributeConstraint" />, or null if none is found</returns>
-        public ICheckBox CheckBox(AttributeConstraint constraint)
+        /// <param name="constraint">The <see cref="BaseConstraint" /> for the check box element being sought.</param>
+        /// <returns>The check box element for the matches the <see cref="BaseConstraint" />, or null if none is found</returns>
+        public ICheckBox CheckBox(BaseConstraint constraint)
         {
             Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "input", "checkbox", constraint, this.ClientPort);
             return new CheckBox(finder.FindFirst(), this.ClientPort);
@@ -204,7 +205,7 @@ namespace WatiN.Core.Mozilla
         /// </summary>
         /// <param name="findBy">The attibute contraint used to match an attribute of the div element being sought.</param>
         /// <returns>The div element for the corresponding attribute constraint, or null if none is found</returns>
-        public IDiv Div(AttributeConstraint findBy)
+        public IDiv Div(BaseConstraint findBy)
         {
             Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "div", findBy, this.ClientPort);
             return new Div(finder.FindFirst(), this.ClientPort);
@@ -243,11 +244,11 @@ namespace WatiN.Core.Mozilla
         }
 
         /// <summary>
-        /// Finds a form element using the specified <see cref="AttributeConstraint" />.
+        /// Finds a form element using the specified <see cref="BaseConstraint" />.
         /// </summary>
-        /// <param name="constraint">The <see cref="AttributeConstraint" /> for the form element being sought.</param>
-        /// <returns>The form element for the matches the <see cref="AttributeConstraint" />, or null if none is found</returns>        
-        public IForm Form(AttributeConstraint constraint)
+        /// <param name="constraint">The <see cref="BaseConstraint" /> for the form element being sought.</param>
+        /// <returns>The form element for the matches the <see cref="BaseConstraint" />, or null if none is found</returns>        
+        public IForm Form(BaseConstraint constraint)
         {
             Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "form", constraint, this.ClientPort);
             return new Form(finder.FindFirst(), this.ClientPort);
@@ -290,7 +291,7 @@ namespace WatiN.Core.Mozilla
         /// </summary>
         /// <param name="findBy">The attibute contraint used to match an attribute of the frame element being sought.</param>
         /// <returns>The frame element for the corresponding attribute constraint, or null if none is found</returns>
-        public IFrame Frame(AttributeConstraint findBy)
+        public IFrame Frame(BaseConstraint findBy)
         {
             Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "frame", findBy, this.ClientPort);
             return new Frame(finder.FindFirst(), this.ClientPort);
@@ -333,7 +334,7 @@ namespace WatiN.Core.Mozilla
         /// </summary>
         /// <param name="findBy">The attibute contraint used to match an attribute of the label element being sought.</param>
         /// <returns>The label element for the corresponding attribute constraint, or null if none is found</returns>
-        public ILabel Label(AttributeConstraint findBy)
+        public ILabel Label(BaseConstraint findBy)
         {
             Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "label", findBy, this.ClientPort);
             return new Label(finder.FindFirst(), this.ClientPort);
@@ -376,7 +377,7 @@ namespace WatiN.Core.Mozilla
         /// </summary>
         /// <param name="findBy">The attibute contraint used to match an attribute of the link element being sought.</param>
         /// <returns>The link element for the corresponding attribute constraint, or null if none is found</returns>
-        public ILink Link(AttributeConstraint findBy)
+        public ILink Link(BaseConstraint findBy)
         {
             Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "a", findBy, this.ClientPort);
             return new Link(finder.FindFirst(), this.ClientPort);
@@ -422,7 +423,7 @@ namespace WatiN.Core.Mozilla
         /// </summary>
         /// <param name="findBy">The attibute contraint used to match an attribute of the image element being sought.</param>
         /// <returns>The image element for the corresponding attribute constraint, or null if none is found</returns>
-        public IImage Image(AttributeConstraint findBy)
+        public IImage Image(BaseConstraint findBy)
         {
             Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "img", findBy, this.ClientPort);
             return new Image(finder.FindFirst(), this.ClientPort);
@@ -468,7 +469,7 @@ namespace WatiN.Core.Mozilla
         /// </summary>
         /// <param name="findBy">The attibute contraint used to match an attribute of the paragraph element being sought.</param>
         /// <returns>The paragraph element for the corresponding attribute constraint, or null if none is found</returns>
-        public IPara Para(AttributeConstraint findBy)
+        public IPara Para(BaseConstraint findBy)
         {
             Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "p", findBy, this.ClientPort);
             return new Para(finder.FindFirst(), this.ClientPort);            
@@ -511,7 +512,7 @@ namespace WatiN.Core.Mozilla
         /// </summary>
         /// <param name="findBy">The attibute contraint used to match an attribute of the radio button element being sought.</param>
         /// <returns>The radio button element for the corresponding attribute constraint, or null if none is found</returns>
-        public IRadioButton RadioButton(AttributeConstraint findBy)
+        public IRadioButton RadioButton(BaseConstraint findBy)
         {
             Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "input", "radio", findBy, this.ClientPort);
             return new RadioButton(finder.FindFirst(), this.ClientPort);
@@ -550,11 +551,11 @@ namespace WatiN.Core.Mozilla
         }
 
         /// <summary>
-        /// Finds a select list using the specified <see cref="AttributeConstraint" />.
+        /// Finds a select list using the specified <see cref="BaseConstraint" />.
         /// </summary>
-        /// <param name="constraint">The <see cref="AttributeConstraint" /> for the select list being sought.</param>
-        /// <returns>The select list for the matches the <see cref="AttributeConstraint" />, or null if none is found</returns>
-        public ISelectList SelectList(AttributeConstraint constraint)
+        /// <param name="constraint">The <see cref="BaseConstraint" /> for the select list being sought.</param>
+        /// <returns>The select list for the matches the <see cref="BaseConstraint" />, or null if none is found</returns>
+        public ISelectList SelectList(BaseConstraint constraint)
         {
             Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "select", constraint, this.ClientPort);
             return new SelectList(finder.FindFirst(), this.ClientPort);
@@ -593,11 +594,11 @@ namespace WatiN.Core.Mozilla
         }
 
         /// <summary>
-        /// Finds a select span using the specified <see cref="AttributeConstraint" />.
+        /// Finds a select span using the specified <see cref="BaseConstraint" />.
         /// </summary>
-        /// <param name="constraint">The <see cref="AttributeConstraint" /> for the span being sought.</param>
-        /// <returns>The span for the matches the <see cref="AttributeConstraint" />, or null if none is found</returns>
-        public ISpan Span(AttributeConstraint constraint)
+        /// <param name="constraint">The <see cref="BaseConstraint" /> for the span being sought.</param>
+        /// <returns>The span for the matches the <see cref="BaseConstraint" />, or null if none is found</returns>
+        public ISpan Span(BaseConstraint constraint)
         {
             Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "span", constraint, this.ClientPort);
             return new Span(finder.FindFirst(), this.ClientPort);
@@ -640,7 +641,7 @@ namespace WatiN.Core.Mozilla
         /// </summary>
         /// <param name="findBy">The attibute contraint used to match an attribute of the table element being sought.</param>
         /// <returns>The table element for the corresponding attribute constraint, or null if none is found</returns>
-        public ITable Table(AttributeConstraint findBy)
+        public ITable Table(BaseConstraint findBy)
         {
             Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "table", findBy, this.ClientPort);
             return new Table(finder.FindFirst(), this.ClientPort);
@@ -683,7 +684,7 @@ namespace WatiN.Core.Mozilla
         /// </summary>
         /// <param name="findBy">The attibute contraint used to match an attribute of the table body element being sought.</param>
         /// <returns>The table body element for the corresponding attribute constraint, or null if none is found</returns>
-        public ITableBody TableBody(AttributeConstraint findBy)
+        public ITableBody TableBody(BaseConstraint findBy)
         {
             Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "tbody", findBy, this.ClientPort);
             return new TableBody(finder.FindFirst(), this.ClientPort);
@@ -726,7 +727,7 @@ namespace WatiN.Core.Mozilla
         /// </summary>
         /// <param name="findBy">The attibute contraint used to match an attribute of the table row element being sought.</param>
         /// <returns>The table row element for the corresponding attribute constraint, or null if none is found</returns>
-        public ITableRow TableRow(AttributeConstraint findBy)
+        public ITableRow TableRow(BaseConstraint findBy)
         {
             Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "tr", findBy, this.ClientPort);
             return new TableRow(finder.FindFirst(), this.ClientPort);
@@ -769,7 +770,7 @@ namespace WatiN.Core.Mozilla
         /// </summary>
         /// <param name="findBy">The attibute contraint used to match an attribute of the table cell element being sought.</param>
         /// <returns>The table cell element for the corresponding attribute constraint, or null if none is found</returns>
-        public ITableCell TableCell(AttributeConstraint findBy)
+        public ITableCell TableCell(BaseConstraint findBy)
         {
             Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "td", findBy, this.ClientPort);
             return new TableCell(finder.FindFirst(), this.ClientPort);
@@ -808,11 +809,11 @@ namespace WatiN.Core.Mozilla
         }
 
         /// <summary>
-        /// Finds a text field element using the specified <see cref="AttributeConstraint" />.
+        /// Finds a text field element using the specified <see cref="BaseConstraint" />.
         /// </summary>
-        /// <param name="constraint">The <see cref="AttributeConstraint" /> for the text field element being sought.</param>
-        /// <returns>The text field element for the matches the <see cref="AttributeConstraint" />, or null if none is found</returns>
-        public ITextField TextField(AttributeConstraint constraint)
+        /// <param name="constraint">The <see cref="BaseConstraint" /> for the text field element being sought.</param>
+        /// <returns>The text field element for the matches the <see cref="BaseConstraint" />, or null if none is found</returns>
+        public ITextField TextField(BaseConstraint constraint)
         {
             Mozilla.ElementFinder finder = new Mozilla.ElementFinder(
                     this,
@@ -861,7 +862,7 @@ namespace WatiN.Core.Mozilla
         /// </summary>
         /// <param name="findBy">The attibute contraint used to match an attribute of the element being sought.</param>
         /// <returns>The element for the corresponding attribute constraint, or null if none is found</returns>
-        public IElement Element(AttributeConstraint findBy)
+        public IElement Element(BaseConstraint findBy)
         {
             Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "*", findBy, this.ClientPort);
             return new Element(finder.FindFirst(), this.ClientPort);

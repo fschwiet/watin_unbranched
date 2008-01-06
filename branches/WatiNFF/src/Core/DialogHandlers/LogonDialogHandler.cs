@@ -1,6 +1,6 @@
-#region WatiN Copyright (C) 2006-2007 Jeroen van Menen
+#region WatiN Copyright (C) 2006-2008 Jeroen van Menen
 
-//Copyright 2006-2007 Jeroen van Menen
+//Copyright 2006-2008 Jeroen van Menen
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -49,7 +49,7 @@ namespace WatiN.Core.DialogHandlers
 		{
 			checkArgument("Username must be specified", userName, "username");
 
-			this.userName = userName;
+			this.userName = UtilityClass.EscapeSendKeysCharacters(userName);
 
 			if (password == null)
 			{
@@ -57,7 +57,7 @@ namespace WatiN.Core.DialogHandlers
 			}
 			else
 			{
-				this.password = password;
+				this.password = UtilityClass.EscapeSendKeysCharacters(password);
 			}
 		}
 

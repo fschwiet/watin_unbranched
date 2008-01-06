@@ -1,6 +1,6 @@
-#region WatiN Copyright (C) 2006-2007 Jeroen van Menen
+#region WatiN Copyright (C) 2006-2008 Jeroen van Menen
 
-//Copyright 2006-2007 Jeroen van Menen
+//Copyright 2006-2008 Jeroen van Menen
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -16,25 +16,13 @@
 
 #endregion Copyright
 
-using System;
-using WatiN.Core.Interfaces;
-
-namespace WatiN.Core
+namespace WatiN.Core.Interfaces
 {
 	/// <summary>
-	/// This class is only used in the ElementsSupport Class to 
-	/// create a collection of all elements.
+	/// Summary description for ICompareElement.
 	/// </summary>
-	public class AlwaysTrueAttributeConstraint : AttributeConstraint
+	public interface ICompareElement
 	{
-		public AlwaysTrueAttributeConstraint() : base("noAttribute", "") {}
-
-		public override bool Compare(IAttributeBag attributeBag)
-		{
-			return true;
-		}
+		bool Compare(Element element);
 	}
-
-	[Obsolete]
-	public class AlwaysTrueAttribute : AlwaysTrueAttributeConstraint {}
 }

@@ -17,6 +17,11 @@ namespace WatiN.Core.UnitTests.Mozilla
 	[TestFixture]
 	public class ElementFinderTests : BaseElementsTests
 	{
+        public override Uri TestPageUri
+        {
+            get { return MainURI; }
+        }
+
 		[Test]
 		public void TestMethod()
 		{

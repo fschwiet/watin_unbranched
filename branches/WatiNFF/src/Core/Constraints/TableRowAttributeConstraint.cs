@@ -1,6 +1,6 @@
-#region WatiN Copyright (C) 2006-2007 Jeroen van Menen
+#region WatiN Copyright (C) 2006-2008 Jeroen van Menen
 
-//Copyright 2006-2007 Jeroen van Menen
+//Copyright 2006-2008 Jeroen van Menen
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ using mshtml;
 using WatiN.Core.Comparers;
 using WatiN.Core.Interfaces;
 
-namespace WatiN.Core
+namespace WatiN.Core.Constraints
 {
 	/// <summary>
 	/// Use this class to find a row which contains a particular value
@@ -90,15 +90,5 @@ namespace WatiN.Core
 		{
 			return containsText.Compare(text);
 		}
-	}
-
-	[Obsolete("Use TableRowAttributeConstraint instead")]
-	public class TableRowFinder : AttributeConstraint
-	{
-		public TableRowFinder(string attributeName, ICompare comparer) : base(attributeName, comparer) {}
-
-		public TableRowFinder(string attributeName, Regex regex) : base(attributeName, regex) {}
-
-		public TableRowFinder(string attributeName, string value) : base(attributeName, value) {}
 	}
 }

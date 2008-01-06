@@ -1,3 +1,5 @@
+using WatiN.Core.Constraints;
+
 namespace WatiN.Core.Interfaces
 {
     public interface IRadioButtonCollection : IBaseElementCollection
@@ -8,7 +10,7 @@ namespace WatiN.Core.Interfaces
         /// <value></value>
         IRadioButton this[int index] { get; }
 
-        IRadioButtonCollection Filter(AttributeConstraint findBy);
+        IRadioButtonCollection Filter(BaseConstraint findBy);
 
     }
 }

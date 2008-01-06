@@ -1,6 +1,6 @@
-#region WatiN Copyright (C) 2006-2007 Jeroen van Menen
+#region WatiN Copyright (C) 2006-2008 Jeroen van Menen
 
-//Copyright 2006-2007 Jeroen van Menen
+//Copyright 2006-2008 Jeroen van Menen
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ namespace WatiN.Core.Exceptions
 	/// </summary>
 	public class IENotFoundException : WatiNException
 	{
-		public IENotFoundException(string findBy, string value, int waitTimeInSeconds) :
-			base("Could not find an IE window by " + findBy + " with value '" + value + "'. (Search expired after '" + waitTimeInSeconds.ToString() + "' seconds)") {}
+		public IENotFoundException(string constraint, int waitTimeInSeconds) :
+			base("Could not find an IE window matching constraint: " + constraint + ". Search expired after '" + waitTimeInSeconds.ToString() + "' seconds.") {}
 	}
 }

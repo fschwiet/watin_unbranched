@@ -18,6 +18,7 @@
 
 using System.Collections.Generic;
 using WatiN.Core.Interfaces;
+using WatiN.Core.Constraints;
 
 namespace WatiN.Core.Mozilla
 {
@@ -64,7 +65,7 @@ namespace WatiN.Core.Mozilla
             get { return (IOption) this.Elements[index]; }
         }
 
-        public IOptionCollection Filter(AttributeConstraint constraint)
+        public IOptionCollection Filter(BaseConstraint constraint)
         {
             List<Element> filteredElements =  new List<Element>();            
             foreach (Element element in this.Elements)

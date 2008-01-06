@@ -1,6 +1,6 @@
-#region WatiN Copyright (C) 2006-2007 Jeroen van Menen
+#region WatiN Copyright (C) 2006-2008 Jeroen van Menen
 
-//Copyright 2006-2007 Jeroen van Menen
+//Copyright 2006-2008 Jeroen van Menen
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
 
 using NUnit.Framework;
 using Rhino.Mocks;
+using WatiN.Core.Constraints;
 using WatiN.Core.Interfaces;
 
 namespace WatiN.Core.UnitTests
@@ -28,15 +29,15 @@ namespace WatiN.Core.UnitTests
 		private MockRepository mocks;
 		private IAttributeBag mockAttributeBag;
 
-		private AttributeConstraint findBy1;
-		private AttributeConstraint findBy2;
-		private AttributeConstraint findBy3;
-		private AttributeConstraint findBy4;
-		private AttributeConstraint findBy5;
-		private AttributeConstraint findBy6;
-		private AttributeConstraint findBy7;
-		private AttributeConstraint findBy8;
-		private AttributeConstraint findBy;
+		private BaseConstraint findBy1;
+		private BaseConstraint findBy2;
+		private BaseConstraint findBy3;
+		private BaseConstraint findBy4;
+		private BaseConstraint findBy5;
+		private BaseConstraint findBy6;
+		private BaseConstraint findBy7;
+		private BaseConstraint findBy8;
+		private BaseConstraint findBy;
 
 		[SetUp]
 		public void Setup()

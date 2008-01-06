@@ -1,6 +1,6 @@
-#region WatiN Copyright (C) 2006-2007 Jeroen van Menen
+#region WatiN Copyright (C) 2006-2008 Jeroen van Menen
 
-//Copyright 2006-2007 Jeroen van Menen
+//Copyright 2006-2008 Jeroen van Menen
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -298,6 +298,32 @@ namespace WatiN.Core
 				inputtypesString.Remove(inputtypesString.Length - seperator.Length, 1);
 			}
 			return inputtypesString;
+		}
+
+		public static string EscapeSendKeysCharacters(string value) 
+		{
+			const string sendKeysCharactersToBeEscaped = "~%^+{}[]";
+
+			if(value.IndexOfAny(sendKeysCharactersToBeEscaped.ToCharArray()) > -1)
+			{
+				string returnvalue = null;
+
+				foreach (char c in value)
+				{
+					if(sendKeysCharactersToBeEscaped.IndexOf(c) != -1)
+					{
+						// Escape sendkeys special characters
+						returnvalue = returnvalue + "{" + c.ToString() + "}";
+					}
+					else
+					{
+						returnvalue = returnvalue + c.ToString();
+					}
+				}
+				return returnvalue;
+			}		
+
+			return value;
 		}
 	}
 }

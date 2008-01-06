@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Specialized;
 using System.Text.RegularExpressions;
+using WatiN.Core.Constraints;
 
 namespace WatiN.Core.Interfaces
 {
@@ -71,7 +72,7 @@ namespace WatiN.Core.Interfaces
         /// </summary>
         /// <param name="findBy">The find by to use.</param>
         /// <returns></returns>
-        IOption Option(AttributeConstraint findBy);
+        IOption Option(BaseConstraint findBy);
 
         /// <summary>
         /// Returns all the <see cref="Core.Option"/> elements in the <see cref="SelectList"/>.

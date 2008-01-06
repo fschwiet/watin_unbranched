@@ -1,6 +1,6 @@
-#region WatiN Copyright (C) 2006-2007 Jeroen van Menen
+#region WatiN Copyright (C) 2006-2008 Jeroen van Menen
 
-//Copyright 2006-2007 Jeroen van Menen
+//Copyright 2006-2008 Jeroen van Menen
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -16,15 +16,17 @@
 
 #endregion Copyright
 
+using WatiN.Core.Constraints;
+
 namespace WatiN.Core.Exceptions
 {
 	public class ReEntryException : WatiNException
 	{
-		public ReEntryException(AttributeConstraint attributeConstraint) : base(createMessage(attributeConstraint)) {}
+		public ReEntryException(BaseConstraint constraint) : base(createMessage(constraint)) {}
 
-		private static string createMessage(AttributeConstraint attributeConstraint)
+		private static string createMessage(BaseConstraint constraint)
 		{
-			return string.Format("The compare methode of an AttributeConstraint class can't be reentered during execution of the compare. The exception occurred in an instance of '{0}' searching for '{1}' in attributeConstraint '{2}'.", attributeConstraint.GetType().ToString(), attributeConstraint.Value, attributeConstraint.AttributeName);
+			return string.Format("The compare methode of a constraint class can't be reentered during execution of the compare. The exception occurred in an instance of '{0}' with constraint: {1}.", constraint.GetType().ToString(), constraint.ConstraintToString());
 		}
 	}
 }

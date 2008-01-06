@@ -1,6 +1,6 @@
-#region WatiN Copyright (C) 2006-2007 Jeroen van Menen
+#region WatiN Copyright (C) 2006-2008 Jeroen van Menen
 
-//Copyright 2006-2007 Jeroen van Menen
+//Copyright 2006-2008 Jeroen van Menen
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 #endregion Copyright
 
+using System;
 using System.Threading;
 using SHDocVw;
 
@@ -30,7 +31,12 @@ namespace WatiN.Core
 			_ie = ie;
 		}
 
-		public override void DoWait()
+	    public IEWaitForComplete(IE ie, int waitForCompleteTimeOut) : base(ie, waitForCompleteTimeOut)
+	    {
+            _ie = ie;
+        }
+
+	    public override void DoWait()
 		{
 			Thread.Sleep(100);
 

@@ -1,3 +1,4 @@
+using WatiN.Core.Constraints;
 
 namespace WatiN.Core.Interfaces
 {
@@ -9,6 +10,6 @@ namespace WatiN.Core.Interfaces
         /// <value></value>
         ISelectList this[int index] { get; }
 
-        ISelectListCollection Filter(AttributeConstraint findBy);
+        ISelectListCollection Filter(BaseConstraint findBy);
     }
 }

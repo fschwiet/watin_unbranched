@@ -1,3 +1,5 @@
+using WatiN.Core.Constraints;
+
 namespace WatiN.Core.Interfaces
 {
     public interface ITextFieldCollection : IBaseElementCollection
@@ -8,6 +10,6 @@ namespace WatiN.Core.Interfaces
         /// <value></value>
         ITextField this[int index] { get; }
 
-        ITextFieldCollection Filter(AttributeConstraint findBy);
+        ITextFieldCollection Filter(BaseConstraint findBy);
     }
 }

@@ -1,6 +1,6 @@
-#region WatiN Copyright (C) 2006-2007 Jeroen van Menen
+#region WatiN Copyright (C) 2006-2008 Jeroen van Menen
 
-//Copyright 2006-2007 Jeroen van Menen
+//Copyright 2006-2008 Jeroen van Menen
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -19,13 +19,14 @@
 using System.Globalization;
 using mshtml;
 using SHDocVw;
+using WatiN.Core.Constraints;
 using WatiN.Core.Exceptions;
 using WatiN.Core.Interfaces;
 
 namespace WatiN.Core
 {
 	/// <summary>
-	/// Wrapper around the <see cref="SHDocVw.InternetExplorer"/> object. Used by <see cref="AttributeConstraint.Compare"/>.
+	/// Wrapper around the <see cref="SHDocVw.InternetExplorer"/> object. Used by <see cref="BaseConstraint.Compare"/>.
 	/// </summary>
 	public class IEAttributeBag : IAttributeBag
 	{
