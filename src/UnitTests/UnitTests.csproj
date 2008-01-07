@@ -1,4 +1,4 @@
-﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
     <ProductVersion>9.0.21022</ProductVersion>
@@ -373,6 +373,8 @@
     <Content Include="html\images\watin.jpg" />
     <Content Include="html\images\watinwebsite.jpg" />
     <Content Include="html\Index.html" />
+    <Content Include="html\Intro.html" />
+    <Content Include="html\theApp.html" />
     <Content Include="html\main.html" />
     <Content Include="html\OnBeforeUnloadJavaDialog.html" />
     <Content Include="html\popup.html" />
