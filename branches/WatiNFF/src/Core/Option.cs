@@ -73,7 +73,7 @@ namespace WatiN.Core
 		/// <value>The value.</value>
 		public string Value
 		{
-			get { return optionElement.value; }
+			get { return GetAttributeValue("value"); }
 		}
 
 		/// <summary>
@@ -82,7 +82,7 @@ namespace WatiN.Core
 		/// <value><c>true</c> if selected; otherwise, <c>false</c>.</value>
 		public bool Selected
 		{
-			get { return optionElement.selected; }
+			get { return bool.Parse(GetAttributeValue("selected")); }
 		}
 
 		/// <summary>
@@ -91,7 +91,7 @@ namespace WatiN.Core
 		/// <value>The index.</value>
 		public int Index
 		{
-			get { return optionElement.index; }
+			get { return int.Parse(GetAttributeValue("index")); }
 		}
 
 		/// <summary>
@@ -100,7 +100,7 @@ namespace WatiN.Core
 		/// <value><c>true</c> if selected by default; otherwise, <c>false</c>.</value>
 		public bool DefaultSelected
 		{
-			get { return optionElement.defaultSelected; }
+			get { return bool.Parse(GetAttributeValue("defaultSelected")); }
 		}
 
 		/// <summary>
