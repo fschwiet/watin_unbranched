@@ -44,9 +44,7 @@ namespace WatiN.Core.UnitTests.Mozilla
         [Test]
         public void ChildNodes()
         {
-            FireFox fireFox = null;
-            fireFox = (FireFox) GetBrowserInstance(fireFox, BrowserType.FireFox, false);
-            ChildNodesTest(fireFox);
+           ExecuteTest(ChildNodesTest);
         }
 
         [Test]

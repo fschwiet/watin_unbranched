@@ -234,8 +234,13 @@ namespace WatiN.Core
 		[DllImport("user32.dll")]
 		internal static extern bool IsWindowVisible(IntPtr hWnd);
 
+        // TODO Not sure this declartion is safe under 64bit windows, see comments from pinvoke.net http://pinvoke.net/default.aspx/user32.SendMessage
+        // Qoute: NEVER use "int" or "integer" as lParam. Your code WILL crash on 64-bit windows. ONLY use IntPtr, a "ref" structure, or an "out" structure.        
 		[DllImport("user32.dll", CharSet=CharSet.Auto)]
 		internal static extern int SendMessage(IntPtr hWnd, int msg, int wParam, int lParam);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
+        internal static extern IntPtr SendMessage(HandleRef hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
 
 		[DllImport("user32.dll", SetLastError=true)]
 		[return : MarshalAs(UnmanagedType.Bool)]

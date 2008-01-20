@@ -23,6 +23,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using Microsoft.Win32;
 using Thought.Net.Telnet;
 using WatiN.Core.Exceptions;
@@ -48,11 +49,6 @@ namespace WatiN.Core.Mozilla
         /// <c>true</c> if we have successfully connected to FireFox
         /// </summary>
         private bool connected;
-
-        /// <summary>
-        /// Telnet client used to communicate with FireFox jssh over port 9997
-        /// </summary>
-        private TelnetClient telnetClient;
 
         /// <summary>
         /// Underlying socket used by <see cref="telnetClient"/>.
@@ -234,9 +230,21 @@ namespace WatiN.Core.Mozilla
                 this.ffProcess.StartInfo.FileName = this.PathToExe;
                 this.ffProcess.StartInfo.Arguments = "-jssh";
                 this.ffProcess.Start();                
-                this.ffProcess.WaitForInputIdle(100);
+                this.ffProcess.WaitForInputIdle(5000);
+                this.ffProcess.Refresh();
+
+                if (!this.IsMainWindowVisible)
+                {
+                    if (this.IsRestoreSessionDialogVisible)
+                    {
+                        // Send message to start a new session
+                        HandleRef handleRef = new HandleRef(this.ffProcess, this.ffProcess.MainWindowHandle);
+                        NativeMethods.SendMessage(handleRef, )
+                    }
+                }
 
                 this.telnetSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                this.telnetSocket.Blocking = true;
 
                 try
                 {
@@ -248,13 +256,55 @@ namespace WatiN.Core.Mozilla
                     throw new FireFoxException("Unable to connect to jssh server, please make sure you have correctly installed the jssh.xpi plugin", sockException);
                 }
 
-                this.telnetClient = new Thought.Net.Telnet.TelnetClient(this.telnetSocket);                
+                this.connected = true;
                 this.WriteLine();
                 Logger.LogAction("Successfully connected to FireFox using jssh.");
                 this.DefineDefaultJSVariables();
             }
+        }
 
-            this.connected = true;
+        private bool IsRestoreSessionDialogVisible
+        {
+            get
+            {
+                // Hack Not sure why Process.WaitForIdle input doesn't always work, however it's possible we can
+                // arrive at this codepoint without the FireFox UI window ready
+                SimpleTimer timer = new SimpleTimer(5);
+
+                while (!timer.Elapsed && this.Process.MainWindowHandle == IntPtr.Zero)
+                {
+                    Thread.Sleep(100);
+                    this.Process.Refresh();
+                }
+
+                bool result = NativeMethods.GetWindowText(this.Process.MainWindowHandle).Contains("Firefox - Restore Previous Session");
+                return result;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating if the main FireFox window is visible, it's possible that the
+        /// main FireFox window is not visible if a previous shutdown didn't complete correctly
+        /// in which case the restore / resume previous session dialog may be visible.
+        /// </summary>
+        internal bool IsMainWindowVisible
+        {
+            get
+            {
+                // Hack Not sure why Process.WaitForIdle input doesn't always work, however it's possible we can
+                // arrive at this codepoint without the FireFox UI window ready
+                SimpleTimer timer = new SimpleTimer(5);
+
+                while (!timer.Elapsed && this.Process.MainWindowHandle == IntPtr.Zero)
+                {
+                    Thread.Sleep(100);
+                    this.Process.Refresh();
+                }
+
+                bool result = NativeMethods.GetWindowText(this.Process.MainWindowHandle).Contains("Mozilla Firefox");
+
+                return result;
+            }
         }
 
         ///<summary>
@@ -291,11 +341,11 @@ namespace WatiN.Core.Mozilla
                 if (disposing)
                 {
                     // Dispose managed resources.
-                    if (this.telnetClient != null && this.telnetSocket.Connected)
+                    if (this.telnetSocket != null && this.telnetSocket.Connected)
                     {
                         Logger.LogAction("Closing connection to jssh");
                         this.Write(string.Format("{0}.close()", WindowVariableName), false);
-                        this.telnetClient.Close();
+                        this.telnetSocket.Close();
                         this.ffProcess.WaitForExit(5000);
                     }
                 }
@@ -399,18 +449,25 @@ namespace WatiN.Core.Mozilla
         /// </summary>
         private void WriteLine()
         {
-            this.telnetClient.Write(ASCIIEncoding.ASCII.GetBytes("\n")[0]);
-            this.ReadResponse();
+            this.Write("\n", true);
         }
 
 
         private void Write(string data, bool readResponse)
         {
+            if (!this.connected)
+            {
+                throw new FireFoxException("You must connect before writing to the server.");                    
+            }
+
             byte[] bytes = ASCIIEncoding.ASCII.GetBytes(data + "\n");
-            this.telnetClient.Write(bytes, 0, bytes.Length);
-            
+
             Logger.LogAction("sending: {0}", data);
-            
+            using (NetworkStream networkStream = new NetworkStream(this.telnetSocket))
+            {
+                networkStream.Write(bytes, 0, bytes.Length);
+            }
+                        
             if (readResponse)
             {
                 this.ReadResponse();
@@ -454,17 +511,10 @@ namespace WatiN.Core.Mozilla
 
             do
             {
-                read = this.telnetClient.Read(buffer, 0, 1024);
+                read = stream.Read(buffer, 0, 1024);
                 string readData = ASCIIEncoding.ASCII.GetString(buffer, 0, read);
 				
-                // TODO: Sometimes this action raises a formatting exception
-                //       For example when running FireFoxTests.Google test
-                try
-                {
-                	Logger.LogAction(string.Format("jssh says: {0}", readData));
-                }
-                catch{}
-                
+                Logger.LogAction("jssh says: " + readData);                
                 this.lastResponse += CleanTelnetResponse(readData);
             } while (read==1024);
 

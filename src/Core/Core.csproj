@@ -605,6 +605,7 @@
     <Compile Include="UtilityClasses\Win32.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UtilityClasses\WindowsMessages.cs" />
     <Compile Include="UtilityClasses\WinInet.cs">
       <SubType>Code</SubType>
     </Compile>
