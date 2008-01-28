@@ -36,7 +36,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void Value()
         {
-            ExecuteTest(ValueTest, false);
+            ExecuteTest(ValueTest);
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void Text()
         {
-            ExecuteTest(TextTest, false);
+            ExecuteTest(TextTest);
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void ToStringTest()
         {
-            ExecuteTest(ToStringTest, false);
+            ExecuteTest(ToStringTest);
         }
 
         #endregion

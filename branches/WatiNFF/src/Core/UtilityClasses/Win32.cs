@@ -261,6 +261,10 @@ namespace WatiN.Core
 		[DllImport("user32.dll")]
 		internal static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, int dwExtraInfo);
 
+        [DllImport("kernel32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal static extern bool TerminateProcess(IntPtr hProcess, uint uExitCode);
+
 		/// <summary>Shows a Window</summary>
 		/// <remarks>
 		/// <para>To perform certain special effects when showing or hiding a 

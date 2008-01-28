@@ -42,7 +42,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void AreaById()
         {
-            ExecuteTest(AreaByIdTest, false);
+            ExecuteTest(AreaByIdTest);
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void ButtonById()
         {
-            ExecuteTest(ButtonByIdTest, false);
+            ExecuteTest(ButtonByIdTest);
         }
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void CheckBoxById()
         {
-            ExecuteTest(CheckBoxByIdTest, false);
+            ExecuteTest(CheckBoxByIdTest);
         }
 
         /// <summary>
@@ -180,7 +180,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void DivById()
         {
-            ExecuteTest(DivByIdTest, false);
+            ExecuteTest(DivByIdTest);
         }
 
         /// <summary>
@@ -208,7 +208,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void FormById()
         {
-            ExecuteTest(FormByIdTest, false);
+            ExecuteTest(FormByIdTest);
         }
 
         /// <summary>
@@ -245,7 +245,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void FrameById()
         {
-            ExecuteTest(FrameByIdTest, false);
+            ExecuteTest(FrameByIdTest);
         }
 
         /// <summary>
@@ -281,7 +281,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void ImageById()
         {
-            ExecuteTest(ImageByIdTest, false);
+            ExecuteTest(ImageByIdTest);
         }
 
         /// <summary>
@@ -318,7 +318,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void LabelById()
         {
-            ExecuteTest(LabelByIdTest, false);
+            ExecuteTest(LabelByIdTest);
         }
 
         /// <summary>
@@ -355,7 +355,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void LinkById()
         {
-            ExecuteTest(LinkByIdTest, false);
+            ExecuteTest(LinkByIdTest);
         }
 
         /// <summary>
@@ -392,7 +392,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void ParaById()
         {
-            ExecuteTest(ParaByIdTest, false);
+            ExecuteTest(ParaByIdTest);
         }
 
         /// <summary>
@@ -428,7 +428,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void RadioButtonById()
         {
-            ExecuteTest(RadioButtonByIdTest, false);
+            ExecuteTest(RadioButtonByIdTest);
         }
 
         /// <summary>
@@ -465,7 +465,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void SelectListById()
         {
-            ExecuteTest(SelectListByIdTest, false);
+            ExecuteTest(SelectListByIdTest);
         }
 
         /// <summary>
@@ -538,7 +538,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void TableById()
         {
-            ExecuteTest(TableByIdTest, false);
+            ExecuteTest(TableByIdTest);
         }
 
         /// <summary>
@@ -575,7 +575,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void TableBodyById()
         {
-            ExecuteTest(TableBodyByIdTest, false);
+            ExecuteTest(TableBodyByIdTest);
         }
 
         /// <summary>
@@ -612,7 +612,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void TableCellById()
         {
-            ExecuteTest(TableCellByIdTest, false);
+            ExecuteTest(TableCellByIdTest);
         }
 
         /// <summary>
@@ -649,7 +649,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void TableRowById()
         {
-            ExecuteTest(TableRowByIdTest, false);
+            ExecuteTest(TableRowByIdTest);
         }
 
         /// <summary>
@@ -686,7 +686,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void TextFieldById()
         {
-            ExecuteTest(TextFieldByIdTest, false);
+            ExecuteTest(TextFieldByIdTest);
         }
 
         /// <summary>
@@ -723,7 +723,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void ElementById()
         {
-            ExecuteTest(ElementTest, false);            
+            ExecuteTest(ElementTest);            
         }
 
         #endregion

@@ -34,7 +34,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void TableRows()
         {
-            ExecuteTest(TableRowsTest, false);
+            ExecuteTest(TableRowsTest);
         }
 
         #endregion

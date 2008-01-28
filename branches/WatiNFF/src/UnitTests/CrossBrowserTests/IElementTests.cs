@@ -54,7 +54,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void InnerHtml()
         {
-            ExecuteTest(InnerHtmlTest, false);
+            ExecuteTest(InnerHtmlTest);
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void NextSibling()
         {
-            ExecuteTest(NextSiblingTest, false);
+            ExecuteTest(NextSiblingTest);
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void NextSiblingNoIds()
         {
-            ExecuteTest(NextSiblingNoIdsTest, false);
+            ExecuteTest(NextSiblingNoIdsTest);
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void Parent()
         {
-            ExecuteTest(ParentTest, false);
+            ExecuteTest(ParentTest);
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void PreviousSibling()
         {
-            ExecuteTest(PreviousSiblingTest, false);
+            ExecuteTest(PreviousSiblingTest);
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void PreviousSiblingShouldBeNullForFirstNode()
         {
-            ExecuteTest(PreviousSiblingIsNullTest, false);
+            ExecuteTest(PreviousSiblingIsNullTest);
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void TagName()
         {
-            ExecuteTest(TagNameTest, false);    
+            ExecuteTest(TagNameTest);    
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void Text()
         {
-            ExecuteTest(TextTest, false);
+            ExecuteTest(TextTest);
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test] 
         public void Title()
         {
-            ExecuteTest(TitleTest, false);
+            ExecuteTest(TitleTest);
         }
 
         #endregion

@@ -16,8 +16,11 @@
 
 #endregion Copyright
 
+using System;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
+using System.Windows.Forms;
 using NUnit.Framework;
 using WatiN.Core.Logging;
 using WatiN.Core.Mozilla;
@@ -68,11 +71,20 @@ namespace WatiN.Core.UnitTests.Mozilla
 
             using (FireFoxClientPort ffPort = new FireFoxClientPort())
             {
-                using (Process existingInstance = new Process())
+                Process existingInstance = new Process();
+                try
                 {
-                    existingInstance.StartInfo.FileName = ffPort.PathToExe;
-                    existingInstance.Start();
-                    ffPort.Connect();
+                        existingInstance.StartInfo.FileName = ffPort.PathToExe;
+                        existingInstance.Start();
+                        existingInstance.WaitForInputIdle();
+                        ffPort.Connect();
+                }
+                finally
+                {
+                    if (!existingInstance.HasExited)
+                    {
+                        existingInstance.Kill();
+                    }
                 }
             } 
         }
@@ -122,21 +134,10 @@ namespace WatiN.Core.UnitTests.Mozilla
         [Test]
         public void HandleStartNewSessionDialog()
         {
-            using (Process process = new Process())
+            using (FireFox ff = new FireFox())
             {
-                using (FireFoxClientPort clientPort = new FireFoxClientPort())
-                {
-                    // Simulate a bad shut down.
-                    process.StartInfo.FileName = clientPort.PathToExe;
-                    process.Start();
-                    process.WaitForInputIdle(5000);
-                    process.Kill();
-
-                    // Now try and connect
-                    clientPort.Connect();
-
-                    Assert.IsTrue(clientPort.Connected, "FireFoxClientPort.Connect did not handle the restore previous dialig scenario.");
-                }
+                ff.GoTo(MainURI);
+               
             }
         }
 

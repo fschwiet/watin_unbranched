@@ -37,7 +37,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void Back()
         {
-            ExecuteTest(BackTest, false);
+            ExecuteTest(BackTest);
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void Forward()
         {
-            ExecuteTest(ForwardTest, false);
+            ExecuteTest(ForwardTest);
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void Refresh()
         {
-            ExecuteTest(RefreshTest, false);
+            ExecuteTest(RefreshTest);
         }
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void Reopen()
         {
-            ExecuteTest(ReopenTest, false);
+            ExecuteTest(ReopenTest);
         }
 
         /// <summary>

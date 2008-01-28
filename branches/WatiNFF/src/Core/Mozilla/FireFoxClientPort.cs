@@ -24,6 +24,7 @@ using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
+using System.Windows.Forms;
 using Microsoft.Win32;
 using Thought.Net.Telnet;
 using WatiN.Core.Exceptions;
@@ -219,47 +220,63 @@ namespace WatiN.Core.Mozilla
 
         public void Connect()
         {
-            if (!this.connected)
+            this.ValidateCanConnect();
+            this.disposed = false;
+            Logger.LogAction("Attempting to connect to jssh server on localhost port 9997.");
+            this.lastResponse = string.Empty;
+            this.response = new StringBuilder();
+
+            this.ffProcess = new Process();
+            this.ffProcess.StartInfo.FileName = this.PathToExe;
+            this.ffProcess.StartInfo.Arguments = "-jssh";
+            this.ffProcess.Start();                
+            this.ffProcess.WaitForInputIdle(5000);
+            this.ffProcess.Refresh();
+
+            if (!this.IsMainWindowVisible)
             {
-                this.disposed = false;
-                Logger.LogAction("Attempting to connect to jssh server on localhost port 9997.");
-                this.lastResponse = string.Empty;
-                this.response = new StringBuilder();
-
-                this.ffProcess = new Process();
-                this.ffProcess.StartInfo.FileName = this.PathToExe;
-                this.ffProcess.StartInfo.Arguments = "-jssh";
-                this.ffProcess.Start();                
-                this.ffProcess.WaitForInputIdle(5000);
-                this.ffProcess.Refresh();
-
-                if (!this.IsMainWindowVisible)
+                if (this.IsRestoreSessionDialogVisible)
                 {
-                    if (this.IsRestoreSessionDialogVisible)
-                    {
-                        // Send message to start a new session
-                        HandleRef handleRef = new HandleRef(this.ffProcess, this.ffProcess.MainWindowHandle);
-                        NativeMethods.SendMessage(handleRef, )
-                    }
+                    NativeMethods.SetForegroundWindow(this.Process.MainWindowHandle);
+                    SendKeys.SendWait("{TAB}");
+                    SendKeys.SendWait("{ENTER}");
                 }
+            }
 
-                this.telnetSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                this.telnetSocket.Blocking = true;
+            this.telnetSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            this.telnetSocket.Blocking = true;
 
-                try
+            try
+            {
+                this.telnetSocket.Connect(IPAddress.Parse("127.0.0.1"), 9997);
+            }
+            catch(SocketException sockException)
+            {
+                Logger.LogAction(string.Format("Failed connecting to jssh server.\nError code:{0}\nError message:{1}", sockException.ErrorCode, sockException.Message));
+                throw new FireFoxException("Unable to connect to jssh server, please make sure you have correctly installed the jssh.xpi plugin", sockException);
+            }
+
+            this.connected = true;
+            this.WriteLine();
+            Logger.LogAction("Successfully connected to FireFox using jssh.");
+            this.DefineDefaultJSVariables();
+        
+        }
+
+        private void ValidateCanConnect()
+        {   
+        
+            if(this.connected)
+            {
+                throw new FireFoxException("Already connected to jssh server.");
+            }
+
+            foreach (Process process in System.Diagnostics.Process.GetProcesses())
+            {
+                if (process.ProcessName.Equals("firefox", StringComparison.OrdinalIgnoreCase))
                 {
-                    this.telnetSocket.Connect(IPAddress.Parse("127.0.0.1"), 9997);
+                    throw new FireFoxException("Existing instances of FireFox detected.");
                 }
-                catch(SocketException sockException)
-                {
-                    Logger.LogAction(string.Format("Failed connecting to jssh server.\nError code:{0}\nError message:{1}", sockException.ErrorCode, sockException.Message));
-                    throw new FireFoxException("Unable to connect to jssh server, please make sure you have correctly installed the jssh.xpi plugin", sockException);
-                }
-
-                this.connected = true;
-                this.WriteLine();
-                Logger.LogAction("Successfully connected to FireFox using jssh.");
-                this.DefineDefaultJSVariables();
             }
         }
 
@@ -341,12 +358,19 @@ namespace WatiN.Core.Mozilla
                 if (disposing)
                 {
                     // Dispose managed resources.
-                    if (this.telnetSocket != null && this.telnetSocket.Connected)
+                    if (this.telnetSocket != null && this.telnetSocket.Connected && !this.Process.HasExited)
                     {
-                        Logger.LogAction("Closing connection to jssh");
-                        this.Write(string.Format("{0}.close()", WindowVariableName), false);
-                        this.telnetSocket.Close();
-                        this.ffProcess.WaitForExit(5000);
+                        try
+                        {
+                            Logger.LogAction("Closing connection to jssh");
+                            this.Write(string.Format("{0}.close()", WindowVariableName), false);
+                            this.telnetSocket.Close();
+                            this.ffProcess.WaitForExit(5000);
+                        }
+                        catch(IOException ex)
+                        {
+                            Logger.LogAction("Error communicating with jssh server to innitiate shut down, message: " + ex.Message);
+                        }
                     }
                 }
 

@@ -60,7 +60,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void Html()
         {
-            ExecuteTest(HtmlTest, false);
+            ExecuteTest(HtmlTest);
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void Text()
         {
-            ExecuteTest(TextTest, false);
+            ExecuteTest(TextTest);
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void Title()
         {
-            ExecuteTest(TitleTest, false);            
+            ExecuteTest(TitleTest);            
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void UrlUri()
         {
-            ExecuteTest(UrlTest, false);
+            ExecuteTest(UrlTest);
         }
 
         #region Private static methods
