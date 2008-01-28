@@ -37,7 +37,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void AllAttributes()
         {
-            ExecuteTest(AllAttributesTest, false);
+            ExecuteTest(AllAttributesTest);
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void Methods()
         {
-            ExecuteTest(MethodsTest, false);
+            ExecuteTest(MethodsTest);
 
         }
 

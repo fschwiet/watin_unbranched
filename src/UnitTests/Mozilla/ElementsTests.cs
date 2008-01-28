@@ -35,7 +35,7 @@ namespace WatiN.Core.UnitTests.Mozilla
         [Test]
         public void GetAttributes()
         {
-            ExecuteTest(GetAttributesTest, false);
+            ExecuteTest(GetAttributesTest);
         }
 
         /// <summary>
@@ -44,31 +44,31 @@ namespace WatiN.Core.UnitTests.Mozilla
         [Test]
         public void ChildNodes()
         {
-           ExecuteTest(ChildNodesTest);
+           ChildNodesTest(this.Firefox);
         }
 
         [Test]
         public void GetAttributeValueOfEmptyStringThrowsArgumentNullExceptionTest()
         {
-            ExecuteTest(GetAttributeValueOfEmptyStringThrowsArgumentNullExceptionTest, false);
+            ExecuteTest(GetAttributeValueOfEmptyStringThrowsArgumentNullExceptionTest);
         }
 
         [Test]
         public void GetAttributeValueOfNullThrowsArgumentNullException()
         {
-            ExecuteTest(GetAttributeValueOfNullThrowsArgumentNullExceptionTest, false);
+            ExecuteTest(GetAttributeValueOfNullThrowsArgumentNullExceptionTest);
         }
 
         [Test]
         public void GetInvalidAttribute()
         {
-            ExecuteTest(GetInvalidAttributeTest, false);
+            ExecuteTest(GetInvalidAttributeTest);
         }
 
         [Test]
         public void GetValidButUndefiniedAttribute()
         {
-            ExecuteTest(GetValidButUndefiniedAttributeTest, false);
+            ExecuteTest(GetValidButUndefiniedAttributeTest);
         }
 
         #endregion

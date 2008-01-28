@@ -35,7 +35,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void TableRows()
         {
-            ExecuteTest(TableRowsTest, false);
+            ExecuteTest(TableRowsTest);
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void TableHeader()
         {
-            ExecuteTest(TableHeaderTest, false);
+            ExecuteTest(TableHeaderTest);
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void TableBodies()
         {
-            ExecuteTest(TableBodiesTest, false);
+            ExecuteTest(TableBodiesTest);
         }
 
         #endregion

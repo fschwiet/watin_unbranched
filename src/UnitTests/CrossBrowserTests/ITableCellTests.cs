@@ -35,7 +35,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void ParentTableRow()
         {
-            ExecuteTest(ParentTableRowTest, false);
+            ExecuteTest(ParentTableRowTest);
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         [Test]
         public void Index()
         {
-            ExecuteTest(IndexTest, false);
+            ExecuteTest(IndexTest);
         }
 
         #endregion
