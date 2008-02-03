@@ -96,12 +96,13 @@ namespace WatiN.Core
 			public bool autoStartDialogWatcher;
 			public bool autoMoveMousePointerToTopLeft;
 			public bool makeNewIEInstanceVisible;
+            public bool closeExistingBrowserInstances;
             public BrowserType browserType;
 		}
 
 		private settingsStruct settings;
 
-		public Settings()
+	    public Settings()
 		{
 			SetDefaults();
 		}
@@ -137,7 +138,8 @@ namespace WatiN.Core
 			settings.highLightElement = true;
 			settings.highLightColor = "yellow";
 			settings.autoCloseDialogs = true;
-			settings.autoStartDialogWatcher = true;
+		    settings.closeExistingBrowserInstances = false;
+            settings.autoStartDialogWatcher = true;
 			settings.autoMoveMousePointerToTopLeft = true;
 			settings.makeNewIEInstanceVisible = true;
             settings.browserType = BrowserType.InternetExplorer;
@@ -277,7 +279,19 @@ namespace WatiN.Core
 			set { settings.makeNewIEInstanceVisible = value; }
 		}
 
-		private static void IfValueLessThenZeroThrowArgumentOutOfRangeException(int value)
+        /// <summary>
+        /// Gets or sets a value indicating whether to close existing browser instances before running an automation test.
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> closes existing browser instances before running a test; otherwise, <c>false</c>.
+        /// </value>
+        public bool CloseExistingBrowserInstances
+	    {
+	        get { return settings.closeExistingBrowserInstances; }
+            set { settings.closeExistingBrowserInstances = value; }
+	    }
+
+	    private static void IfValueLessThenZeroThrowArgumentOutOfRangeException(int value)
 		{
 			if (value < 0)
 			{

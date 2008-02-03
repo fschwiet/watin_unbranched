@@ -266,7 +266,7 @@ namespace WatiN.Core.Mozilla
         public void Click()
         {
             this.FireEvent("click");
-            this.ClientPort.InitializeDocument();
+            XULBrowser.WaitForComplete(this.ClientPort);
         }
 
         /// Fires the specified <paramref name="eventName"/> on this element

@@ -58,6 +58,12 @@ namespace WatiN.Core.Logging
 			LogWriter.LogAction(string.Format(message, args));
 		}
 
+        public static void LogAction(string message)
+        {
+            LogWriter.LogAction(message);
+        }
+
+
 		/// <summary>
 		/// Gets or sets the log writer.
 		/// </summary>

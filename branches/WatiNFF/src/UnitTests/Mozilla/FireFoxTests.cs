@@ -16,16 +16,18 @@
 
 #endregion Copyright
 
+using System.IO;
 using NUnit.Framework;
 using WatiN.Core.Logging;
 using WatiN.Core.Mozilla;
 using WatiN.Core.Interfaces;
 using System.Threading;
+using WatiN.Core.UnitTests.CrossBrowserTests;
 
 namespace WatiN.Core.UnitTests.Mozilla
 {
     [TestFixture]
-    public class FireFoxTests
+    public class FireFoxTests : CrossBrowserTest
     {
         [TestFixtureSetUp]
         public void Setup()
@@ -39,11 +41,21 @@ namespace WatiN.Core.UnitTests.Mozilla
         [Test]
         public void GotoUrl()
         {
-            using (FireFox ff = new FireFox())
-            {
-                ff.GoTo(BaseElementsTests.MainURI.ToString());
-                Assert.AreEqual(BaseElementsTests.MainURI, ff.Url);
-            }
+            this.Firefox.GoTo(BaseElementsTests.MainURI.ToString());
+            Assert.AreEqual(BaseElementsTests.MainURI, this.Firefox.Url);
+
+        }
+
+        /// <summary>
+        /// Test that we can retrieve the path to the FireFox executable using the registry
+        /// </summary>
+        [Test]
+        public void PathToFireFoxExecutable()
+        {
+
+            Assert.IsNotNull(FireFox.PathToExe, "Did not find the path to the FireFox executable");
+            Assert.IsTrue(FireFox.PathToExe.Contains("firefox.exe"), "Did not find the expected value for the path to the FireFox executable");
+            Assert.IsTrue(File.Exists(FireFox.PathToExe), string.Format("{0} does not exist.", FireFox.PathToExe));
         }
 
         /// <summary>
@@ -69,29 +81,21 @@ namespace WatiN.Core.UnitTests.Mozilla
                 Assert.AreEqual(BaseElementsTests.MainURI, ff.Url);
             }
         }
-        
+
         [Test, Category("InternetConnectionNeeded")]
-		public void Google()
-		{
-			// Instantiate a new DebugLogger to output "user" events to
-			// the debug window in VS
-			Logger.LogWriter = new DebugLogWriter();
+        public void Google()
+        {
+            GoTo("http://www.google.com", this.Firefox);
+            ITextField q = this.Firefox.TextField(Find.ByName("q"));
+            Assert.That(q.Exists);
+            q.Value = "WatiN";
+            this.Firefox.Button(Find.ByName("btnG")).Click();
+            
+            string text = this.Firefox.Text;
+            System.Console.WriteLine(text);
+            Assert.IsTrue(text.Contains("WatiN"));
 
-			using (FireFox ff = new FireFox(WatiNTest.GoogleUrl))
-			{
-				ITextField q = ff.TextField(Find.ByName("q"));
-				Assert.That(q.Exists);
-				q.Value = "WatiN";
-				ff.Button(Find.ByName("btnG")).Click();
-
-				// TODO: This call should be removed when Click does call WaitForComplete
-				ff.WaitForComplete();
-				
-				string text = ff.Text;
-				System.Console.WriteLine(text);
-				Assert.IsTrue(text.Contains("WatiN"));
-			}
-		}
+        }
 
     }
 }

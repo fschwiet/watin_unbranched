@@ -1,0 +1,170 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>WatiN Documentation</title>
+    <meta content="http://schemas.microsoft.com/intellisense/ie5" name="vs_targetSchema">
+    <meta content="watin, test, C#, web, .Net, framework, html, dom, watir" name="Keywords">
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <meta content="Global" name="Distribution">
+    <meta content="Jeroen van Menen" name="Author">
+    <meta content="index,follow" name="Robots">
+    <link href="images/BrightSide.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+    <!-- wrap starts here -->
+    <div id="wrap">
+        <div id="header">
+            <h1 id="logo">
+                <span class="green"><font color="#6297bc">WatiN</font></span></h1>
+            <h2 id="slogan">
+                Web Application Testing In .Net</h2>
+            <form class="searchform" action="#" method="post">
+            <p>
+                <input class="textbox" type="text" name="search_query">
+                <input class="button" type="submit" value="Search" name="search"></p>
+            </form>
+            <!-- Menu Tabs -->
+            <ul>
+                <li><a href="index.html"><span>Home</span></a>
+                    <li><a href="http://sourceforge.net/project/showfiles.php?group_id=167632"><span>Downloads</span></a>
+                        <li id="current"><a href="documentation.html"><span>Documentation</span></a>
+                            <li><a href="contribute.html"><span>Contribute</span></a>
+                                <li><a href="support.html"><span>Support</span></a>
+                                    <li><a href="http://sourceforge.net/export/rss2_project.php?group_id=167632"><span>RSS</span></a>
+                                    </li>
+            </ul>
+        </div>
+        <!-- content-wrap starts here -->
+        <div id="content-wrap">
+            <div id="main">
+                <h1>
+                    WatiN <span class="green">Firefox </span><span class="gray">Release Candidate</span></h1>
+                <p>
+                    This article explains the basic principles for creating and running WatiN tests
+                    on both Internet Explorer and Firefox.</p>
+                <p>
+                    <strong>Index</strong>
+                </p>
+                <ol>
+                    <li><span>Download and install WatiN Firefox Release Candidate.</span> </li>
+                    <li><span>Creating a simple test that runs on both Internet Explorer and FireFox</span></li>
+                    <li><span>Creating a generic mechanism for executing tests that run on both Internet Explorer and FireFox</span></li>                    
+                    <li><span>Converting an existing WatiN test to run on both Internet Explorer and FireFox</span></li>
+                </ol>
+                <br />
+                <p>
+                    <strong>Download and install WatiN Firefox Release Candidate</strong>
+                </p>
+                <ul>
+                    <li><span>Make sure you have <a href="http://www.getfirefox.com">Firefox version 2.0</a>
+                        or higher installed.</span></li>
+                    <li><span>Next you should download the <a href="TODO">WatiN Firefox release candidate</a>
+                        and unzip it into an appropriate directory Assuming you have unzipped the release
+                        to c:\Program Files\WatiNFirefox\</span></li>
+                    <li><span>A plugin <b>jssh</b> is used by WatiN to automate Firefox to carry out tests. To install the plugin:</span>
+                        <ul>
+                            <li><span><strong>Open FireFox</strong></span></li>
+                            <li><span>Click <strong>File -> Open File</strong></span> 
+                            <li><span>Navigate to your WatiN installation folder i.e. c:\Program Files\WatiNFirefox\ and open the file <b>jssh-WINNT-2.x.xpi</b></span>
+                                <img src="images/install_jssh.png" /></li>
+                        </ul>
+                    </li>
+                </ul>
+                 <br />
+                <p><strong>Creating a test that runs on both Internet Explorer and FireFox</strong></p>
+                <p>Please look at the <strong>UnitTest</strong> sample in the samples directory of WatiNFirefox for more detailed code examples</p>
+                <div style="font-family: Courier New; font-size: 10pt; color: black; background: white;">
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; [<span style="color: #2b91af;">Test</span>]</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">public</span> <span style="color: blue;">void</span> SearchForWatiNOnGoogleVerbose()</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">using</span> (<span style="color: #2b91af;">IBrowser</span> ie = <span style="color: #2b91af;">BrowserFactory</span>.Create(<span style="color: #2b91af;">BrowserType</span>.InternetExplorer))</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ie.GoTo(<span style="color: #a31515;">"http://www.google.com"</span>);</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ie.TextField(<span style="color: #2b91af;">Find</span>.ByName(<span style="color: #a31515;">"q"</span>)).Value = <span style="color: #a31515;">"WatiN"</span>;</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ie.Button(<span style="color: #2b91af;">Find</span>.ByName(<span style="color: #a31515;">"btnG"</span>)).Click();</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: #2b91af;">Assert</span>.IsTrue(ie.ContainsText(<span style="color: #a31515;">"WatiN"</span>));</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre>
+                <pre style="margin: 0px;">&nbsp;</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">using</span> (<span style="color: #2b91af;">IBrowser</span> firefox = <span style="color: #2b91af;">BrowserFactory</span>.Create(<span style="color: #2b91af;">BrowserType</span>.FireFox))</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; firefox.GoTo(<span style="color: #a31515;">"http://www.google.com"</span>);</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; firefox.TextField(<span style="color: #2b91af;">Find</span>.ByName(<span style="color: #a31515;">"q"</span>)).Value = <span style="color: #a31515;">"WatiN"</span>;</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; firefox.Button(<span style="color: #2b91af;">Find</span>.ByName(<span style="color: #a31515;">"btnG"</span>)).Click();</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: #2b91af;">Assert</span>.IsTrue(firefox.ContainsText(<span style="color: #a31515;">"WatiN"</span>));</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre>
+                </div>
+            
+                <br />
+                <p><strong>Generic mechanism for executing tests.</strong></p>
+                <p>The test below executes a single test once for each browser type using a delegate mechanism. This mechanism isn't shown here but can be found in the BaseTest.cs sample class located in the samples folder:</p>
+                <div style="font-family: Courier New; font-size: 10pt; color: black; background: white;">
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: gray;">///</span><span style="color: green;"> </span><span style="color: gray;">&lt;summary&gt;</span></pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: gray;">///</span><span style="color: green;"> Searches for WatiN on google using both Internet Explorer and Firefox.</span></pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: gray;">///</span><span style="color: green;"> </span><span style="color: gray;">&lt;/summary&gt;</span></pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; [<span style="color: #2b91af;">Test</span>]</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">public</span> <span style="color: blue;">void</span> SearchForWatiNOnGoogleUsingBaseTest()</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: green;">// Call ExecuteTest in the base class, the base class handles creating and disposing</span></pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: green;">// of browser instances, and will call the passed in delegate </span></pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: green;">// SearchForWatiNOnGoogleUsingBaseTest(IBrowser browser) once for each type of </span></pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: green;">// browser supported by WatiN (Internet Explorer and Firefox at the moment).</span></pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">base</span>.ExecuteTest(SearchForWatiNOnGoogleUsingBaseTest);</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre>
+                <pre style="margin: 0px;">&nbsp;</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: gray;">///</span><span style="color: green;"> </span><span style="color: gray;">&lt;summary&gt;</span></pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: gray;">///</span><span style="color: green;"> Searches for WatiN on google using the passed in </span><span style="color: gray;">&lt;paramref name="browser"/&gt;</span><span style="color: green;">.</span></pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: gray;">///</span><span style="color: green;"> </span><span style="color: gray;">&lt;/summary&gt;</span></pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: gray;">///</span><span style="color: green;"> </span><span style="color: gray;">&lt;param name="browser"&gt;</span><span style="color: green;">The browser.</span><span style="color: gray;">&lt;/param&gt;</span></pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">private</span> <span style="color: blue;">void</span> SearchForWatiNOnGoogleUsingBaseTest(<span style="color: #2b91af;">IBrowser</span> browser)</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; GoTo(<span style="color: #a31515;">"http://www.google.com"</span>, browser);&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; browser.TextField(<span style="color: #2b91af;">Find</span>.ByName(<span style="color: #a31515;">"q"</span>)).Value = <span style="color: #a31515;">"WatiN"</span>;</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; browser.Button(<span style="color: #2b91af;">Find</span>.ByName(<span style="color: #a31515;">"btnG"</span>)).Click();</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: #2b91af;">Assert</span>.IsTrue(browser.ContainsText(<span style="color: #a31515;">"WatiN"</span>));&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre>
+                </div>
+            
+            <!-- End div main -->
+            </div>
+            <div id="rightbar">
+                <div id="sidebar">
+                    <h1>
+                        Quick <span class="green">Links</span></h1>
+                    <ul class="sidemenu">
+                        <li><a href="gettingstarted.html">Getting started</a>
+                            <li><a href="apartmentstateinfo.html">STA ApartmentState</a>
+                                <li><a href="htmlelementmapping.html">HTML mapping list</a>
+                                    <li><a href="roadmap.html">Roadmap</a>
+                                        <li><a href="faq.html">FAQ</a> </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- content-wrap ends here -->
+        </div>
+        <!-- footer starts here -->
+        <div id="footer">
+            <div class="footer-left" style="width: 50%; height: 37px">
+                <p class="align-left">
+                    © 2007 <strong>Jeroen van Menen</strong> | Design by <a href="http://www.styleshout.com/">
+                        styleshout</a>
+                </p>
+            </div>
+            <div class="footer-right" style="width: 40%; height: 54px">
+                <p class="align-right">
+                    <a href="index.html">Home</a>&nbsp;|&nbsp; <a href="http://sourceforge.net/projects/watin/">
+                        WatiN on SourceForge</a>&nbsp;|&nbsp; <a href="http://sourceforge.net/export/rss2_project.php?group_id=167632">
+                            RSS Feed</a>s
+                </p>
+                <p class="align-right">
+                    <a href="http://sourceforge.net">
+                        <img border="0" width="125" height="37" id="_x0000_i1025" src="http://sflogo.sourceforge.net/sflogo.php?group_id=167632&amp;type=2"
+                            alt="SourceForge.net Logo" name="_x0000_i1025"></a>
+                </p>
+            </div>
+        </div>
+        <!-- footer ends here -->
+        <!-- wrap ends here -->
+    </div>
+</body>
+</html>

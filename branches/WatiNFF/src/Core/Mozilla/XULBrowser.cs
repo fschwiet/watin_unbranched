@@ -104,18 +104,30 @@ namespace WatiN.Core.Mozilla
         /// </summary>
         public void WaitForComplete()
         {
-            string command = string.Format("{0}.webProgress.isLoadingDocument;", FireFoxClientPort.BrowserVariableName);
-        	this.ClientPort.Write(command);
-            
-        	while(this.clientPort.LastResponse == "true")
-        	{
-         		Thread.Sleep(200);
-             	command = string.Format("{0}.webProgress.isLoadingDocument;", FireFoxClientPort.BrowserVariableName);
-        		this.ClientPort.Write(command);
-       		}
-        	
-            this.ClientPort.InitializeDocument();
+            WaitForComplete(this.ClientPort);
         }
+        #endregion
+
+        #region Internal static methods
+
+        /// <summary>
+        /// Waits until the document, associated with the <param name="clientPort" /> is loaded.
+        /// </summary>
+        internal static void WaitForComplete(FireFoxClientPort clientPort)
+        {
+            string command = string.Format("{0}.webProgress.isLoadingDocument;", FireFoxClientPort.BrowserVariableName);
+            clientPort.Write(command);
+
+            while (clientPort.LastResponse == "true")
+            {
+                Thread.Sleep(200);
+                command = string.Format("{0}.webProgress.isLoadingDocument;", FireFoxClientPort.BrowserVariableName);
+                clientPort.Write(command);
+            }
+
+            clientPort.InitializeDocument();
+        }
+
         #endregion
     }
 }
