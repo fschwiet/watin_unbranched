@@ -1,14 +1,32 @@
+#region WatiN Copyright (C) 2006-2007 Jeroen van Menen
+
+//Copyright 2006-2007 Jeroen van Menen
+//
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//
+//       http://www.apache.org/licenses/LICENSE-2.0
+//
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+
+#endregion Copyright
+
 using System;
-using System.Collections.Generic;
-using System.Text;
-using NUnit.Framework;
+using WatiN.Core;
 using WatiN.Core.Interfaces;
 using WatiN.Core.Logging;
 
-namespace WatiN.Core.UnitTests.CrossBrowserTests
+namespace WatiN.Samples.Console
 {
-    [TestFixture]
-    public abstract class CrossBrowserTest : WatiNTest
+    /// <summary>
+    /// Provides base class mechanism for executing tests on Internet Explorer and FireFox.
+    /// </summary>
+    public abstract class BaseTest : IDisposable
     {
         private IBrowser firefox = null;
         private IBrowser ie = null;
@@ -17,6 +35,14 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         /// The test method to execute.
         /// </summary>
         protected delegate void BrowserTest(IBrowser browser);
+
+
+        protected BaseTest()
+        {
+            BrowserFactory.Settings.CloseExistingBrowserInstances = true;
+            BrowserFactory.Settings.AutoMoveMousePointerToTopLeft = false;
+            Logger.LogWriter = new DebugLogWriter();
+        }
 
         protected IBrowser Firefox
         {
@@ -47,25 +73,25 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
             set { ie = value; }
         }
 
-        [TestFixtureSetUp]
-        public void FixtureSetup()
+        public void Dispose()
         {
-            BrowserFactory.Settings.CloseExistingBrowserInstances = true;
-            BrowserFactory.Settings.AutoMoveMousePointerToTopLeft = false;
-            Logger.LogWriter = new DebugLogWriter();
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
-        [TestFixtureTearDown]
-        public void FixtureTearDown()
+        protected virtual void Dispose(bool isDisposing)
         {
-            if (firefox != null)
+            if (isDisposing)
             {
-                firefox.Dispose();
-            }
+                if (firefox != null)
+                {
+                    firefox.Dispose();
+                }
 
-            if (ie != null)
-            {
-                ie.Dispose();
+                if (ie != null)
+                {
+                    ie.Dispose();
+                }
             }
         }
 

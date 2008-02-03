@@ -31,8 +31,10 @@ namespace WatiN.Core.UnitTests
 
 			settings.AttachToIETimeOut = 111;
 			bool autoCloseDialogs = !settings.AutoCloseDialogs;
-			settings.AutoCloseDialogs = autoCloseDialogs;
-			settings.HighLightColor = "strange color";
+            settings.AutoCloseDialogs = autoCloseDialogs;
+            bool closeExistingBrowserInstances = !settings.CloseExistingBrowserInstances;
+            settings.CloseExistingBrowserInstances = closeExistingBrowserInstances;
+            settings.HighLightColor = "strange color";
 			bool highLightElement = !settings.HighLightElement;
 			settings.HighLightElement = highLightElement;
 			settings.WaitForCompleteTimeOut = 222;
@@ -40,7 +42,8 @@ namespace WatiN.Core.UnitTests
 
 			Assert.AreEqual(111, settings.AttachToIETimeOut, "Unexpected AttachToIETimeOut");
 			Assert.AreEqual(autoCloseDialogs, settings.AutoCloseDialogs, "Unexpected AutoCloseDialogs");
-			Assert.AreEqual("strange color", settings.HighLightColor, "Unexpected HighLightColor");
+            Assert.AreEqual(closeExistingBrowserInstances, settings.CloseExistingBrowserInstances, "Unexpected CloseExistingBrowserInstances");
+            Assert.AreEqual("strange color", settings.HighLightColor, "Unexpected HighLightColor");
 			Assert.AreEqual(highLightElement, settings.HighLightElement, "Unexpected HighLightElement");
 			Assert.AreEqual(222, settings.WaitForCompleteTimeOut, "Unexpected WaitForCompleteTimeOut");
 			Assert.AreEqual(333, settings.WaitUntilExistsTimeOut, "Unexpected WaitUntilExistsTimeOut");
@@ -54,8 +57,10 @@ namespace WatiN.Core.UnitTests
 			settings.AttachToIETimeOut = 111;
 			bool autoCloseDialogs = !settings.AutoCloseDialogs;
 			settings.AutoCloseDialogs = autoCloseDialogs;
-			settings.HighLightColor = "strange color";
-			bool highLightElement = !settings.HighLightElement;
+            bool closeExistingBrowserInstances = !settings.CloseExistingBrowserInstances;
+            settings.CloseExistingBrowserInstances = closeExistingBrowserInstances;
+            settings.HighLightColor = "strange color";
+            bool highLightElement = !settings.HighLightElement;
 			settings.HighLightElement = highLightElement;
 			settings.WaitForCompleteTimeOut = 222;
 			settings.WaitUntilExistsTimeOut = 333;
@@ -63,7 +68,8 @@ namespace WatiN.Core.UnitTests
 			Settings settingsClone = settings.Clone();
 			Assert.AreEqual(111, settingsClone.AttachToIETimeOut, "Unexpected AttachToIETimeOut");
 			Assert.AreEqual(autoCloseDialogs, settingsClone.AutoCloseDialogs, "Unexpected AutoCloseDialogs");
-			Assert.AreEqual("strange color", settingsClone.HighLightColor, "Unexpected HighLightColor");
+            Assert.AreEqual(closeExistingBrowserInstances, settingsClone.CloseExistingBrowserInstances, "Unexpected CloseExistingBrowserInstances");
+            Assert.AreEqual("strange color", settingsClone.HighLightColor, "Unexpected HighLightColor");
 			Assert.AreEqual(highLightElement, settingsClone.HighLightElement, "Unexpected HighLightElement");
 			Assert.AreEqual(222, settingsClone.WaitForCompleteTimeOut, "Unexpected WaitForCompleteTimeOut");
 			Assert.AreEqual(333, settingsClone.WaitUntilExistsTimeOut, "Unexpected WaitUntilExistsTimeOut");

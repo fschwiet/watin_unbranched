@@ -40,7 +40,7 @@ namespace WatiN.Core.Mozilla
         /// Used by CreateElementVariableName
         /// </summary>
         private static long elementCounter = 0;
-        
+
         /// <summary>
         /// The path to FireFox executable
         /// </summary>
@@ -99,9 +99,12 @@ namespace WatiN.Core.Mozilla
 
         #region Constructors / destructors
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FireFoxClientPort"/> class.
+        /// </summary>
         public FireFoxClientPort()
         {
-            InitalizeExecutablePath();
+         
         }
 
         /// <summary>
@@ -116,15 +119,6 @@ namespace WatiN.Core.Mozilla
         #endregion
 
         #region Public instance properties
-
-        /// <summary>
-        /// Gets the path to FireFox executable.
-        /// </summary>
-        /// <value>The path to exe.</value>
-        public string PathToExe
-        {
-            get { return this.pathToExe; }
-        }
 
         /// <summary>
         /// <c>true</c> if we have successfully connected to FireFox
@@ -199,7 +193,7 @@ namespace WatiN.Core.Mozilla
         }
 
         #endregion
-        
+
         #region Public instance methods
 
         /// <summary>
@@ -209,9 +203,9 @@ namespace WatiN.Core.Mozilla
         {
             // Sets up the document variable
             this.Write(string.Format("var {0} = {1}.document;", DocumentVariableName, WindowVariableName));
-            
+
             // Javascript to implement document.activeElement currently not support by Mozilla
-            this.Write(DocumentVariableName + ".activeElement = " + DocumentVariableName + ".body;\n" + 
+            this.Write(DocumentVariableName + ".activeElement = " + DocumentVariableName + ".body;\n" +
                        "var allElements = " + DocumentVariableName + ".getElementsByTagName(\"*\");\n" +
                        "for (i = 0; i < allElements.length; i++)\n{\n" +
                        "allElements[i].addEventListener(\"focus\", function (event) {\n" +
@@ -226,13 +220,8 @@ namespace WatiN.Core.Mozilla
             this.lastResponse = string.Empty;
             this.response = new StringBuilder();
 
-            this.ffProcess = new Process();
-            this.ffProcess.StartInfo.FileName = this.PathToExe;
-            this.ffProcess.StartInfo.Arguments = "-jssh";
-            this.ffProcess.Start();                
-            this.ffProcess.WaitForInputIdle(5000);
-            this.ffProcess.Refresh();
-
+            this.ffProcess = FireFox.CreateProcess("-jssh");
+            
             if (!this.IsMainWindowVisible)
             {
                 if (this.IsRestoreSessionDialogVisible)
@@ -250,7 +239,7 @@ namespace WatiN.Core.Mozilla
             {
                 this.telnetSocket.Connect(IPAddress.Parse("127.0.0.1"), 9997);
             }
-            catch(SocketException sockException)
+            catch (SocketException sockException)
             {
                 Logger.LogAction(string.Format("Failed connecting to jssh server.\nError code:{0}\nError message:{1}", sockException.ErrorCode, sockException.Message));
                 throw new FireFoxException("Unable to connect to jssh server, please make sure you have correctly installed the jssh.xpi plugin", sockException);
@@ -260,23 +249,23 @@ namespace WatiN.Core.Mozilla
             this.WriteLine();
             Logger.LogAction("Successfully connected to FireFox using jssh.");
             this.DefineDefaultJSVariables();
-        
+
         }
 
         private void ValidateCanConnect()
-        {   
-        
-            if(this.connected)
+        {
+            if (this.connected)
             {
                 throw new FireFoxException("Already connected to jssh server.");
             }
 
-            foreach (Process process in System.Diagnostics.Process.GetProcesses())
+            if (FireFox.CurrentProcessCount > 0 && !BrowserFactory.Settings.CloseExistingBrowserInstances)
             {
-                if (process.ProcessName.Equals("firefox", StringComparison.OrdinalIgnoreCase))
-                {
-                    throw new FireFoxException("Existing instances of FireFox detected.");
-                }
+                throw new FireFoxException("Existing instances of FireFox detected.");
+            }
+            else if (FireFox.CurrentProcessCount > 0)
+            {
+                FireFox.CurrentProcess.Kill();
             }
         }
 
@@ -284,16 +273,6 @@ namespace WatiN.Core.Mozilla
         {
             get
             {
-                // Hack Not sure why Process.WaitForIdle input doesn't always work, however it's possible we can
-                // arrive at this codepoint without the FireFox UI window ready
-                SimpleTimer timer = new SimpleTimer(5);
-
-                while (!timer.Elapsed && this.Process.MainWindowHandle == IntPtr.Zero)
-                {
-                    Thread.Sleep(100);
-                    this.Process.Refresh();
-                }
-
                 bool result = NativeMethods.GetWindowText(this.Process.MainWindowHandle).Contains("Firefox - Restore Previous Session");
                 return result;
             }
@@ -308,18 +287,7 @@ namespace WatiN.Core.Mozilla
         {
             get
             {
-                // Hack Not sure why Process.WaitForIdle input doesn't always work, however it's possible we can
-                // arrive at this codepoint without the FireFox UI window ready
-                SimpleTimer timer = new SimpleTimer(5);
-
-                while (!timer.Elapsed && this.Process.MainWindowHandle == IntPtr.Zero)
-                {
-                    Thread.Sleep(100);
-                    this.Process.Refresh();
-                }
-
                 bool result = NativeMethods.GetWindowText(this.Process.MainWindowHandle).Contains("Mozilla Firefox");
-
                 return result;
             }
         }
@@ -367,7 +335,7 @@ namespace WatiN.Core.Mozilla
                             this.telnetSocket.Close();
                             this.ffProcess.WaitForExit(5000);
                         }
-                        catch(IOException ex)
+                        catch (IOException ex)
                         {
                             Logger.LogAction("Error communicating with jssh server to innitiate shut down, message: " + ex.Message);
                         }
@@ -481,7 +449,7 @@ namespace WatiN.Core.Mozilla
         {
             if (!this.connected)
             {
-                throw new FireFoxException("You must connect before writing to the server.");                    
+                throw new FireFoxException("You must connect before writing to the server.");
             }
 
             byte[] bytes = ASCIIEncoding.ASCII.GetBytes(data + "\n");
@@ -491,7 +459,7 @@ namespace WatiN.Core.Mozilla
             {
                 networkStream.Write(bytes, 0, bytes.Length);
             }
-                        
+
             if (readResponse)
             {
                 this.ReadResponse();
@@ -514,7 +482,7 @@ namespace WatiN.Core.Mozilla
         /// <param name="args">Arguments to be passed to <see cref="string.Format(string,object[])"/></param>
         internal void Write(string data, params object[] args)
         {
-        	this.Write(string.Format(data, args), true);
+            this.Write(string.Format(data, args), true);
         }
 
         /// <summary>
@@ -536,85 +504,26 @@ namespace WatiN.Core.Mozilla
             do
             {
                 read = stream.Read(buffer, 0, 1024);
-                string readData = ASCIIEncoding.ASCII.GetString(buffer, 0, read);
-				
-                Logger.LogAction("jssh says: " + readData);                
+                string readData = UnicodeEncoding.UTF8.GetString(buffer, 0, read);
+
+                Logger.LogAction("jssh says: " + readData);
                 this.lastResponse += CleanTelnetResponse(readData);
-            } while (read==1024);
+            } while (read == 1024);
 
             this.lastResponse = this.lastResponse.Trim();
             if (this.lastResponse.StartsWith("SyntaxError", StringComparison.InvariantCultureIgnoreCase) ||
                 this.lastResponse.StartsWith("TypeError", StringComparison.InvariantCultureIgnoreCase) ||
                 this.lastResponse.StartsWith("uncaught exception", StringComparison.InvariantCultureIgnoreCase))
             {
-                throw new FireFoxException(string.Format("Error sending last message to jssh server: {0}", this.lastResponse));    
+                throw new FireFoxException(string.Format("Error sending last message to jssh server: {0}", this.lastResponse));
             }
 
             this.response.Append(this.lastResponse);
-            
-        }
-
-        /// <summary>
-        /// Initalizes the executable path.
-        /// </summary>
-        private void InitalizeExecutablePath()
-        {
-            RegistryKey mozillaKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Mozilla\Mozilla Firefox");
-            if (mozillaKey != null)
-            {
-                InitializeUsingRegistry(mozillaKey);
-            }
-            else
-            {
-                // We try and guess common locations where FireFox might be installed
-                string tempPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ProgramFiles), @"Mozilla FireFox\FireFox.exe");
-                if (File.Exists(tempPath))
-                {
-                    this.pathToExe = tempPath;                                
-                }
-                else
-                {
-                    tempPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ProgramFiles) + " (x86)", @"Mozilla FireFox\FireFox.exe");
-                    if (File.Exists(tempPath))
-                    {
-                        this.pathToExe = tempPath;
-                    }
-                    else
-                    {
-                        throw new FireFoxException("Unable to determine the current version of FireFox tried looking in the registry and the common locations on disk, please make sure you have installed FireFox and Jssh correctly");
-                    }        
-                }
-            }
 
         }
 
-        /// <summary>
-        /// Initializes the executable path to FireFox using the registry.
-        /// </summary>
-        /// <param name="mozillaKey">The mozilla key.</param>
-        private void InitializeUsingRegistry(RegistryKey mozillaKey)
-        {
-            string currentVersion = (string) mozillaKey.GetValue("CurrentVersion");
-            if (string.IsNullOrEmpty(currentVersion))
-            {
-                throw new FireFoxException("Unable to determine the current version of FireFox using the registry, please make sure you have installed FireFox and Jssh correctly");
-            }
+       
 
-            RegistryKey currentMain = mozillaKey.OpenSubKey(string.Format(@"{0}\Main", currentVersion));
-            if (currentMain == null)
-            {
-                throw new FireFoxException(
-                    "Unable to determine the current version of FireFox using the registry, please make sure you have installed FireFox and Jssh correctly");
-            }
-
-            this.pathToExe = (string) currentMain.GetValue("PathToExe");
-            if (!File.Exists(this.pathToExe))
-            {
-                throw new FireFoxException(
-                    "FireFox executable listed in the registry does not exist, please make sure you have installed FireFox and Jssh correctly");
-            }
-        }        
-
-        #endregion private instance methods       
+        #endregion private instance methods
     }
 }

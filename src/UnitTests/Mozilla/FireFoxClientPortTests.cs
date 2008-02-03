@@ -22,6 +22,7 @@ using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 using NUnit.Framework;
+using WatiN.Core;
 using WatiN.Core.Logging;
 using WatiN.Core.Mozilla;
 
@@ -55,50 +56,72 @@ namespace WatiN.Core.UnitTests.Mozilla
         public void Connect()
         {
             using (FireFoxClientPort ffPort = new FireFoxClientPort())
-            {                          
+            {
                 ffPort.Connect();
                 Assert.IsTrue(ffPort.Response.Contains("Welcome to the Mozilla JavaScript Shell!"));
             }
-            
+
+        }
+
+        /// <summary>
+        /// Test that if you explicitly specify that existing instances are closed via <see cref="Settings.CloseExistingBrowserInstances"/>, the connect
+        /// method handles this expectation.
+        /// </summary>
+        [Test]
+        public void ConnectShouldCloseExistingInstances()
+        {
+            BrowserFactory.Settings.CloseExistingBrowserInstances = true;
+            Process existingInstance1 = FireFox.CreateProcess();
+            Assert.AreEqual(1, FireFox.CurrentProcessCount, "Failed to setup test data.");
+
+            try
+            {
+                int existingPid = existingInstance1.Id;
+                using (FireFox ff = new FireFox())
+                {
+                    Assert.AreEqual(ff.ProcessID, FireFox.CurrentProcess.Id);
+                    Assert.AreNotEqual(existingPid, FireFox.CurrentProcess.Id);
+                }
+            }
+            finally
+            {
+                if (!existingInstance1.HasExited)
+                {
+                    existingInstance1.Kill();
+                }
+            }
+
         }
 
         /// <summary>
         /// Test that an error is thrown if you try to connect with an instance of FireFox already open
         /// </summary>
-        [Test, ExpectedException(typeof(FireFoxException))] 
+        [Test, ExpectedException(typeof(FireFoxException))]
         public void ShouldNotConnectWithRunningInstances()
         {
+            BrowserFactory.Settings.CloseExistingBrowserInstances = false;
 
-            using (FireFoxClientPort ffPort = new FireFoxClientPort())
+            try
             {
-                Process existingInstance = new Process();
-                try
+                using (FireFoxClientPort ffPort = new FireFoxClientPort())
                 {
-                        existingInstance.StartInfo.FileName = ffPort.PathToExe;
-                        existingInstance.Start();
-                        existingInstance.WaitForInputIdle();
-                        ffPort.Connect();
-                }
-                finally
-                {
-                    if (!existingInstance.HasExited)
+                    Process existingInstance = FireFox.CreateProcess();
+                    try
                     {
-                        existingInstance.Kill();
+                        ffPort.Connect();
+                    }
+                    finally
+                    {
+                        if (!existingInstance.HasExited)
+                        {
+                            existingInstance.Kill();
+                        }
                     }
                 }
-            } 
-        }
-        /// <summary>
-        /// Test that we can retrieve the path to the FireFox executable using the registry
-        /// </summary>
-        [Test]
-        public void PathToFireFoxExecutable()
-        {
-            using (FireFoxClientPort ffPort = new FireFoxClientPort())
+            }
+            finally
             {
-                Assert.IsNotNull(ffPort.PathToExe, "Did not find the path to the FireFox executable");
-                Assert.IsTrue(ffPort.PathToExe.Contains("firefox.exe"), "Did not find the expected value for the path to the FireFox executable");
-                Assert.IsTrue(File.Exists(ffPort.PathToExe), string.Format("{0} does not exist.", ffPort.PathToExe));
+                BrowserFactory.Settings.CloseExistingBrowserInstances = true;
             }
         }
 
@@ -116,9 +139,9 @@ namespace WatiN.Core.UnitTests.Mozilla
                 ffPort.Write("for (i = 0; i < 1000; i++){links = doc.getElementsByTagName(\"a\");links.length;} true;");
                 Assert.IsTrue(ffPort.LastResponseAsBool);
 
-                for (int i =0 ; i < 50; i++)
+                for (int i = 0; i < 50; i++)
                 {
-                    ffPort.Write("{0}.loadURI(\"{1}\")", FireFoxClientPort.BrowserVariableName, MainURI);                
+                    ffPort.Write("{0}.loadURI(\"{1}\")", FireFoxClientPort.BrowserVariableName, MainURI);
                     ffPort.Write("for (i = 0; i < 1000; i++){links = doc.getElementsByTagName(\"a\");links.length;} true;");
                     Assert.IsTrue(ffPort.LastResponseAsBool);
                 }
@@ -137,7 +160,7 @@ namespace WatiN.Core.UnitTests.Mozilla
             using (FireFox ff = new FireFox())
             {
                 ff.GoTo(MainURI);
-               
+
             }
         }
 

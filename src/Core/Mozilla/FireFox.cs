@@ -18,8 +18,11 @@
 
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using System.Threading;
+using Microsoft.Win32;
 using WatiN.Core.Exceptions;
 using WatiN.Core.Interfaces;
 using WatiN.Core.Logging;
@@ -295,6 +298,178 @@ namespace WatiN.Core.Mozilla
         public int ProcessID
         {
             get { return this.xulBrowser.ProcessId; }
+        }
+
+        /// <summary>
+        /// Gets the number of running FireFox processes.
+        /// </summary>
+        /// <value>The number of running FireFox processes.</value>
+        internal static int CurrentProcessCount
+        {
+            get
+            {
+                int ffCount = 0;
+
+                foreach (Process process in System.Diagnostics.Process.GetProcesses())
+                {
+                    if (process.ProcessName.Equals("firefox", StringComparison.OrdinalIgnoreCase))
+                    {
+                        ffCount++;
+                    }
+                }
+
+                return ffCount;
+            }
+        }
+
+        /// <summary>
+        /// Gets the current FireFox process.
+        /// </summary>
+        /// <value>The current FireFox process or null if none is found.</value>
+        internal static Process CurrentProcess
+        {
+            get
+            {
+                Process ffProcess = null;
+
+                foreach (Process process in System.Diagnostics.Process.GetProcesses())
+                {
+                    if (process.ProcessName.Equals("firefox", StringComparison.OrdinalIgnoreCase))
+                    {
+                        ffProcess = process;
+                    }
+                }
+
+                return ffProcess;
+            }
+        }
+
+        private static string pathToExe;
+        /// <summary>
+        /// Gets the path to FireFox executable.
+        /// </summary>
+        /// <value>The path to exe.</value>
+        public static string PathToExe
+        {
+            get
+            {
+                if (pathToExe == null)
+                {
+                    pathToExe = GetExecutablePath();
+                }
+
+                return pathToExe;
+            }
+        }
+
+        internal static Process CreateProcess()
+        {
+            return CreateProcess(string.Empty);
+        }
+
+        internal static Process CreateProcess(string arguments)
+        {
+            return CreateProcess(arguments, true);
+        }
+
+        internal static Process CreateProcess(string arguments, bool waitForMainWindow)
+        {
+            Process ffProcess = new Process();
+            ffProcess.StartInfo.FileName = PathToExe;
+            ffProcess.StartInfo.Arguments = arguments;
+            ffProcess.Start();
+            ffProcess.WaitForInputIdle(5000);
+            ffProcess.Refresh();
+
+            if (waitForMainWindow)
+            {
+                SimpleTimer timer = new SimpleTimer(5);
+                while (!timer.Elapsed)
+                {
+                    if (!ffProcess.HasExited && ffProcess.MainWindowHandle != IntPtr.Zero)
+                    {
+                        Logger.LogAction("Waited for FireFox, main window handle found.");
+                        break;    
+                    }
+
+                    Thread.Sleep(100);
+                    ffProcess.Refresh();
+                }
+
+                if (timer.Elapsed)
+                {
+                    Debug.WriteLine("Timer elapsed waiting for FireFox to start.");
+                }
+            }
+
+            return ffProcess;
+        }
+
+
+        /// <summary>
+        /// Initalizes the executable path.
+        /// </summary>
+        private static string GetExecutablePath()
+        {
+            string path = null;
+            RegistryKey mozillaKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Mozilla\Mozilla Firefox");
+            if (mozillaKey != null)
+            {
+                path = GetExecutablePathUsingRegistry(mozillaKey);
+            }
+            else
+            {
+                // We try and guess common locations where FireFox might be installed
+                string tempPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ProgramFiles), @"Mozilla FireFox\FireFox.exe");
+                if (File.Exists(tempPath))
+                {
+                    path = tempPath;
+                }
+                else
+                {
+                    tempPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ProgramFiles) + " (x86)", @"Mozilla FireFox\FireFox.exe");
+                    if (File.Exists(tempPath))
+                    {
+                        path = tempPath;
+                    }
+                    else
+                    {
+                        throw new FireFoxException("Unable to determine the current version of FireFox tried looking in the registry and the common locations on disk, please make sure you have installed FireFox and Jssh correctly");
+                    }
+                }
+            }
+
+            return path;
+        }
+
+        /// <summary>
+        /// Initializes the executable path to FireFox using the registry.
+        /// </summary>
+        /// <param name="mozillaKey">The mozilla key.</param>
+        private static string GetExecutablePathUsingRegistry(RegistryKey mozillaKey)
+        {
+            string path = string.Empty;
+            string currentVersion = (string)mozillaKey.GetValue("CurrentVersion");
+            if (string.IsNullOrEmpty(currentVersion))
+            {
+                throw new FireFoxException("Unable to determine the current version of FireFox using the registry, please make sure you have installed FireFox and Jssh correctly");
+            }
+
+            RegistryKey currentMain = mozillaKey.OpenSubKey(string.Format(@"{0}\Main", currentVersion));
+            if (currentMain == null)
+            {
+                throw new FireFoxException(
+                    "Unable to determine the current version of FireFox using the registry, please make sure you have installed FireFox and Jssh correctly");
+            }
+
+            path = (string)currentMain.GetValue("PathToExe");
+            if (!File.Exists(path))
+            {
+                throw new FireFoxException(
+                    "FireFox executable listed in the registry does not exist, please make sure you have installed FireFox and Jssh correctly");
+            }
+
+            return path;
         }
 
         /// <summary>
