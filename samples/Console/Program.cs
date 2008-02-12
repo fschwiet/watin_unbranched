@@ -4,10 +4,11 @@ using System.Diagnostics;
 using System.Text;
 using WatiN.Core;
 using WatiN.Core.Interfaces;
+using WatiN.Core.UnitTests;
 
 namespace WatiN.Samples.Console
 {
-    public class Program : BaseTest
+    public class Program : CrossBrowserTest
     {
         [STAThread]
         static void Main(string[] args)

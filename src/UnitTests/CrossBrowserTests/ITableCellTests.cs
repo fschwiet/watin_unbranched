@@ -25,7 +25,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
     /// <summary>
     /// Tests the concrete implementations of the <see cref="ITableCell"/> interface.
     /// </summary>
-    public class ITableCellTests : CrossBrowserTest
+    public class ITableCellTests : WatiNCrossBrowserTest
     {
         #region Public instance test methods
 

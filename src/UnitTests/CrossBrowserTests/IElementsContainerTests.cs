@@ -31,7 +31,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
     /// implementations <see cref="WatiN.Core.Document">IE Document</see> and <see cref="WatiN.Core.Mozilla.Document">Mozilla Document</see>.
     /// </summary>
     [TestFixture]
-    public class IElementsContainerTests : CrossBrowserTest
+    public class IElementsContainerTests : WatiNCrossBrowserTest
     {
         #region Public test methods
 
@@ -1433,7 +1433,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         {
             GoTo(MainURI, browser);
             IParaCollection paras = browser.Paras;
-            Assert.AreEqual(9, paras.Length, GetErrorMessage("Incorrect no. of paragraphs returned", browser));
+            Assert.AreEqual(10, paras.Length, GetErrorMessage("Incorrect no. of paragraphs returned", browser));
         }
 
         /// <summary>

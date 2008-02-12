@@ -9,7 +9,7 @@ using WatiN.Core.UnitTests.CrossBrowserTests;
 namespace WatiN.Core.UnitTests.Mozilla
 {
     [TestFixture]
-    public class DocumentTests : CrossBrowserTest
+    public class DocumentTests : WatiNCrossBrowserTest
     {
         [TestFixtureSetUp]
         public void Setup()

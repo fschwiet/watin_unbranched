@@ -877,7 +877,12 @@ namespace WatiN.Core
 		{
 			if (NativeMethods.GetForegroundWindow() != hWnd)
 			{
-				NativeMethods.SetForegroundWindow(hWnd);
+				bool result = NativeMethods.SetForegroundWindow(hWnd);
+
+                if (!result)
+                {
+                    Logger.LogAction("Failed to set Internet Explorer as the foreground window.");
+                }
 			}
 		}
 

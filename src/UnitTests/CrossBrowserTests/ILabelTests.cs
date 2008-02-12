@@ -25,7 +25,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
     /// <summary>
     /// Tests the behaviour of the concrete implementations of <see cref="ILabel"/>.
     /// </summary>
-    public class ILabelTests : CrossBrowserTest
+    public class ILabelTests : WatiNCrossBrowserTest
     {
         /// <summary>
         /// Tests the behaviour of the <see cref="ILabel.AccessKey"/> property.

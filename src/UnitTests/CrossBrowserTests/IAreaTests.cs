@@ -27,7 +27,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
     /// Tests the behaviour of the <see cref="IArea"/> class.
     /// </summary>
     [TestFixture]
-    public class IAreaTests : CrossBrowserTest
+    public class IAreaTests : WatiNCrossBrowserTest
     {
         #region Public instance test methods
 

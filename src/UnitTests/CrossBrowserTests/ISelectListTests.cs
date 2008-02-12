@@ -29,7 +29,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
     /// <summary>
     /// Tests behaviour specific to the <see cref="ISelectList"/> interface.
     /// </summary>
-    public class ISelectListTests : CrossBrowserTest
+    public class ISelectListTests : WatiNCrossBrowserTest
     {
         #region Public instance test methods
 

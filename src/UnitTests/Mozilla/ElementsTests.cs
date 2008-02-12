@@ -25,7 +25,7 @@ using WatiN.Core.UnitTests.CrossBrowserTests;
 namespace WatiN.Core.UnitTests.Mozilla
 {
     [TestFixture]
-    public class ElementsTests : CrossBrowserTest
+    public class ElementsTests : WatiNCrossBrowserTest
     {
         #region Public instance test methods
 

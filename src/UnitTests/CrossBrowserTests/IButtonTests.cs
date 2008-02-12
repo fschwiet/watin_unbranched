@@ -26,7 +26,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
     /// Tests the behaviour of the concreate implementations of <see cref="IButton"/> 
     /// namely <see cref="WatiN.Core.Button"/> and <see cref="WatiN.Core.Mozilla.Button"/>.
     /// </summary>
-    public class IButtonTests : CrossBrowserTest
+    public class IButtonTests : WatiNCrossBrowserTest
     {
         #region Public test methods
 

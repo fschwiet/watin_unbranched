@@ -19,6 +19,7 @@
 using NUnit.Framework;
 using WatiN.Core;
 using WatiN.Core.Interfaces;
+using WatiN.Core.UnitTests;
 
 namespace WatiN.Samples.UnitTest
 {
@@ -26,14 +27,14 @@ namespace WatiN.Samples.UnitTest
     /// This class demonstrates how to use the WatiN test framework to perform some basic browser automation tests.
     /// 
     /// <see cref="SearchForWatiNOnGoogleUsingBaseTest"/> shows a generic way to execute a test on both browsers. 
-    /// The <see cref="BaseTest.ExecuteTest"/>  method takes a <see cref="BaseTest.BrowserTest">delegate</see>, which
+    /// The <see cref="CrossBrowserTest.ExecuteTest"/>  method takes a <see cref="CrossBrowserTest.BrowserTest">delegate</see>, which
     /// it will call once per browser type.
     /// 
     /// <see cref="SearchForWatiNOnGoogleVerbose"/> shows a less elegant, but simpler, way of executing a test using
     /// multiple browsers.
     /// </summary>
     [TestFixture]
-    public class GoogleTest : BaseTest
+    public class GoogleTest : CrossBrowserTest
     {
         /// <summary>
         /// Searches for WatiN on google using both Internet Explorer and Firefox.

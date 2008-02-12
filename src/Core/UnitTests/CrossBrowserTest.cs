@@ -18,17 +18,18 @@
 
 using System;
 using NUnit.Framework;
-using WatiN.Core;
 using WatiN.Core.Interfaces;
 using WatiN.Core.Logging;
 
-namespace WatiN.Samples.UnitTest
+namespace WatiN.Core.UnitTests
 {
     /// <summary>
-    /// Provides base class mechanism for executing tests on Internet Explorer and FireFox.
+    /// Base class providing helper methods and infrastructure for executing cross browser unit tests.
     /// </summary>
-    public abstract class BaseTest
+    [TestFixture]
+    public class CrossBrowserTest : IDisposable
     {
+
         private IBrowser firefox = null;
         private IBrowser ie = null;
 
@@ -64,6 +65,28 @@ namespace WatiN.Samples.UnitTest
             }
 
             set { ie = value; }
+        }
+
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool isDisposing)
+        {
+            if (isDisposing)
+            {
+                if (firefox != null)
+                {
+                    firefox.Dispose();
+                }
+
+                if (ie != null)
+                {
+                    ie.Dispose();
+                }
+            }
         }
 
         [TestFixtureSetUp]
