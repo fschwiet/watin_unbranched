@@ -24,7 +24,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
     /// <summary>
     /// Tests the behaviour of the <see cref="IRadioButton"/> interface.
     /// </summary>
-    public class IRadioButtonTests : CrossBrowserTest
+    public class IRadioButtonTests : WatiNCrossBrowserTest
     {
         #region Public instance test methods
 

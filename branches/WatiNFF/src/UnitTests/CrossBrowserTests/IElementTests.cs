@@ -26,7 +26,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
     /// Tests the behaviour of the <see cref="IElementTests"/> for all supported browsers
     /// </summary>
     [TestFixture]
-    public class IElementTests : CrossBrowserTest
+    public class IElementTests : WatiNCrossBrowserTest
     {
         #region Public instance test methods
 

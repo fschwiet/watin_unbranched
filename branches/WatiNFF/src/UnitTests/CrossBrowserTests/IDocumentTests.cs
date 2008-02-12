@@ -31,7 +31,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
     /// implementations <see cref="WatiN.Core.Document">IE Document</see> and <see cref="WatiN.Core.Mozilla.Document">Mozilla Document</see>.
     /// </summary>
     [TestFixture]
-    public class IDocumentTests : CrossBrowserTest
+    public class IDocumentTests : WatiNCrossBrowserTest
     {
         /// <summary>
         /// Tests the behaviour of the <see cref="IDocument.ActiveElement"/> property.

@@ -25,7 +25,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
     /// <summary>
     /// Tests the behaviour of the <see cref="ISpanCollection"/> interface.
     /// </summary>
-    public class ISpanCollectionTests : CrossBrowserTest
+    public class ISpanCollectionTests : WatiNCrossBrowserTest
     {
         #region Public instance test methods
 

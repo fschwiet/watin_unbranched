@@ -25,7 +25,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
     /// <summary>
     /// Tests the behaviour of the <see cref="ICheckBoxCollection"/> interface.
     /// </summary>
-    public class ICheckBoxCollectionTests : CrossBrowserTest
+    public class ICheckBoxCollectionTests : WatiNCrossBrowserTest
     {
         #region Public instance test methods
 

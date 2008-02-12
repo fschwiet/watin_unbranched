@@ -1,4 +1,4 @@
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
     <ProductVersion>9.0.21022</ProductVersion>
@@ -171,7 +171,7 @@
     <Compile Include="CrossBrowserTests\ILabelCollectionTests.cs" />
     <Compile Include="CrossBrowserTests\IImageCollectionTests.cs" />
     <Compile Include="CrossBrowserTests\IDivCollectionTests.cs" />
-    <Compile Include="CrossBrowserTests\CrossBrowserTest.cs" />
+    <Compile Include="CrossBrowserTests\WatiNCrossBrowserTest.cs" />
     <Compile Include="CrossBrowserTests\IAreaCollectionTests.cs" />
     <Compile Include="CrossBrowserTests\IAreaTests.cs" />
     <Compile Include="CrossBrowserTests\IBrowserTests.cs" />

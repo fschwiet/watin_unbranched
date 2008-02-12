@@ -24,7 +24,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
     /// <summary>
     /// Tests the behaviour of the concrete implementations of <see cref="IImage"/>.
     /// </summary>
-    public class IImageTests : CrossBrowserTest
+    public class IImageTests : WatiNCrossBrowserTest
     {
         #region Public instance test methods
 

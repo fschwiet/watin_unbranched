@@ -46,13 +46,15 @@
                     <strong>Index</strong>
                 </p>
                 <ol>
-                    <li><span>Download and install WatiN Firefox Release Candidate.</span> </li>
-                    <li><span>Creating a simple test that runs on both Internet Explorer and FireFox</span></li>
-                    <li><span>Creating a generic mechanism for executing tests that run on both Internet Explorer and FireFox</span></li>                    
-                    <li><span>Converting an existing WatiN test to run on both Internet Explorer and FireFox</span></li>
+                    <li><span><a href="#1">Download and install WatiN Firefox Release Candidate.</a></span> </li>
+                    <li><span><a href="#2">Creating a simple test that runs on both Internet Explorer and FireFox</a></span></li>
+                    <li><span><a href="#3">Creating a generic mechanism for executing tests that run on both Internet Explorer and FireFox</a></span></li>                    
+                    <li><span><a href="#4">Converting an existing WatiN test to run on both Internet Explorer and FireFox</a></span></li>
+                    <li><span><a href="#5">WatiN FireFox Feature completeness.</a></span></li>
+                    <li><span><a href="#6">Known issues.</a></span></li>
                 </ol>
                 <br />
-                <p>
+                <p><a name="1"></a
                     <strong>Download and install WatiN Firefox Release Candidate</strong>
                 </p>
                 <ul>
@@ -71,7 +73,7 @@
                     </li>
                 </ul>
                  <br />
-                <p><strong>Creating a test that runs on both Internet Explorer and FireFox</strong></p>
+                <p><a name="2"></a<strong>Creating a test that runs on both Internet Explorer and FireFox</strong></p>
                 <p>Please look at the <strong>UnitTest</strong> sample in the samples directory of WatiNFirefox for more detailed code examples</p>
                 <div style="font-family: Courier New; font-size: 10pt; color: black; background: white;">
                 <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; [<span style="color: #2b91af;">Test</span>]</pre>
@@ -96,7 +98,7 @@
                 </div>
             
                 <br />
-                <p><strong>Generic mechanism for executing tests.</strong></p>
+                <p><a name="3"></a<strong>Generic mechanism for executing tests.</strong></p>
                 <p>The test below executes a single test once for each browser type using a delegate mechanism. This mechanism isn't shown here but can be found in the BaseTest.cs sample class located in the samples folder:</p>
                 <div style="font-family: Courier New; font-size: 10pt; color: black; background: white;">
                 <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: gray;">///</span><span style="color: green;"> </span><span style="color: gray;">&lt;summary&gt;</span></pre>
@@ -125,6 +127,88 @@
                 <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre>
                 </div>
             
+            
+                <br />
+                <p><a name="4"></a><strong>Converting existing tests to be cross browser tests.</strong></p>
+                <p>The test below shows a traditional WaitN unit test:</p>
+               <div style="font-family: Courier New; font-size: 10pt; color: black; background: white;">
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; [<span style="color: #2b91af;">TestFixture</span>]</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; <span style="color: blue;">public</span> <span style="color: blue;">class</span> <span style="color: #2b91af;">PortingExample</span> : <span style="color: #2b91af;">CrossBrowserTest</span> </pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; {</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; [<span style="color: #2b91af;">Test</span>]</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">public</span> <span style="color: blue;">void</span> IETest()</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">using</span> (<span style="color: #2b91af;">IE</span> internetExplorer = <span style="color: blue;">new</span> <span style="color: #2b91af;">IE</span>())</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; internetExplorer.GoTo(<span style="color: #2b91af;">Path</span>.Combine(<span style="color: #2b91af;">Environment</span>.CurrentDirectory, <span style="color: #a31515;">"Tables.html"</span>));</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: #2b91af;">Table</span> table = internetExplorer.Table(<span style="color: #a31515;">"Table1"</span>);</pre>
+                <pre style="margin: 0px;">&nbsp;</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: #2b91af;">Assert</span>.IsNotNull(table, <span style="color: #a31515;">"Table not located"</span>);</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: #2b91af;">Assert</span>.AreEqual(<span style="color: #a31515;">"Table1"</span>, table.Id, <span style="color: #a31515;">"Incorrect table element found."</span>);</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: #2b91af;">Assert</span>.AreEqual(2, table.TableBodies.Length, <span style="color: #a31515;">"Incorrect no. of table bodies found."</span>);</pre>
+                <pre style="margin: 0px;">&nbsp;</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: #2b91af;">TableCell</span> cell = (<span style="color: #2b91af;">TableCell</span>) table.TableRows[0].TableCells[0];</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: #2b91af;">Assert</span>.IsTrue(cell.Text.StartsWith(<span style="color: #a31515;">"1"</span>), <span style="color: #a31515;">"Cell's text did not start with the expected"</span> </pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; + <span style="color: #a31515;">" character 1. Instead found: "</span> + cell.Text);</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre>
+                </div>
+
+
+                <br />
+                <p>The above test can be ported to be a cross-browser test by simply replacing the concrete IE references with the approprite interfaces. For example Table becomes ITable. The ported test below uses inherited functionality from the WatiN.Core.UnitTest.CrossBrowserTest class.</p>
+                <div style="font-family: Courier New; font-size: 10pt; color: black; background: white;">
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">private</span> <span style="color: blue;">void</span> PortedTest(<span style="color: #2b91af;">IBrowser</span> browser)</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; browser.GoTo(<span style="color: #2b91af;">Path</span>.Combine(<span style="color: #2b91af;">Environment</span>.CurrentDirectory, <span style="color: #a31515;">"Tables.html"</span>));</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: #2b91af;">ITable</span> table = browser.Table(<span style="color: #a31515;">"Table1"</span>);</pre>
+                <pre style="margin: 0px;">&nbsp;</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: #2b91af;">Assert</span>.IsNotNull(table, <span style="color: #a31515;">"Table not located"</span>);</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: #2b91af;">Assert</span>.AreEqual(<span style="color: #a31515;">"Table1"</span>, table.Id, <span style="color: #a31515;">"Incorrect table element found."</span>);</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: #2b91af;">Assert</span>.AreEqual(2, table.TableBodies.Length, <span style="color: #a31515;">"Incorrect no. of table bodies found."</span>);</pre>
+                <pre style="margin: 0px;">&nbsp;</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: #2b91af;">ITableCell</span> cell = table.TableRows[0].TableCells[0];</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: #2b91af;">Assert</span>.IsTrue(cell.Text.StartsWith(<span style="color: #a31515;">"1"</span>), <span style="color: #a31515;">"Cell's text did not start with the expected"</span> </pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; + <span style="color: #a31515;">" character 1. Instead found: "</span> + cell.Text);</pre>
+                <pre style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</pre>
+                </div>
+
+                <br /><br />
+                
+                <p><a name="5"></a><strong>WatiN FireFox Feature completeness</strong></p>
+                <table cellspacing="5" cellpadding="5" style="margin:0px 50px 50px 50px; border: solid 1px black;">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Browser</td>
+                            <td>Partial</td>
+                        </tr>
+                        <tr>
+                            <td>Elements</td>
+                            <td>Complete</td>
+                        </tr>
+                        <tr>
+                            <td>Element collections</td>
+                            <td>Complete</td>
+                        </tr>
+                        <tr>
+                            <td>Dialog Handlers</td>
+                            <td>Missing</td>
+                        </tr>                        
+                    </tbody>
+                </table>
+                
+                <p><a name="6"></a><strong>WatiN FireFox Feature completeness</strong></p>
+                <ul>
+                    <li><span>WaitiN Firefox release candidate requires .Net 2.0. Future release will be .Net 1.1 compatible.</span></li>
+                </ul>
+<br /> <br />
+                
             <!-- End div main -->
             </div>
             <div id="rightbar">

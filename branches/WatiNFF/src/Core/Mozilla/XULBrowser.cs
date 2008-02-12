@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using WatiN.Core.Logging;
 
 namespace WatiN.Core.Mozilla
 {
@@ -65,9 +66,11 @@ namespace WatiN.Core.Mozilla
 
         public void BringToFront()
         {
-            if (NativeMethods.GetForegroundWindow() != this.Handle)
+            bool result = NativeMethods.SetForegroundWindow(this.Handle);
+            
+            if (!result)
             {
-                NativeMethods.SetForegroundWindow(this.Handle);
+                Logger.LogAction("Failed to set Firefox as the foreground window.");
             }
         }
 

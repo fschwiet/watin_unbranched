@@ -25,7 +25,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
     /// <summary>
     /// Tests the behaviour of the <see cref="IOption"/> interface.
     /// </summary>
-    public class IOptionTests : CrossBrowserTest
+    public class IOptionTests : WatiNCrossBrowserTest
     {
         #region Public instance test methods
 

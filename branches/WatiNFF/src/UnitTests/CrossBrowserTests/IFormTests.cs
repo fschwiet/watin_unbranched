@@ -25,7 +25,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
     /// <summary>
     /// Tests the behaviour specific to the <see cref="IForm"/> interface.
     /// </summary>
-    public class IFormTests : CrossBrowserTest
+    public class IFormTests : WatiNCrossBrowserTest
     {
         #region Public instance test methods
 

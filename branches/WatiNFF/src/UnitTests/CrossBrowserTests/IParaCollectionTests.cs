@@ -25,7 +25,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
     /// <summary>
     /// Tests the behaviour of the <see cref="IParaCollection"/> interface.
     /// </summary>
-    public class IParaCollectionTests : CrossBrowserTest
+    public class IParaCollectionTests : WatiNCrossBrowserTest
     {
         #region Public instance test methods
 
@@ -58,7 +58,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         {
             browser.GoTo(MainURI);
             IParaCollection paras = browser.Paras;
-            Assert.AreEqual(9, paras.Length);
+            Assert.AreEqual(10, paras.Length);
             paras = paras.Filter(Find.ById(new Regex("^test")));
             Assert.AreEqual(2, paras.Length, GetErrorMessage("Incorrect no. of paragraphs returned from Filter method.", browser));
         }

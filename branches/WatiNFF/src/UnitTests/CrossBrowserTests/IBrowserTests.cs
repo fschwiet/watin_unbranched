@@ -21,13 +21,15 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using NUnit.Framework;
 using WatiN.Core.Interfaces;
+using WatiN.Core.Mozilla;
 
 namespace WatiN.Core.UnitTests.CrossBrowserTests
 {
     [TestFixture]
-    public class IBrowserTests : CrossBrowserTest
+    public class IBrowserTests : WatiNCrossBrowserTest
     {
         #region Public instance test methods
 
@@ -165,11 +167,41 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         private static void BringToFrontTest(IBrowser browser)
         {
 
-            browser.BringToFront();
+            using (Process calcProcess = new Process())
+            {
+                try
+                {
+                    calcProcess.StartInfo.FileName = "calc.exe";
+                    calcProcess.Start();
+                    calcProcess.WaitForInputIdle(5000);
+                    NativeMethods.SetForegroundWindow(calcProcess.MainWindowHandle);
 
-            Assert.IsTrue(NativeMethods.GetForegroundWindow().Equals(browser.hWnd),
-                          GetErrorMessage("IBrowser.BringToFront() failed to operate as expected.", browser));
+                    browser.BringToFront();
+                    Thread.Sleep(1000);
+                    int foregroundHandle = NativeMethods.GetForegroundWindow().ToInt32();
+                    int browserHandle = browser.hWnd.ToInt32();
+                    Assert.IsTrue(foregroundHandle.Equals(browserHandle),
+                                  GetErrorMessage(string.Format("IBrowser.BringToFront() failed to operate as expected the first time. Expected {0} got {1}", browserHandle, foregroundHandle) , browser));
 
+                    Assert.IsTrue(NativeMethods.SetForegroundWindow(calcProcess.MainWindowHandle), "Could not set calc back as the foreground window :(");
+
+                    browser.BringToFront();
+                    Thread.Sleep(1000);
+                    
+                    foregroundHandle = NativeMethods.GetForegroundWindow().ToInt32();
+                    browserHandle = browser.hWnd.ToInt32();
+                    Assert.IsTrue(foregroundHandle.Equals(browserHandle),
+                                  GetErrorMessage(string.Format("IBrowser.BringToFront() failed to operate as expected the second time. Expected {0} got {1}", browserHandle, foregroundHandle), browser));
+
+                }
+                finally
+                {
+                    if (!calcProcess.HasExited)
+                    {
+                        calcProcess.CloseMainWindow();
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -229,13 +261,17 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         private static void PressTabTest(IBrowser browser)
         {
             GoTo(MainURI, browser);
+            
             browser.BringToFront();
+            Thread.Sleep(500);
+            Assert.IsTrue(NativeMethods.GetForegroundWindow().Equals(browser.hWnd),
+                       GetErrorMessage(string.Format("IBrowser.BringToFront() failed to operate as expected. Expected hWnd {0} found {1}", browser.hWnd, NativeMethods.GetForegroundWindow()), browser));
+
             browser.TextField("name").Focus();
 
             IElement element = browser.ActiveElement;
             Assert.AreEqual("name", element.Id);
 
-            browser.BringToFront();
             browser.PressTab();
 
             element = browser.ActiveElement;
@@ -288,6 +324,11 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
             GoTo(MainURI, browser);
 
             NativeMethods.WindowShowStyle currentStyle = browser.GetWindowStyle();
+
+            if (currentStyle == NativeMethods.WindowShowStyle.Maximize)
+            {
+                currentStyle = NativeMethods.WindowShowStyle.ShowNormal;
+            }
 
             browser.ShowWindow(NativeMethods.WindowShowStyle.Maximize);
             Assert.AreEqual(NativeMethods.WindowShowStyle.Maximize.ToString(), browser.GetWindowStyle().ToString(), "Not maximized");

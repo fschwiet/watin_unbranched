@@ -24,7 +24,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
     /// <summary>
     /// Tests the behaviour specific to the <see cref="ILink"/> interface.
     /// </summary>
-    public class ILinkTests : CrossBrowserTest
+    public class ILinkTests : WatiNCrossBrowserTest
     {
         /// <summary>
         /// Tests the <see cref="ILink.Url"/> property.

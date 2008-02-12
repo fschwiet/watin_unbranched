@@ -27,23 +27,19 @@ using WatiN.Core.UnitTests.CrossBrowserTests;
 namespace WatiN.Core.UnitTests.Mozilla
 {
     [TestFixture]
-    public class FireFoxTests : CrossBrowserTest
-    {
-        [TestFixtureSetUp]
-        public void Setup()
-        {
-            Logger.LogWriter = new DebugLogWriter();
-        }
-
+    public class FireFoxTests : WatiNTest
+    {       
         /// <summary>
         /// Test that you can navigate a Url.
         /// </summary>
         [Test]
         public void GotoUrl()
         {
-            this.Firefox.GoTo(BaseElementsTests.MainURI.ToString());
-            Assert.AreEqual(BaseElementsTests.MainURI, this.Firefox.Url);
-
+            using (IBrowser fireFox = BrowserFactory.Create(BrowserType.FireFox))
+            {
+                fireFox.GoTo(MainURI.ToString());
+                Assert.AreEqual(MainURI, fireFox.Url);
+            }
         }
 
         /// <summary>
@@ -85,17 +81,18 @@ namespace WatiN.Core.UnitTests.Mozilla
         [Test, Category("InternetConnectionNeeded")]
         public void Google()
         {
-            GoTo("http://www.google.com", this.Firefox);
-            ITextField q = this.Firefox.TextField(Find.ByName("q"));
-            Assert.That(q.Exists);
-            q.Value = "WatiN";
-            this.Firefox.Button(Find.ByName("btnG")).Click();
-            
-            string text = this.Firefox.Text;
-            System.Console.WriteLine(text);
-            Assert.IsTrue(text.Contains("WatiN"));
+            using (FireFox ff = new FireFox(BaseElementsTests.MainURI.ToString()))
+            {
+                ff.GoTo("http://www.google.com");
+                ITextField q = ff.TextField(Find.ByName("q"));
+                Assert.That(q.Exists);
+                q.Value = "WatiN";
+                ff.Button(Find.ByName("btnG")).Click();
 
+                string text = ff.Text;
+                System.Console.WriteLine(text);
+                Assert.IsTrue(text.Contains("WatiN"));
+            }
         }
-
     }
 }
