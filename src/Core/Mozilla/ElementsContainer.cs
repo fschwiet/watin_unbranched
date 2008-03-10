@@ -186,8 +186,7 @@ namespace WatiN.Core.Mozilla
         /// <returns></returns>
         public IDiv Div(string id)
         {
-            Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "div", Find.ById(id), this.ClientPort);
-            return new Div(finder.FindFirst(), this.ClientPort);
+            return this.Div(Find.ById(id));
         }
 
         /// <summary>
