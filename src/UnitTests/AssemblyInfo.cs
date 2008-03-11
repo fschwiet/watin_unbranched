@@ -22,11 +22,11 @@ using System.Reflection;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle("WatiN")]
+[assembly: AssemblyTitle("WatiN 2.0 CTP")]
 [assembly: AssemblyDescription("Web Application Testing In dotNet")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("WatiN")]
+[assembly: AssemblyProduct("WatiN 2.0 CTP")]
 [assembly: AssemblyCopyright("2008 Jeroen van Menen")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
