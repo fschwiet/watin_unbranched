@@ -21,24 +21,13 @@
 - Added IE.AttachtToIENoWait(Findby[, timeout]) SF feature request 1943370: AttachToIENoWait() method for handling PDF windows
 - Added IE.GoToNoWait(string or Uri). Thanks to Martin Sponholtz for this contrib
 - had to exclude IE.GoToNoWait for .Net 1.1
-- Added IE.InternetExplorers(waitForComplete).
-- Use this method if you want WatiN to skip calling the WaitForComplete method on an InternetExplorer instance before it is returned from the collection.
-- Renamed IE.InternetExplorers(waitForComplete) to IE.InternetExplorersNoWait()
+- Added IE.InternetExplorersNoWait().
+  Use this method if you want WatiN to skip calling the WaitForComplete method on an InternetExplorer instance before it is returned from the collection.
 - Added IE.HtmlDialogsNoWait()
 - Added Document.WaitUntilContainsText(string) and Document.WaitUntilContainsText(regex)
 - Added WaitUntilContainsText(string/regex, timeout) overloads
 - Added message to HtmlDialogNotFoundException about possible pop-up blocker being active
 - Added FireEventNoWait(event, eventProperties)
-
-*** Table changes
-Fixed issue where Table.FindRow() was evaluating tablecells in a nested table.
-If users used this "bug" as a feature, tests might fail due to this fix.
-Added overloads FindRow(ICompare) and FindRow(Predicate<string>)
-Implemented Table.FindRow(Predicate<TableCell>). Now you can write:
-ie.Table(findBy).FindRow(c => Equals(c.Text, "Some text"));
-- TableRow.TableCellsDirectChildren added which only returns the direct child cells (speed!!)
-- Added TableRowsDirectChildren to Table and TableBody
-- Added Table.FindRowInDirectChildren
 
 *** MISC.
 - Made DomContainer.OnGetHtmlDocument public (instead of internal) so DomContainer can be inherited by classes outside of the WatiN assembly.
@@ -53,32 +42,7 @@ ie.Table(findBy).FindRow(c => Equals(c.Text, "Some text"));
 - Added Frame.GetAttributeValue(attributename) to get any of the Frame or IFrame (custom) attributes.
 - Added possibility to find an Ancestor of an element using a predicate or lambda expression
 
-*** New filtering options on collections
-- Added BaseElementCollection.First and First(BaseConstraint)
-now you can write 
-TextField first = ie.TextFields.First(constraint);
-instead of 
-TextField first = ie.TextFields.Filter(constraint)[0];
 
-- Added App.config so tests can run using ReSharper 4.0
-
-Introduced Element<E> and ElementsContainer<E> (if .net 20 or higher) to support element.WaitUntil(Predicate<T>). 
-
-This is a BREAKING change cause this syntax won't work any longer (with .net 2.0 or higher):
-
-ElementsContainer div = ie.Div(findBy);
-
-Change it into:
-
-IElementsContainer div = ie.Div(findBy);
-
-or
-
-ElementsContainer<Div> div = ie.Div(findBy);
-
-- Added possibility to Filter a collection of elements using a predicate or lambda expression. Example:
-
-DivCollection divs = ie.Divs.Filter(d => d.name.StartsWith("i"));
 
 
 *** Strong naming
