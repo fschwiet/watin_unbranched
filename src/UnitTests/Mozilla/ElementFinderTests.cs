@@ -15,24 +15,24 @@ using WatiN.Core.Mozilla;
 namespace WatiN.Core.UnitTests.Mozilla
 {
 	[TestFixture]
-	public class ElementFinderTests : BaseElementsTests
+	public class ElementFinderTests 
 	{
-        public override Uri TestPageUri
+        public Uri TestPageUri
         {
-            get { return MainURI; }
+            get { return BaseElementsTests.MainURI; }
         }
 
 		[Test]
 		public void TestMethod()
 		{
-			using (FireFox browser = new FireFox(MainURI))
+            using (FireFox browser = new FireFox(TestPageUri))
 			{
 				WatiN.Core.Mozilla.Element element = (WatiN.Core.Mozilla.Element)browser.Element("testElementAttributes");
 				
 				Assert.That(element.Exists, Is.True);
 				Assert.AreEqual("testElementAttributes", element.Id, "Id attribute incorrect");
-				
-				browser.GoTo(MainURI);
+
+                browser.GoTo(TestPageUri);
 				Assert.That(element.Exists, Is.False);
 				
 			}
@@ -41,7 +41,7 @@ namespace WatiN.Core.UnitTests.Mozilla
 		[Test]
 		public void TestFindElementByTagName()
 		{
-			using (FireFox browser = new FireFox(MainURI))
+            using (FireFox browser = new FireFox(TestPageUri))
 			{
 				WatiN.Core.Mozilla.ElementFinder elementFinder = new WatiN.Core.Mozilla.ElementFinder(null, "table", Find.ById("table2"), browser.ClientPort);
 				string element = elementFinder.FindFirst();
@@ -53,7 +53,7 @@ namespace WatiN.Core.UnitTests.Mozilla
 		[Test]
 		public void ShouldFindInputByTagNameAndTypeAndId()
 		{
-			using (FireFox browser = new FireFox(MainURI))
+            using (FireFox browser = new FireFox(TestPageUri))
 			{
 				WatiN.Core.Mozilla.ElementFinder elementFinder = new WatiN.Core.Mozilla.ElementFinder(null, "input", "TEXT", Find.ById("name"), browser.ClientPort);
 				string element = elementFinder.FindFirst();
@@ -65,7 +65,7 @@ namespace WatiN.Core.UnitTests.Mozilla
 		[Test]
 		public void ShouldFindInputByTagNameInUpperCaseAndTypeAndId()
 		{
-			using (FireFox browser = new FireFox(MainURI))
+            using (FireFox browser = new FireFox(TestPageUri))
 			{
 				WatiN.Core.Mozilla.ElementFinder elementFinder = new WatiN.Core.Mozilla.ElementFinder(null, "INPUT", "TEXT", Find.ByName("textinput1"), browser.ClientPort);
 				string element = elementFinder.FindFirst();
@@ -77,7 +77,7 @@ namespace WatiN.Core.UnitTests.Mozilla
 		[Test]
 		public void ShouldNotFindInputByTagNameAndIncorrectTypeAndId()
 		{
-			using (FireFox browser = new FireFox(MainURI))
+            using (FireFox browser = new FireFox(TestPageUri))
 			{
 				WatiN.Core.Mozilla.ElementFinder elementFinder = new WatiN.Core.Mozilla.ElementFinder(null, "input", "text", Find.ById("Checkbox3"), browser.ClientPort);
 				string element = elementFinder.FindFirst();
@@ -89,7 +89,7 @@ namespace WatiN.Core.UnitTests.Mozilla
 		[Test]
 		public void TestFindElement()
 		{
-			using (FireFox browser = new FireFox(MainURI))
+            using (FireFox browser = new FireFox(TestPageUri))
 			{
 				WatiN.Core.Mozilla.ElementFinder elementFinder = new WatiN.Core.Mozilla.ElementFinder(null, "*", Find.ById("table2"), browser.ClientPort);
 				string element = elementFinder.FindFirst();

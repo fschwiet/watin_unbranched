@@ -149,7 +149,7 @@ namespace WatiN.Core.Mozilla
         {
             get
             {
-                this.ClientPort.Write("{0}.location", FireFoxClientPort.WindowVariableName);
+                this.ClientPort.Write("{0}.location.href", FireFoxClientPort.WindowVariableName);
                 return this.ClientPort.LastResponse;
             }
         }
