@@ -60,7 +60,7 @@ namespace WatiN.Core.Comparers
 		{
 			if (UtilityClass.IsNullOrEmpty(value)) return false;
 
-			return Compare(new Uri(value));
+			return Compare(UtilityClass.CreateUri(value));
 		}
 
 		/// <summary>

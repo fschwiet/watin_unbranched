@@ -17,7 +17,9 @@ namespace WatiN.Core.InternetExplorer
 
 		public IEElement(object element)
 		{
-			_element = element;
+            if (element == null) throw new ArgumentNullException("element");
+            if (element is INativeElement) throw new Exception("INativeElement not allowed");
+            _element = element;
 		}
 
 		/// <summary>

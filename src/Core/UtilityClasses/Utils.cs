@@ -350,5 +350,20 @@ namespace WatiN.Core
 
 			return value;
 		}
+
+	    public static Uri CreateUri(string url)
+        {
+            Uri uri;
+            try
+            {
+                uri = new Uri(url);
+            }
+            catch (UriFormatException)
+            {
+                uri = new Uri("http://" + url);
+            }
+            return uri;
+        }
+
 	}
 }

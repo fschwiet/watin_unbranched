@@ -17,6 +17,7 @@
 #endregion Copyright
 
 using System;
+using WatiN.Core.Logging;
 
 namespace WatiN.Core.DialogHandlers
 {
@@ -42,11 +43,12 @@ namespace WatiN.Core.DialogHandlers
 
 		public void Click()
 		{
-			if (Exists())
-			{
-				_hWnd.SendMessage(NativeMethods.WM_ACTIVATE, NativeMethods.MA_ACTIVATE, 0);
-				_hWnd.SendMessage(NativeMethods.BM_CLICK, 0, 0);
-			}
+            if (!Exists()) return;
+
+            Logger.LogAction("Clicking on '{0}'", Title);
+
+            _hWnd.SendMessage(NativeMethods.WM_ACTIVATE, NativeMethods.MA_ACTIVATE, 0);
+			_hWnd.SendMessage(NativeMethods.BM_CLICK, 0, 0);
 		}
 
 		public bool Exists()

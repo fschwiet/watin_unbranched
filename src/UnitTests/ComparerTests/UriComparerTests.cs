@@ -97,14 +97,6 @@ namespace WatiN.Core.UnitTests
 			new UriComparer(null);
 		}
 
-		[Test, ExpectedException(typeof (UriFormatException))]
-		public void StringCompareOnlyExceptsValidUrl()
-		{
-			ICompare comparer = new UriComparer(new Uri("http://watin.sourceforge.net"));
-
-			comparer.Compare("watin");
-		}
-
 		[Test]
 		public void ToStringTest()
 		{
@@ -157,5 +149,33 @@ namespace WatiN.Core.UnitTests
             Assert.That(comparer.Compare(url), Is.True);
         }
 
+        [Test]
+        public void WhenEncounteringABadUrlCompareShouldReturnFalse()
+        {
+            // GIVEN
+            string badUrl = "bad.formated@url";
+            try
+            {
+                new Uri(badUrl);
+                Assert.Fail("Precondition failed");
+            }
+            catch (UriFormatException)
+            {
+                // OK;
+            }
+            catch (Exception e)
+            {
+                Assert.Fail("Precondition: Unexpected exception " + e);
+            }
+
+            UriComparer comparer = new UriComparer(new Uri("http://www.watin.net"));
+
+            // WHEN
+            bool compare = comparer.Compare(badUrl);
+
+            // THEN
+            Assert.That(compare, Is.False);
+
+        }
 	}
 }

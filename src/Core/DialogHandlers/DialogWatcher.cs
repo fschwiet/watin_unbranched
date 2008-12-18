@@ -265,7 +265,7 @@ namespace WatiN.Core.DialogHandlers
 
 		/// <summary>
 		/// Gets or sets a value indicating whether unhandled dialogs should be closed automaticaly.
-		/// The initial value is set to the value of <paramref name="Settings.AutoCloseDialogs" />.
+		/// The initial value is set to the value of <cref name="Settings.AutoCloseDialogs" />.
 		/// </summary>
 		/// <value>
 		/// 	<c>true</c> if unhandled dialogs should be closed automaticaly; otherwise, <c>false</c>.

@@ -75,15 +75,9 @@ namespace WatiN.Core
 			}
 
 			FileUploadDialogHandler uploadDialogHandler = new FileUploadDialogHandler(fileName);
-			DomContainer.AddDialogHandler(uploadDialogHandler);
-
-			try
+			using(new UseDialogOnce(DomContainer.DialogWatcher, uploadDialogHandler))
 			{
 				Click();
-			}
-			finally
-			{
-				DomContainer.RemoveDialogHandler(uploadDialogHandler);
 			}
 		}
 

@@ -36,7 +36,8 @@ namespace WatiN.Core
 
 		internal const int WM_SYSCOMMAND = 0x0112;
 		internal const int WM_CLOSE = 0x0010;
-		internal const int SC_CLOSE = 0xF060;
+        internal const UInt32 WM_CHAR = 0x0102;
+        internal const int SC_CLOSE = 0xF060;
 
 		internal const int KEYEVENTF_EXTENDEDKEY = 0x1;
 		internal const int KEYEVENTF_KEYUP = 0x2;
@@ -237,9 +238,15 @@ namespace WatiN.Core
 		[DllImport("user32.dll", CharSet=CharSet.Auto)]
 		internal static extern int SendMessage(IntPtr hWnd, int msg, int wParam, int lParam);
 
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        internal static extern IntPtr SendMessage(HandleRef hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+
 		[DllImport("user32.dll", SetLastError=true)]
 		[return : MarshalAs(UnmanagedType.Bool)]
 		internal static extern bool SetForegroundWindow(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        internal static extern IntPtr SetFocus(IntPtr hWnd);
 
 		[DllImport("user32", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
 		internal static extern Int32 EnumChildWindows(IntPtr hWndParent, EnumChildProc lpEnumFunc, ref IntPtr lParam);

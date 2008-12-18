@@ -309,42 +309,23 @@ namespace WatiN.Core.DialogHandlers
 			get { return downloadProgressDialog; }
 			set
 			{
-//        Logger.LogAction("Entering DownloadProgressDialog.");
-				if (downloadProgressDialog == null)
-				{
-//          Logger.LogAction("downloadProgressDialog == null");
+			    if (downloadProgressDialog != null) return;
+			    
+                Window dialog = value;
 
-					Window dialog = value;
+			    if (dialog != null)
+			    {
 
-					if (dialog != null)
-					{
-//            Logger.LogAction("!dialog.Exists()");
+			        if (!dialog.Exists() || !IsDownloadProgressDialog(dialog))
+			        {
+			            dialog = null;
+			        }
+			    }
 
-						if (!dialog.Exists())
-						{
-//              Logger.LogAction("download progress dialog should exist.");
-							dialog = null;
-						}
-
-//            Logger.LogAction("!IsDownloadProgressDialog(dialog)");
-						if (!IsDownloadProgressDialog(dialog))
-						{
-//              Logger.LogAction("Should be a download progress dialog.");
-							dialog = null;
-						}
-					}
-
-//          Logger.LogAction("dialog != null");
-					if (dialog != null)
-					{
-//            Logger.LogAction("Set downloadProgressDialog field.");
-						downloadProgressDialog = dialog;
-					}
-					else
-					{
-//            Logger.LogAction("downloadProgressDialog not set.");
-					}
-				}
+			    if (dialog != null)
+			    {
+			        downloadProgressDialog = dialog;
+			    }
 			}
 		}
 

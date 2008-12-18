@@ -343,21 +343,7 @@ namespace WatiN.Core
 		/// </example>
 		public IE(string url)
 		{
-			CreateNewIEAndGoToUri(CreateUri(url), null, false);
-		}
-
-		private static Uri CreateUri(string url)
-		{
-			Uri uri;
-			try
-			{
-				uri = new Uri(url);
-			}
-			catch (UriFormatException)
-			{
-				uri = new Uri("http://" + url);
-			}
-			return uri;
+			CreateNewIEAndGoToUri(UtilityClass.CreateUri(url), null, false);
 		}
 
 		/// <summary>
@@ -392,7 +378,7 @@ namespace WatiN.Core
 		/// </example>
 		public IE(string url, bool createInNewProcess)
 		{
-			CreateNewIEAndGoToUri(CreateUri(url), null, createInNewProcess);
+            CreateNewIEAndGoToUri(UtilityClass.CreateUri(url), null, createInNewProcess);
 		}
 
 		/// <summary>
@@ -495,7 +481,7 @@ namespace WatiN.Core
 		/// </example>
 		public IE(string url, LogonDialogHandler logonDialogHandler)
 		{
-			CreateNewIEAndGoToUri(CreateUri(url), logonDialogHandler, false);
+            CreateNewIEAndGoToUri(UtilityClass.CreateUri(url), logonDialogHandler, false);
 		}
 
 		/// <summary>
@@ -528,7 +514,7 @@ namespace WatiN.Core
 		/// </example>
 		public IE(string url, LogonDialogHandler logonDialogHandler, bool createInNewProcess)
 		{
-			CreateNewIEAndGoToUri(CreateUri(url), logonDialogHandler, createInNewProcess);
+            CreateNewIEAndGoToUri(UtilityClass.CreateUri(url), logonDialogHandler, createInNewProcess);
 		}
 
 		/// <summary>
@@ -837,7 +823,7 @@ namespace WatiN.Core
 		/// </example>
 		public void GoTo(string url)
 		{
-			GoTo(CreateUri(url));
+            GoTo(UtilityClass.CreateUri(url));
 		}
 
 #if !NET11
@@ -867,7 +853,7 @@ namespace WatiN.Core
         /// </example>
         public void GoToNoWait(string url)
         {
-            GoToNoWait(CreateUri(url));
+            GoToNoWait(UtilityClass.CreateUri(url));
         }
 
         /// <summary>

@@ -26,21 +26,23 @@ namespace WatiN.Core.DialogHandlers
 
 		public FileUploadDialogHandler(string fileName)
 		{
-			this.fileName = UtilityClass.EscapeSendKeysCharacters(fileName);
+			this.fileName = fileName;
 		}
 
 		public override bool HandleDialog(Window window)
 		{
 			if (IsFileUploadDialog(window))
 			{
-				IntPtr usernameControlHandle = NativeMethods.GetChildWindowHwnd(window.Hwnd, "Edit");
+                var fileNameHandle = NativeMethods.GetChildWindowHwnd(window.Hwnd, "Edit");
+                var fileNameHwnd = new Hwnd(fileNameHandle);
 
-				NativeMethods.SetForegroundWindow(usernameControlHandle);
-				NativeMethods.SetActiveWindow(usernameControlHandle);
+                fileNameHwnd.SetFocus();
+                fileNameHwnd.SendString(fileName);
 
-
-				System.Windows.Forms.SendKeys.SendWait(fileName + "{ENTER}");
-				return true;
+                var openButton = new WinButton(1, window.Hwnd);
+                openButton.Click();
+                
+                return true;
 			}
 
 			return false;

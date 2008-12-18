@@ -1,4 +1,6 @@
 using System;
+using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace WatiN.Core.DialogHandlers
 {
@@ -53,6 +55,25 @@ namespace WatiN.Core.DialogHandlers
         public IntPtr GetDlgItem(int controlid)
         {
             return NativeMethods.GetDlgItem(_hwnd, controlid);
+        }
+    
+        public void SendString(string s)
+        {
+            foreach (var c in s)
+            {
+                Thread.Sleep(50);
+                SendChar(c, _hwnd);
+            }
+        }
+
+        public void SetFocus()
+        {
+            NativeMethods.SetFocus(_hwnd);
+        }
+
+        private static void SendChar(char c, IntPtr handle)
+        {
+            NativeMethods.SendMessage(new HandleRef(null, handle), NativeMethods.WM_CHAR, new IntPtr(Convert.ToInt64(c)), IntPtr.Zero);
         }
     }
 }
