@@ -1,0 +1,2 @@
+- Added fixes before revision 704
+- Include fixes supplied by Richard Allen
