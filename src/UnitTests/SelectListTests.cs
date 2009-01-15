@@ -106,12 +106,12 @@ namespace WatiN.Core.UnitTests
 		[Test]
 		public void SelectListCollection()
 		{
-			Assert.AreEqual(2, ie.SelectLists.Length);
+			Assert.AreEqual(5, ie.SelectLists.Length);
 
 			// Collections
 			SelectListCollection selectLists = ie.SelectLists;
 
-			Assert.AreEqual(2, selectLists.Length);
+			Assert.AreEqual(5, selectLists.Length);
 
 			// Collection items by index
 			Assert.AreEqual("Select1", selectLists[0].Id);
@@ -133,7 +133,7 @@ namespace WatiN.Core.UnitTests
 			}
 
 			Assert.IsFalse(selectListEnumerator.MoveNext(), "Expected last item");
-			Assert.AreEqual(2, count);
+			Assert.AreEqual(5, count);
 		}
 
 		[Test]

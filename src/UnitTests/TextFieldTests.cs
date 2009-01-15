@@ -207,7 +207,7 @@ namespace WatiN.Core.UnitTests
 		[Test]
 		public void TextFields()
 		{
-			Assert.AreEqual(6, ie.TextFields.Length, "Unexpected number of TextFields");
+			Assert.AreEqual(7, ie.TextFields.Length, "Unexpected number of TextFields");
 
 			// Collection items by index
 			Form mainForm = ie.Form("FormHiddens");

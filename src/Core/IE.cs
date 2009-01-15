@@ -67,16 +67,8 @@ namespace WatiN.Core
 
 		public static Settings Settings
 		{
-			set
-			{
-				if (value == null)
-				{
-					throw new ArgumentNullException("value");
-				}
-
-				settings = value;
-			}
-			get { return settings; }
+			set { BrowserFactory.Settings = value; }
+            get { return BrowserFactory.Settings; }
 		}
 
 		/// <summary>

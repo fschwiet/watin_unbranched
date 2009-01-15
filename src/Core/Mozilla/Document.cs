@@ -56,8 +56,7 @@ namespace WatiN.Core.Mozilla
         {
             get
             {
-                this.ClientPort.Write(string.Format("domDumpFull({0}.body);", FireFoxClientPort.DocumentVariableName));
-                return this.ClientPort.LastResponse;
+                return this.ClientPort.WriteAndRead(string.Format("domDumpFull({0}.body);", FireFoxClientPort.DocumentVariableName));
             }
         }
 
@@ -69,8 +68,7 @@ namespace WatiN.Core.Mozilla
         {
             get
             {
-                this.ClientPort.Write(string.Format("{0}.body.textContent;", FireFoxClientPort.DocumentVariableName));
-                return this.ClientPort.LastResponse;
+                return this.ClientPort.WriteAndRead(string.Format("{0}.body.textContent;", FireFoxClientPort.DocumentVariableName));
             }    
         }
 
@@ -82,8 +80,7 @@ namespace WatiN.Core.Mozilla
         {
             get
             {
-                this.ClientPort.Write(string.Format("{0}.title", FireFoxClientPort.DocumentVariableName));
-                return this.ClientPort.LastResponse;
+                return this.ClientPort.WriteAndRead(string.Format("{0}.title", FireFoxClientPort.DocumentVariableName));
             }
         }
 
@@ -149,8 +146,7 @@ namespace WatiN.Core.Mozilla
         {
             get
             {
-                this.ClientPort.Write("{0}.location.href", FireFoxClientPort.WindowVariableName);
-                return this.ClientPort.LastResponse;
+                return this.ClientPort.WriteAndRead("{0}.location.href", FireFoxClientPort.WindowVariableName);
             }
         }
 
@@ -171,17 +167,14 @@ namespace WatiN.Core.Mozilla
             }
 
             string elementvar = FireFoxClientPort.CreateVariableName();
-            string command = string.Format("{0}={1}.{2};{0}==null", elementvar, FireFoxClientPort.DocumentVariableName, propertyName);
-            this.ClientPort.Write(command);
+            string command = string.Format("{0}={1}.{2};{0}!=null;", elementvar, FireFoxClientPort.DocumentVariableName, propertyName);
+            bool exists = ClientPort.WriteAndReadAsBool(command);
 
-            if (!this.ClientPort.LastResponseAsBool)
+            if (exists)
             {
                 return new Element(elementvar, this.ClientPort);
             }
-            else
-            {
-                return null;
-            }
+            return null;
         }
 
         #endregion

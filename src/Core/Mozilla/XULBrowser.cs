@@ -119,13 +119,13 @@ namespace WatiN.Core.Mozilla
         internal static void WaitForComplete(FireFoxClientPort clientPort)
         {
             string command = string.Format("{0}.webProgress.isLoadingDocument;", FireFoxClientPort.BrowserVariableName);
-            clientPort.Write(command);
 
-            while (clientPort.LastResponse == "true")
+            bool loading = clientPort.WriteAndReadAsBool(command);
+
+            while (loading)
             {
                 Thread.Sleep(200);
-                command = string.Format("{0}.webProgress.isLoadingDocument;", FireFoxClientPort.BrowserVariableName);
-                clientPort.Write(command);
+                loading = clientPort.WriteAndReadAsBool(command);
             }
 
             clientPort.InitializeDocument();

@@ -57,7 +57,7 @@ namespace WatiN.Core.UnitTests.Mozilla
         {
             using (FireFoxClientPort ffPort = new FireFoxClientPort())
             {
-                ffPort.Connect();
+                ffPort.Connect("");
                 Assert.IsTrue(ffPort.Response.Contains("Welcome to the Mozilla JavaScript Shell!"));
             }
 
@@ -108,7 +108,7 @@ namespace WatiN.Core.UnitTests.Mozilla
                     Process existingInstance = FireFox.CreateProcess();
                     try
                     {
-                        ffPort.Connect();
+                        ffPort.Connect("");
                     }
                     finally
                     {
@@ -134,16 +134,16 @@ namespace WatiN.Core.UnitTests.Mozilla
         {
             using (FireFoxClientPort ffPort = new FireFoxClientPort())
             {
-                ffPort.Connect();
+                ffPort.Connect("");
                 ffPort.Write("{0}.loadURI(\"{1}\")", FireFoxClientPort.BrowserVariableName, MainURI);
-                ffPort.Write("for (i = 0; i < 1000; i++){links = doc.getElementsByTagName(\"a\");links.length;} true;");
-                Assert.IsTrue(ffPort.LastResponseAsBool);
+                bool result = ffPort.WriteAndReadAsBool("for (i = 0; i < 1000; i++){links = doc.getElementsByTagName(\"a\");links.length;} true;");
+                Assert.IsTrue(result);
 
                 for (int i = 0; i < 50; i++)
                 {
                     ffPort.Write("{0}.loadURI(\"{1}\")", FireFoxClientPort.BrowserVariableName, MainURI);
-                    ffPort.Write("for (i = 0; i < 1000; i++){links = doc.getElementsByTagName(\"a\");links.length;} true;");
-                    Assert.IsTrue(ffPort.LastResponseAsBool);
+                    result = ffPort.WriteAndReadAsBool("for (i = 0; i < 1000; i++){links = doc.getElementsByTagName(\"a\");links.length;} true;");
+                    Assert.IsTrue(result);
                 }
             }
         }
@@ -174,8 +174,8 @@ namespace WatiN.Core.UnitTests.Mozilla
         {
             using (FireFoxClientPort ffPort = new FireFoxClientPort())
             {
-                ffPort.Write("for (i = 0; i < 1000; i++){links = doc.getElementsByTagName(\"a\");links.length;} return true;");
-                Assert.IsTrue(ffPort.LastResponseAsBool);
+                bool result = ffPort.WriteAndReadAsBool("for (i = 0; i < 1000; i++){links = doc.getElementsByTagName(\"a\");links.length;}");
+                Assert.IsTrue(result);
             }
         }
 
@@ -187,7 +187,7 @@ namespace WatiN.Core.UnitTests.Mozilla
         {
             using (FireFoxClientPort ffPort = new FireFoxClientPort())
             {
-                ffPort.Connect();
+                ffPort.Connect("");
                 Assert.IsTrue(ffPort.IsMainWindowVisible);
             }
         }

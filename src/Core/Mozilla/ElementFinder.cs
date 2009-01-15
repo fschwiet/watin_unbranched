@@ -112,9 +112,9 @@ namespace WatiN.Core.Mozilla
                 //            }
 
                 command = command + string.Format("{0}.length;", elementArrayName);
-                this.clientPort.Write(command);
+                this.clientPort.WriteAndReadAsInt(command);
 
-                int numberOfElements = int.Parse(this.clientPort.LastResponse);
+                int numberOfElements = this.clientPort.WriteAndReadAsInt(command);
 
                 for (int index = 0; index < numberOfElements; index++)
                 {

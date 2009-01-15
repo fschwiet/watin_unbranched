@@ -138,8 +138,7 @@ namespace WatiN.Core.Mozilla
         /// or throws an exception during evaluation</exception>
         public string Eval(string javaScriptCode)
         {
-            this.ClientPort.Write(javaScriptCode);
-            return this.ClientPort.LastResponse;
+            return this.ClientPort.WriteAndRead(javaScriptCode);
         }
 
         /// <summary>
@@ -489,7 +488,7 @@ namespace WatiN.Core.Mozilla
         public void Reopen()
         {
             this.ClientPort.Dispose();
-            this.ClientPort.Connect();
+            this.ClientPort.Connect("");
         }
 
         /// <summary>
@@ -590,7 +589,7 @@ namespace WatiN.Core.Mozilla
         private void CreateFireFoxInstance()
         {
             Logger.LogAction("Creating new FireFox instance");
-            this.ClientPort.Connect();
+            this.ClientPort.Connect("");
 
             this.xulBrowser = new XULBrowser(this.ClientPort);
         }

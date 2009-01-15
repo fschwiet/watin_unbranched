@@ -63,7 +63,7 @@ namespace WatiN.Core.UnitTests
 		[Test]
 		public void Paras()
 		{
-			const int expectedParasCount = 4;
+			const int expectedParasCount = 10;
 			Assert.AreEqual(expectedParasCount, ie.Paras.Length, "Unexpected number of Paras");
 
 			// Collection.Length

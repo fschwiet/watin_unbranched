@@ -75,7 +75,7 @@ namespace WatiN.Core.UnitTests
 		public void LabelWrapped()
 		{
 			LabelCollection labelCollection = ie.Labels;
-			Assert.AreEqual(2, ie.Labels.Length, "Unexpected number of labels");
+			Assert.AreEqual(3, ie.Labels.Length, "Unexpected number of labels");
 
 			Label label = (Label) labelCollection[1];
 
@@ -88,7 +88,7 @@ namespace WatiN.Core.UnitTests
 		[Test]
 		public void Labels()
 		{
-			const int expectedLabelCount = 2;
+			const int expectedLabelCount = 3;
 
 			Assert.AreEqual(expectedLabelCount, ie.Labels.Length, "Unexpected number of labels");
 

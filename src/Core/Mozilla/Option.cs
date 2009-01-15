@@ -51,8 +51,7 @@ namespace WatiN.Core.Mozilla
         {
             get
             {
-                this.ClientPort.Write("{0}.selected;", this.ElementVariable);
-                return this.ClientPort.LastResponseAsBool;
+                return ClientPort.WriteAndReadAsBool("{0}.selected;", ElementVariable);
             }
         }
 

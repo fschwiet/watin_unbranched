@@ -1,7 +1,7 @@
 ﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{D6E231B3-28D9-4F73-9586-738FB528B4DB}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -95,17 +95,11 @@
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
-    <Reference Include="System.Data">
-      <Name>System.Data</Name>
-    </Reference>
     <Reference Include="System.Drawing">
       <Name>System.Drawing</Name>
     </Reference>
     <Reference Include="System.Windows.Forms">
       <Name>System.Windows.Forms</Name>
-    </Reference>
-    <Reference Include="System.Xml">
-      <Name>System.XML</Name>
     </Reference>
     <ProjectReference Include="..\Core\Core.csproj">
       <Name>Core</Name>
@@ -329,38 +323,7 @@
       <SubType>Code</SubType>
     </Compile>
     <None Include="app.config" />
-    <None Include="AttributeConstraintTests\_svn\dir-prop-base" />
-    <None Include="AttributeConstraintTests\_svn\dir-props" />
-    <None Include="AttributeConstraintTests\_svn\dir-wcprops" />
-    <None Include="AttributeConstraintTests\_svn\empty-file" />
-    <None Include="AttributeConstraintTests\_svn\entries" />
-    <None Include="AttributeConstraintTests\_svn\format" />
-    <None Include="AttributeConstraintTests\_svn\prop-base\ComplexMultipleAttributeConstraintTests.cs.svn-base" />
-    <None Include="AttributeConstraintTests\_svn\prop-base\ElementConstraintTests.cs.svn-base" />
-    <None Include="AttributeConstraintTests\_svn\prop-base\EvenMoreComplexMultipleAttributeConstraintsTests.cs.svn-base" />
-    <None Include="AttributeConstraintTests\_svn\prop-base\FindByMultipleAttributeConstraintsTests.cs.svn-base" />
-    <None Include="AttributeConstraintTests\_svn\prop-base\NotAttributeConstraintTests.cs.svn-base" />
-    <None Include="AttributeConstraintTests\_svn\prop-base\NotConstraintTests.cs.svn-base" />
-    <None Include="AttributeConstraintTests\_svn\props\ComplexMultipleAttributeConstraintTests.cs.svn-work" />
-    <None Include="AttributeConstraintTests\_svn\props\ElementConstraintTests.cs.svn-work" />
-    <None Include="AttributeConstraintTests\_svn\props\EvenMoreComplexMultipleAttributeConstraintsTests.cs.svn-work" />
-    <None Include="AttributeConstraintTests\_svn\props\FindByMultipleAttributeConstraintsTests.cs.svn-work" />
-    <None Include="AttributeConstraintTests\_svn\props\NotAttributeConstraintTests.cs.svn-work" />
-    <None Include="AttributeConstraintTests\_svn\props\NotConstraintTests.cs.svn-work" />
-    <None Include="AttributeConstraintTests\_svn\text-base\ComplexMultipleAttributeConstraintTests.cs.svn-base" />
-    <None Include="AttributeConstraintTests\_svn\text-base\ElementConstraintTests.cs.svn-base" />
-    <None Include="AttributeConstraintTests\_svn\text-base\EvenMoreComplexMultipleAttributeConstraintsTests.cs.svn-base" />
-    <None Include="AttributeConstraintTests\_svn\text-base\FindByMultipleAttributeConstraintsTests.cs.svn-base" />
-    <None Include="AttributeConstraintTests\_svn\text-base\NotAttributeConstraintTests.cs.svn-base" />
-    <None Include="AttributeConstraintTests\_svn\text-base\NotConstraintTests.cs.svn-base" />
-    <None Include="AttributeConstraintTests\_svn\wcprops\ComplexMultipleAttributeConstraintTests.cs.svn-work" />
-    <None Include="AttributeConstraintTests\_svn\wcprops\ElementConstraintTests.cs.svn-work" />
-    <None Include="AttributeConstraintTests\_svn\wcprops\EvenMoreComplexMultipleAttributeConstraintsTests.cs.svn-work" />
-    <None Include="AttributeConstraintTests\_svn\wcprops\FindByMultipleAttributeConstraintsTests.cs.svn-work" />
-    <None Include="AttributeConstraintTests\_svn\wcprops\NotAttributeConstraintTests.cs.svn-work" />
-    <None Include="AttributeConstraintTests\_svn\wcprops\NotConstraintTests.cs.svn-work" />
     <None Include="WatiN.Core.UnitTests.dll.config" />
-    <Content Include="AttributeConstraintTests\_svn\README.txt" />
     <Content Include="html\CrossDomainFrameset.html" />
     <Content Include="html\formsubmit.html" />
     <Content Include="html\Frameset.html" />
@@ -380,12 +343,6 @@
     <Content Include="html\popup.html" />
     <Content Include="html\Tables.html" />
     <Content Include="html\TestEvents.html" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="AttributeConstraintTests\_svn\tmp\prop-base\" />
-    <Folder Include="AttributeConstraintTests\_svn\tmp\props\" />
-    <Folder Include="AttributeConstraintTests\_svn\tmp\text-base\" />
-    <Folder Include="AttributeConstraintTests\_svn\tmp\wcprops\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

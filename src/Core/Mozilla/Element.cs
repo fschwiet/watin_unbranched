@@ -17,12 +17,8 @@
 #endregion Copyright
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
-using MIL.Html;
-using WatiN.Core;
 using WatiN.Core.Exceptions;
 using WatiN.Core.Interfaces;
 
@@ -38,7 +34,11 @@ namespace WatiN.Core.Mozilla
         /// I.e. for options myOption.getAttribute("selected"); returns nothing if it's selected. 
         /// However  myOption.selected returns true.
         /// </summary>
-        private static readonly List<string> knownAttributeOverrides = new List<string>(new string[] { "selected", "textContent", "className" });
+        private static readonly List<string> knownAttributeOverrides = new List<string>(
+            new string[]
+                {
+                    "selected", "textContent", "className", "disabled", "checked", "readOnly", "multiple", "value"
+                });
 
         private static readonly Dictionary<string, string> watiNAttributeMap = new Dictionary<string, string>();
 
@@ -293,8 +293,7 @@ namespace WatiN.Core.Mozilla
                 if (UtilityClass.IsNullOrEmpty(elementVariable)) return false;
 
                 string command = string.Format("{0} != null; ", elementVariable);
-                this.ClientPort.Write(command);
-                return this.clientPort.LastResponse == "true";
+                return clientPort.WriteAndReadAsBool(command);
             }
         }
 
@@ -319,8 +318,8 @@ namespace WatiN.Core.Mozilla
         protected void ExecuteEvent(string eventName)
         {
             this.ClientPort.Write(
-                    "var event = " + FireFoxClientPort.DocumentVariableName + ".createEvent(\"MouseEvents\");\n" +
-                    "event.initEvent(\"" + eventName + "\",true,true);\n" +
+                    "var event = " + FireFoxClientPort.DocumentVariableName + ".createEvent(\"MouseEvents\");" +
+                    "event.initEvent(\"" + eventName + "\",true,true);" +
                     "var res = " + this.ElementVariable + ".dispatchEvent(event); if(res){true;}else{false};");
         }
 
@@ -350,25 +349,27 @@ namespace WatiN.Core.Mozilla
                 throw new FireFoxException("Element does not exist, element variable was empty");
             }
 
+            // Translate to FireFox html syntax
             if (watiNAttributeMap.ContainsKey(attributeName))
             {
                 attributeName = watiNAttributeMap[attributeName];
             }
 
+            // Handle properties different from attributes
             if (knownAttributeOverrides.Contains(attributeName) || attributeName.StartsWith("style", StringComparison.OrdinalIgnoreCase))
             {
-                return this.GetProperty(attributeName);
+                return GetProperty(attributeName);
             }
 
-            string getAttributeWrite = string.Format("{0}.getAttribute(\"{1}\");", this.ElementVariable, attributeName);
-            this.ClientPort.Write(getAttributeWrite);
+            // Retrieve attribute value
+            string getAttributeWrite = string.Format("{0}.getAttribute(\"{1}\");", elementVariable, attributeName);
+            string lastResponse = ClientPort.WriteAndRead(getAttributeWrite);
 
-            if (this.ClientPort.LastResponseIsNull)
-            {
-                return null;
-            }
+            // Post processing
+            if (attributeName.ToLowerInvariant() == "type") { lastResponse = lastResponse ?? "text"; }
 
-            return this.ClientPort.LastResponse;
+            // return result
+            return lastResponse;
         }
 
         /// <summary>
@@ -388,10 +389,8 @@ namespace WatiN.Core.Mozilla
                 throw new FireFoxException("Element does not exist, element variable was empty");
             }
 
-            string command = string.Format("{0}.{1};", this.ElementVariable, propertyName);
-            this.ClientPort.Write(command);
-
-            return this.ClientPort.LastResponse;
+            string command = string.Format("{0}.{1};", elementVariable, propertyName);
+            return ClientPort.WriteAndRead(command);
         }
 
         /// <summary>
@@ -406,23 +405,15 @@ namespace WatiN.Core.Mozilla
                 throw new ArgumentNullException("propertyName");
             }
 
-            if (string.IsNullOrEmpty(this.elementVariable))
-            {
-                throw new FireFoxException("Element does not exist, element variable was empty");
-            }
-
             string elementvar = FireFoxClientPort.CreateVariableName();
-            string command = string.Format("{0}={1}.{2};", elementvar, this.ElementVariable, propertyName);
-            this.ClientPort.Write(command);
+            string command = string.Format("{0}={1}.{2};{0}==null;", elementvar, elementVariable, propertyName);
+            bool result = ClientPort.WriteAndReadAsBool(command);
 
-            if (!this.ClientPort.LastResponseIsNull)
+            if (!result)
             {
                 return new Element(elementvar, this.ClientPort);
             }
-            else
-            {
-                return null;
-            }
+            return null;
         }
 
         /// <summary>
@@ -432,6 +423,19 @@ namespace WatiN.Core.Mozilla
         /// <param name="value">The value.</param>
         protected void SetAttributeValue(string attributeName, string value)
         {
+            // Translate to FireFox html syntax
+            if (watiNAttributeMap.ContainsKey(attributeName))
+            {
+                attributeName = watiNAttributeMap[attributeName];
+            }
+
+            // Handle properties different from attributes
+            if (knownAttributeOverrides.Contains(attributeName) || attributeName.StartsWith("style", StringComparison.OrdinalIgnoreCase))
+            {
+                SetProperty(attributeName, value);
+                return;
+            }
+
             string command = string.Format("{0}.setAttribute(\"{1}\", \"{2}\");", this.ElementVariable, attributeName, value);
             this.ClientPort.Write(command);
         }

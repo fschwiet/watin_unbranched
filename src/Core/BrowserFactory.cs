@@ -62,9 +62,6 @@ namespace WatiN.Core
                 }
 
                 settings = value;
-
-                // #TODO remove if IE refactored and no longer has a settings property ?
-                IE.Settings = settings;
             }
             get { return settings; }
         }
