@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<project SchemaVersion="2.0">
+    <assemblies>
+        <assembly location="W:\branches\WatiNFF\WatiN-2.0.2.754-net-2.0\bin\WatiN.Core.dll" documentation="W:\branches\WatiNFF\WatiN-2.0.2.754-net-2.0\bin\WatiN.Core.xml" />
+    </assemblies>
+    <documenters>
+        <documenter name="MSDN-CHM">
+            <property name="OutputDirectory" value=".\doc\" />
+            <property name="HtmlHelpName" value="WatiN" />
+            <property name="Title" value="WatiN 2.0.1.754 Documentation (generated with NDoc2)" />
+            <property name="AssemblyVersionInfo" value="AssemblyVersion" />
+            <property name="CopyrightText" value="C) Jeroen van Menen 2006-2009" />
+            <property name="CopyrightHref" value="http://watin.sourceforge.net/" />
+            <property name="IncludeDefaultThreadSafety" value="False" />
+            <property name="CleanIntermediates" value="True" />
+        </documenter>
+        <documenter name="Intellisense">
+            <property name="OutputDirectory" value=".\intellisense\" />
+        </documenter>
+    </documenters>
+</project>
