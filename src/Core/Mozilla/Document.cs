@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using WatiN.Core.Exceptions;
 using WatiN.Core.Interfaces;
 
 namespace WatiN.Core.Mozilla
@@ -45,6 +46,26 @@ namespace WatiN.Core.Mozilla
         {
             get { return _documentReference; }
             set { _documentReference = value; }
+        }
+
+        /// <summary>
+        /// Evaluates the specified JavaScript code within the scope of this
+        /// document. Returns the value computed by the last expression in the
+        /// code block after implicit conversion to a string.
+        /// </summary>
+        /// <example>
+        /// The following example shows an alert dialog then returns the string "4".
+        /// <code>
+        /// Eval("window.alert('Hello world!'); 2 + 2");
+        /// </code>
+        /// </example>
+        /// <param name="javaScriptCode">The JavaScript code</param>
+        /// <returns>The result converted to a string</returns>
+        /// <exception cref="JavaScriptException">Thrown when the JavaScript code cannot be evaluated
+        /// or throws an exception during evaluation</exception>
+        public string Eval(string javaScriptCode)
+        {
+            return this.ClientPort.WriteAndRead(javaScriptCode);
         }
 
         protected Document(FireFoxClientPort port) : this(FireFoxClientPort.DocumentVariableName, port)
