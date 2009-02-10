@@ -292,7 +292,11 @@ namespace WatiN.Core.Mozilla
         /// <returns>The frame element for the corresponding attribute constraint, or null if none is found</returns>
         public IFrame Frame(BaseConstraint findBy)
         {
-            Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "frame", findBy, this.ClientPort);
+            var elementTags = new List<ElementTag>();
+            elementTags.Add(new ElementTag("frame"));
+            elementTags.Add(new ElementTag("iframe"));
+            
+            Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, elementTags, findBy, this.ClientPort);
             return new Frame(finder.FindFirst(), this.ClientPort);
         }
 
@@ -303,7 +307,11 @@ namespace WatiN.Core.Mozilla
         {
             get
             {
-                Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, "frame", null, this.ClientPort);
+                var elementTags = new List<ElementTag>();
+                elementTags.Add(new ElementTag("frame"));
+                elementTags.Add(new ElementTag("iframe"));
+
+                Mozilla.ElementFinder finder = new Mozilla.ElementFinder(this, elementTags, null, this.ClientPort);
                 return new FrameCollection(this.ClientPort, finder);
             }
         }

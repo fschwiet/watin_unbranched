@@ -301,7 +301,11 @@ namespace WatiN.Core.Mozilla
 
         #region Internal instance properties
 
-        internal string ElementVariable
+        /// <summary>
+        /// Gets the javascript element variable name which represents this element.
+        /// </summary>
+        /// <value>The element variable.</value>
+        public string ElementVariable
         {
             get { return elementVariable; }
         }
@@ -337,7 +341,7 @@ namespace WatiN.Core.Mozilla
         /// </summary>
         /// <param name="attributeName">Name of the attribute.</param>
         /// <returns></returns>
-        public string GetAttributeValue(string attributeName)
+        public virtual string GetAttributeValue(string attributeName)
         {
             if (UtilityClass.IsNullOrEmpty(attributeName))
             {

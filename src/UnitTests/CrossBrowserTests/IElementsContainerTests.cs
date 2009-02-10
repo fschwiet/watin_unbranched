@@ -21,8 +21,10 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
 using WatiN.Core;
 using WatiN.Core.Interfaces;
+using WatiN.Core.Mozilla;
 
 namespace WatiN.Core.UnitTests.CrossBrowserTests
 {
@@ -43,6 +45,41 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         public void AreaById()
         {
             ExecuteTest(AreaByIdTest);
+        }
+
+        [Test]
+        public void ShouldFindInputInFrame()
+        {
+            ExecuteTest(ShouldFindInputInFrameTest);
+        }
+
+        private static void ShouldFindInputInFrameTest(IBrowser browser)
+        {
+            GoTo(FramesetURI, browser);
+
+            // WHEN
+            int length = browser.Frames[1].Links.Length;
+
+            // THEN
+            Assert.That(length, Is.EqualTo(2));
+        }
+
+        [Test]
+        public void ShouldFindIFrameAndContentInIt()
+        {
+            ExecuteTest(ShouldFindIFrameAndContentInItTest);
+        }
+
+        private void ShouldFindIFrameAndContentInItTest(IBrowser browser)
+        {
+            GoTo(IFramesMainURI,browser);
+
+            int length = browser.Frames.Length;
+            Assert.That(length, Is.EqualTo(3));
+
+            string text = browser.Frames[1].Text;
+            Assert.That(text, Text.Contains("This is the Middle Frame Page!"));
+
         }
 
         /// <summary>

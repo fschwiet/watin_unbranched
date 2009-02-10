@@ -25,12 +25,29 @@ namespace WatiN.Core.Mozilla
 {
     public abstract class Document : ElementsContainer, IDocument
     {
+        private string _documentReference;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Document"/> class.
         /// </summary>
         /// <param name="id">The id.</param>
         /// <param name="clientPort">The client port.</param>
         protected Document(string id, FireFoxClientPort clientPort) : base(id, clientPort)
+        {
+            DocumentReference = id;
+            if (id != FireFoxClientPort.DocumentVariableName)
+            {
+                DocumentReference = id + ".contentDocument";
+            }
+        }
+
+        public string DocumentReference
+        {
+            get { return _documentReference; }
+            set { _documentReference = value; }
+        }
+
+        protected Document(FireFoxClientPort port) : this(FireFoxClientPort.DocumentVariableName, port)
         {
         }
 
@@ -56,7 +73,7 @@ namespace WatiN.Core.Mozilla
         {
             get
             {
-                return this.ClientPort.WriteAndRead(string.Format("domDumpFull({0}.body);", FireFoxClientPort.DocumentVariableName));
+                return this.ClientPort.WriteAndRead(string.Format("domDumpFull({0}.body);", DocumentReference));
             }
         }
 
@@ -68,7 +85,7 @@ namespace WatiN.Core.Mozilla
         {
             get
             {
-                return this.ClientPort.WriteAndRead(string.Format("{0}.body.textContent;", FireFoxClientPort.DocumentVariableName));
+                return this.ClientPort.WriteAndRead(string.Format("{0}.body.textContent;", DocumentReference));
             }    
         }
 
@@ -80,7 +97,7 @@ namespace WatiN.Core.Mozilla
         {
             get
             {
-                return this.ClientPort.WriteAndRead(string.Format("{0}.title", FireFoxClientPort.DocumentVariableName));
+                return this.ClientPort.WriteAndRead(string.Format("{0}.title", DocumentReference));
             }
         }
 
@@ -146,7 +163,7 @@ namespace WatiN.Core.Mozilla
         {
             get
             {
-                return this.ClientPort.WriteAndRead("{0}.location.href", FireFoxClientPort.WindowVariableName);
+                return this.ClientPort.WriteAndRead("{0}.location.href", DocumentReference);
             }
         }
 
@@ -167,7 +184,7 @@ namespace WatiN.Core.Mozilla
             }
 
             string elementvar = FireFoxClientPort.CreateVariableName();
-            string command = string.Format("{0}={1}.{2};{0}!=null;", elementvar, FireFoxClientPort.DocumentVariableName, propertyName);
+            string command = string.Format("{0}={1}.{2};{0}!=null;", elementvar, DocumentReference, propertyName);
             bool exists = ClientPort.WriteAndReadAsBool(command);
 
             if (exists)

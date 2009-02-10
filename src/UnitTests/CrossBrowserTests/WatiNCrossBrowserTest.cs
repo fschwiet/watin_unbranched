@@ -15,6 +15,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         public static Uri ImagesURI = WatiNTest.ImagesURI;
         public static Uri FramesetURI = WatiNTest.FramesetURI;
         public static Uri FormSubmitURI = WatiNTest.FormSubmitURI;
+        public static Uri IFramesMainURI = WatiNTest.IFramesMainURI;
 		
     }
 }

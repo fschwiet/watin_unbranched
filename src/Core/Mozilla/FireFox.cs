@@ -46,7 +46,7 @@ namespace WatiN.Core.Mozilla
         /// <summary>
         /// Initializes a new instance of the <see cref="FireFox"/> class.
         /// </summary>
-        public FireFox() : base(string.Empty, new FireFoxClientPort())
+        public FireFox() : base(new FireFoxClientPort())
         {
         	CreateFireFoxInstance();
         }
@@ -55,7 +55,7 @@ namespace WatiN.Core.Mozilla
         /// Initializes a new instance of the <see cref="FireFox"/> class.
         /// </summary>
         /// <param name="url">The url to go to</param>
-        public FireFox(string url) : base(string.Empty, new FireFoxClientPort())
+        public FireFox(string url) : base(new FireFoxClientPort())
         {
         	CreateFireFoxInstance();            
             GoTo(url);
@@ -65,7 +65,7 @@ namespace WatiN.Core.Mozilla
         /// Initializes a new instance of the <see cref="FireFox"/> class.
         /// </summary>
         /// <param name="uri">The url to go to</param>
-        public FireFox(Uri uri) : base(string.Empty, new FireFoxClientPort())
+        public FireFox(Uri uri) : base(new FireFoxClientPort())
         {
         	CreateFireFoxInstance();            
             GoTo(uri);

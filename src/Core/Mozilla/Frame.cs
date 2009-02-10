@@ -31,12 +31,27 @@ namespace WatiN.Core.Mozilla
 
         public string Name
         {
-            get { throw new System.NotImplementedException(); }
+            get { return GetAttributeValue("name"); }
         }
 
         public string GetValue(string attributename)
         {
-            throw new System.NotImplementedException();
+            return GetAttributeValue(attributename);
+        }
+
+        public override string GetAttributeValue(string attributename)
+        {
+            switch (attributename.ToLowerInvariant())
+            {
+                case "url":
+                    return Url;
+
+                case "href":
+                    return Url;
+
+                default:
+                    return base.GetAttributeValue(attributename);
+            }
         }
     }
 }

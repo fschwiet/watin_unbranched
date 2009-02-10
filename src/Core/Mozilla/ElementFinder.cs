@@ -95,7 +95,14 @@ namespace WatiN.Core.Mozilla
 
             if (this.parentElement != null && this.parentElement.Exists)
             {
-                elementToSearchFrom = this.parentElement.ElementVariable;
+                if (parentElement is Frame)
+                {
+                    elementToSearchFrom = ((Frame) parentElement).DocumentReference;
+                }
+                else
+                {
+                    elementToSearchFrom = this.parentElement.ElementVariable;
+                }
             }
 
             List<string> elementReferences = new List<string>();
