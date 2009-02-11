@@ -45,6 +45,7 @@ namespace WatiN.Core.UnitTests.CrossBrowserTests
         public void Submit()
         {
             ExecuteTest(SubmitTest);
+            
         }
 
         #endregion

@@ -33,6 +33,8 @@ namespace WatiN.Core.Mozilla
         public void Submit()
         {
             this.ClientPort.Write("{0}.submit();", this.ElementVariable);
+            XULBrowser.WaitForComplete(ClientPort);
+            ClientPort.InitializeDocument();
         }
 
         public string Name
