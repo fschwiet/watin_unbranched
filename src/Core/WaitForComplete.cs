@@ -135,7 +135,7 @@ namespace WatiN.Core
 		{
             while (!IsDocumentReadyStateAvailable(htmlDocument) && htmlDocument.readyState != "complete")
             {
-                ThrowExceptionWhenTimeout("waiting for document state complete. Last state was '" + document.readyState + "'");
+                ThrowExceptionWhenTimeout("waiting for document state complete. Last state was '" + htmlDocument.readyState + "'");
                 Sleep("WaitWhileDocumentStateNotComplete");
             }
         }
