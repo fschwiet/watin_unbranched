@@ -133,13 +133,12 @@ namespace WatiN.Core
 
 		protected virtual void WaitWhileDocumentStateNotComplete(IHTMLDocument2 htmlDocument)
 		{
-			HTMLDocument document = (HTMLDocument) htmlDocument;
-			while (document.readyState != "complete")
-			{
-				ThrowExceptionWhenTimeout("waiting for document state complete. Last state was '" + document.readyState + "'");
+            while (!IsDocumentReadyStateAvailable(htmlDocument) && htmlDocument.readyState != "complete")
+            {
+                ThrowExceptionWhenTimeout("waiting for document state complete. Last state was '" + document.readyState + "'");
                 Sleep("WaitWhileDocumentStateNotComplete");
             }
-		}
+        }
 
 		/// <summary>
 		/// This method evaluates the time between the last call to InitTimeOut
