@@ -50,22 +50,52 @@ namespace WatiN.Core
 			_domContainer = domContainer;
 		}
 
+        /// <summary>
+        /// Captures an image of the current page on the current browser via _domContainer to disk
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <param name="writeUrl"></param>
+        /// <param name="showGuides"></param>
+        /// <param name="scalePercentage">
+        /// </param>
+        /// <param name="quality">
+        /// 0-100 - The Quality category specifies the level of compression for an image. When used to construct an 
+        /// EncoderParameter, the range of useful values for the quality category is from 0 to 100. The lower the number specified, 
+        /// the higher the compression and therefore the lower the quality of the image. Zero would give you the lowest quality image and 
+        /// 100 the highest.
+        /// </param>
 		public void CaptureWebPageToFile(string filename, bool writeUrl, bool showGuides, int scalePercentage, int quality)
 		{
-			Stream stream = new FileStream(filename, FileMode.Create);
-			CaptureWebPageToFile(stream, Path.GetExtension(filename), writeUrl, showGuides, scalePercentage, quality);
-			stream.Flush();
+			if (string.IsNullOrEmpty(filename)) throw new ArgumentNullException(filename);
+
+            FileStream stream = new FileStream(filename, FileMode.Create);
+            string imagetype = GetImagetype(filename);
+
+            CaptureWebPageToFile(stream, imagetype, writeUrl, showGuides, scalePercentage, quality);
+			
+            stream.Flush();
 			stream.Close();
 		}
 
-		public void CaptureWebPageToFile(Stream stream, string imagetype, bool writeUrl, bool showGuides, int scalePercentage, int quality)
+	    private static string GetImagetype(string filename)
+	    {
+	        string extension = Path.GetExtension(filename);
+            return string.IsNullOrEmpty(extension) ? string.Empty : extension.Substring(1);
+	    }
+
+	    public virtual void CaptureWebPageToFile(Stream stream, string imagetype, bool writeUrl, bool showGuides, int scalePercentage, int quality)
 		{
 			System.Drawing.Image finalImage = CaptureWebPageImage(writeUrl, showGuides, scalePercentage);
 			EncoderParameters eps = GetEncoderParams(quality);
 			ImageCodecInfo ici = GetCodec(imagetype);
 
-			finalImage.Save(stream, ici, eps);
+			SaveImage(finalImage, stream, ici, eps);
 		}
+
+	    protected virtual void SaveImage(System.Drawing.Image finalImage, Stream stream, ImageCodecInfo ici, EncoderParameters eps)
+	    {
+	        finalImage.Save(stream, ici, eps);
+	    }
 
 		public System.Drawing.Image CaptureWebPageImage(bool writeUrl, bool showGuides, int scalePercentage)
 		{
