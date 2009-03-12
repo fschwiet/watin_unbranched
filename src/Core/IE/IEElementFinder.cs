@@ -166,9 +166,8 @@ namespace WatiN.Core.InternetExplorer
 	        {
 	            // Loop through each element and evaluate
 	            int length = elements.length;
-	            for (int index = 0; index < length; index++ )
+	            foreach (IHTMLElement element in elements)
                 {
-                    IHTMLElement element = (IHTMLElement)elements.item(index, null);
                     if (FinishedAddingChildrenThatMetTheConstraints(constraint, elementTag, attributeBag, returnAfterFirstMatch, element, ref children))
                     {
                         return children;

@@ -186,11 +186,10 @@ namespace WatiN.Core
 		internal static ArrayList IHtmlElementCollectionToArrayList(IHTMLElementCollection elementCollection)
 		{
 			ArrayList elements = new ArrayList();
-			int length = elementCollection.length;
 
-			for (int index = 0; index < length; index++)
+			foreach (IHTMLElement element in elementCollection)
 			{
-				elements.Add(elementCollection.item(index, null));
+				elements.Add(element);
 			}
 
 			return elements;
