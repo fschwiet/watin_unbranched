@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 
 <!--
-Copyright 2006-2008 Jeroen van Menen
+Copyright 2006-2009 Jeroen van Menen
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -233,7 +233,7 @@ Copyright 2006-2008 Jeroen van Menen
           <property name="Title" value="${project.name} ${core.assembly.version} Documentation (generated with NDoc2)" />
           <property name="AssemblyVersionInfo" value="AssemblyVersion" />
           <property name="CopyrightHref" value="http://www.watin.net/" />
-          <property name="CopyrightText" value="(C) Jeroen van Menen 2006-2008" />
+          <property name="CopyrightText" value="(C) Jeroen van Menen 2006-2009" />
           <property name="Preliminary" value="False" />
           <property name="CleanIntermediates" value="True" />
           <property name="IncludeDefaultThreadSafety" value="False" />
@@ -256,7 +256,7 @@ Copyright 2006-2008 Jeroen van Menen
           <property name="Title" value="${project.name} ${core.assembly.version} Documentation (generated with NDoc2)" />
           <property name="AssemblyVersionInfo" value="AssemblyVersion" />
           <property name="CopyrightHref" value="http://www.watin.net/" />
-          <property name="CopyrightText" value="(C) Jeroen van Menen 2006-2008" />
+          <property name="CopyrightText" value="(C) Jeroen van Menen 2006-2009" />
           <property name="Preliminary" value="False" />
           <property name="CleanIntermediates" value="True" />
           <property name="IncludeDefaultThreadSafety" value="False" />
