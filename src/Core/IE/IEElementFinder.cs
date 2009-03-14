@@ -193,7 +193,7 @@ namespace WatiN.Core.InternetExplorer
 
 	    private static bool FinishedAddingChildrenThatMetTheConstraints(BaseConstraint constraint, ElementTag elementTag, ElementAttributeBag attributeBag, bool returnAfterFirstMatch, IHTMLElement element, ref ArrayList children)
 	    {            
-	        waitUntilElementReadyStateIsComplete(element);
+	        WaitUntilElementReadyStateIsComplete(element);
 
 	        attributeBag.IHTMLElement = element;
 
@@ -224,8 +224,10 @@ namespace WatiN.Core.InternetExplorer
                    attributeConstraint.Comparer.GetType() == typeof(StringComparer);
 		}
 
-	    private static void waitUntilElementReadyStateIsComplete(IHTMLElement element)
+	    private static void WaitUntilElementReadyStateIsComplete(IHTMLElement element)
 		{
+	        WaitUntilElementAvailable(element);
+
 			//TODO: See if this method could be dropped, it seems to give
 			//      more trouble (uninitialized state of elements)
 			//      then benefits (I just introduced this method to be on 
@@ -241,7 +243,7 @@ namespace WatiN.Core.InternetExplorer
 			// it's quite probable that it will never reach Complete.
 			// Like for elements that could not load an image or ico
 			// or some other bits not part of the HTML page.     
-			SimpleTimer timeoutTimer = new SimpleTimer(30);
+            SimpleTimer timeoutTimer = new SimpleTimer(Settings.WaitForCompleteTimeOut);
 
 			do
 			{
@@ -257,5 +259,29 @@ namespace WatiN.Core.InternetExplorer
 
 			throw new WatiNException("Element didn't reach readystate = complete within 30 seconds: " + element.outerText);
 		}
+
+	    private static void WaitUntilElementAvailable(IHTMLElement element)
+	    {
+            SimpleTimer timeoutTimer = new SimpleTimer(Settings.WaitForCompleteTimeOut);
+
+            do
+            {
+                try
+                {
+                    // to access a property of the element
+                    string tagName = element.tagName;
+                    return;
+                }
+                catch
+                {
+                    // Retry if not timed out
+                }
+
+                Thread.Sleep(Settings.SleepTime);
+            } while (!timeoutTimer.Elapsed);
+
+            throw new WatiNException(String.Format("Element wasn't available within {0} seconds.", Settings.WaitForCompleteTimeOut));
+
+	    }
 	}
 }
