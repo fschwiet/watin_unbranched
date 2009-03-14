@@ -133,7 +133,13 @@ namespace WatiN.Core
 
 		protected virtual void WaitWhileDocumentStateNotComplete(IHTMLDocument2 htmlDocument)
 		{
-            while (!IsDocumentReadyStateAvailable(htmlDocument) && htmlDocument.readyState != "complete")
+            while (!IsDocumentReadyStateAvailable(htmlDocument))
+            {
+                ThrowExceptionWhenTimeout("waiting for document state complete to become available");
+                Sleep("WaitWhileDocumentStateNotComplete");
+            }
+
+            while (htmlDocument.readyState != "complete")
             {
                 ThrowExceptionWhenTimeout("waiting for document state complete. Last state was '" + htmlDocument.readyState + "'");
                 Sleep("WaitWhileDocumentStateNotComplete");
