@@ -33,13 +33,13 @@ namespace WatiN.Core.DialogHandlers
 		{
 			if (IsFileUploadDialog(window))
 			{
-                var fileNameHandle = NativeMethods.GetChildWindowHwnd(window.Hwnd, "Edit");
-                var fileNameHwnd = new Hwnd(fileNameHandle);
+                IntPtr fileNameHandle = NativeMethods.GetChildWindowHwnd(window.Hwnd, "Edit");
+                Hwnd fileNameHwnd = new Hwnd(fileNameHandle);
 
                 fileNameHwnd.SetFocus();
                 fileNameHwnd.SendString(fileName);
 
-                var openButton = new WinButton(1, window.Hwnd);
+                WinButton openButton = new WinButton(1, window.Hwnd);
                 openButton.Click();
                 
                 return true;

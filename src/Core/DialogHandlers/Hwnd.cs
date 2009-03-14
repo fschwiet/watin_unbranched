@@ -59,7 +59,7 @@ namespace WatiN.Core.DialogHandlers
     
         public void SendString(string s)
         {
-            foreach (var c in s)
+            foreach (char c in s)
             {
                 Thread.Sleep(50);
                 SendChar(c, _hwnd);

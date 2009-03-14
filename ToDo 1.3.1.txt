@@ -1,2 +1,3 @@
-- Added fixes before revision 704
+- Added fixes before revision 813
 - Include fixes supplied by Richard Allen
+- revert proj and sln files (now vs2008)
