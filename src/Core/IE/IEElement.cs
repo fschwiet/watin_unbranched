@@ -143,6 +143,11 @@ namespace WatiN.Core.InternetExplorer
 
 			object attributeValue = htmlElement.getAttribute(attributeName, 0);
 
+            if (DidReturnObjectReference(attributeValue))
+            {
+                attributeValue = RetrieveNodeValue(attributeName);
+            }
+
 			if (attributeValue == DBNull.Value || attributeValue == null)
 			{
 				return null;
@@ -151,7 +156,18 @@ namespace WatiN.Core.InternetExplorer
 			return attributeValue.ToString();
 		}
 
-		public void ClickOnElement()
+        private object RetrieveNodeValue(string attributeName)
+        {
+            IHTMLElement4 ihtmlElement4 = htmlElement as IHTMLElement4;
+            return ihtmlElement4 == null ? null : ihtmlElement4.getAttributeNode(attributeName).nodeValue;
+        }
+
+        private static bool DidReturnObjectReference(object attributeValue)
+        {
+            return attributeValue.GetType().ToString() == "System.__ComObject";
+        }
+        
+        public void ClickOnElement()
 		{
 			DispHtmlBaseElement.click();
 		}

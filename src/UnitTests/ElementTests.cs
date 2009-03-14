@@ -1,6 +1,6 @@
-#region WatiN Copyright (C) 2006-2008 Jeroen van Menen
+#region WatiN Copyright (C) 2006-2009 Jeroen van Menen
 
-//Copyright 2006-2008 Jeroen van Menen
+//Copyright 2006-2009 Jeroen van Menen
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -895,6 +895,19 @@ namespace WatiN.Core.UnitTests
             ie.GoTo(PopUpURI);
             ie.ShowWindow(NativeMethods.WindowShowStyle.ShowNormal);
             ie.Button(Find.ById("modalid")).FireEventNoWait("onclick");
+        }
+
+        [Test]
+        public void ShouldReturnTextofEventValue()
+        {
+            // GIVEN
+            ie.GoTo(MainURI);
+
+            // WHEN
+            var onClickText = ie.Button("modalid").GetAttributeValue("onclick");
+
+            // THEN
+            Assert.That(onClickText, Iz.EqualTo("fnOpen()"), "Unexpected text for onclick event");
         }
 
 #if !NET11
