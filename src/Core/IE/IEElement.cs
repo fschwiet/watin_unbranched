@@ -164,6 +164,7 @@ namespace WatiN.Core.InternetExplorer
 
         private static bool DidReturnObjectReference(object attributeValue)
         {
+            if (attributeValue == null) return false;
             return attributeValue.GetType().ToString() == "System.__ComObject";
         }
         
