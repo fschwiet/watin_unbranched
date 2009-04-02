@@ -62,11 +62,16 @@ namespace WatiN.Core
 		/// </summary>
 		public virtual void DoWait()
 		{
-			Sleep("DoWait");
+			InitialSleep();
 
 			InitTimeout();
 			WaitForCompleteOrTimeout();
 		}
+
+        public virtual void InitialSleep()
+        {
+            Thread.Sleep(100);
+        }
 
         public virtual void Sleep(string logMessage)
 	    {

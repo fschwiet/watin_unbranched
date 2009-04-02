@@ -38,8 +38,7 @@ namespace WatiN.Core
 
 	    public override void DoWait()
 		{
-//			Sleep("DoWait IEWaitForComplete");
-
+            InitialSleep();
 			InitTimeout();
 
 			WaitWhileIEBusy((IWebBrowser2) _ie.InternetExplorer);
