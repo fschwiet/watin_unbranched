@@ -23,7 +23,6 @@ using Microsoft.Win32;
 using mshtml;
 using SHDocVw;
 using WatiN.Core.Constraints;
-using WatiN.Core.DialogHandlers;
 using WatiN.Core.Exceptions;
 using WatiN.Core.Interfaces;
 using WatiN.Core.Native.InternetExplorer;
@@ -31,6 +30,7 @@ using WatiN.Core.Logging;
 using WatiN.Core.Native;
 using WatiN.Core.Properties;
 using WatiN.Core.UtilityClasses;
+using WatiN.Core.WatchableObjects;
 
 namespace WatiN.Core
 {
@@ -209,10 +209,10 @@ namespace WatiN.Core
 		/// Internet Explorer windows.
 		/// <code>int IECount = IE.InternetExplorers.Length;</code>
 		/// </example>
-		public static IECollection InternetExplorers()
-		{
-			return new IECollection();
-		}
+        public static IECollection InternetExplorers()
+        {
+            return new IECollection();
+        }
 
 		/// <summary>
 		/// Creates a collection of new IE instances associated with open Internet Explorer windows. Use this
@@ -230,10 +230,10 @@ namespace WatiN.Core
 		/// }
 		/// </code>
 		/// </example>
-		public static IECollection InternetExplorersNoWait()
-		{
-			return new IECollection(false);
-		}
+        public static IECollection InternetExplorersNoWait()
+        {
+            return new IECollection(false);
+        }
 
 		/// <summary>
 		/// Opens a new Internet Explorer with a blank page. 
@@ -266,7 +266,7 @@ namespace WatiN.Core
 		/// </example>
 		public IE()
 		{
-			CreateNewIEAndGoToUri(new Uri("about:blank"), null, false);
+            CreateNewIEAndGoToUri(new Uri("about:blank"), null, false);
 		}
 
 		/// <summary>
@@ -301,7 +301,7 @@ namespace WatiN.Core
 		/// </example>
 		public IE(bool createInNewProcess)
 		{
-			CreateNewIEAndGoToUri(new Uri("about:blank"), null, createInNewProcess);
+            CreateNewIEAndGoToUri(new Uri("about:blank"), null, createInNewProcess);
 		}
 
 		/// <summary>
@@ -311,7 +311,7 @@ namespace WatiN.Core
 		/// instance is destroyed the created Internet Explorer window will also be closed.
 		/// </note>
 		/// </summary>
-		/// <param name="url">The URL te open</param>
+		/// <param name="url">The URL to open</param>
 		/// <remarks>
 		/// You could also use one of the overloaded constructors.
 		/// </remarks>
@@ -335,7 +335,7 @@ namespace WatiN.Core
 		/// </example>
 		public IE(string url)
 		{
-			CreateNewIEAndGoToUri(UtilityClass.CreateUri(url), null, false);
+            CreateNewIEAndGoToUri(UtilityClass.CreateUri(url), null, false);
 		}
 
 		/// <summary>
@@ -345,7 +345,7 @@ namespace WatiN.Core
 		/// instance is destroyed the created Internet Explorer window will also be closed.
 		/// </note>
 		/// </summary>
-		/// <param name="url">The URL te open</param>
+		/// <param name="url">The URL to open</param>
 		/// <param name="createInNewProcess">if set to <c>true</c> the IE instance is created in a new process.</param>
 		/// <remarks>
 		/// You could also use one of the overloaded constructors.
@@ -370,7 +370,7 @@ namespace WatiN.Core
 		/// </example>
 		public IE(string url, bool createInNewProcess)
 		{
-			CreateNewIEAndGoToUri(UtilityClass.CreateUri(url), null, createInNewProcess);
+            CreateNewIEAndGoToUri(UtilityClass.CreateUri(url), null, createInNewProcess);
 		}
 
 		/// <summary>
@@ -380,7 +380,7 @@ namespace WatiN.Core
 		/// instance is destroyed the created Internet Explorer window will also be closed.
 		/// </note>
 		/// </summary>
-		/// <param name="uri">The Uri te open</param>
+		/// <param name="uri">The Uri to open</param>
 		/// <remarks>
 		/// You could also use one of the overloaded constructors.
 		/// </remarks>
@@ -405,7 +405,7 @@ namespace WatiN.Core
 		/// </example>
 		public IE(Uri uri)
 		{
-			CreateNewIEAndGoToUri(uri, null, false);
+            CreateNewIEAndGoToUri(uri, null, false);
 		}
 
 		/// <summary>
@@ -415,7 +415,7 @@ namespace WatiN.Core
 		/// instance is destroyed the created Internet Explorer window will also be closed.
 		/// </note>
 		/// </summary>
-		/// <param name="uri">The Uri te open</param>
+		/// <param name="uri">The Uri to open</param>
 		/// <param name="createInNewProcess">if set to <c>true</c> the IE instance is created in a new process.</param>
 		/// <remarks>
 		/// You could also use one of the overloaded constructors.
@@ -441,14 +441,14 @@ namespace WatiN.Core
 		/// </example>
 		public IE(Uri uri, bool createInNewProcess)
 		{
-			CreateNewIEAndGoToUri(uri, null, createInNewProcess);
+            CreateNewIEAndGoToUri(uri, null, createInNewProcess);
 		}
 
 		/// <summary>
 		/// Opens a new Internet Explorer and navigates to the given <paramref name="url"/>.
 		/// </summary>
-		/// <param name="url">The Url te open</param>
-		/// <param name="logonDialogHandler">A <see cref="LogonDialogHandler"/> class instanciated with the logon credentials.</param>
+		/// <param name="url">The Url to open</param>
+        /// <param name="logonDialogHandler">A <see cref="Action&lt;T&gt;"/> delegate with the the ability to process logon credentials.</param>
 		/// <remarks>
 		/// You could also use one of the overloaded constructors.
 		/// </remarks>
@@ -471,17 +471,17 @@ namespace WatiN.Core
 		///  }
 		/// </code>
 		/// </example>
-		public IE(string url, LogonDialogHandler logonDialogHandler)
-		{
-			CreateNewIEAndGoToUri(UtilityClass.CreateUri(url), logonDialogHandler, false);
-		}
+        public IE(string url, Action<LogonDialog> logonDialogHandler)
+        {
+            CreateNewIEAndGoToUri(UtilityClass.CreateUri(url), logonDialogHandler, false);
+        }
 
 		/// <summary>
 		/// Opens a new Internet Explorer and navigates to the given <paramref name="url"/>.
 		/// </summary>
-		/// <param name="url">The Url te open</param>
-		/// <param name="logonDialogHandler">A <see cref="LogonDialogHandler"/> class instanciated with the logon credentials.</param>
-		/// <param name="createInNewProcess">if set to <c>true</c> the IE instance is created in a new process.</param>
+		/// <param name="url">The Url to open</param>
+        /// <param name="logonDialogHandler">A <see cref="Action&lt;T&gt;"/> delegate with the the ability to process logon credentials.</param>
+        /// <param name="createInNewProcess">if set to <c>true</c> the IE instance is created in a new process.</param>
 		/// <remarks>
 		/// You could also use one of the overloaded constructors.
 		/// </remarks>
@@ -504,16 +504,49 @@ namespace WatiN.Core
 		///  }
 		/// </code>
 		/// </example>
-		public IE(string url, LogonDialogHandler logonDialogHandler, bool createInNewProcess)
-		{
-			CreateNewIEAndGoToUri(UtilityClass.CreateUri(url), logonDialogHandler, createInNewProcess);
-		}
+        public IE(string url, Action<LogonDialog> logonDialogHandler, bool createInNewProcess)
+        {
+            CreateNewIEAndGoToUri(UtilityClass.CreateUri(url), logonDialogHandler, createInNewProcess);
+        }
 
 		/// <summary>
 		/// Opens a new Internet Explorer and navigates to the given <paramref name="uri"/>.
 		/// </summary>
-		/// <param name="uri">The Uri te open</param>
-		/// <param name="logonDialogHandler">A <see cref="LogonDialogHandler"/> class instanciated with the logon credentials.</param>
+		/// <param name="uri">The Uri to open</param>
+        /// <param name="logonDialogHandler">A <see cref="Action&lt;T&gt;"/> delegate with the the ability to process logon credentials.</param>
+        /// <remarks>
+		/// You could also use one of the overloaded constructors.
+		/// </remarks>
+		/// <example>
+		/// The following example creates a new Internet Explorer instances and navigates to
+		/// the WatiN Project website on SourceForge leaving the created Internet Explorer open.
+		/// <code>
+		/// using WatiN.Core;
+		/// 
+		/// namespace NewIEExample
+		/// {
+		///    public class WatiNWebsite
+		///    {
+		///      public WatiNWebsite()
+		///      {
+		///        LogonDialogHandler logon = new LogonDialogHandler("username", "password");
+		///        IE ie = new IE(new Uri("http://watin.sourceforge.net"), logon);
+		///      }
+		///    }
+		///  }
+		/// </code>
+		/// </example>
+        public IE(Uri uri, Action<LogonDialog> logonDialogHandler)
+        {
+            CreateNewIEAndGoToUri(uri, logonDialogHandler, false);
+        }
+
+		/// <summary>
+		/// Opens a new Internet Explorer and navigates to the given <paramref name="uri"/>.
+		/// </summary>
+		/// <param name="uri">The Uri to open</param>
+        /// <param name="logonDialogHandler">A <see cref="Action&lt;T&gt;"/> delegate with the the ability to process logon credentials.</param>
+        /// <param name="createInNewProcess">if set to <c>true</c> the IE instance is created in a new process.</param>
 		/// <remarks>
 		/// You could also use one of the overloaded constructors.
 		/// </remarks>
@@ -536,43 +569,10 @@ namespace WatiN.Core
 		///  }
 		/// </code>
 		/// </example>
-		public IE(Uri uri, LogonDialogHandler logonDialogHandler)
-		{
-			CreateNewIEAndGoToUri(uri, logonDialogHandler, false);
-		}
-
-		/// <summary>
-		/// Opens a new Internet Explorer and navigates to the given <paramref name="uri"/>.
-		/// </summary>
-		/// <param name="uri">The Uri te open</param>
-		/// <param name="logonDialogHandler">A <see cref="LogonDialogHandler"/> class instanciated with the logon credentials.</param>
-		/// <param name="createInNewProcess">if set to <c>true</c> the IE instance is created in a new process.</param>
-		/// <remarks>
-		/// You could also use one of the overloaded constructors.
-		/// </remarks>
-		/// <example>
-		/// The following example creates a new Internet Explorer instances and navigates to
-		/// the WatiN Project website on SourceForge leaving the created Internet Explorer open.
-		/// <code>
-		/// using WatiN.Core;
-		/// 
-		/// namespace NewIEExample
-		/// {
-		///    public class WatiNWebsite
-		///    {
-		///      public WatiNWebsite()
-		///      {
-		///        LogonDialogHandler logon = new LogonDialogHandler("username", "password");
-		///        IE ie = new IE(new Uri("http://watin.sourceforge.net"), logon);
-		///      }
-		///    }
-		///  }
-		/// </code>
-		/// </example>
-		public IE(Uri uri, LogonDialogHandler logonDialogHandler, bool createInNewProcess)
-		{
-			CreateNewIEAndGoToUri(uri, logonDialogHandler, createInNewProcess);
-		}
+        public IE(Uri uri, Action<LogonDialog> logonDialogHandler, bool createInNewProcess)
+        {
+            CreateNewIEAndGoToUri(uri, logonDialogHandler, createInNewProcess);
+        }
 
         /// <summary>
         /// (Re)Use existing <see cref="IEBrowser"/> object. 
@@ -607,7 +607,7 @@ namespace WatiN.Core
 
             _ieBrowser = CreateIEBrowser(internetExplorer);
 
-            StartDialogWatcher();
+            //StartDialogWatcher();
 
             if (finishInitialization)
                 FinishInitialization(null);
@@ -618,11 +618,11 @@ namespace WatiN.Core
 	        return new IEBrowser(IWebBrowser2Instance);
 	    }
 
-	    private void CreateNewIEAndGoToUri(Uri uri, IDialogHandler logonDialogHandler, bool createInNewProcess)
+	    private void CreateNewIEAndGoToUri(Uri uri, Action<LogonDialog> logonDialogHandler, bool createInNewProcess)
 		{
 			CheckThreadApartmentStateIsSTA();
 
-			UtilityClass.MoveMousePoinerToTopLeft(Settings.AutoMoveMousePointerToTopLeft);
+            UtilityClass.MoveMousePoinerToTopLeft(Settings.AutoMoveMousePointerToTopLeft);
 
 			if (createInNewProcess)
 			{
@@ -636,18 +636,12 @@ namespace WatiN.Core
 
                 _ieBrowser = CreateIEBrowser(new InternetExplorerClass());
 			}
-            
-            StartDialogWatcher();
 
-			if (logonDialogHandler != null)
-			{
-				// remove other logon dialog handlers since only one handler
-				// can effectively handle the logon dialog.
-				DialogWatcher.RemoveAll(new LogonDialogHandler("a", "b"));
-
-				// Add the (new) logonHandler
-				DialogWatcher.Add(logonDialogHandler);
-			}
+            if (logonDialogHandler != null)
+            {
+                Expectation<LogonDialog> logonDialogExpectation = Expect<LogonDialog>();
+                logonDialogHandler(logonDialogExpectation.Object);
+            }
 
             FinishInitialization(uri);
             
@@ -659,7 +653,7 @@ namespace WatiN.Core
 			var m_Proc = CreateIExploreInNewProcess();
 		    var helper = new AttachToIeHelper();
 
-		    var action = new TryFuncUntilTimeOut(TimeSpan.FromSeconds(Settings.AttachToIETimeOut))
+            var action = new TryFuncUntilTimeOut(TimeSpan.FromSeconds(Settings.AttachToIETimeOut))
             {
                 SleepTime = TimeSpan.FromMilliseconds(500)
             };
@@ -674,9 +668,9 @@ namespace WatiN.Core
                     : null;
             });
 
-            if (ie != null) return ie._ieBrowser; 
+            if (ie != null) return ie._ieBrowser;
 
-			throw new IENotFoundException("Timeout while waiting to attach to newly created instance of IE.", Settings.AttachToIETimeOut);
+            throw new IENotFoundException("Timeout while waiting to attach to newly created instance of IE.", Settings.AttachToIETimeOut);
 		}
 
 	    private static Process CreateIExploreInNewProcess()
@@ -764,7 +758,7 @@ namespace WatiN.Core
 	        
             if (IsInternetExplorerStillAvailable())
 	        {
-	            Logger.LogAction("Closing browser '{0}'", Title);
+                Logger.LogAction("Closing browser '{0}'", Title);
 	        }
 
 	        DisposeAndCloseIE(true);
@@ -774,8 +768,8 @@ namespace WatiN.Core
 		/// Closes then reopens Internet Explorer and navigates to the given <paramref name="uri"/>.
 		/// </summary>
 		/// <param name="uri">The Uri to open</param>
-		/// <param name="logonDialogHandler">A <see cref="LogonDialogHandler"/> class instanciated with the logon credentials.</param>
-		/// <param name="createInNewProcess">if set to <c>true</c> the IE instance is created in a new process.</param>
+        /// <param name="logonDialogHandler">A <see cref="Action&lt;T&gt;"/> delegate with the the ability to process logon credentials.</param>
+        /// <param name="createInNewProcess">if set to <c>true</c> the IE instance is created in a new process.</param>
 		/// <remarks>
 		/// You could also use one of the overloaded methods.
 		/// </remarks>
@@ -799,11 +793,11 @@ namespace WatiN.Core
 		///  }
 		/// </code>
 		/// </example>
-		public void Reopen(Uri uri, LogonDialogHandler logonDialogHandler, bool createInNewProcess)
+        public void Reopen(Uri uri, Action<LogonDialog> logonDialogHandler, bool createInNewProcess)
 		{
 			Close();
 			Recycle();
-			CreateNewIEAndGoToUri(uri, logonDialogHandler, createInNewProcess);
+            CreateNewIEAndGoToUri(uri, logonDialogHandler, createInNewProcess);
 		}
 
         // TODO: This should be dealt with in the IEBrowser as should ReOpen(uri, logon...)
@@ -821,13 +815,13 @@ namespace WatiN.Core
 		private void DisposeAndCloseIE(bool closeIE)
 		{
 		    if (isDisposed) return;
-		    
+
             Logger.LogDebug(Resources.IE_Dispose);
 
             if (closeIE && IsInternetExplorerStillAvailable())
 		    {
 		        // Close all open HTMLDialogs
-		        HtmlDialogs.CloseAll();
+                HtmlDialogs.CloseAll();
 		    }
 
 		    base.Dispose(true);
@@ -863,7 +857,7 @@ namespace WatiN.Core
 
 			Logger.LogAction("Force closing all IE instances");
 
-			var iePid = ProcessID;
+			var iePid = HostWindow.ProcessId;
 
 			DisposeAndCloseIE(true);
 
@@ -1020,7 +1014,7 @@ namespace WatiN.Core
 		    // Call a property of the
             // ie instance to see of it isn't disposed by 
             // another IE instance.
-		    return UtilityClass.TryFuncIgnoreException(() => hWnd != IntPtr.Zero);
+		    return UtilityClass.TryFuncIgnoreException(() => HostWindow.Handle != IntPtr.Zero);
 		}
 
 
@@ -1063,10 +1057,10 @@ namespace WatiN.Core
 		/// Returns a collection of open HTML dialogs (modal as well as modeless).
 		/// </summary>
 		/// <value>The HTML dialogs.</value>
-		public HtmlDialogCollection HtmlDialogs
-		{
-			get { return GetHtmlDialogs(true); }
-		}
+        public HtmlDialogCollection HtmlDialogs
+        {
+            get { return GetHtmlDialogs(true); }
+        }
 
 		/// <summary>
 		/// Returns a collection of open HTML dialogs (modal as well as modeless).
@@ -1074,15 +1068,15 @@ namespace WatiN.Core
 		/// called on a HTML dialog before returning it from the collection.
 		/// </summary>
 		/// <value>The HTML dialogs.</value>
-		public HtmlDialogCollection HtmlDialogsNoWait
-		{
-			get { return GetHtmlDialogs(false); }
-		}
+        public HtmlDialogCollection HtmlDialogsNoWait
+        {
+            get { return GetHtmlDialogs(false); }
+        }
 
-		private HtmlDialogCollection GetHtmlDialogs(bool waitForComplete)
-		{
-		    return new HtmlDialogCollection(hWnd, waitForComplete);
-		}
+        private HtmlDialogCollection GetHtmlDialogs(bool waitForComplete)
+        {
+            return new HtmlDialogCollection(NativeBrowser.HostWindow, waitForComplete);
+        }
 
         public override INativeBrowser NativeBrowser
         {
@@ -1094,10 +1088,10 @@ namespace WatiN.Core
 		/// Find.ByUrl and Find.ByTitle are supported.
 		/// </summary>
 		/// <param name="findBy">The url of the html page shown in the dialog</param>
-		public HtmlDialog HtmlDialog(Constraint findBy)
-		{
-			return FindHtmlDialog(findBy, Settings.AttachToIETimeOut);
-		}
+        public HtmlDialog HtmlDialog(Constraint findBy)
+        {
+            return FindHtmlDialog(findBy, Settings.AttachToIETimeOut);
+        }
 
 		/// <summary>
 		/// Find a HtmlDialog by an attribute within the given <paramref name="timeout" /> period.
@@ -1105,10 +1099,10 @@ namespace WatiN.Core
 		/// </summary>
 		/// <param name="findBy">The url of the html page shown in the dialog</param>
 		/// <param name="timeout">Number of seconds before the search times out.</param>
-		public HtmlDialog HtmlDialog(Constraint findBy, int timeout)
-		{
-			return FindHtmlDialog(findBy, timeout);
-		}
+        public HtmlDialog HtmlDialog(Constraint findBy, int timeout)
+        {
+            return FindHtmlDialog(findBy, timeout);
+        }
 
 	    public bool Visible
 	    {
@@ -1116,9 +1110,9 @@ namespace WatiN.Core
             set { _ieBrowser.Visible = value; }
 	    }
 
-		private HtmlDialog FindHtmlDialog(Constraint findBy, int timeout)
-		{
-			Logger.LogAction("Busy finding HTMLDialog matching criteria: {0}", findBy);
+        private HtmlDialog FindHtmlDialog(Constraint findBy, int timeout)
+        {
+            Logger.LogAction("Busy finding HTMLDialog matching criteria: {0}", findBy);
 
             var action = new TryFuncUntilTimeOut(TimeSpan.FromSeconds(timeout))
             {
@@ -1126,13 +1120,13 @@ namespace WatiN.Core
             };
 
             var result = action.Try(() => HtmlDialogs.First(findBy));
-            
+
             if (result == null)
             {
                 throw new HtmlDialogNotFoundException(findBy.ToString(), timeout);
             }
-            
+
             return result;
-		}
+        }
     }
 }

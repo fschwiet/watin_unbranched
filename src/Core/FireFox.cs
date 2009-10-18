@@ -26,6 +26,10 @@ using WatiN.Core.Logging;
 using WatiN.Core.Native.Mozilla;
 using WatiN.Core.Native;
 using WatiN.Core.UtilityClasses;
+using WatiN.Core.Native.Windows;
+using System.Collections.Generic;
+using WatiN.Core.Native.Mozilla.Dialogs;
+using WatiN.Core.WatchableObjects;
 
 // https://developer.mozilla.org/en/Gecko_DOM_Reference
 
@@ -312,8 +316,9 @@ namespace WatiN.Core
             UtilityClass.MoveMousePoinerToTopLeft(Settings.AutoMoveMousePointerToTopLeft);
 
             var clientPort = new FireFoxClientPort();
-            clientPort.Connect(url);
+            clientPort.LaunchHostProcess(url);
             ffBrowser = new FFBrowser(clientPort);
+            clientPort.Connect(url);
             WaitForComplete();
         }
 

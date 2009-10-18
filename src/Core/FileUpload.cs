@@ -18,6 +18,7 @@
 
 using System.IO;
 using WatiN.Core.Native;
+using WatiN.Core.WatchableObjects;
 
 namespace WatiN.Core
 {
@@ -49,7 +50,10 @@ namespace WatiN.Core
 				throw new FileNotFoundException("File does not exist", fileName);
 			}
 
-            NativeElement.SetFileUploadFile(DomContainer.DialogWatcher, fileName);
+            Expectation<FileLocationDialog> fileExpectation = DomContainer.Expect<FileLocationDialog>();
+            ClickNoWait();
+            fileExpectation.Object.SetFileName(fileName);
+            fileExpectation.Object.ClickOpen();
 		}
 	}
 }

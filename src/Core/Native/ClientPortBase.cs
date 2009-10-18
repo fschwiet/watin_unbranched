@@ -247,6 +247,7 @@ namespace WatiN.Core.Native
         /// </summary>
         public abstract void ConnectToExisting();
 
+        public abstract void LaunchHostProcess(string url);
 
         /// <summary>
         /// Writes the specified data to the jssh server.

@@ -46,24 +46,27 @@ namespace WatiN.Core.Native.InternetExplorer
 
         private void CollectInternetExplorerInstances()
         {
-            var enumerator = new WindowsEnumerator();
+            //var enumerator = new WindowsEnumerator();
             _browsers = new List<IWebBrowser2>();
 
-            var topLevelWindows = enumerator.GetTopLevelWindows("IEFrame");
+            //var topLevelWindows = enumerator.GetTopLevelWindows("IEFrame");
+            var topLevelWindows = WindowFactory.GetWindows(w => w.ClassName == "IEFrame");
             foreach (var mainBrowserWindow in topLevelWindows)
             {
-                var windows = enumerator.GetChildWindows(mainBrowserWindow.Hwnd, "TabWindowClass");
+                //var windows = enumerator.GetChildWindows(mainBrowserWindow.Hwnd, "TabWindowClass");
+                var ieWindowList = mainBrowserWindow.GetChildWindows(w => w.ClassName == "TabWindowClass");
 
                 // IE6 has no TabWindowClass so use the IEFrame as starting point
-                if (windows.Count == 0)
+                if (ieWindowList.Count == 0)
                 {
-                    windows.Add(mainBrowserWindow);
+                    ieWindowList.Add(mainBrowserWindow);
                 }
 
-                foreach (var window in windows)
+                foreach (var ieWindow in ieWindowList)
                 {
-                    var hwnd = window.Hwnd;
-                    var document2 = UtilityClass.TryFuncIgnoreException(() => IEUtils.IEDOMFromhWnd(hwnd));
+                    //var hwnd = window.Hwnd;
+                    //var hwnd = window.Handle;
+                    var document2 = UtilityClass.TryFuncIgnoreException(() => IEUtils.IEDOMFromhWnd(ieWindow));
                     if (document2 == null) continue;
 
                     var parentWindow = UtilityClass.TryFuncIgnoreException(() => document2.parentWindow);

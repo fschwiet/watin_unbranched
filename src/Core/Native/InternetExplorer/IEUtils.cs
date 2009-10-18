@@ -17,6 +17,7 @@
 #endregion Copyright
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -80,7 +81,15 @@ namespace WatiN.Core.Native.InternetExplorer
 
             CreateJavaScriptEventObject(scriptCode, eventObjectProperties);
 
-            scriptCode.Append("document.getElementById('" + element.uniqueID + "').fireEvent('" + eventName + "', newEvt);");
+            var id = element.id;
+
+            if (string.IsNullOrEmpty(id))
+            {
+                id = Guid.NewGuid().ToString();
+                element.setAttribute("id", id, 0);
+            }
+            scriptCode.Append("document.getElementById('" + id + "').fireEvent('" + eventName + "', newEvt);");
+
             return scriptCode;
         }
 
@@ -137,24 +146,28 @@ namespace WatiN.Core.Native.InternetExplorer
             }
         }
 
-        public static IHTMLDocument2 IEDOMFromhWnd(IntPtr hWnd)
+        public static IHTMLDocument2 IEDOMFromhWnd(Window ieWindow)
         {
             var IID_IHTMLDocument2 = new Guid("626FC520-A41E-11CF-A731-00A0C9082637");
 
             var lRes = 0;
 
-            if (!IsIEServerWindow(hWnd))
+            if (!IsIEServerWindow(ieWindow.Handle))
             {
                 // Get 1st child IE server window
-                hWnd = NativeMethods.GetChildWindowHwnd(hWnd, "Internet Explorer_Server");
+                IList<Window> candidates = ieWindow.GetChildWindows(w => w.ClassName == "Internet Explorer_Server");
+                if (candidates.Count > 0)
+                {
+                    ieWindow = candidates[0];
+                }
             }
 
-            if (IsIEServerWindow(hWnd))
+            if (IsIEServerWindow(ieWindow.Handle))
             {
                 // Register the message
-                var lMsg = NativeMethods.RegisterWindowMessage("WM_HTML_GETOBJECT");
+                var lMsg = WatiN.Core.Native.Windows.Microsoft.MsWindowsNativeMethods.RegisterWindowMessage("WM_HTML_GETOBJECT");
                 // Get the object
-                NativeMethods.SendMessageTimeout(hWnd, lMsg, 0, 0, NativeMethods.SMTO_ABORTIFHUNG, 1000, ref lRes);
+                WatiN.Core.Native.Windows.Microsoft.MsWindowsNativeMethods.SendMessageTimeout(ieWindow.Handle, lMsg, 0, 0, WatiN.Core.Native.Windows.Microsoft.MsWindowsNativeMethods.SMTO_ABORTIFHUNG, 1000, ref lRes);
                 if (lRes != 0)
                 {
                     // Get the object from lRes
@@ -172,7 +185,7 @@ namespace WatiN.Core.Native.InternetExplorer
 
         public static bool IsIEServerWindow(IntPtr hWnd)
         {
-            return NativeMethods.CompareClassNames(hWnd, "Internet Explorer_Server");
+            return WatiN.Core.Native.Windows.Microsoft.MsWindowsNativeMethods.CompareClassNames(hWnd, "Internet Explorer_Server");
         }
 
         internal static void EnumIWebBrowser2Interfaces(IWebBrowser2Processor processor)
@@ -182,7 +195,7 @@ namespace WatiN.Core.Native.InternetExplorer
             if (oc == null) return;
 
             IEnumUnknown eu;
-            var hr = oc.EnumObjects(NativeMethods.tagOLECONTF.OLECONTF_EMBEDDINGS, out eu);
+            var hr = oc.EnumObjects(WatiN.Core.Native.Windows.Microsoft.MsWindowsNativeMethods.tagOLECONTF.OLECONTF_EMBEDDINGS, out eu);
             Marshal.ThrowExceptionForHR(hr);
 
             if (eu == null) return;

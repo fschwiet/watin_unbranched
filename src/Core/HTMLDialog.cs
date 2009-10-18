@@ -23,6 +23,9 @@ using WatiN.Core.Native.Windows;
 using WatiN.Core.UtilityClasses;
 using StringComparer = WatiN.Core.Comparers.StringComparer;
 using WatiN.Core.Exceptions;
+using System.Collections.Generic;
+using WatiN.Core.Interfaces;
+using WatiN.Core.WatchableObjects;
 
 namespace WatiN.Core
 {
@@ -32,17 +35,28 @@ namespace WatiN.Core
 	/// </summary>
 	public class HtmlDialog : DomContainer
 	{
-		private readonly IntPtr hwnd = IntPtr.Zero;
+        private readonly Window dialogHostWindow;
+        private IEDialogManager hostWindowDialogManager;
+        private Dictionary<Type, IWatcher> watchers;
 
-		public override IntPtr hWnd
-		{
-			get { return hwnd; }
-		}
+        public override Window HostWindow
+        {
+            get { return dialogHostWindow; }
+        }
+        //public override IntPtr hWnd
+        //{
+        //    get { return _dialogWindow.Handle; }
+        //}
 
-		public HtmlDialog(IntPtr windowHandle)
+        //public override int ProcessID
+        //{
+        //    get { return _dialogWindow.ProcessId; }
+        //}
+
+		public HtmlDialog(Window dialogWindow)
 		{
-			hwnd = windowHandle;
-			StartDialogWatcher();
+            dialogHostWindow = dialogWindow;
+            hostWindowDialogManager = new IEDialogManager(dialogHostWindow, WindowEnumerationMethod.WindowManagementApi);
 		}
 
 		protected override void Dispose(bool disposing)
@@ -57,17 +71,17 @@ namespace WatiN.Core
 
 	    public virtual void Close()
 		{
-			var dialog = new Window(hwnd);
-			if (dialog.Visible)
+            if (dialogHostWindow.Visible)
 			{
-				dialog.ForceClose();
+                dialogHostWindow.ForceClose();
+                dialogHostWindow.Dispose();
 			}
 			base.Dispose(true);
 		}
 
 		public override INativeDocument OnGetNativeDocument()
 		{
-			return new IEDocument(IEUtils.IEDOMFromhWnd(hwnd));
+            return new IEDocument(IEUtils.IEDOMFromhWnd(dialogHostWindow));
 		}
 
         /// <inheritdoc />
@@ -90,5 +104,83 @@ namespace WatiN.Core
 
 			return value;
 		}
+
+        /// <inheritdoc />
+        public override void SetHandler<TWatchable>(Action<TWatchable> action)
+        {
+            IWatcher watcher = GetWatcher(typeof(TWatchable), true);
+            watcher.SetHandler(action);
+        }
+
+        /// <inheritdoc />
+        public override void ClearHandler<TWatchable>()
+        {
+            IWatcher watcher = GetWatcher(typeof(TWatchable), false);
+            if (watcher != null)
+                watcher.ClearHandler<TWatchable>();
+        }
+
+        /// <inheritdoc />
+        public override Expectation<TWatchable> Expect<TWatchable>()
+        {
+            return Expect<TWatchable>(Expectation<TWatchable>.DefaultTimeout);
+        }
+
+        /// <inheritdoc />
+        public override Expectation<TWatchable> Expect<TWatchable>(int timeout)
+        {
+            IWatcher watcher = GetWatcher(typeof(TWatchable), true);
+            return watcher.Expect<TWatchable>(timeout);
+        }
+
+        private IWatcher GetWatcher(Type watchableType, bool createIfAbsent)
+        {
+            if (watchers == null)
+                watchers = new Dictionary<Type, IWatcher>();
+
+            Type baseWatchableType = GetBaseWatchableType(watchableType);
+
+            IWatcher watcher;
+            if (!watchers.TryGetValue(baseWatchableType, out watcher) && createIfAbsent)
+            {
+                watcher = CreateWatcher(baseWatchableType);
+                watchers.Add(baseWatchableType, watcher);
+            }
+
+            return watcher;
+        }
+
+        private Type GetBaseWatchableType(Type watchableType)
+        {
+            Type baseWatchableType = typeof(object);
+
+            if (typeof(Dialog).IsAssignableFrom(watchableType))
+                baseWatchableType = typeof(Dialog);
+
+            //else if (typeof(InfoBar).IsAssignableFrom(watchableType))
+            //    baseWatchableType = typeof(InfoBar);
+
+            //else if (typeof(Page).IsAssignableFrom(watchableType))
+            //    baseWatchableType = typeof(Page);
+
+            else
+                throw new NotSupportedException("Unsupported watcher type.");
+
+            return baseWatchableType;
+        }
+
+        private IWatcher CreateWatcher(Type watchableType)
+        {
+            if (typeof(Dialog).IsAssignableFrom(watchableType))
+                return new DialogWatcher(hostWindowDialogManager, watchableType);
+
+            //if (typeof(InfoBar).IsAssignableFrom(watchableType))
+            //    return new InfoBarWatcher(_dialogManager, watchableType);
+
+            //if (typeof(Page).IsAssignableFrom(watchableType))
+            //    return new PageWatcher(this, watchableType);
+
+            throw new NotSupportedException("Unsupported watcher type.");
+        }
     }
 }

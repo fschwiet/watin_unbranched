@@ -1,144 +1,55 @@
-#region WatiN Copyright (C) 2006-2009 Jeroen van Menen
-
-//Copyright 2006-2009 Jeroen van Menen
-//
-//   Licensed under the Apache License, Version 2.0 (the "License");
-//   you may not use this file except in compliance with the License.
-//   You may obtain a copy of the License at
-//
-//       http://www.apache.org/licenses/LICENSE-2.0
-//
-//   Unless required by applicable law or agreed to in writing, software
-//   distributed under the License is distributed on an "AS IS" BASIS,
-//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//   See the License for the specific language governing permissions and
-//   limitations under the License.
-
-#endregion Copyright
-
-using System;
-using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Drawing;
 
 namespace WatiN.Core.Native.Windows
 {
-    public class Window
+    public abstract class Window : IDisposable
     {
-        private readonly IntPtr hwnd;
+        protected WindowEnumerationMethod _enumerationMethod = WindowEnumerationMethod.WindowManagementApi;
+        private WindowEnumerationMethod _childEnumerationMethod = WindowEnumerationMethod.WindowManagementApi;
 
-        public Window(IntPtr hwnd)
+        public abstract IntPtr Handle { get; }
+        public abstract IntPtr ParentHandle { get; }
+        public abstract IntPtr OwnerHandle { get; }
+        public abstract string ClassName { get; }
+        public abstract string Text { get; }
+        public abstract bool Exists { get; }
+        public abstract bool Visible { get; }
+        public abstract bool Enabled { get; }
+        public abstract bool IsTopLevelWindow { get; }
+        public abstract bool IsDialog { get; }
+        public abstract bool IsPressable { get; }
+        public abstract WindowShowStyle WindowStyle { get; set; }
+        public abstract Int64 Style { get; }
+        public abstract string StyleDescriptor { get; }
+        public abstract int ProcessId { get; }
+        public abstract int ItemId { get; }
+        internal abstract AssistiveTechnologyObject AccessibleObject { get; }
+
+        public abstract bool SetFocus();
+        public abstract bool IsDialogWindowFor(Window ownerWindow);
+        public abstract IList<Window> GetChildWindows(WindowCriteriaConstraint constraint);
+        public abstract void Press();
+        public abstract void SendKeystrokes(string keystrokes);
+        public abstract void ForceClose();
+        public abstract System.Drawing.Image CaptureImage();
+
+        public virtual WindowEnumerationMethod EnumerationMethod
         {
-            this.hwnd = hwnd;
+            get { return _enumerationMethod; }
         }
 
-        public virtual IntPtr Hwnd
+        public virtual WindowEnumerationMethod ChildEnumerationMethod
         {
-            get { return hwnd; }
+            get { return _childEnumerationMethod; }
+            set { _childEnumerationMethod = value; }
         }
-
-        public virtual IntPtr ParentHwnd
-        {
-            get { return NativeMethods.GetParent(Hwnd); }
-        }
-
-        public bool HasParentWindow
-        {
-            get { return ParentHwnd != IntPtr.Zero; }
-        }
-
-        public virtual string Title
-        {
-            get { return NativeMethods.GetWindowText(Hwnd); }
-        }
-
-        public virtual string ClassName
-        {
-            get { return NativeMethods.GetClassName(Hwnd); }
-        }
-
-        public virtual Int64 Style
-        {
-            get { return NativeMethods.GetWindowStyle(Hwnd); }
-        }
-
-        public virtual string StyleInHex
-        {
-            get { return Style.ToString("X"); }
-        }
-
-        public virtual bool IsDialog()
-        {
-            return (ClassName == "#32770");
-        }
-
-        public virtual void ForceClose()
-        {
-            NativeMethods.SendMessage(Hwnd, NativeMethods.WM_CLOSE, 0, 0);
-        }
-
-        public virtual bool Exists()
-        {
-            return NativeMethods.IsWindow(Hwnd);
-        }
-
-        public virtual bool Visible
-        {
-            get { return NativeMethods.IsWindowVisible(Hwnd); }
-        }
-
-        public virtual void ToFront()
-        {
-            NativeMethods.SetForegroundWindow(Hwnd);
-        }
-
-        public virtual void SetActivate()
-        {
-            NativeMethods.SetActiveWindow(Hwnd);
-        }
-
-        public virtual Window ToplevelWindow
-        {
-            get
-            {
-                var toplevelWindow = this;
-                do
-                {
-                    if (toplevelWindow.HasParentWindow)
-                        toplevelWindow = new Window(toplevelWindow.ParentHwnd);
-                    else
-                        break;
-                } while (true);
-                return toplevelWindow;
-            }
-        }
-
-        /// <summary>
-        /// Gets the process ID in which the window is running.
-        /// </summary>
-        /// <value>The process ID.</value>
-        public virtual int ProcessID
-        {
-            get
-            {
-                int iePid;
-
-                NativeMethods.GetWindowThreadProcessId(Hwnd, out iePid);
-
-                return iePid;
-            }
-        }
-
-        public virtual string ProcessName
-        {
-            get { return Process.GetProcessById(ProcessID).ProcessName; }
-        }
-
-        public string Message
-        {
-            get
-            {
-                var messagehWnd = NativeMethods.GetDlgItem(Hwnd, 65535);
-                return NativeMethods.GetWindowText(messagehWnd);
-            }
-        }
+		
+		public virtual void Dispose()
+		{
+		}
     }
 }

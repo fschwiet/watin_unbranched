@@ -133,6 +133,11 @@ namespace WatiN.Core.Native.Chrome
             GC.SuppressFinalize(this);
         }
 
+        public override void LaunchHostProcess(string url)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Connects to the Chrome browser and navigates to the specified URL.
         /// </summary>

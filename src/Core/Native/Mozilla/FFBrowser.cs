@@ -1,37 +1,69 @@
-#region WatiN Copyright (C) 2006-2009 Jeroen van Menen
-
-//Copyright 2006-2009 Jeroen van Menen
-//
-//   Licensed under the Apache License, Version 2.0 (the "License");
-//   you may not use this file except in compliance with the License.
-//   You may obtain a copy of the License at
-//
-//       http://www.apache.org/licenses/LICENSE-2.0
-//
-//   Unless required by applicable law or agreed to in writing, software
-//   distributed under the License is distributed on an "AS IS" BASIS,
-//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//   See the License for the specific language governing permissions and
-//   limitations under the License.
-
-#endregion Copyright
-
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Diagnostics;
+using WatiN.Core.Native.Windows;
+using WatiN.Core.Native.Mozilla.Dialogs;
+using WatiN.Core.WatchableObjects;
 
 namespace WatiN.Core.Native.Mozilla
 {
-    /// <summary>
-    /// Wrapper around the XUL:browser class, see: http://developer.mozilla.org/en/docs/XUL:browser
-    /// </summary>
     public class FFBrowser : JSBrowserBase
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FFBrowser"/> class.
-        /// </summary>
-        /// <param name="clientPort">The client port.</param>
+        #region Private members
+        private FFDialogManager _dialogManager = null;
+        private Window _hostWindow = null;
+        #endregion
+
+        #region Constructor
         public FFBrowser(ClientPortBase clientPort) : base(clientPort)
         {
+            bool mainWindowFound = false;
+            IList<Window> mainWindows = new List<Window>();
+            while (!mainWindowFound)
+            {
+                if (Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.MacOSX)
+                {
+                    Process[] firefoxProcesses = Process.GetProcessesByName("firefox");
+                    int processId = firefoxProcesses[0].Id;
+                    mainWindows = WindowFactory.GetWindows(candidateWindow => candidateWindow.ProcessId == processId);
+                    _hostWindow = mainWindows[0];
+                    mainWindows.Remove(_hostWindow);
+                    _dialogManager = new FFDialogManager(_hostWindow, WindowEnumerationMethod.AssistiveTechnologyApi);
+                    mainWindowFound = true;
+                }
+                else
+                {
+                    mainWindows = WindowFactory.GetWindows(candidateWindow => candidateWindow.ClassName == "MozillaUIWindowClass" || candidateWindow.ClassName == "MozillaDialogClass", false);
+                    if (mainWindows.Count >= 1)
+                    {
+                        if (mainWindows[0].ClassName == "MozillaUIWindowClass")
+                        {
+                            _hostWindow = mainWindows[0];
+                            mainWindows.Remove(_hostWindow);
+                            _dialogManager = new FFDialogManager(_hostWindow, WindowEnumerationMethod.AssistiveTechnologyApi);
+                            mainWindowFound = true;
+                        }
+                        else
+                        {
+                            Window sessionTerminatedDialog = mainWindows[0];
+                            mainWindows.Remove(sessionTerminatedDialog);
+                            using (FFRestoreSessionDialog nativeDialog = new FFRestoreSessionDialog())
+                            {
+                                nativeDialog.DialogWindow = sessionTerminatedDialog;
+                                using (RestoreSessionDialog dialog = new RestoreSessionDialog(nativeDialog))
+                                {
+                                    dialog.ClickStartNewSessionButton();
+                                }
+                            }
+                        }
+                    }
+                }
+                WindowFactory.DisposeWindows(mainWindows);
+            }
         }
+        #endregion
 
         /// <summary>
         /// Load a URL into the document. see: http://developer.mozilla.org/en/docs/XUL:browser#m-loadURI
@@ -51,7 +83,23 @@ namespace WatiN.Core.Native.Mozilla
 
         public override INativeDocument NativeDocument
         {
-            get { return new FFDocument(ClientPort);  }
+            get { return new FFDocument(ClientPort); }
+        }
+
+        public override Window HostWindow
+        {
+            get { return _hostWindow; }
+        }
+
+        public override INativeDialogManager NativeDialogManager
+        {
+            get { return _dialogManager; }
+        }
+
+        public override void Dispose()
+        {
+            if (_dialogManager != null)
+                _dialogManager.Dispose();
         }
     }
 }

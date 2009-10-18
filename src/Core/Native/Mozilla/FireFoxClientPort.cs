@@ -23,7 +23,7 @@ namespace WatiN.Core.Native.Mozilla
     using System.Net;
     using System.Net.Sockets;
     using System.Text;
-    using System.Windows.Forms;
+    //using System.Windows.Forms;
 
     using Logging;
     using Windows;
@@ -98,35 +98,6 @@ namespace WatiN.Core.Native.Mozilla
         }
 
         /// <summary>
-        /// Gets a value indicating whether the main FireFox window is visible, it's possible that the
-        /// main FireFox window is not visible if a previous shutdown didn't complete correctly
-        /// in which case the restore / resume previous session dialog may be visible.
-        /// </summary>
-        private bool IsMainWindowVisible
-        {
-            get
-            {
-                var result = NativeMethods.GetWindowText(Process.MainWindowHandle).Contains("Mozilla Firefox");
-                return result;
-            }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether IsRestoreSessionDialogVisible.
-        /// </summary>
-        /// <value>
-        /// The is restore session dialog visible.
-        /// </value>
-        private bool IsRestoreSessionDialogVisible
-        {
-            get
-            {
-                var result = NativeMethods.GetWindowText(Process.MainWindowHandle).Contains("Firefox - ");
-                return result;
-            }
-        }
-
-        /// <summary>
         /// </summary>
         /// <param name="url">
         /// The url.
@@ -147,7 +118,7 @@ namespace WatiN.Core.Native.Mozilla
             Connect(null, false);
         }
 
-        private void Connect(string url, bool createNewFireFoxInstance)
+        public override void LaunchHostProcess(string url)
         {
             ThrowExceptionIfConnected();
 
@@ -156,8 +127,11 @@ namespace WatiN.Core.Native.Mozilla
             LastResponse = string.Empty;
             Response = new StringBuilder();
 
-            if (createNewFireFoxInstance) CreateNewFireFoxInstance(url);
+            CreateNewFireFoxInstance(url);
+        }
 
+        private void Connect(string url, bool createNewFireFoxInstance)
+        {
             Logger.LogDebug("Attempting to connect to jssh server on localhost port 9997.");
 
             ConnectToJsshServer();
@@ -192,15 +166,6 @@ namespace WatiN.Core.Native.Mozilla
 
             if (string.IsNullOrEmpty(url)) url = "about:blank";
             Process = FireFox.CreateProcess(url + " -jssh", true);
-
-            if (IsMainWindowVisible) return;
-            if (!IsRestoreSessionDialogVisible) return;
-            
-            NativeMethods.SetForegroundWindow(Process.MainWindowHandle);
-            // TODO replace SendKeys cause they will hang the test when running test in a service or on
-            //      a remote desktop session or on a locked system
-            SendKeys.SendWait("{TAB}");
-            SendKeys.SendWait("{ENTER}");
         }
 
         private void ThrowExceptionIfConnected()
@@ -513,7 +478,7 @@ namespace WatiN.Core.Native.Mozilla
                 throw new FireFoxException("Existing instances of FireFox detected.");
             }
             
-            if (FireFox.CurrentProcessCount > 0)
+            if (FireFox.CurrentProcessCount > 0 && !FireFox.CurrentProcess.HasExited)
             {
                 FireFox.CurrentProcess.Kill();
             }

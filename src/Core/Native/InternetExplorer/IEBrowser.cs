@@ -1,46 +1,48 @@
-#region WatiN Copyright (C) 2006-2009 Jeroen van Menen
-
-//Copyright 2006-2009 Jeroen van Menen
-//
-//   Licensed under the Apache License, Version 2.0 (the "License");
-//   you may not use this file except in compliance with the License.
-//   You may obtain a copy of the License at
-//
-//       http://www.apache.org/licenses/LICENSE-2.0
-//
-//   Unless required by applicable law or agreed to in writing, software
-//   distributed under the License is distributed on an "AS IS" BASIS,
-//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//   See the License for the specific language governing permissions and
-//   limitations under the License.
-
-#endregion Copyright
-
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using WatiN.Core.Native.Windows;
 using System.Runtime.InteropServices;
 using System.Threading;
-using mshtml;
 using SHDocVw;
+using mshtml;
 
 namespace WatiN.Core.Native.InternetExplorer
 {
-	public class IEBrowser : INativeBrowser 
-	{
-	    private readonly IWebBrowser2 webBrowser;
+    public class IEBrowser : INativeBrowser
+    {
+        #region Private members
+        IEDialogManager _dialogManager = null;
+        Window _hostWindow = null;
+        private readonly IWebBrowser2 webBrowser;
+        #endregion
 
-	    public IEBrowser(IWebBrowser2 webBrowser2)
-	    {
-	        webBrowser = webBrowser2;
-	    }
+        #region Constructor
+        public IEBrowser(IWebBrowser2 webBrowser2)
+        {
+            webBrowser = webBrowser2;
+            IList<Window> mainWindows = WindowFactory.GetWindows(candidateWindow => candidateWindow.ClassName == "IEFrame");
+            if (mainWindows.Count >= 1)
+            {
+                _hostWindow = mainWindows[0];
+                mainWindows.Remove(_hostWindow);
+                _dialogManager = new IEDialogManager(_hostWindow, WindowEnumerationMethod.WindowManagementApi);
+            }
+            WindowFactory.DisposeWindows(mainWindows);
+        }
+        #endregion
 
-	    public IWebBrowser2 WebBrowser
-	    {
+        public IWebBrowser2 WebBrowser
+        {
             get { return webBrowser; }
-	    }
+        }
 
-	    /// <inheritdoc />
+        #region INativeBrowser Members
+
+        /// <inheritdoc />
         public void NavigateTo(Uri url)
-	    {
+        {
             object nil = null;
             object absoluteUri = url.AbsoluteUri;
             webBrowser.Navigate2(ref absoluteUri, ref nil, ref nil, ref nil, ref nil);
@@ -48,7 +50,7 @@ namespace WatiN.Core.Native.InternetExplorer
 
         /// <inheritdoc />
         public void NavigateToNoWait(Uri url)
-	    {
+        {
             var thread = new Thread(GoToNoWaitInternal);
             thread.SetApartmentState(ApartmentState.STA);
             thread.Start(url);
@@ -64,7 +66,7 @@ namespace WatiN.Core.Native.InternetExplorer
 
         /// <inheritdoc />
         public bool GoBack()
-	    {
+        {
             try
             {
                 webBrowser.GoBack();
@@ -78,7 +80,7 @@ namespace WatiN.Core.Native.InternetExplorer
 
         /// <inheritdoc />
         public bool GoForward()
-	    {
+        {
             try
             {
                 webBrowser.GoForward();
@@ -92,37 +94,61 @@ namespace WatiN.Core.Native.InternetExplorer
 
         /// <inheritdoc />
         public void Reopen()
-	    {
-	        throw new System.NotImplementedException();
-	    }
+        {
+            throw new System.NotImplementedException();
+        }
 
         /// <inheritdoc />
         public void Refresh()
-	    {
+        {
             object REFRESH_COMPLETELY = 3;
             webBrowser.Refresh2(ref REFRESH_COMPLETELY);
         }
 
         /// <inheritdoc />
         public IntPtr hWnd
-	    {
+        {
             get { return new IntPtr(webBrowser.HWND); }
-	    }
+        }
 
-	    public INativeDocument NativeDocument
-	    {
-            get { return new IEDocument((IHTMLDocument2) webBrowser.Document); }
-	    }
-
-	    public bool Visible
-	    {
+        public bool Visible
+        {
             get { return webBrowser.Visible; }
             set { webBrowser.Visible = value; }
-	    }
+        }
 
         public void Quit()
         {
             webBrowser.Quit();
         }
-	}
+
+        public INativeDocument NativeDocument
+        {
+            get { return new IEDocument((IHTMLDocument2)webBrowser.Document); }
+        }
+
+        public Window HostWindow
+        {
+            get { return _hostWindow; }
+        }
+
+        public INativeDialogManager NativeDialogManager
+        {
+            get { return _dialogManager; }
+        }
+
+        #endregion
+
+        #region IDisposable Members
+
+        public void Dispose()
+        {
+            if (_hostWindow != null)
+                _hostWindow.Dispose();
+            if (_dialogManager != null)
+                _dialogManager.Dispose();
+        }
+
+        #endregion
+    }
 }

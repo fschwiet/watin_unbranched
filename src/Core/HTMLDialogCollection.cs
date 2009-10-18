@@ -34,21 +34,20 @@ namespace WatiN.Core
         private readonly Constraint findBy;
         private readonly bool waitForComplete;
 
-	    public HtmlDialogCollection(IntPtr hWnd, bool waitForComplete)
+        public HtmlDialogCollection(Window toplevelWindow, bool waitForComplete)
 	    {
             findBy = Find.Any;
             this.waitForComplete = waitForComplete;
             htmlDialogs = new List<HtmlDialog>();
-            
-            var toplevelWindow = new Window(hWnd).ToplevelWindow;
 
-	        var windows = new WindowsEnumerator();
-            var popups = windows.GetWindows(window => window.ParentHwnd == toplevelWindow.Hwnd && NativeMethods.CompareClassNames(window.Hwnd, "Internet Explorer_TridentDlgFrame"));
+            var popups = WindowFactory.GetWindows(window => window.ParentHandle == toplevelWindow.Handle && window.ClassName == "Internet Explorer_TridentDlgFrame");
             foreach (var window in popups)
             {
-                var htmlDialog = new HtmlDialog(window.Hwnd);
+                var htmlDialog = new HtmlDialog(window);
                 htmlDialogs.Add(htmlDialog);
+                popups.Remove(window);
             }
+            WindowFactory.DisposeWindows(popups);
 	    }
 
 	    private HtmlDialogCollection(Constraint findBy, List<HtmlDialog> htmlDialogs, bool waitForComplete)

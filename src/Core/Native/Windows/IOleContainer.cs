@@ -33,7 +33,7 @@ namespace WatiN.Core.Native.Windows
 
         [PreserveSig]
         int EnumObjects(
-            [In, MarshalAs(UnmanagedType.U4)] NativeMethods.tagOLECONTF grfFlags,
+            [In, MarshalAs(UnmanagedType.U4)] WatiN.Core.Native.Windows.Microsoft.MsWindowsNativeMethods.tagOLECONTF grfFlags,
             out IEnumUnknown ppenum
             );
 

@@ -21,7 +21,6 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Drawing;
 using System.Text.RegularExpressions;
-using WatiN.Core.DialogHandlers;
 using WatiN.Core.UtilityClasses;
 
 namespace WatiN.Core.Native

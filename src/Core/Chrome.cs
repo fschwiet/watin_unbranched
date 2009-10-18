@@ -110,20 +110,6 @@ namespace WatiN.Core
             }
         }
 
-        /// <summary>
-        /// Gets window pointer to the current browser.
-        /// </summary>
-        /// <value>
-        /// The windows pointer to the current browser.
-        /// </value>
-        public override IntPtr hWnd
-        {
-            get
-            {
-                return ChromeBrowser.hWnd;
-            }
-        }
-
         /// <inheritdoc />
         public override bool ContainsText(string text)
         {

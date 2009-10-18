@@ -20,6 +20,7 @@ namespace WatiN.Core.Native
 {
     using System;
     using Mozilla;
+using WatiN.Core.Native.Windows;
 
     /// <summary>
     /// Defines behaviour common to most javascript controlled browsers.
@@ -50,14 +51,7 @@ namespace WatiN.Core.Native
             get { return this.ClientPort.BrowserVariableName;  }
         }
 
-        /// <inheritdoc />
-        public IntPtr hWnd
-        {
-            get { return this.ClientPort.Process.MainWindowHandle; }
-        }
-
-        public abstract INativeDocument NativeDocument { get; }
-
+        #region INativeBrowser Members
         /// <inheritdoc />
         public bool GoBack()
         {
@@ -158,5 +152,18 @@ namespace WatiN.Core.Native
             this.ClientPort.Write("{0}.{1}();", this.BrowserVariableName, action);
             return this.ClientPort.WriteAndReadAsBool("window.document.WatiNGoBackCheck!={0};", ticks);
         }
+
+        public abstract INativeDocument NativeDocument { get; }
+
+        public abstract WatiN.Core.Native.Windows.Window HostWindow { get; }
+
+        public abstract INativeDialogManager NativeDialogManager { get; }
+
+        #endregion
+
+        #region IDisposable Members
+
+        public abstract void Dispose();
+        #endregion
     }
 }

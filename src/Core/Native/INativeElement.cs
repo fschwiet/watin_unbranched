@@ -19,7 +19,6 @@
 using System;
 using System.Collections.Specialized;
 using System.Drawing;
-using WatiN.Core.DialogHandlers;
 
 namespace WatiN.Core.Native
 {
@@ -140,13 +139,6 @@ namespace WatiN.Core.Native
         /// Called when to submit the form.
         /// </summary>
         void SubmitForm();
-
-        /// <summary>
-        /// Called when the file upload dialog should be filled in
-        /// </summary>
-        /// <param name="dialogWatcher">To inject a dialog handler into to handle the file upload dialog.</param>
-        /// <param name="fileName">The file name to enter into the dialog filename field.</param>
-        void SetFileUploadFile(DialogWatcher dialogWatcher, string fileName);
 
         /// <summary>
         /// Waits until the element is fully loaded in the DOM and/or ready to be used.

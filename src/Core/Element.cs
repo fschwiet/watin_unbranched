@@ -416,11 +416,11 @@ namespace WatiN.Core
 
             Logger.LogAction("Clicking (no wait) {0} '{1}', {2}", GetType().Name, IdOrName, Description);
 
-			Highlight(true);
+			//Highlight(true);
 
 			UtilityClass.AsyncActionOnBrowser(NativeElement.ClickOnElement);
 
-		    Highlight(false);
+		    //Highlight(false);
 		}
 
         /// <summary>

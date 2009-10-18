@@ -25,6 +25,7 @@ using System.Text;
 using mshtml;
 using WatiN.Core.Native.InternetExplorer;
 using WatiN.Core.Native.Windows;
+using System.Collections.Generic;
 
 namespace WatiN.Core.UtilityClasses
 {
@@ -109,10 +110,10 @@ namespace WatiN.Core.UtilityClasses
 
         public System.Drawing.Image CaptureWebPageImage(bool writeUrl, bool showGuides, int scalePercentage)
         {
-            return CaptureWebPageImage(_domContainer.hWnd, ((IEDocument) _domContainer.NativeDocument).HtmlDocument, writeUrl, showGuides, scalePercentage);
+            return CaptureWebPageImage(((IEDocument) _domContainer.NativeDocument).HtmlDocument, writeUrl, showGuides, scalePercentage);
         }
 
-        private static System.Drawing.Image CaptureWebPageImage(IntPtr browserHWND, IHTMLDocument2 myDoc, bool writeUrl, bool showGuides, int scalePercentage)
+        private System.Drawing.Image CaptureWebPageImage(IHTMLDocument2 myDoc, bool writeUrl, bool showGuides, int scalePercentage)
         {
             //URL Location
             var URLExtraHeight = 0;
@@ -150,8 +151,12 @@ namespace WatiN.Core.UtilityClasses
             var g2 = Graphics.FromImage(bm2);
 
             //Get inner browser window.
-            var hwnd = GetHwndContainingAShellDocObjectView(browserHWND);
-            hwnd = GetHwndForInternetExplorerServer(hwnd);
+            Window contentWindow = null;
+            IList<Window> candidateContentWindows = _domContainer.HostWindow.GetChildWindows(child => child.ClassName == "Internet Explorer_Server");
+            if (candidateContentWindows.Count > 0)
+            {
+                contentWindow = candidateContentWindows[0];
+            }
 
             var myPage = 0;
 
@@ -174,23 +179,10 @@ namespace WatiN.Core.UtilityClasses
                 for (var i = myPage; i >= 0; --i)
                 {
                     //Shoot visible window
-                    var g = Graphics.FromImage(bm);
-                    var hdc = g.GetHdc();
-
                     setDocumentAttribute(myDoc, "scrollTop", (screenHeight - 5)*i);
                     var brwTop = (int) getDocumentAttribute(myDoc, "scrollTop");
 
-                    NativeMethods.PrintWindow(hwnd, hdc, 0);
-
-                    // Original code
-                    g.ReleaseHdc(hdc);
-                    g.Flush();
-                    g.Dispose();
-
-                    var hBitmap = bm.GetHbitmap();
-                    System.Drawing.Image screenfrag = System.Drawing.Image.FromHbitmap(hBitmap);
-
-                    NativeMethods.DeleteObject(hBitmap);
+                    System.Drawing.Image screenfrag = contentWindow.CaptureImage();
 
                     g2.DrawImage(screenfrag, brwLeft + URLExtraLeft, brwTop + URLExtraHeight);
                 }
@@ -227,65 +219,66 @@ namespace WatiN.Core.UtilityClasses
             return finalImage;
         }
 
-        private static IntPtr GetHwndContainingAShellDocObjectView(IntPtr browserHWND)
-        {
-            // If window is a HtmlDialog then return.
-            var hwnd = browserHWND;
-            if (NativeMethods.CompareClassNames(hwnd, "Internet Explorer_TridentDlgFrame"))
-            {
-                return hwnd;
-            }
+        //private static IntPtr GetHwndContainingAShellDocObjectView(Window browserHWND)
+        //{
+        //    // If window is a HtmlDialog then return.
+        //    var hwnd = browserHWND;
+        //    if (browserHWND.ClassName == "Internet Explorer_TridentDlgFrame")
+        //    {
+        //        return browserHWND.Handle;
+        //    }
 
-            // In IE6 and previous, the handle points to a WorkerW window that is a 
-            // sibling of the "Document" window (Shell DocObject View) and we can go find
-            // it. 
-            // In IE7, the handle now points at an intermediate layer at a sibling of the
-            // TabWindowClass window which is the parent of the "Document" window. Loop
-            // through these siblings to find that TabWindowClass and then drop down to
-            // its children.
-            hwnd = NativeMethods.GetWindow(hwnd, NativeMethods.GW_CHILD);
+        //    // In IE6 and previous, the handle points to a WorkerW window that is a 
+        //    // sibling of the "Document" window (Shell DocObject View) and we can go find
+        //    // it. 
+        //    // In IE7, the handle now points at an intermediate layer at a sibling of the
+        //    // TabWindowClass window which is the parent of the "Document" window. Loop
+        //    // through these siblings to find that TabWindowClass and then drop down to
+        //    // its children.
+        //    browserHWND.GetChildWindows(w => w.ClassName == "TabWindowClass");
+        //    hwnd = NativeMethods.GetWindow(hwnd, NativeMethods.GW_CHILD);
 
-            if (!NativeMethods.CompareClassNames(hwnd,"WorkerW")) // IE 7 or 8
-            {
-                while (hwnd != IntPtr.Zero)
-                {
-                    if (NativeMethods.CompareClassNames(hwnd, "TabWindowClass"))
-                    {
-                        break;
-                    }
-					// In IE8, TabWindowClass now belongs as a child class of "Frame Tab"
-					// so step down into Frame Tab and continue start searching for 
-					// TabWindowClass there.
-                    if (NativeMethods.CompareClassNames(hwnd, "Frame Tab")) // IE 8
-					{
-						//step one deeper for IE 8
-						hwnd = NativeMethods.GetWindow(hwnd, NativeMethods.GW_CHILD);
-					}
-					else
-					{
-						hwnd = NativeMethods.GetWindow(hwnd, NativeMethods.GW_HWNDNEXT);
-					}
-                }
-                hwnd = NativeMethods.GetWindow(hwnd, NativeMethods.GW_CHILD);
-            }
-            return hwnd;
-        }
+        //    if (!NativeMethods.CompareClassNames(hwnd,"WorkerW")) // IE 7 or 8
+        //    {
+        //        while (hwnd != IntPtr.Zero)
+        //        {
+        //            if (NativeMethods.CompareClassNames(hwnd, "TabWindowClass"))
+        //            {
+        //                break;
+        //            }
+        //            // In IE8, TabWindowClass now belongs as a child class of "Frame Tab"
+        //            // so step down into Frame Tab and continue start searching for 
+        //            // TabWindowClass there.
+        //            if (NativeMethods.CompareClassNames(hwnd, "Frame Tab")) // IE 8
+        //            {
+        //                //step one deeper for IE 8
+        //                hwnd = NativeMethods.GetWindow(hwnd, NativeMethods.GW_CHILD);
+        //            }
+        //            else
+        //            {
+        //                hwnd = NativeMethods.GetWindow(hwnd, NativeMethods.GW_HWNDNEXT);
+        //            }
+        //        }
+        //        hwnd = NativeMethods.GetWindow(hwnd, NativeMethods.GW_CHILD);
+        //    }
+        //    return hwnd;
+        //}
 
-        private static IntPtr GetHwndForInternetExplorerServer(IntPtr hwnd)
-        {
-            //Get Browser "Document" Handle
-            while (hwnd != IntPtr.Zero)
-            {
-                if (NativeMethods.CompareClassNames(hwnd, "Shell DocObject View") ||
-                    NativeMethods.CompareClassNames(hwnd, "Internet Explorer_TridentDlgFrame"))
-                {
-                    hwnd = NativeMethods.FindWindowEx(hwnd, IntPtr.Zero, "Internet Explorer_Server", IntPtr.Zero);
-                    break;
-                }
-                hwnd = NativeMethods.GetWindow(hwnd, NativeMethods.GW_HWNDNEXT);
-            }
-            return hwnd;
-        }
+        //private static IntPtr GetHwndForInternetExplorerServer(IntPtr hwnd)
+        //{
+        //    //Get Browser "Document" Handle
+        //    while (hwnd != IntPtr.Zero)
+        //    {
+        //        if (NativeMethods.CompareClassNames(hwnd, "Shell DocObject View") ||
+        //            NativeMethods.CompareClassNames(hwnd, "Internet Explorer_TridentDlgFrame"))
+        //        {
+        //            hwnd = NativeMethods.FindWindowEx(hwnd, IntPtr.Zero, "Internet Explorer_Server", IntPtr.Zero);
+        //            break;
+        //        }
+        //        hwnd = NativeMethods.GetWindow(hwnd, NativeMethods.GW_HWNDNEXT);
+        //    }
+        //    return hwnd;
+        //}
 
         private static void DrawResolutionGuidesOnImage(Graphics g2, int URLExtraHeight, int URLExtraLeft)
         {

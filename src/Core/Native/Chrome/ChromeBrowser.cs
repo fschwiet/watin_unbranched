@@ -20,6 +20,7 @@ namespace WatiN.Core.Native.Chrome
 {
     using System;
     using System.Threading;
+    using WatiN.Core.Native.Windows;
 
     /// <summary>
     /// Native driver the communicates with the Chrome browser using a
@@ -27,12 +28,34 @@ namespace WatiN.Core.Native.Chrome
     /// </summary>
     public class ChromeBrowser : JSBrowserBase
     {
+        #region Private members
+        private ChromeDialogManager _dialogManager = null;
+        private Window _hostWindow = null;
+        #endregion
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="ChromeBrowser"/> class.
         /// </summary>
         /// <param name="clientPort">The client port.</param>
         public ChromeBrowser(ClientPortBase clientPort) : base(clientPort)
         {
+            //Only Windows implemented for now.
+            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+            {
+                var mainWindows = WindowFactory.GetWindows(candidateWindow => candidateWindow.ClassName == "Chrome");
+
+                if (mainWindows.Count >= 1)
+                {
+                    _hostWindow = mainWindows[0];
+                    mainWindows.Remove(_hostWindow);
+                    _dialogManager = new ChromeDialogManager(_hostWindow, WindowEnumerationMethod.WindowManagementApi);
+                }
+                WindowFactory.DisposeWindows(mainWindows);
+            }
+            else
+            {
+                throw new NotImplementedException("Chrome only implemented for Windows");
+            }
         }
 
         public override INativeDocument NativeDocument
@@ -81,6 +104,22 @@ namespace WatiN.Core.Native.Chrome
                 this.ClientPort.WriteAndRead("debug()", true, true);
             } 
             while (this.ClientPort.LastResponseRaw.Contains("attached to about:blank") && url.AbsoluteUri != "about:blank");
+        }
+
+        public override Window HostWindow
+        {
+            get { return _hostWindow; }
+        }
+
+        public override INativeDialogManager NativeDialogManager
+        {
+            get { return _dialogManager; }
+        }
+
+        public override void Dispose()
+        {
+            if (_dialogManager != null)
+                _dialogManager.Dispose();
         }
     }
 }

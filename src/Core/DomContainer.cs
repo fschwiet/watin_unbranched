@@ -17,11 +17,11 @@
 #endregion Copyright
 
 using System;
-using WatiN.Core.DialogHandlers;
 using WatiN.Core.Interfaces;
 using WatiN.Core.Native;
 using WatiN.Core.Native.Windows;
 using WatiN.Core.UtilityClasses;
+using System.Collections.Generic;
 
 namespace WatiN.Core
 {
@@ -43,25 +43,16 @@ namespace WatiN.Core
 			DomContainer = this;
 		}
 
-		public abstract IntPtr hWnd { get; }
+        public abstract Window HostWindow { get; }
+		//public abstract IntPtr hWnd { get; }
 
-		/// <summary>
-		/// Gets the process ID the Internet Explorer or HTMLDialog is running in.
-		/// </summary>
-		/// <value>The process ID.</value>
-        public virtual int ProcessID
-		{
-			get
-			{
-                return new Window(hWnd).ProcessID;
-			}
-		}
+        //public abstract int ProcessID { get; }
 
         /// <summary>
         /// Gets the native document.
         /// </summary>
         /// <returns>The native document.</returns>
-		public abstract INativeDocument OnGetNativeDocument();
+        public abstract INativeDocument OnGetNativeDocument();
 
 		/// <summary>
 		/// Returns a browser specific <see cref="INativeDocument"/> instance.
@@ -70,48 +61,13 @@ namespace WatiN.Core
 		{
 			get
 			{
-				if (_nativeDocument == null)
-				{
-					_nativeDocument = OnGetNativeDocument();
-				}
+                if (_nativeDocument == null)
+                {
+                    _nativeDocument = OnGetNativeDocument();
+                }
 
 				return _nativeDocument;
 			}
-		}
-
-		/// <summary>
-		/// Call this function (from a subclass) as soon as the process is started.
-		/// </summary>
-		protected void StartDialogWatcher()
-		{
-		    if (!Settings.AutoStartDialogWatcher || DialogWatcher != null) return;
-		    
-            DialogWatcher = DialogWatcher.GetDialogWatcher(hWnd);
-		    DialogWatcher.IncreaseReferenceCount();
-		}
-
-	    /// <summary>
-	    /// Gets the dialog watcher.
-	    /// </summary>
-	    /// <value>The dialog watcher.</value>
-        public virtual DialogWatcher DialogWatcher { get; private set; }
-
-		/// <summary>
-		/// Adds the dialog handler.
-		/// </summary>
-		/// <param name="handler">The dialog handler.</param>
-		public void AddDialogHandler(IDialogHandler handler)
-		{
-			DialogWatcher.Add(handler);
-		}
-
-		/// <summary>
-		/// Removes the dialog handler.
-		/// </summary>
-		/// <param name="handler">The dialog handler.</param>
-		public void RemoveDialogHandler(IDialogHandler handler)
-		{
-			DialogWatcher.Remove(handler);
 		}
 
 		/// <summary>
@@ -123,11 +79,6 @@ namespace WatiN.Core
 		    if (IsDisposed) return;
 		    
             _nativeDocument = null;
-		    if (DialogWatcher != null)
-		    {
-		        DialogWatcher.DecreaseReferenceCount();
-		        DialogWatcher = null;
-		    }
 		    IsDisposed = true;
 
 		    base.Dispose(true);
@@ -138,7 +89,7 @@ namespace WatiN.Core
 		/// </summary>
 		public void WaitForComplete()
 		{
-			WaitForComplete(Settings.WaitForCompleteTimeOut);
+            WaitForComplete(Settings.WaitForCompleteTimeOut);
 		}
 
 		/// <summary>
@@ -161,13 +112,13 @@ namespace WatiN.Core
 		/// determine the image format. The following image formats are
 		/// supported (if the encoder is available on the machine):
 		/// jpg, tif, gif, png, bmp.
-		/// If you want more controle over the output, use <seealso cref="CaptureWebPage.CaptureWebPageToFile(string, bool, bool, int, int)"/>
+		/// If you want more controle over the output, use &lt;seealso cref="CaptureWebPage.CaptureWebPageToFile(string, bool, bool, int, int)"/&gt;
 		/// </summary>
 		/// <param name="filename">The filename.</param>
         public virtual void CaptureWebPageToFile(string filename)
 		{
-			var captureWebPage = new CaptureWebPage(this);
-			captureWebPage.CaptureWebPageToFile(filename, false, false, 100, 100);
+            var captureWebPage = new CaptureWebPage(this);
+            captureWebPage.CaptureWebPageToFile(filename, false, false, 100, 100);
 		}
 
 		/// <summary>
@@ -179,5 +130,33 @@ namespace WatiN.Core
 			DomContainer = this;
 			IsDisposed = false;
 		}
-	}
+
+        /// <summary>
+        /// Sets a handler for a type of watchable object (e.g., dialog, infobar, etc.).
+        /// </summary>
+        /// <typeparam name="TWatchable">An object implementing the <see cref="IWatchable"/> interface.</typeparam>
+        /// <param name="action">An <see cref="System.Action&lt;T&gt;"/> delegate to handle the object.</param>
+        public abstract void SetHandler<TWatchable>(Action<TWatchable> action) where TWatchable : IWatchable;
+
+        /// <summary>
+        /// Clears the handler for the given watchable object type (e.g., dialog, infobar, etc.).
+        /// </summary>
+        /// <typeparam name="TWatchable">An object implementing the <see cref="IWatchable"/> interface.</typeparam>
+        public abstract void ClearHandler<TWatchable>();
+
+        /// <summary>
+        /// Sets an expectation for a watchable object (e.g., dialog, infobar, etc.) to appear.
+        /// </summary>
+        /// <typeparam name="TWatchable">An object implementing the <see cref="IWatchable"/> interface.</typeparam>
+        /// <returns>An <see cref="Expectation&lt;TWatchable&gt;"/> object the user can use to manipulate the object.</returns>
+        public abstract Expectation<TWatchable> Expect<TWatchable>() where TWatchable : IWatchable;
+
+        /// <summary>
+        /// Sets an expectation for a watchable object (e.g., dialog, infobar, etc.) to appear.
+        /// </summary>
+        /// <typeparam name="TWatchable">An object implementing the <see cref="IWatchable"/> interface.</typeparam>
+        /// <param name="timeout">The timeout in seconds within which the expectation should be filled.</param>
+        /// <returns>An <see cref="Expectation&lt;TWatchable&gt;"/> object the user can use to manipulate the object.</returns>
+        public abstract Expectation<TWatchable> Expect<TWatchable>(int timeout) where TWatchable : IWatchable;
+    }
 }

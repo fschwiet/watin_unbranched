@@ -20,7 +20,6 @@ using System;
 using System.Collections.Specialized;
 using System.Drawing;
 using mshtml;
-using WatiN.Core.DialogHandlers;
 using WatiN.Core.Exceptions;
 using WatiN.Core.Logging;
 using WatiN.Core.UtilityClasses;
@@ -316,14 +315,14 @@ namespace WatiN.Core.Native.InternetExplorer
         }
 
         /// <inheritdoc />
-        public void SetFileUploadFile(DialogWatcher dialogWatcher, string fileName)
-        {
-            var uploadDialogHandler = new FileUploadDialogHandler(fileName);
-            using (new UseDialogOnce(dialogWatcher, uploadDialogHandler))
-            {
-                ClickOnElement();
-            }
-        }
+        //public void SetFileUploadFile(DomContainer dialogWatcher, string fileName)
+        //{
+        //    var uploadDialogHandler = new FileUploadDialogHandler(fileName);
+        //    using (new UseDialogOnce(dialogWatcher, uploadDialogHandler))
+        //    {
+        //        ClickOnElement();
+        //    }
+        //}
 
         private IHTMLFormElement AsHtmlFormElement
         {

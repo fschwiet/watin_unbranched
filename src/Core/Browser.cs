@@ -28,13 +28,14 @@ using WatiN.Core.Native;
 using WatiN.Core.Native.InternetExplorer;
 using WatiN.Core.Native.Windows;
 using WatiN.Core.UtilityClasses;
+using WatiN.Core.WatchableObjects;
 
 namespace WatiN.Core
 {
     public abstract class Browser : DomContainer 
     {
-
         private static readonly Dictionary<Type, IAttachTo> AttachToHelpers = new Dictionary<Type, IAttachTo>();
+        private Dictionary<Type, IWatcher> watchers;
 
         static Browser()
         {
@@ -48,11 +49,7 @@ namespace WatiN.Core
         /// </summary>
         public virtual void BringToFront()
         {
-            if (NativeMethods.GetForegroundWindow() == hWnd) return;
-            
-            var result = NativeMethods.SetForegroundWindow(hWnd);
-
-            if (!result)
+            if (!NativeBrowser.HostWindow.SetFocus())
             {
                 Logger.LogAction("Failed to set Firefox as the foreground window.");
             }
@@ -62,23 +59,18 @@ namespace WatiN.Core
         /// Gets the window style.
         /// </summary>
         /// <returns>The style currently applied to the ie window.</returns>
-        public virtual NativeMethods.WindowShowStyle GetWindowStyle()
+        public virtual WindowShowStyle GetWindowStyle()
         {
-            var placement = new WINDOWPLACEMENT();
-            placement.length = Marshal.SizeOf(placement);
-
-            NativeMethods.GetWindowPlacement(hWnd, ref placement);
-
-            return (NativeMethods.WindowShowStyle)placement.showCmd;
+            return NativeBrowser.HostWindow.WindowStyle;
         }
 
         /// <summary>
         /// Make the referenced Internet Explorer full screen, minimized, maximized and more.
         /// </summary>
         /// <param name="showStyle">The style to apply.</param>
-        public virtual void ShowWindow(NativeMethods.WindowShowStyle showStyle)
+        public virtual void ShowWindow(WindowShowStyle showStyle)
         {
-            NativeMethods.ShowWindow(hWnd, (int) showStyle);
+            NativeBrowser.HostWindow.WindowStyle = showStyle;
         }
 
         /// <summary>
@@ -91,18 +83,9 @@ namespace WatiN.Core
 
             var currentStyle = GetWindowStyle();
 
-            ShowWindow(NativeMethods.WindowShowStyle.Restore);
+            ShowWindow(WindowShowStyle.Restore);
             BringToFront();
-
-            var intThreadIDIE = ProcessID;
-            var intCurrentThreadID = NativeMethods.GetCurrentThreadId();
-
-            NativeMethods.AttachThreadInput(intCurrentThreadID, intThreadIDIE, true);
-
-            NativeMethods.keybd_event(NativeMethods.KEYEVENTF_TAB, 0x45, NativeMethods.KEYEVENTF_EXTENDEDKEY, 0);
-            NativeMethods.keybd_event(NativeMethods.KEYEVENTF_TAB, 0x45, NativeMethods.KEYEVENTF_EXTENDEDKEY | NativeMethods.KEYEVENTF_KEYUP, 0);
-
-            NativeMethods.AttachThreadInput(intCurrentThreadID, intThreadIDIE, false);
+            NativeBrowser.HostWindow.SendKeystrokes("\t");
 
             ShowWindow(currentStyle);
         }
@@ -240,7 +223,7 @@ namespace WatiN.Core
             if (succeeded)
             {
                 WaitForComplete();
-                Logger.LogAction("Navigated Back to '{0}'",Url);
+                Logger.LogAction("Navigated Back to '{0}'", Url);
             }
             else
             {
@@ -262,7 +245,7 @@ namespace WatiN.Core
             if (succeeded)
             {
                 WaitForComplete();
-                Logger.LogAction("Navigated Forward to '{0}",Url);
+                Logger.LogAction("Navigated Forward to '{0}", Url);
             }
             else
             {
@@ -318,10 +301,19 @@ namespace WatiN.Core
         /// </summary>
         public abstract void Close();
 
-        public override IntPtr hWnd
+        public override Window HostWindow
         {
-            get { return NativeBrowser.hWnd; }
+            get { return NativeBrowser.HostWindow; }
         }
+        //public override IntPtr hWnd
+        //{
+        //    get { return NativeBrowser.HostWindow.Handle; }
+        //}
+
+        //public override int ProcessID
+        //{
+        //    get { return NativeBrowser.HostWindow.ProcessId; }
+        //}
 
         /// <inheritdoc />
         public override INativeDocument OnGetNativeDocument()
@@ -345,7 +337,7 @@ namespace WatiN.Core
             }
             else if (name.Equals("hwnd"))
             {
-                UtilityClass.TryActionIgnoreException(() => value = hWnd.ToString());
+                UtilityClass.TryActionIgnoreException(() => value = HostWindow.Handle.ToString());
             }
             else
             {
@@ -394,6 +386,92 @@ namespace WatiN.Core
             AttachToHelpers.Add(browserType, attachToHelper);
         }
 
+        /// <inheritdoc />
+        public override void SetHandler<TWatchable>(Action<TWatchable> action)
+        {
+            IWatcher watcher = GetWatcher(typeof(TWatchable), true);
+            watcher.SetHandler(action);
+        }
 
+        /// <inheritdoc />
+        public override void ClearHandler<TWatchable>()
+        {
+            IWatcher watcher = GetWatcher(typeof(TWatchable), false);
+            if (watcher != null)
+                watcher.ClearHandler<TWatchable>();
+        }
+
+        /// <inheritdoc />
+        public override Expectation<TWatchable> Expect<TWatchable>()
+        {
+            return Expect<TWatchable>(Expectation<TWatchable>.DefaultTimeout);
+        }
+
+        /// <inheritdoc />
+        public override Expectation<TWatchable> Expect<TWatchable>(int timeout)
+        {
+            IWatcher watcher = GetWatcher(typeof(TWatchable), true);
+            return watcher.Expect<TWatchable>(timeout);
+        }
+
+        private IWatcher GetWatcher(Type watchableType, bool createIfAbsent)
+        {
+            if (watchers == null)
+                watchers = new Dictionary<Type, IWatcher>();
+
+            Type baseWatchableType = GetBaseWatchableType(watchableType);
+
+            IWatcher watcher;
+            if (!watchers.TryGetValue(baseWatchableType, out watcher) && createIfAbsent)
+            {
+                watcher = CreateWatcher(baseWatchableType);
+                watchers.Add(baseWatchableType, watcher);
+            }
+
+            return watcher;
+        }
+
+        private Type GetBaseWatchableType(Type watchableType)
+        {
+            Type baseWatchableType = typeof(object);
+
+            if (typeof(Dialog).IsAssignableFrom(watchableType))
+                baseWatchableType = typeof(Dialog);
+
+            //else if (typeof(InfoBar).IsAssignableFrom(watchableType))
+            //    baseWatchableType = typeof(InfoBar);
+
+            //else if (typeof(Page).IsAssignableFrom(watchableType))
+            //    baseWatchableType = typeof(Page);
+
+            else
+                throw new NotSupportedException("Unsupported watcher type.");
+
+            return baseWatchableType;
+        }
+
+        private IWatcher CreateWatcher(Type watchableType)
+        {
+            if (typeof(Dialog).IsAssignableFrom(watchableType))
+                return new DialogWatcher(NativeBrowser.NativeDialogManager, watchableType);
+
+            //if (typeof(InfoBar).IsAssignableFrom(watchableType))
+            //    return new InfoBarWatcher(NativeBrowser.NativeInfoBarManager, watchableType);
+
+            //if (typeof(Page).IsAssignableFrom(watchableType))
+            //    return new PageWatcher(this, watchableType);
+
+            throw new NotSupportedException("Unsupported watcher type.");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (IsDisposed) return;
+
+            if (NativeBrowser != null)
+                NativeBrowser.Dispose();
+
+            base.Dispose(true);
+        }
     }
 }
