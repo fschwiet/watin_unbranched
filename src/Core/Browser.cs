@@ -402,6 +402,14 @@ namespace WatiN.Core
         }
 
         /// <inheritdoc />
+        public override void ResetHandler<TWatchable>()
+        {
+            IWatcher watcher = GetWatcher(typeof(TWatchable), false);
+            if (watcher != null)
+                watcher.ResetHandler<TWatchable>();
+        }
+
+        /// <inheritdoc />
         public override Expectation<TWatchable> Expect<TWatchable>()
         {
             return Expect<TWatchable>(Expectation<TWatchable>.DefaultTimeout);

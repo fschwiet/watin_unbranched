@@ -8,20 +8,12 @@ namespace WatiN.Core.Native.Windows.Microsoft
 {
     internal class MsWindowsEnumerator
     {
-        /// <summary> 
-        /// Get all top-level window information 
-        /// </summary> 
-        /// <returns>List of window information objects</returns> 
-        internal IList<Window> GetTopLevelWindows()
-        {
-            return GetWindows(window => true);
-        }
-
-        //internal IList<Window> GetTopLevelWindows(string className)
-        //{
-        //    return GetWindows(window => MsWindowsNativeMethods.CompareClassNames(window.Handle, className));
-        //}
-
+        /// <summary>
+        /// Gets a list of top-level windows matching the specified criteria.
+        /// </summary>
+        /// <param name="constraint">A <see cref="WindowCriteriaConstraint"/> delegate constraining the criteria for the windows to find.</param>
+        /// <returns>A list of Window objects representing the top-level windows on the screen.</returns>
+        /// <remarks>Using a window constraint of "w => true" returns all top-level windows.</remarks>
         internal IList<Window> GetWindows(WindowCriteriaConstraint constraint)
         {
             var windows = new List<Window>();
@@ -38,20 +30,12 @@ namespace WatiN.Core.Native.Windows.Microsoft
             return windows;
         }
 
-        /// <summary> 
-        /// Get all child windows for the specific windows handle (hwnd). 
-        /// </summary> 
-        /// <returns>List of child windows for parent window</returns> 
-        internal IList<Window> GetChildWindows(IntPtr hwnd)
-        {
-            return GetChildWindows(hwnd, (string)null);
-        }
-
-        internal IList<Window> GetChildWindows(IntPtr hwnd, string childClass)
-        {
-            return GetChildWindows(hwnd, window => childClass == null || MsWindowsNativeMethods.CompareClassNames(window.Handle, childClass));
-        }
-
+        /// <summary>
+        /// Get all child windows for the specific windows handle (hwnd) meeting the specified criteria. 
+        /// </summary>
+        /// <param name="hwnd">A System.IntPtr value representing the handle to the parent window.</param>
+        /// <param name="constraint">A <see cref="WindowCriteriaConstraint"/> delegate constraining the criteria for the child windows to find.</param>
+        /// <returns>A list of Window objects representing the child windows on the screen.</returns>
         internal IList<Window> GetChildWindows(IntPtr hwnd, WindowCriteriaConstraint constraint)
         {
             var childWindows = new List<Window>();

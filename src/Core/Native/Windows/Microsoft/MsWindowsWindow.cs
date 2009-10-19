@@ -45,7 +45,7 @@ namespace WatiN.Core.Native.Windows.Microsoft
         public static IList<Window> GetAllTopLevelWindows()
         {
             MsWindowsEnumerator enumerator = new MsWindowsEnumerator();
-            IList<Window> allWindowList = enumerator.GetTopLevelWindows();
+            IList<Window> allWindowList = enumerator.GetWindows(window => true);
             return allWindowList;
         }
 
@@ -175,24 +175,13 @@ namespace WatiN.Core.Native.Windows.Microsoft
 
         public override int ProcessId
         {
-            get
-            {
-                int procId = 0;
-                MsWindowsNativeMethods.GetWindowThreadProcessId(_handle, out procId);
-                return procId;
-            }
+            get { return MsWindowsNativeMethods.GetProcessIdForWindow(_handle); }
         }
 
         public override WindowShowStyle WindowStyle
         {
-            get
-            {
-                return MsWindowsNativeMethods.GetWindowShowStyle(_handle);
-            }
-            set
-            {
-                MsWindowsNativeMethods.SetWindowShowStyle(_handle, value);
-            }
+            get { return MsWindowsNativeMethods.GetWindowShowStyle(_handle); }
+            set { MsWindowsNativeMethods.SetWindowShowStyle(_handle, value); }
         }
 
         public override bool IsPressable
@@ -252,29 +241,7 @@ namespace WatiN.Core.Native.Windows.Microsoft
 
         public override bool SetFocus()
         {
-            bool focusWasSet = false;
-
-            //Attach to the input thread of the window.
-            int currentThreadId = MsWindowsNativeMethods.GetCurrentThreadId();
-            int windowProcessId = 0;
-            int windowThreadId = MsWindowsNativeMethods.GetWindowThreadProcessId(_handle, out windowProcessId);
-            MsWindowsNativeMethods.AttachThreadInput(currentThreadId, windowThreadId, true);
-
-            //Bring the top level window to the foreground if it is not
-            //already there, then set focus to the child window, if this
-            //is a child window.
-            if (MsWindowsNativeMethods.GetForegroundWindow() != TopLevelWindowHandle)
-            {
-                focusWasSet = MsWindowsNativeMethods.SetForegroundWindow(TopLevelWindowHandle);
-            }
-            if (!IsTopLevelWindow)
-            {
-                focusWasSet = (MsWindowsNativeMethods.SetFocus(_handle) != IntPtr.Zero);
-            }
-
-            //Always remember to detach from the input thread.
-            MsWindowsNativeMethods.AttachThreadInput(currentThreadId, windowThreadId, false);
-            return focusWasSet;
+            return MsWindowsNativeMethods.SetFocusToWindow(_handle, _parentWindowHandle);
         }
 
         public override IList<Window> GetChildWindows(WindowCriteriaConstraint constraint)
@@ -314,19 +281,19 @@ namespace WatiN.Core.Native.Windows.Microsoft
             foreach (var c in keystrokes)
             {
                 System.Threading.Thread.Sleep(50);
-                List<INPUT> keySequence = new List<INPUT>();
-                INPUT keyDown = new INPUT();
-                keyDown.type = InputType.Keyboard;
+                List<MsWindowsNativeMethods.INPUT> keySequence = new List<MsWindowsNativeMethods.INPUT>();
+                MsWindowsNativeMethods.INPUT keyDown = new MsWindowsNativeMethods.INPUT();
+                keyDown.type = MsWindowsNativeMethods.InputType.Keyboard;
                 keyDown.ki.wVk = Convert.ToInt16(char.ToUpper(c));
-                keyDown.ki.dwFlags = KeyEventFlags.None;
+                keyDown.ki.dwFlags = MsWindowsNativeMethods.KeyEventFlags.None;
                 keyDown.ki.time = 0;
                 keyDown.ki.wScan = 0;
                 keyDown.ki.dwExtraInfo = IntPtr.Zero;
 
-                INPUT keyUp = new INPUT();
-                keyUp.type = InputType.Keyboard;
+                MsWindowsNativeMethods.INPUT keyUp = new MsWindowsNativeMethods.INPUT();
+                keyUp.type = MsWindowsNativeMethods.InputType.Keyboard;
                 keyUp.ki.wVk = Convert.ToInt16(char.ToUpper(c));
-                keyUp.ki.dwFlags = KeyEventFlags.KeyUp;
+                keyUp.ki.dwFlags = MsWindowsNativeMethods.KeyEventFlags.KeyUp;
                 keyUp.ki.time = 0;
                 keyUp.ki.wScan = 0;
                 keyUp.ki.dwExtraInfo = IntPtr.Zero;
@@ -336,14 +303,14 @@ namespace WatiN.Core.Native.Windows.Microsoft
 
                 if (c >= 'A' && c <= 'Z')
                 {
-                    INPUT shiftKeyDown = new INPUT();
-                    shiftKeyDown.type = InputType.Keyboard;
-                    shiftKeyDown.ki.wVk = (short)VK.Shift;
+                    MsWindowsNativeMethods.INPUT shiftKeyDown = new MsWindowsNativeMethods.INPUT();
+                    shiftKeyDown.type = MsWindowsNativeMethods.InputType.Keyboard;
+                    shiftKeyDown.ki.wVk = (short)MsWindowsNativeMethods.VK.Shift;
 
-                    INPUT shiftKeyUp = new INPUT();
-                    shiftKeyUp.type = InputType.Keyboard;
-                    shiftKeyUp.ki.wVk = (short)VK.Shift;
-                    shiftKeyUp.ki.dwFlags = KeyEventFlags.KeyUp;
+                    MsWindowsNativeMethods.INPUT shiftKeyUp = new MsWindowsNativeMethods.INPUT();
+                    shiftKeyUp.type = MsWindowsNativeMethods.InputType.Keyboard;
+                    shiftKeyUp.ki.wVk = (short)MsWindowsNativeMethods.VK.Shift;
+                    shiftKeyUp.ki.dwFlags = MsWindowsNativeMethods.KeyEventFlags.KeyUp;
 
                     keySequence.Insert(0, shiftKeyDown);
                     keySequence.Add(shiftKeyUp);
@@ -379,62 +346,5 @@ namespace WatiN.Core.Native.Windows.Microsoft
         {
             return MsWindowsNativeMethods.SendMessageTimeout(_handle, msg, wParam, lParam, fuFlags, uTimeout, ref lpdwResult);
         }
-
-        private IntPtr TopLevelWindowHandle
-        {
-            get
-            {
-                IntPtr topLevelWindowHandle = _handle;
-                if (!IsTopLevelWindow)
-                    topLevelWindowHandle = _parentWindowHandle;
-                return topLevelWindowHandle;
-            }
-        }
-
-        #region Obsolete methods. Remove?
-        private IList<Window> GetChildWindowsByClassName(string windowClass)
-        {
-            IList<Window> childWindowList = new List<Window>();
-            if (ChildEnumerationMethod == WindowEnumerationMethod.WindowManagementApi)
-            {
-                MsWindowsEnumerator enumerator = new MsWindowsEnumerator();
-                childWindowList = enumerator.GetChildWindows(_handle, windowClass);
-            }
-            else
-            {
-                if (AccessibleObject != null)
-                {
-                    AccessibleRole desiredRole = (AccessibleRole)Enum.Parse(typeof(AccessibleRole), windowClass);
-                    IList<AssistiveTechnologyObject> accessibleChildren = AccessibleObject.GetChildrenByRole(desiredRole, true, true);
-                    foreach (AssistiveTechnologyObject accessibleChild in accessibleChildren)
-                    {
-                        int itemIndex = accessibleChildren.IndexOf(accessibleChild);
-                        MsWindowsWindow foundWindow = new MsWindowsWindow((MsaaObject)accessibleChild, _handle, itemIndex);
-                    }
-                }
-            }
-            return childWindowList;
-        }
-
-        private Window GetChildWindowById(int id)
-        {
-            Window childWindow = null;
-            if (IsDialog)
-            {
-                IntPtr childWindowHandle = MsWindowsNativeMethods.GetDialogItem(_handle, id);
-                childWindow = new MsWindowsWindow(childWindowHandle, _handle);
-            }
-            else
-            {
-                MsWindowsEnumerator enumerator = new MsWindowsEnumerator();
-                IList<Window> childWindowList = enumerator.GetChildWindows(_handle);
-                if (childWindowList.Count > 0 && id < childWindowList.Count)
-                {
-                    childWindow = childWindowList[id];
-                }
-            }
-            return childWindow;
-        }
-        #endregion
     }
 }

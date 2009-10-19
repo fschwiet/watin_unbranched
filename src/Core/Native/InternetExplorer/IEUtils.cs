@@ -26,6 +26,7 @@ using SHDocVw;
 using WatiN.Core.Exceptions;
 using WatiN.Core.Native.Windows;
 using IEnumUnknown=WatiN.Core.Native.Windows.IEnumUnknown;
+using WatiN.Core.Native.Windows.Microsoft;
 
 namespace WatiN.Core.Native.InternetExplorer
 {
@@ -152,7 +153,7 @@ namespace WatiN.Core.Native.InternetExplorer
 
             var lRes = 0;
 
-            if (!IsIEServerWindow(ieWindow.Handle))
+            if (ieWindow.ClassName != "Internet Explorer_Server")
             {
                 // Get 1st child IE server window
                 IList<Window> candidates = ieWindow.GetChildWindows(w => w.ClassName == "Internet Explorer_Server");
@@ -162,12 +163,13 @@ namespace WatiN.Core.Native.InternetExplorer
                 }
             }
 
-            if (IsIEServerWindow(ieWindow.Handle))
+            if (ieWindow.ClassName == "Internet Explorer_Server")
             {
                 // Register the message
-                var lMsg = WatiN.Core.Native.Windows.Microsoft.MsWindowsNativeMethods.RegisterWindowMessage("WM_HTML_GETOBJECT");
+                var lMsg = ((MsWindowsWindow)ieWindow).RegisterWindowMessage("WM_HTML_GETOBJECT");
                 // Get the object
-                WatiN.Core.Native.Windows.Microsoft.MsWindowsNativeMethods.SendMessageTimeout(ieWindow.Handle, lMsg, 0, 0, WatiN.Core.Native.Windows.Microsoft.MsWindowsNativeMethods.SMTO_ABORTIFHUNG, 1000, ref lRes);
+                ((MsWindowsWindow)ieWindow).SendMessageWithAbortIfHungTimeout(lMsg, 0, 0, 1000, ref lRes); 
+
                 if (lRes != 0)
                 {
                     // Get the object from lRes
@@ -183,10 +185,10 @@ namespace WatiN.Core.Native.InternetExplorer
             return null;
         }
 
-        public static bool IsIEServerWindow(IntPtr hWnd)
-        {
-            return WatiN.Core.Native.Windows.Microsoft.MsWindowsNativeMethods.CompareClassNames(hWnd, "Internet Explorer_Server");
-        }
+        //public static bool IsIEServerWindow(IntPtr hWnd)
+        //{
+        //    return WatiN.Core.Native.Windows.Microsoft.MsWindowsNativeMethods.CompareClassNames(hWnd, "Internet Explorer_Server");
+        //}
 
         internal static void EnumIWebBrowser2Interfaces(IWebBrowser2Processor processor)
         {

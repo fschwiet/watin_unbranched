@@ -138,51 +138,5 @@ namespace WatiN.Core.Native.Windows
             }
             return windowList;
         }
-
-        //public static Window GetMainWindow(Process mainProcess)
-        //{
-        //    Window windowObject = null;
-        //    mainProcess.WaitForInputIdle(5000);
-        //    mainProcess.Refresh();
-        //    switch (Environment.OSVersion.Platform)
-        //    {
-        //        case PlatformID.MacOSX:
-        //        case PlatformID.Unix:
-        //            windowObject = new X11Window(mainProcess.Id);
-        //            while (windowObject.Handle == IntPtr.Zero)
-        //            {
-        //                System.Threading.Thread.Sleep(200);
-        //                windowObject = new X11Window(mainProcess.Id);
-        //            }
-        //            break;
-        //
-        //        default:
-        //            while (mainProcess.MainWindowHandle == IntPtr.Zero)
-        //            {
-        //                System.Threading.Thread.Sleep(200);
-        //                mainProcess.Refresh();
-        //            }
-        //            windowObject = new MsWindowsWindow(mainProcess.MainWindowHandle);
-        //            break;
-        //    }
-        //    return windowObject;
-        //}
-
-        //public static IList<Window> GetAllTopLevelWindowsForProcess(Process mainProcess, bool enumChildrenByNativeWindowApi)
-        //{
-        //    IList<Window> windowList = new List<Window>();
-        //    switch (Environment.OSVersion.Platform)
-        //    {
-        //        case PlatformID.MacOSX:
-        //        case PlatformID.Unix:
-        //            windowList = GetWindows(candidateWindow => candidateWindow.ProcessId == mainProcess.Id && candidateWindow.Visible);
-        //            break;
-        //
-        //        default:
-        //            windowList = GetWindows(candidateWindow => (candidateWindow.Handle == mainProcess.MainWindowHandle || candidateWindow.OwnerHandle == mainProcess.MainWindowHandle || candidateWindow.ParentHandle == mainProcess.MainWindowHandle) && candidateWindow.Visible, enumChildrenByNativeWindowApi);
-        //            break;
-        //    }
-        //    return windowList;
-        //}
     }
 }

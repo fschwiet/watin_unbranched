@@ -626,6 +626,7 @@
     <Compile Include="WatchableObjects\FileLocationDialog.cs" />
     <Compile Include="WatchableObjects\LogonDialog.cs" />
     <Compile Include="WatchableObjects\RestoreSessionDialog.cs" />
+    <Compile Include="WatchableObjects\WatchableObjectHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

@@ -114,7 +114,7 @@ namespace WatiN.Core.Native.Windows.Microsoft
         internal MsaaObject(IntPtr hwnd)
         {
             object apiAccessibleObject = null;
-            MsWindowsNativeMethods.AccessibleObjectFromWindow(hwnd, OBJID.WINDOW, ref MsWindowsNativeMethods.IID_IAccessible, ref apiAccessibleObject);
+            apiAccessibleObject = MsWindowsNativeMethods.GetAccessibleObjectFromWindow(hwnd);
             _rawObject = apiAccessibleObject as Accessibility.IAccessible;
         }
 
@@ -166,8 +166,7 @@ namespace WatiN.Core.Native.Windows.Microsoft
             {
                 int countOfChildren = ChildCount;
                 object[] children = new object[countOfChildren];
-                int returnedChildCount = 0;
-                MsWindowsNativeMethods.AccessibleChildren(_rawObject, 0, countOfChildren, children, ref returnedChildCount);
+                MsWindowsNativeMethods.GetAccessibleChildren(_rawObject, children);
                 foreach(object childObject in children)
                 {
                     MsaaObject accessibleChild = null;

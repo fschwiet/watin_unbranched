@@ -142,7 +142,13 @@ namespace WatiN.Core
         /// Clears the handler for the given watchable object type (e.g., dialog, infobar, etc.).
         /// </summary>
         /// <typeparam name="TWatchable">An object implementing the <see cref="IWatchable"/> interface.</typeparam>
-        public abstract void ClearHandler<TWatchable>();
+        public abstract void ClearHandler<TWatchable>() where TWatchable : IWatchable;
+
+        /// <summary>
+        /// Resumes handling of a given watchable type.
+        /// </summary>
+        /// <typeparam name="TWatchable">An object implementing the <see cref="IWatchable"/> interface.</typeparam>
+        public abstract void ResetHandler<TWatchable>() where TWatchable : IWatchable;
 
         /// <summary>
         /// Sets an expectation for a watchable object (e.g., dialog, infobar, etc.) to appear.
