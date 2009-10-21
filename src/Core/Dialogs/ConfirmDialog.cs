@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using WatiN.Core.Native;
+using WatiN.Core.Logging;
 
-namespace WatiN.Core.WatchableObjects
+namespace WatiN.Core.Dialogs
 {
     public class ConfirmDialog : AlertDialog
     {
-        public const string ClickCancelAction = "ClickCancel";
-
         internal ConfirmDialog(INativeDialog nativeDialog)
             : base(nativeDialog)
         {
@@ -17,7 +16,8 @@ namespace WatiN.Core.WatchableObjects
 
         public void ClickCancelButton()
         {
-            NativeDialog.PerformAction(ClickCancelAction, null);
+            Logger.LogAction("Clicking Cancel button on {0} dialog", NativeDialog.Kind);
+            NativeDialog.PerformAction(NativeDialogConstants.ClickCancelAction, null);
         }
     }
 }

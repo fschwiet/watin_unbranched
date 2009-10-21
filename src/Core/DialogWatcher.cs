@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using WatiN.Core.Native;
+using WatiN.Core.Dialogs;
 using WatiN.Core.Interfaces;
-using WatiN.Core.WatchableObjects;
+using WatiN.Core.Native;
+using WatiN.Core.Logging;
 
 namespace WatiN.Core
 {
     public class DialogWatcher : IWatcher
     {
         #region Private members
-        private Dictionary<Type, object> handlers;
-        private Dictionary<Type, object> pendingExpectations;
+        private Dictionary<Type, WatchableObjectHandler> handlers;
+        private Dictionary<Type, Expectation> pendingExpectations;
         #endregion
 
         internal DialogWatcher(INativeDialogManager manager, Type watchableType)
@@ -25,9 +26,9 @@ namespace WatiN.Core
         public void SetHandler<TWatchable>(Action<TWatchable> action) where TWatchable : IWatchable
         {
             if (handlers == null)
-                handlers = new Dictionary<Type, object>();
+                handlers = new Dictionary<Type, WatchableObjectHandler>();
 
-            WatchableObjectHandler<TWatchable> handler = GetExistingHandler<TWatchable>();
+            WatchableObjectHandler handler = GetExistingHandler(typeof(TWatchable));
             if (handler == null)
             {
                 handlers.Add(typeof(TWatchable), new WatchableObjectHandler<TWatchable>(action));
@@ -37,7 +38,7 @@ namespace WatiN.Core
         /// <inheritdoc/>
         public void ClearHandler<TWatchable>() where TWatchable : IWatchable
         {
-            WatchableObjectHandler<TWatchable> existingHandler = GetExistingHandler<TWatchable>();
+            WatchableObjectHandler existingHandler = GetExistingHandler(typeof(TWatchable));
             if (existingHandler != null)
             {
                 handlers.Remove(typeof(TWatchable));
@@ -47,7 +48,7 @@ namespace WatiN.Core
         /// <inheritdoc/>
         public void ResetHandler<TWatchable>() where TWatchable : IWatchable
         {
-            WatchableObjectHandler<TWatchable> existingHandler = GetExistingHandler<TWatchable>();
+            WatchableObjectHandler existingHandler = GetExistingHandler(typeof(TWatchable));
             if (existingHandler != null)
             {
                 existingHandler.HandleCount = 0;
@@ -62,7 +63,7 @@ namespace WatiN.Core
         }
 
         /// <inheritdoc/>
-        public Expectation<TWatchable> Expect<TWatchable>(int timeout) where TWatchable : IWatchable
+        public Expectation<TWatchable> Expect<TWatchable>(TimeSpan timeout) where TWatchable : IWatchable
         {
             return Expect<TWatchable>(timeout, null);
         }
@@ -74,23 +75,24 @@ namespace WatiN.Core
         }
 
         /// <inheritdoc/>
-        public Expectation<TWatchable> Expect<TWatchable>(int timeout, Predicate<TWatchable> predicate) where TWatchable : IWatchable
+        public Expectation<TWatchable> Expect<TWatchable>(TimeSpan timeout, Predicate<TWatchable> predicate) where TWatchable : IWatchable
         {
             if (pendingExpectations == null)
-                pendingExpectations = new Dictionary<Type, object>();
-
+                pendingExpectations = new Dictionary<Type, Expectation>();
+            
             // Expectations, by definition, take precedence over handlers. If we set an
             // expectation for a given dialog type, we must disable the handler for the
             // dialog type, if any has been defined. At present, it is up to the user to
             // re-enable the dialog handler by calling ResetHandler().
-            Expectation<TWatchable> expectation = GetExistingExpectation<TWatchable>();
+            Expectation<TWatchable> expectation = GetExistingExpectation(typeof(TWatchable)) as Expectation<TWatchable>;
             if (expectation == null)
             {
-                expectation = new Expectation<TWatchable>(timeout);
+                expectation = new Expectation<TWatchable>(timeout, predicate);
                 pendingExpectations.Add(typeof(TWatchable), expectation);
-                WatchableObjectHandler<TWatchable> existingHandler = GetExistingHandler<TWatchable>();
+                WatchableObjectHandler existingHandler = GetExistingHandler(typeof(TWatchable));
                 if (existingHandler != null)
                 {
+                    Logger.LogInfo("Handler for watchable type {0} disabled and Expectation set", typeof(TWatchable).Name);
                     existingHandler.Enabled = false;
                 }
             }
@@ -100,57 +102,51 @@ namespace WatiN.Core
 
         private void manager_DialogFound(object sender, NativeDialogFoundEventArgs e)
         {
-            switch (e.NativeDialog.Kind)
-            {
-                case "AlertDialog":
-                    HandleDialogOrFulfillExpectation<AlertDialog>(new AlertDialog(e.NativeDialog));
-                    break;
-                case "ConfirmDialog":
-                    HandleDialogOrFulfillExpectation<ConfirmDialog>(new ConfirmDialog(e.NativeDialog));
-                    break;
-                default:
-                    break;
-            }
+            Dialog dialogInstance = DialogFactory.CreateDialog(e.NativeDialog);
+            HandleDialogOrFulfillExpectation(dialogInstance);
         }
 
-        private void HandleDialogOrFulfillExpectation<TWatchable>(TWatchable watchableObject) where TWatchable : IWatchable
+        private void HandleDialogOrFulfillExpectation(Dialog watchableObject)
         {
-            Expectation<TWatchable> existingExpectation = GetExistingExpectation<TWatchable>();
-            WatchableObjectHandler<TWatchable> existingHandler = GetExistingHandler<TWatchable>();
+            Type dialogType = watchableObject.GetType();
+            Expectation existingExpectation = GetExistingExpectation(dialogType);
+            WatchableObjectHandler existingHandler = GetExistingHandler(dialogType);
             if (existingExpectation != null)
             {
                 // Once the expectation is met, we can remove it from the list of
                 // pending expectations.
+                Logger.LogAction("{0} dialog found meeting expectation", watchableObject.NativeDialog.Kind);
                 existingExpectation.SetObject(watchableObject);
-                pendingExpectations.Remove(typeof(TWatchable));
+                pendingExpectations.Remove(dialogType);
             }
             else if (existingHandler != null && existingHandler.Enabled)
             {
+                Logger.LogAction("Handling {0} dialog with handler", watchableObject.NativeDialog.Kind);
                 existingHandler.HandleObject(watchableObject);
                 existingHandler.HandleCount++;
                 if (existingHandler.HandleOnce)
                 {
-                    handlers.Remove(typeof(TWatchable));
+                    handlers.Remove(dialogType);
                 }
             }
         }
 
-        private WatchableObjectHandler<TWatchable> GetExistingHandler<TWatchable>() where TWatchable : IWatchable
+        private WatchableObjectHandler GetExistingHandler(Type dialogType)
         {
-            WatchableObjectHandler<TWatchable> existingHandler = null;
-            if (handlers != null && handlers.ContainsKey(typeof(TWatchable)))
+            WatchableObjectHandler existingHandler = null;
+            if (handlers != null && handlers.ContainsKey(dialogType))
             {
-                existingHandler = handlers[typeof(TWatchable)] as WatchableObjectHandler<TWatchable>;
+                existingHandler = handlers[dialogType];
             }
             return existingHandler;
         }
 
-        private Expectation<TWatchable> GetExistingExpectation<TWatchable>() where TWatchable : IWatchable
+        private Expectation GetExistingExpectation(Type dialogType)
         {
-            Expectation<TWatchable> existingExpectation = null;
-            if (pendingExpectations != null && pendingExpectations.ContainsKey(typeof(TWatchable)))
+            Expectation existingExpectation = null;
+            if (pendingExpectations != null && pendingExpectations.ContainsKey(dialogType))
             {
-                existingExpectation = pendingExpectations[typeof(TWatchable)] as Expectation<TWatchable>;
+                existingExpectation = pendingExpectations[dialogType];
             }
             return existingExpectation;
         }

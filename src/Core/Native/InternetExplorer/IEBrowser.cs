@@ -12,6 +12,10 @@ namespace WatiN.Core.Native.InternetExplorer
 {
     public class IEBrowser : INativeBrowser
     {
+        #region Constants
+        private const string IEWindowClassName = "IEFrame";
+        #endregion
+
         #region Private members
         IEDialogManager _dialogManager = null;
         Window _hostWindow = null;
@@ -22,7 +26,7 @@ namespace WatiN.Core.Native.InternetExplorer
         public IEBrowser(IWebBrowser2 webBrowser2)
         {
             webBrowser = webBrowser2;
-            IList<Window> mainWindows = WindowFactory.GetWindows(candidateWindow => candidateWindow.ClassName == "IEFrame");
+            IList<Window> mainWindows = WindowFactory.GetWindows(candidateWindow => candidateWindow.ClassName == IEWindowClassName);
             if (mainWindows.Count >= 1)
             {
                 _hostWindow = mainWindows[0];

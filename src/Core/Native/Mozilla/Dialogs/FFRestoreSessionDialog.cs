@@ -2,19 +2,20 @@
 using System.Collections.Generic;
 using System.Text;
 using WatiN.Core.Native.Windows;
+using WatiN.Core.UtilityClasses;
 
 namespace WatiN.Core.Native.Mozilla.Dialogs
 {
-    public class FFRestoreSessionDialog : INativeDialog
+    public class FFRestoreSessionDialog : NativeDialog
     {
         #region Private members
         readonly int restoreSessionButtonId = 0;
         readonly int newSessionButtonId = 1;
-        Window _dialogWindow;
         #endregion
 
         public FFRestoreSessionDialog()
         {
+            Kind = NativeDialogConstants.FireFoxRestoreSessionDialog;
             if (Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.MacOSX)
             {
                 restoreSessionButtonId = 1;
@@ -29,49 +30,26 @@ namespace WatiN.Core.Native.Mozilla.Dialogs
 
         #region INativeDialog Members
 
-        public WatiN.Core.Native.Windows.Window DialogWindow
-        {
-            get { return _dialogWindow; }
-            set { _dialogWindow = value; }
-        }
-
-        public string Kind
-        {
-            get { return "FireFoxRestoreSessionDialog"; }
-        }
-
-        public object GetProperty(string propertyId)
+        public override object GetProperty(string propertyId)
         {
             throw new NotImplementedException();
         }
 
-        public void PerformAction(string actionId, object[] args)
+        public override void PerformAction(string actionId, object[] args)
         {
-            switch (actionId)
+            if (actionId == NativeDialogConstants.ClickRestoreSessionAction || actionId == NativeDialogConstants.ClickStartNewSessionAction)
             {
-                case "ClickRestoreSession":
-                case "ClickStartNewSession":
-                    int buttonId = restoreSessionButtonId;
-                    if (actionId == "ClickStartNewSession")
-                        buttonId = newSessionButtonId;
-                    IList<Window> buttons = _dialogWindow.GetChildWindows(b => b.ClassName == WindowFactory.GetWindowClassForRole(AccessibleRole.PushButton, false) && b.ItemId == buttonId);
-                    buttons[0].Press();
-                    WindowFactory.DisposeWindows(buttons);
-                    while (_dialogWindow.Exists)
-                    {
-                        System.Threading.Thread.Sleep(100);
-                    }
-                    break;
+                int buttonId = restoreSessionButtonId;
+                if (actionId == NativeDialogConstants.ClickStartNewSessionAction)
+                    buttonId = newSessionButtonId;
+                IList<Window> buttons = DialogWindow.GetChildWindows(b => b.ClassName == WindowFactory.GetWindowClassForRole(AccessibleRole.PushButton, false) && b.ItemId == buttonId);
+                buttons[0].Press();
+                WindowFactory.DisposeWindows(buttons);
+                WaitForWindowToDisappear();
             }
-
         }
 
-        public void Dismiss()
-        {
-            _dialogWindow.ForceClose();
-        }
-
-        public bool WindowIsDialogInstance(Window candidateWindow)
+        public override bool WindowIsDialogInstance(Window candidateWindow)
         {
             bool windowIsDialog = false;
             IList<Window> buttons = candidateWindow.GetChildWindows(w => w.ClassName == WindowFactory.GetWindowClassForRole(AccessibleRole.PushButton, false));
@@ -82,17 +60,6 @@ namespace WatiN.Core.Native.Mozilla.Dialogs
             WindowFactory.DisposeWindows(buttons);
             return windowIsDialog;
         }
-
-        #endregion
-
-        #region IDisposable Members
-
-        public void Dispose()
-        {
-            if (_dialogWindow != null)
-                _dialogWindow.Dispose();
-        }
-
         #endregion
     }
 }

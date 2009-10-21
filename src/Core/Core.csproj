@@ -210,6 +210,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Native\Chrome\ChromeDialogManager.cs" />
+    <Compile Include="Native\NativeDialog.cs" />
+    <Compile Include="Native\NativeDialogDismissedEventArgs.cs" />
     <Compile Include="Native\DialogManager.cs" />
     <Compile Include="Interfaces\IWatchable.cs" />
     <Compile Include="Interfaces\IWatcher.cs" />
@@ -286,6 +288,7 @@
     <Compile Include="Native\Mozilla\FireFoxClientPort.cs" />
     <Compile Include="Native\Mozilla\FireFoxException.cs" />
     <Compile Include="Native\Mozilla\FFElementCollection.cs" />
+    <Compile Include="Native\NativeDialogConstants.cs" />
     <Compile Include="Native\NativeDialogFoundEventArgs.cs" />
     <Compile Include="Native\Windows\AssistiveTechnologyObject.cs" />
     <Compile Include="Native\Windows\Enums.cs" />
@@ -619,14 +622,15 @@
     <Compile Include="UtilityClasses\Utils.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="WatchableObjects\AlertDialog.cs" />
-    <Compile Include="WatchableObjects\ConfirmDialog.cs" />
-    <Compile Include="WatchableObjects\Dialog.cs" />
-    <Compile Include="WatchableObjects\DialogWatcher.cs" />
-    <Compile Include="WatchableObjects\FileLocationDialog.cs" />
-    <Compile Include="WatchableObjects\LogonDialog.cs" />
-    <Compile Include="WatchableObjects\RestoreSessionDialog.cs" />
-    <Compile Include="WatchableObjects\WatchableObjectHandler.cs" />
+    <Compile Include="Dialogs\AlertDialog.cs" />
+    <Compile Include="Dialogs\ConfirmDialog.cs" />
+    <Compile Include="Dialogs\Dialog.cs" />
+    <Compile Include="DialogFactory.cs" />
+    <Compile Include="DialogWatcher.cs" />
+    <Compile Include="Dialogs\FileLocationDialog.cs" />
+    <Compile Include="Dialogs\LogonDialog.cs" />
+    <Compile Include="Dialogs\RestoreSessionDialog.cs" />
+    <Compile Include="WatchableObjectHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

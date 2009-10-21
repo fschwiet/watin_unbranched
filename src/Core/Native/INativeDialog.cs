@@ -44,5 +44,10 @@ namespace WatiN.Core.Native
         /// <param name="candidateWindow">The <see cref="WatiN.Core.Native.Windows.Window"/> object to test.</param>
         /// <returns>true if the <see cref="WatiN.Core.Native.Windows.Window"/> is an instance of this dialog; false if it is not.</returns>
         bool WindowIsDialogInstance(Window candidateWindow);
+
+        /// <summary>
+        /// Event raised when the dialog is dismissed.
+        /// </summary>
+        event EventHandler DialogDismissed;
     }
 }

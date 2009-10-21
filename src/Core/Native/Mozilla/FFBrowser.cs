@@ -5,12 +5,14 @@ using System.Text;
 using System.Diagnostics;
 using WatiN.Core.Native.Windows;
 using WatiN.Core.Native.Mozilla.Dialogs;
-using WatiN.Core.WatchableObjects;
+using WatiN.Core.Dialogs;
 
 namespace WatiN.Core.Native.Mozilla
 {
     public class FFBrowser : JSBrowserBase
     {
+        private const string MozillaMainWindowClass = "MozillaUIWindowClass";
+        private const string MozillaDialogWindowClass = "MozillaDialogClass";
         #region Private members
         private FFDialogManager _dialogManager = null;
         private Window _hostWindow = null;
@@ -35,10 +37,13 @@ namespace WatiN.Core.Native.Mozilla
                 }
                 else
                 {
-                    mainWindows = WindowFactory.GetWindows(candidateWindow => candidateWindow.ClassName == "MozillaUIWindowClass" || candidateWindow.ClassName == "MozillaDialogClass", false);
+                    mainWindows = WindowFactory.GetWindows(candidateWindow => candidateWindow.ClassName == MozillaMainWindowClass || candidateWindow.ClassName == MozillaDialogWindowClass, false);
                     if (mainWindows.Count >= 1)
                     {
-                        if (mainWindows[0].ClassName == "MozillaUIWindowClass")
+                        // MozillaUIWindowClass is the class for the main window. If it does not exist,
+                        // but MozillaDialogClass does, we probably have the Restore Previous Session
+                        // dialog, which we need to knock down, and look again for the main window.
+                        if (mainWindows[0].ClassName == MozillaMainWindowClass)
                         {
                             _hostWindow = mainWindows[0];
                             mainWindows.Remove(_hostWindow);

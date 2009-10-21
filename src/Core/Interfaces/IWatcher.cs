@@ -39,11 +39,11 @@ namespace WatiN.Core.Interfaces
         /// Sets an expectation for a watchable object (e.g., dialog, infobar, etc.) to appear.
         /// </summary>
         /// <typeparam name="TWatchable">An object implementing the <see cref="WatiN.Core.Interfaces.IWatchable"/> interface.</typeparam>
-        /// <param name="timeout">The timeout in seconds within which the expectation should be filled.</param>
+        /// <param name="timeout">A <see cref="System.TimeSpan"/> structure representing the time within which the expectation should be filled.</param>
         /// <returns>An <see cref="WatiN.Core.Expectation&lt;TWatchable&gt;"/> object the user can use to manipulate the object.</returns>
         /// <remarks>Expecting a watchable object to appear will suspend processing of any registered handlers for
         /// that object type. To resume automatic handling, you must call ResetHandler for the object type.</remarks>
-        Expectation<TWatchable> Expect<TWatchable>(int timeout) where TWatchable : IWatchable;
+        Expectation<TWatchable> Expect<TWatchable>(TimeSpan timeout) where TWatchable : IWatchable;
 
         /// <summary>
         /// Sets an expectation for a watchable object (e.g., dialog, infobar, etc.) to appear.
@@ -59,11 +59,11 @@ namespace WatiN.Core.Interfaces
         /// Sets an expectation for a watchable object (e.g., dialog, infobar, etc.) to appear.
         /// </summary>
         /// <typeparam name="TWatchable">An object implementing the <see cref="WatiN.Core.Interfaces.IWatchable"/> interface.</typeparam>
-        /// <param name="timeout">The timeout in seconds within which the expectation should be filled.</param>
+        /// <param name="timeout">A <see cref="System.TimeSpan"/> structure representing the time within which the expectation should be filled.</param>
         /// <param name="predicate">A <see cref="System.Predicate&lt;T&gt;"/> defining the criteria for the expectation.</param>
         /// <returns>An <see cref="WatiN.Core.Expectation&lt;TWatchable&gt;"/> object the user can use to manipulate the object.</returns>
         /// <remarks>Expecting a watchable object to appear will suspend processing of any registered handlers for
         /// that object type. To resume automatic handling, you must call ResetHandler for the object type.</remarks>
-        Expectation<TWatchable> Expect<TWatchable>(int timeout, Predicate<TWatchable> predicate) where TWatchable : IWatchable;
+        Expectation<TWatchable> Expect<TWatchable>(TimeSpan timeout, Predicate<TWatchable> predicate) where TWatchable : IWatchable;
     }
 }

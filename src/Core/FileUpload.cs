@@ -18,7 +18,7 @@
 
 using System.IO;
 using WatiN.Core.Native;
-using WatiN.Core.WatchableObjects;
+using WatiN.Core.Dialogs;
 
 namespace WatiN.Core
 {

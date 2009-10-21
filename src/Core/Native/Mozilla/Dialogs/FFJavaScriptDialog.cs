@@ -3,22 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using WatiN.Core.Native.Windows;
+using WatiN.Core.UtilityClasses;
 
 namespace WatiN.Core.Native.Mozilla.Dialogs
 {
-    public class FFJavaScriptDialog : INativeDialog
+    public class FFJavaScriptDialog : NativeDialog
     {
         #region Private members
-        string _kind = "AlertDialog";
-        Window _dialogWindow = null;
-
-        readonly int okButtonId = 0;
-        readonly int cancelButtonId = 0;
-        readonly string messageLabelClass = string.Empty;
+        private readonly int okButtonId = 0;
+        private readonly int cancelButtonId = 0;
+        private readonly string messageLabelClass = string.Empty;
         #endregion
 
         public FFJavaScriptDialog()
         {
+            Kind = NativeDialogConstants.JavaScriptAlertDialog; 
             if (Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.MacOSX)
             {
                 okButtonId = 1;
@@ -33,88 +32,62 @@ namespace WatiN.Core.Native.Mozilla.Dialogs
             }
         }
 
-        #region IDisposable Members
-
-        public void Dispose()
-        {
-            if (_dialogWindow != null)
-                _dialogWindow.Dispose();
-        }
-
-        #endregion
-
         #region INativeDialog Members
 
-        public Window DialogWindow
-        {
-            get { return _dialogWindow; }
-            set { _dialogWindow = value; }
-        }
-
-        public string Kind
-        {
-            get { return _kind; }
-        }
-
-        public object GetProperty(string propertyId)
+        public override object GetProperty(string propertyId)
         {
             object propertyValue = null;
-            switch (propertyId)
+            if (propertyId == NativeDialogConstants.TitleProperty)
             {
-                case "Title":
-                    propertyValue = _dialogWindow.Text;
-                    break;
-
-                case "Message":
-                    string className = WindowFactory.GetWindowClassForRole(AccessibleRole.Text, false);
-                    if (Environment.OSVersion.Platform == PlatformID.Unix)
-                        className = WindowFactory.GetWindowClassForRole(AccessibleRole.Label, false);
-                    IList<Window> staticLabel = _dialogWindow.GetChildWindows(w => w.ClassName == className);
-                    propertyValue = staticLabel[0].Text;
-                    WindowFactory.DisposeWindows(staticLabel);
-                    break;
+                    propertyValue = DialogWindow.Text;
+            }
+            else if (propertyId == NativeDialogConstants.MessageProperty)
+            {
+                string className = WindowFactory.GetWindowClassForRole(AccessibleRole.Text, false);
+                if (Environment.OSVersion.Platform == PlatformID.Unix)
+                    className = WindowFactory.GetWindowClassForRole(AccessibleRole.Label, false);
+                IList<Window> staticLabel = DialogWindow.GetChildWindows(w => w.ClassName == className);
+                propertyValue = staticLabel[0].Text;
+                WindowFactory.DisposeWindows(staticLabel);
+            }
+            else
+            {
+                throw new ArgumentException(string.Format("Invalid property name '{0}'", propertyId), "propertyId");
             }
             return propertyValue;
         }
 
-        public void PerformAction(string actionId, object[] args)
+        public override void PerformAction(string actionId, object[] args)
         {
-            switch (actionId)
+            if (actionId == NativeDialogConstants.ClickCancelAction || actionId == NativeDialogConstants.ClickOkAction)
             {
-                case "ClickCancel":
-                case "ClickOk":
-                    int buttonId = okButtonId;
-                    if (actionId == "ClickCancel")
-                        buttonId = cancelButtonId;
-                    IList<Window> buttons = _dialogWindow.GetChildWindows(b => b.ClassName == WindowFactory.GetWindowClassForRole(AccessibleRole.PushButton, false) && b.ItemId == buttonId);
-                    buttons[0].Press();
-                    WindowFactory.DisposeWindows(buttons);
-                    while (_dialogWindow.Exists)
-                    {
-                        System.Threading.Thread.Sleep(100);
-                    }
-                    break;
+                int buttonId = okButtonId;
+                if (actionId == NativeDialogConstants.ClickCancelAction)
+                    buttonId = cancelButtonId;
+                IList<Window> buttons = DialogWindow.GetChildWindows(b => b.ClassName == WindowFactory.GetWindowClassForRole(AccessibleRole.PushButton, false) && b.ItemId == buttonId);
+                buttons[0].Press();
+                WindowFactory.DisposeWindows(buttons);
+                WaitForWindowToDisappear();
+            }
+            else
+            {
+                throw new ArgumentException(string.Format("Invalid action name '{0}'", actionId), "propertyId");
             }
         }
 
-        public void Dismiss()
-        {
-            _dialogWindow.ForceClose();
-        }
-
-        public bool WindowIsDialogInstance(Window candidateWindow)
+        public override bool WindowIsDialogInstance(Window candidateWindow)
         {
             bool windowIsDialog = false;
             IList<Window> buttons = candidateWindow.GetChildWindows(w => w.ClassName == WindowFactory.GetWindowClassForRole(AccessibleRole.PushButton, false));
             IList<Window> staticLabel = candidateWindow.GetChildWindows(w => w.ClassName == messageLabelClass);
             if (buttons.Count == 1 && buttons[0].ItemId == okButtonId && staticLabel.Count == 1)
             {
-                _kind = "AlertDialog";
+                Kind = NativeDialogConstants.JavaScriptAlertDialog;
                 windowIsDialog = true;
             }
             else if (buttons.Count == 2 && buttons[0].ItemId == okButtonId && buttons[1].ItemId == cancelButtonId && staticLabel.Count == 1)
             {
-                _kind = "ConfirmDialog";
+                Kind = NativeDialogConstants.JavaScriptConfirmDialog;
                 windowIsDialog = true;
             }
             WindowFactory.DisposeWindows(buttons);

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using WatiN.Core.Native.Windows;
 using System.Reflection;
+using WatiN.Core.Logging;
 
 namespace WatiN.Core.Native
 {
@@ -12,6 +13,7 @@ namespace WatiN.Core.Native
     {
         private static object lockObject = new object();
 
+        private List<IntPtr> dialogHandleList = new List<IntPtr>();
         private List<Type> registeredDialogTypeList = new List<Type>();
         private bool keepRunning = true;
         private readonly Thread watcherThread;
@@ -26,10 +28,11 @@ namespace WatiN.Core.Native
         protected DialogManager(Window monitoredWindow, WindowEnumerationMethod childEnumerationMethod)
         {
             mainWindow = monitoredWindow;
+            useWindowManagementApi = (childEnumerationMethod == WindowEnumerationMethod.WindowManagementApi);
             RegisterDialogs();
+            dialogHandleList.Add(mainWindow.Handle);
             watcherThread = new Thread(Start);
             watcherThread.Start();
-            useWindowManagementApi = (childEnumerationMethod == WindowEnumerationMethod.WindowManagementApi);
         }
 
         protected List<Type> RegisteredDialogTypes
@@ -58,6 +61,15 @@ namespace WatiN.Core.Native
                             INativeDialog dialog;
                             if (TryMatchWindow(activeWindow, out dialog))
                             {
+                                // If we have a matching window, an INativeDialog is created from it,
+                                // so perform the following steps: (1) add the window handle to the 
+                                // dialog handle list so the DialogFound event does not continue to 
+                                // fire on subsequent loops, (2) attach to the DialogDismissed event
+                                // to allow logging for when the dialog is handled, and (3) fire the
+                                // DialogFound event.
+                                Logger.Log(LogMessageType.Info, "Handling dialog: {0}", dialog.Kind);
+                                dialogHandleList.Add(activeWindow.Handle);
+                                dialog.DialogDismissed += new EventHandler(dialog_DialogDismissed);
                                 OnDialogFound(new NativeDialogFoundEventArgs(dialog));
                             }
                         }
@@ -84,26 +96,42 @@ namespace WatiN.Core.Native
             }
         }
 
+        private void dialog_DialogDismissed(object sender, EventArgs e)
+        {
+            // CONSIDER: Do we want to bubble this event up, so that the
+            // INativeDialogManager object has events for DialogFound and
+            // DialogDismissed?
+            INativeDialog dialog = sender as INativeDialog;
+            if (dialog != null && dialogHandleList.Contains(dialog.DialogWindow.Handle))
+            {
+                dialogHandleList.Remove(dialog.DialogWindow.Handle);
+                Logger.Log(LogMessageType.Info, "Successfully handled dialog: {0}", dialog.Kind);
+            }
+        }
+
         private bool TryMatchWindow(Window activeWindow, out INativeDialog dialog)
         {
             bool windowMatched = false;
             dialog = null;
-            foreach (Type knownWindowType in registeredDialogTypeList)
+            if (!dialogHandleList.Contains(activeWindow.Handle))
             {
-                ConstructorInfo ctor = knownWindowType.GetConstructor(Type.EmptyTypes);
-                INativeDialog candidateDialog = ctor.Invoke(null) as INativeDialog;
-                if (candidateDialog != null)
+                foreach (Type knownWindowType in registeredDialogTypeList)
                 {
-                    if (candidateDialog.WindowIsDialogInstance(activeWindow))
+                    ConstructorInfo ctor = knownWindowType.GetConstructor(Type.EmptyTypes);
+                    INativeDialog candidateDialog = ctor.Invoke(null) as INativeDialog;
+                    if (candidateDialog != null)
                     {
-                        dialog = candidateDialog;
-                        dialog.DialogWindow = activeWindow;
-                        windowMatched = true;
-                        break;
-                    }
-                    else
-                    {
-                        candidateDialog.Dispose();
+                        if (candidateDialog.WindowIsDialogInstance(activeWindow))
+                        {
+                            dialog = candidateDialog;
+                            dialog.DialogWindow = activeWindow;
+                            windowMatched = true;
+                            break;
+                        }
+                        else
+                        {
+                            candidateDialog.Dispose();
+                        }
                     }
                 }
             }
@@ -137,7 +165,17 @@ namespace WatiN.Core.Native
         protected void OnDialogFound(NativeDialogFoundEventArgs e)
         {
             if (DialogFound != null)
-                DialogFound(this , e);
+            {
+                try
+                {
+                    Logger.Log(LogMessageType.Info, "Handling dialog: {0}", e.NativeDialog.Kind);
+                    DialogFound(this, e);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Log(LogMessageType.Info, "Exception found handling DialogFound event: {0}", ex.Message);
+                }
+            }
         }
     }
 }

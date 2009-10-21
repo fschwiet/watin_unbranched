@@ -28,7 +28,7 @@ using WatiN.Core.Native;
 using WatiN.Core.Native.InternetExplorer;
 using WatiN.Core.Native.Windows;
 using WatiN.Core.UtilityClasses;
-using WatiN.Core.WatchableObjects;
+using WatiN.Core.Dialogs;
 
 namespace WatiN.Core
 {
@@ -416,7 +416,7 @@ namespace WatiN.Core
         }
 
         /// <inheritdoc />
-        public override Expectation<TWatchable> Expect<TWatchable>(int timeout)
+        public override Expectation<TWatchable> Expect<TWatchable>(TimeSpan timeout)
         {
             IWatcher watcher = GetWatcher(typeof(TWatchable), true);
             return watcher.Expect<TWatchable>(timeout);

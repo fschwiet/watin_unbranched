@@ -4,16 +4,26 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics;
 using WatiN.Core.Interfaces;
+using WatiN.Core.UtilityClasses;
+using WatiN.Core.Logging;
 
 namespace WatiN.Core
 {
-    public class Expectation<TWatchable> where TWatchable : IWatchable
+    public abstract class Expectation
     {
-        public static readonly int DefaultTimeout = 30;
+        public abstract bool IsSatisfied { get; }
+        public abstract bool TimeoutReached { get; }
+        internal abstract void SetObject(object objectToSet);
+    }
+
+    public class Expectation<TWatchable> : Expectation where TWatchable : IWatchable
+    {
+        public static readonly TimeSpan DefaultTimeout = TimeSpan.FromSeconds(30);
 
         TWatchable expectedObject = default(TWatchable);
-        int expectedTimeout;
-        Stopwatch timer = new Stopwatch();
+        TimeSpan expectedTimeout;
+        bool timedOut = false;
+        bool expectationSatisfied = false;
         Predicate<TWatchable> criteriaMatched = new Predicate<TWatchable>(expectedObject => expectedObject.Exists);
 
         public Expectation()
@@ -21,7 +31,7 @@ namespace WatiN.Core
         {
         }
 
-        public Expectation(int timeout)
+        public Expectation(TimeSpan timeout)
             : this(timeout, null)
         {
         }
@@ -31,30 +41,28 @@ namespace WatiN.Core
         {
         }
 
-        public Expectation(int timeout, Predicate<TWatchable> predicate)
+        public Expectation(TimeSpan timeout, Predicate<TWatchable> predicate)
         {
+            if (timeout == null)
+            {
+                throw new ArgumentNullException("timeout");
+            }
+
             expectedTimeout = timeout;
             if (predicate != null)
             {
                 criteriaMatched = predicate;
             }
-            timer.Start();
         }
 
-        public bool IsSatisfied
+        public override bool IsSatisfied
         {
-            get
-            {
-                return expectedObject != null && !expectedObject.Equals(default(TWatchable)) && criteriaMatched(expectedObject);
-            }
+            get { return expectationSatisfied; }
         }
 
-        public bool TimeoutReached
+        public override bool TimeoutReached
         {
-            get
-            {
-                return timer.Elapsed.TotalSeconds > expectedTimeout;
-            }
+            get { return timedOut; }
         }
 
         public TWatchable Object
@@ -68,22 +76,35 @@ namespace WatiN.Core
 
         public void WaitUntilSatisfied()
         {
-            while (!IsSatisfied && !TimeoutReached)
-            {
-                System.Threading.Thread.Sleep(200);
-            }
-            timer.Stop();
+            TryFuncUntilTimeOut functionExecutor = new TryFuncUntilTimeOut(expectedTimeout);
+            expectationSatisfied = functionExecutor.Try<bool>(IsExpectationSatisfied);
+            timedOut = functionExecutor.DidTimeOut;
         }
 
         public void Reset()
         {
             expectedObject = default(TWatchable);
-            timer.Reset();
+            expectationSatisfied = false;
+            timedOut = false;
         }
 
-        internal void SetObject(TWatchable objectToSet)
+        internal override void SetObject(object objectToSet)
+        {
+            IWatchable watchableObject = objectToSet as IWatchable;
+            if (objectToSet != null)
+            {
+                SetObjectInternal((TWatchable)objectToSet);
+            }
+        }
+
+        private void SetObjectInternal(TWatchable objectToSet)
         {
             expectedObject = objectToSet;
+        }
+
+        private bool IsExpectationSatisfied()
+        {
+            return expectedObject != null && !expectedObject.Equals(default(TWatchable)) && criteriaMatched(expectedObject);
         }
     }
 }

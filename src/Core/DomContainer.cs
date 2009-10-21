@@ -161,8 +161,8 @@ namespace WatiN.Core
         /// Sets an expectation for a watchable object (e.g., dialog, infobar, etc.) to appear.
         /// </summary>
         /// <typeparam name="TWatchable">An object implementing the <see cref="IWatchable"/> interface.</typeparam>
-        /// <param name="timeout">The timeout in seconds within which the expectation should be filled.</param>
+        /// <param name="timeout">A <see cref="System.TimeSpan"/> structure representing the time within which the expectation should be filled.</param>
         /// <returns>An <see cref="Expectation&lt;TWatchable&gt;"/> object the user can use to manipulate the object.</returns>
-        public abstract Expectation<TWatchable> Expect<TWatchable>(int timeout) where TWatchable : IWatchable;
+        public abstract Expectation<TWatchable> Expect<TWatchable>(TimeSpan timeout) where TWatchable : IWatchable;
     }
 }

@@ -5,7 +5,7 @@ using System.Text;
 using WatiN.Core.Interfaces;
 using WatiN.Core.Native;
 
-namespace WatiN.Core.WatchableObjects
+namespace WatiN.Core.Dialogs
 {
     public abstract class Dialog : IWatchable
     {
@@ -23,9 +23,15 @@ namespace WatiN.Core.WatchableObjects
 
         #region IWatchable Members
         /// <inheritdoc />
-        public bool Exists
+        public virtual bool Exists
         {
             get { return nativeDialogImpl != null && nativeDialogImpl.DialogWindow != null && nativeDialogImpl.DialogWindow.Exists; }
+        }
+
+        /// <inheritdoc />
+        public virtual void DoDefaultAction()
+        {
+            nativeDialogImpl.Dismiss();
         }
         #endregion
 

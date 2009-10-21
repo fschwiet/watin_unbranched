@@ -17,15 +17,15 @@
 #endregion Copyright
 
 using System;
+using System.Collections.Generic;
 using WatiN.Core.Native.InternetExplorer;
 using WatiN.Core.Native;
 using WatiN.Core.Native.Windows;
 using WatiN.Core.UtilityClasses;
 using StringComparer = WatiN.Core.Comparers.StringComparer;
 using WatiN.Core.Exceptions;
-using System.Collections.Generic;
+using WatiN.Core.Dialogs;
 using WatiN.Core.Interfaces;
-using WatiN.Core.WatchableObjects;
 
 namespace WatiN.Core
 {
@@ -135,7 +135,7 @@ namespace WatiN.Core
         }
 
         /// <inheritdoc />
-        public override Expectation<TWatchable> Expect<TWatchable>(int timeout)
+        public override Expectation<TWatchable> Expect<TWatchable>(TimeSpan timeout)
         {
             IWatcher watcher = GetWatcher(typeof(TWatchable), true);
             return watcher.Expect<TWatchable>(timeout);

@@ -17,19 +17,16 @@
 #endregion Copyright
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using Microsoft.Win32;
 using WatiN.Core.Constraints;
 using WatiN.Core.Exceptions;
 using WatiN.Core.Logging;
-using WatiN.Core.Native.Mozilla;
 using WatiN.Core.Native;
+using WatiN.Core.Native.Mozilla;
 using WatiN.Core.UtilityClasses;
-using WatiN.Core.Native.Windows;
-using System.Collections.Generic;
-using WatiN.Core.Native.Mozilla.Dialogs;
-using WatiN.Core.WatchableObjects;
 
 // https://developer.mozilla.org/en/Gecko_DOM_Reference
 
