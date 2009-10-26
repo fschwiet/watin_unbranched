@@ -6,6 +6,7 @@ using System.Diagnostics;
 using WatiN.Core.Native.Windows;
 using WatiN.Core.Native.Mozilla.Dialogs;
 using WatiN.Core.Dialogs;
+using WatiN.Core.UtilityClasses;
 
 namespace WatiN.Core.Native.Mozilla
 {
@@ -27,13 +28,38 @@ namespace WatiN.Core.Native.Mozilla
             {
                 if (Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.MacOSX)
                 {
-                    Process[] firefoxProcesses = Process.GetProcessesByName("firefox");
-                    int processId = firefoxProcesses[0].Id;
-                    mainWindows = WindowFactory.GetWindows(candidateWindow => candidateWindow.ProcessId == processId);
-                    _hostWindow = mainWindows[0];
-                    mainWindows.Remove(_hostWindow);
-                    _dialogManager = new FFDialogManager(_hostWindow, WindowEnumerationMethod.AssistiveTechnologyApi);
-                    mainWindowFound = true;
+                    Process ffProcess = FireFox.CurrentProcess;
+                    if (ffProcess != null)
+                    {
+                        int processId = ffProcess.Id;
+                        mainWindows = WindowFactory.GetWindows(candidateWindow => candidateWindow.ProcessId == processId);
+                        // Note that the normal workflow here is to wait for the application 
+                        // window to appear before we ever get here. Still, we could have an
+                        // instance where we have a time lag before window creation, so let's
+                        // check first.
+                        if (mainWindows.Count > 0)
+                        {
+                            // On Linux, Firefox displays only the session terminated dialog
+                            // without a window, so let's drop the window, then wait to see if
+                            // we get the main browser window to appear.
+                            if (mainWindows[0].IsDialog)
+                            {
+                                Window sessionTerminatedDialog = mainWindows[0];
+                                mainWindows.Remove(sessionTerminatedDialog);
+                                DismissSesssionTerminatedDialog(sessionTerminatedDialog, true);
+                                WindowFactory.DisposeWindows(mainWindows);
+
+                                if (MainBrowserWindowIsVisible(processId))
+                                {
+                                    mainWindows = WindowFactory.GetWindows(candidateWindow => candidateWindow.ProcessId == processId);
+                                }
+                            }
+                            _hostWindow = mainWindows[0];
+                            mainWindows.Remove(_hostWindow);
+                            _dialogManager = new FFDialogManager(_hostWindow, WindowEnumerationMethod.AssistiveTechnologyApi);
+                            mainWindowFound = true;
+                        }
+                    }
                 }
                 else
                 {
@@ -54,14 +80,7 @@ namespace WatiN.Core.Native.Mozilla
                         {
                             Window sessionTerminatedDialog = mainWindows[0];
                             mainWindows.Remove(sessionTerminatedDialog);
-                            using (FFRestoreSessionDialog nativeDialog = new FFRestoreSessionDialog())
-                            {
-                                nativeDialog.DialogWindow = sessionTerminatedDialog;
-                                using (RestoreSessionDialog dialog = new RestoreSessionDialog(nativeDialog))
-                                {
-                                    dialog.ClickStartNewSessionButton();
-                                }
-                            }
+                            DismissSesssionTerminatedDialog(sessionTerminatedDialog, true);
                         }
                     }
                 }
@@ -105,6 +124,40 @@ namespace WatiN.Core.Native.Mozilla
         {
             if (_dialogManager != null)
                 _dialogManager.Dispose();
+        }
+
+        private void DismissSesssionTerminatedDialog(Window sessionTerminatedDialog, bool startNewSession)
+        {
+            using (FFRestoreSessionDialog nativeDialog = new FFRestoreSessionDialog())
+            {
+                nativeDialog.DialogWindow = sessionTerminatedDialog;
+                using (RestoreSessionDialog dialog = new RestoreSessionDialog(nativeDialog))
+                {
+                    if (startNewSession)
+                    {
+                        dialog.ClickStartNewSessionButton();
+                    }
+                    else
+                    {
+                        dialog.ClickRestoreSessionButton();
+                    }
+                }
+            }
+        }
+
+        private bool MainBrowserWindowIsVisible(int ffProcessId)
+        {
+            return TryFuncUntilTimeOut.Try<bool>(TimeSpan.FromMilliseconds(10000), () => 
+                {
+                    IList<Window> windowList = WindowFactory.GetWindows(w => w.ProcessId == ffProcessId);
+                    bool windowFound = windowList.Count > 0;
+                    WindowFactory.DisposeWindows(windowList);
+                    if (windowFound)
+                    {
+                        return true;
+                    }
+                    return false;
+                });
         }
     }
 }

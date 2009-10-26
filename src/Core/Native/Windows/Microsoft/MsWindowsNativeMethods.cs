@@ -377,7 +377,7 @@ namespace WatiN.Core.Native.Windows.Microsoft
         internal static int GetProcessIdForWindow(IntPtr hwnd)
         {
             int windowProcessId = 0;
-            int windowThreadId = GetWindowThreadProcessId(hwnd, out windowProcessId);
+            GetWindowThreadProcessId(hwnd, out windowProcessId);
             return windowProcessId;
         }
 

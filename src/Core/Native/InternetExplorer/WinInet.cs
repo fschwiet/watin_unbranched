@@ -370,17 +370,19 @@ namespace WatiN.Core.Native.InternetExplorer
         private static extern bool DeleteUrlCacheEntry(
             IntPtr lpszUrlName);
 
-        [DllImport("wininet.dll", SetLastError = true,
-            CharSet = CharSet.Unicode,
-            EntryPoint = "InternetQueryOptionW")]
-        [return : MarshalAs(UnmanagedType.Bool)]
-        private static extern bool InternetQueryOption(IntPtr hInternet, uint dwOption, IntPtr lpBuffer, ref int lpdwBufferLength);
+        // Unused P/Invoke. Consider removing.
+        //[DllImport("wininet.dll", SetLastError = true,
+        //    CharSet = CharSet.Unicode,
+        //    EntryPoint = "InternetQueryOptionW")]
+        //[return : MarshalAs(UnmanagedType.Bool)]
+        //private static extern bool InternetQueryOption(IntPtr hInternet, uint dwOption, IntPtr lpBuffer, ref int lpdwBufferLength);
 
-        [DllImport("wininet.dll", SetLastError = true,
-            CharSet = CharSet.Unicode,
-            EntryPoint = "InternetSetOptionW")]
-        [return : MarshalAs(UnmanagedType.Bool)]
-        private static extern bool InternetSetOption(IntPtr hInternet, int dwOption, IntPtr lpBuffer, int lpdwBufferLength);
+        // Unused P/Invoke. Consider removing.
+        //[DllImport("wininet.dll", SetLastError = true,
+        //    CharSet = CharSet.Unicode,
+        //    EntryPoint = "InternetSetOptionW")]
+        //[return : MarshalAs(UnmanagedType.Bool)]
+        //private static extern bool InternetSetOption(IntPtr hInternet, int dwOption, IntPtr lpBuffer, int lpdwBufferLength);
 
         [DllImport("wininet.dll", SetLastError = true,
             CharSet = CharSet.Unicode)]

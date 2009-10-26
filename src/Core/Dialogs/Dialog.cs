@@ -9,7 +9,8 @@ namespace WatiN.Core.Dialogs
 {
     public abstract class Dialog : IWatchable
     {
-        INativeDialog nativeDialogImpl = null;
+        private INativeDialog nativeDialogImpl = null;
+        private bool isDisposed = false;
 
         internal Dialog(INativeDialog nativeDialog)
         {
@@ -39,10 +40,23 @@ namespace WatiN.Core.Dialogs
 
         public void Dispose()
         {
-            if (nativeDialogImpl != null)
-                nativeDialogImpl.Dispose();
+            Dispose(true);
         }
 
         #endregion
+
+        protected void Dispose(bool disposing)
+        {
+            if (!isDisposed)
+            {
+                if (disposing)
+                {
+                    if (nativeDialogImpl != null)
+                        nativeDialogImpl.Dispose();
+                }
+                nativeDialogImpl = null;
+                isDisposed = true;
+            }
+        }
     }
 }

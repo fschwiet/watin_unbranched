@@ -25,7 +25,6 @@ using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using SHDocVw;
 using WatiN.Core.Constraints;
-using WatiN.Core.DialogHandlers;
 using WatiN.Core.Exceptions;
 using WatiN.Core.Native.InternetExplorer;
 using WatiN.Core.Logging;

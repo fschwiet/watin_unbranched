@@ -319,14 +319,18 @@ namespace WatiN.Core.Native.Windows.Linux
             throw new NotImplementedException();
         }
 
-        public override void Dispose()
+        protected override void Dispose(bool disposing)
         {
-            if (_accessibleObject != null)
+            if (!IsDisposed)
             {
-                _accessibleObject.UnreferenceObject();
-                _accessibleObject = null;
+                if (_accessibleObject != null)
+                {
+                    _accessibleObject.UnreferenceObject();
+                    _accessibleObject = null;
+                }
+                IsDisposed = true;
             }
-            base.Dispose();
+            base.Dispose(disposing);
         }
 
         private X11Window WindowFromAccessibleObject(int id, AtSpiObject accessibleObject)
@@ -338,35 +342,5 @@ namespace WatiN.Core.Native.Windows.Linux
             X11Window returnedWindow = new X11Window(_processId, parentWindowHandle, id, accessibleObject);
             return returnedWindow;
         }
-
-        #region Obsolete methods. Remove?
-        private IList<Window> GetChildWindowsByClassName(string windowClass)
-        {
-            AccessibleRole desiredRole = AccessibleRole.Invalid;
-            List<Window> childWindowList = new List<Window>();
-            if (Enum.IsDefined(typeof(AccessibleRole), windowClass))
-            {
-                desiredRole = (AccessibleRole)Enum.Parse(typeof(AccessibleRole), windowClass);
-                IList<AssistiveTechnologyObject> childObjectList = AccessibleObject.GetChildrenByRole(desiredRole, true, true);
-                foreach (AssistiveTechnologyObject childObject in childObjectList)
-                {
-                    int itemIndex = childObjectList.IndexOf(childObject);
-                    childWindowList.Add(WindowFromAccessibleObject(itemIndex, (AtSpiObject)childObject));
-                }
-            }
-            return childWindowList;
-        }
-
-        private Window GetChildWindowById(int id)
-        {
-            IList<AssistiveTechnologyObject> childObjectList = AccessibleObject.GetChildrenByRole(AccessibleRole.AnyRole, true, true);
-            Window childWindow = null;
-            if (id > 0 && id < childObjectList.Count)
-            {
-                childWindow = WindowFromAccessibleObject(id, (AtSpiObject)childObjectList[id]);
-            }
-            return childWindow;
-        }
-        #endregion
     }
 }

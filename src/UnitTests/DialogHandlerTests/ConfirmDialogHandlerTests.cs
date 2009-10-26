@@ -18,7 +18,7 @@
 
 using System;
 using NUnit.Framework;
-using WatiN.Core.DialogHandlers;
+using WatiN.Core.Dialogs;
 using WatiN.Core.UnitTests.TestUtils;
 
 namespace WatiN.Core.UnitTests.DialogHandlerTests
@@ -29,47 +29,37 @@ namespace WatiN.Core.UnitTests.DialogHandlerTests
 		[Test]
 		public void ConfirmDialogHandlerOK()
 		{
-			Assert.AreEqual(0, Ie.DialogWatcher.Count, "DialogWatcher count should be zero");
+            var confirmDialogHandler = Ie.Expect<ConfirmDialog>();
 
-			var confirmDialogHandler = new ConfirmDialogHandler();
+			Ie.Button(Find.ByValue("Show confirm dialog")).ClickNoWait();
 
-			using (new UseDialogOnce(Ie.DialogWatcher, confirmDialogHandler))
-			{
-				Ie.Button(Find.ByValue("Show confirm dialog")).ClickNoWait();
+            var confirm = confirmDialogHandler.Object;
 
-				confirmDialogHandler.WaitUntilExists();
+			var message = confirm.Message;
+            confirm.ClickOkButton();
 
-				var message = confirmDialogHandler.Message;
-				confirmDialogHandler.OKButton.Click();
+			Ie.WaitForComplete();
 
-				Ie.WaitForComplete();
-
-				Assert.AreEqual("Do you want to do xyz?", message, "Unexpected message");
-				Assert.AreEqual("OK", Ie.TextField("ReportConfirmResult").Text, "OK button expected.");
-			}
+			Assert.AreEqual("Do you want to do xyz?", message, "Unexpected message");
+			Assert.AreEqual("OK", Ie.TextField("ReportConfirmResult").Text, "OK button expected.");
 		}
 
 		[Test]
 		public void ConfirmDialogHandlerCancel()
 		{
-			Assert.AreEqual(0, Ie.DialogWatcher.Count, "DialogWatcher count should be zero");
+            var confirmDialogHandler = Ie.Expect<ConfirmDialog>();
 
-			var confirmDialogHandler = new ConfirmDialogHandler();
+            Ie.Button(Find.ByValue("Show confirm dialog")).ClickNoWait();
 
-			using (new UseDialogOnce(Ie.DialogWatcher, confirmDialogHandler))
-			{
-				Ie.Button(Find.ByValue("Show confirm dialog")).ClickNoWait();
+            var confirm = confirmDialogHandler.Object;
 
-				confirmDialogHandler.WaitUntilExists();
+            var message = confirm.Message;
+            confirm.ClickCancelButton();
 
-				string message = confirmDialogHandler.Message;
-				confirmDialogHandler.CancelButton.Click();
-
-				Ie.WaitForComplete();
-
-				Assert.AreEqual("Do you want to do xyz?", message, "Unexpected message");
-				Assert.AreEqual("Cancel", Ie.TextField("ReportConfirmResult").Text, "Cancel button expected.");
-			}
+            Ie.WaitForComplete();
+            
+			Assert.AreEqual("Do you want to do xyz?", message, "Unexpected message");
+			Assert.AreEqual("Cancel", Ie.TextField("ReportConfirmResult").Text, "Cancel button expected.");
 		}
 
 		public override Uri TestPageUri

@@ -20,7 +20,6 @@ using System;
 using System.Collections;
 using System.Text.RegularExpressions;
 using NUnit.Framework;
-using WatiN.Core.DialogHandlers;
 using WatiN.Core.Exceptions;
 using WatiN.Core.UnitTests.TestUtils;
 

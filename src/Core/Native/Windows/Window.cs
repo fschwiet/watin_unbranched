@@ -10,6 +10,7 @@ namespace WatiN.Core.Native.Windows
     {
         protected WindowEnumerationMethod _enumerationMethod = WindowEnumerationMethod.WindowManagementApi;
         private WindowEnumerationMethod _childEnumerationMethod = WindowEnumerationMethod.WindowManagementApi;
+        private bool _isDisposed = false;
 
         public abstract IntPtr Handle { get; }
         public abstract IntPtr ParentHandle { get; }
@@ -28,6 +29,11 @@ namespace WatiN.Core.Native.Windows
         public abstract int ProcessId { get; }
         public abstract int ItemId { get; }
         internal abstract AssistiveTechnologyObject AccessibleObject { get; }
+        protected bool IsDisposed
+        {
+            get { return _isDisposed; }
+            set { _isDisposed = value; }
+        }
 
         public abstract bool SetFocus();
         public abstract bool IsDialogWindowFor(Window ownerWindow);
@@ -48,8 +54,13 @@ namespace WatiN.Core.Native.Windows
             set { _childEnumerationMethod = value; }
         }
 		
-		public virtual void Dispose()
+		public void Dispose()
 		{
+            Dispose(true);
 		}
+
+        protected virtual void Dispose(bool disposing)
+        {
+        }
     }
 }

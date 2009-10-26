@@ -168,7 +168,7 @@ namespace WatiN.Core.Native
             {
                 try
                 {
-                    Logger.Log(LogMessageType.Info, "Handling dialog: {0}", e.NativeDialog.Kind);
+                    Logger.Log(LogMessageType.Info, "Rasing dialog found event: {0}", e.NativeDialog.Kind);
                     DialogFound(this, e);
                 }
                 catch (Exception ex)

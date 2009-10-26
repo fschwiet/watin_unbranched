@@ -27,6 +27,7 @@ using WatiN.Core.Logging;
 using WatiN.Core.Native;
 using WatiN.Core.Native.Mozilla;
 using WatiN.Core.UtilityClasses;
+using WatiN.Core.Native.Windows;
 
 // https://developer.mozilla.org/en/Gecko_DOM_Reference
 
@@ -103,9 +104,12 @@ namespace WatiN.Core
             {
                 var ffCount = 0;
 
+                // On Windows, the process name will be "firefox". On Mono, it will be
+                // /usr/bin/<version>/firefox.
                 foreach (var process in Process.GetProcesses())
                 {
-                    if (process.ProcessName.Equals("firefox", StringComparison.OrdinalIgnoreCase))
+                    if (process.ProcessName.Equals("firefox", StringComparison.OrdinalIgnoreCase) ||
+                        process.ProcessName.EndsWith("/firefox"))
                     {
                         ffCount++;
                     }
@@ -127,7 +131,10 @@ namespace WatiN.Core
 
                 foreach (var process in Process.GetProcesses())
                 {
-                    if (process.ProcessName.Equals("firefox", StringComparison.OrdinalIgnoreCase))
+                    // On Windows, the process name will be "firefox". On Mono, it will be
+                    // /usr/bin/<version>/firefox.
+                    if (process.ProcessName.Equals("firefox", StringComparison.OrdinalIgnoreCase) ||
+                        process.ProcessName.EndsWith("/firefox"))
                     {
                         ffProcess = process;
                     }
@@ -171,15 +178,33 @@ namespace WatiN.Core
                 };
 
                 var result = action.Try(() =>
+                                    {
+                                        bool windowFound = false;
+                                        ffProcess.Refresh();
+                                        if (!ffProcess.HasExited)
+                                        {
+                                            // On Windows, we can look for MainWindowHandle to be populated.
+                                            // Using Mono on Linux, we have to rely on the windows' process id.
+                                            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
                                             {
-                                                ffProcess.Refresh();
-                                                if (!ffProcess.HasExited && ffProcess.MainWindowHandle != IntPtr.Zero)
+                                                if (ffProcess.MainWindowHandle != IntPtr.Zero)
                                                 {
-                                                    Logger.LogAction("Waited for FireFox, main window handle found.");
-                                                    return true;
+                                                    windowFound = true;
                                                 }
-                                                return false;
-                                            });
+                                            }
+                                            else
+                                            {
+                                                IList<Window> windowList = WindowFactory.GetWindows(w => w.ProcessId == ffProcess.Id);
+                                                windowFound = windowList.Count > 0;
+                                                WindowFactory.DisposeWindows(windowList);
+                                            }
+                                        }
+                                        if (windowFound)
+                                        {
+                                            Logger.LogAction("Waited for FireFox, main window handle found.");
+                                        }
+                                        return windowFound;
+                                    });
 
                 if (!result)
                 {
@@ -196,32 +221,48 @@ namespace WatiN.Core
         /// </summary>
         private static string GetExecutablePath()
         {
-            string path;
-            var mozillaKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Mozilla\Mozilla Firefox");
-            if (mozillaKey != null)
+            string path = string.Empty;
+            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
             {
-                path = GetExecutablePathUsingRegistry(mozillaKey);
-            }
-            else
-            {
-                // We try and guess common locations where FireFox might be installed
-                var tempPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), @"Mozilla FireFox\FireFox.exe");
-                if (File.Exists(tempPath))
+                var mozillaKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Mozilla\Mozilla Firefox");
+                if (mozillaKey != null)
                 {
-                    path = tempPath;
+                    path = GetExecutablePathUsingRegistry(mozillaKey);
                 }
                 else
                 {
-                    tempPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles) + " (x86)", @"Mozilla FireFox\FireFox.exe");
+                    // We try and guess common locations where FireFox might be installed
+                    var tempPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), @"Mozilla FireFox\FireFox.exe");
                     if (File.Exists(tempPath))
                     {
                         path = tempPath;
                     }
                     else
                     {
-                        throw new FireFoxException("Unable to determine the current version of FireFox tried looking in the registry and the common locations on disk, please make sure you have installed FireFox and Jssh correctly");
+                        tempPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles) + " (x86)", @"Mozilla FireFox\FireFox.exe");
+                        if (File.Exists(tempPath))
+                        {
+                            path = tempPath;
+                        }
+                        else
+                        {
+                            throw new FireFoxException("Unable to determine the current version of FireFox tried looking in the registry and the common locations on disk, please make sure you have installed FireFox and Jssh correctly");
+                        }
                     }
                 }
+            }
+            else
+            {
+                // Use "which firefox" for non-Windows OS.
+                Process proc = new Process();
+                proc.StartInfo.FileName = "which";
+                proc.StartInfo.Arguments = "firefox";
+                proc.StartInfo.CreateNoWindow = true;
+                proc.StartInfo.RedirectStandardOutput = true;
+                proc.StartInfo.UseShellExecute = false;
+                proc.Start();
+                proc.WaitForExit();
+                path = proc.StandardOutput.ReadToEnd().Trim();
             }
 
             return path;

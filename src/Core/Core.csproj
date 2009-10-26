@@ -130,6 +130,7 @@
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <ErrorReport>prompt</ErrorReport>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release %28.Net 3.5%29|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

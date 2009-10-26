@@ -455,6 +455,9 @@ namespace WatiN.Core.Native.InternetExplorer
             var success = tryActionUntilTimeOut.Try(() =>
             {
                 var tagName = ihtmlElement.tagName;
+
+                // To prevent warnings in Mono, perform a no-op on the string.
+                tagName += string.Empty;
                 return true;
             });
 

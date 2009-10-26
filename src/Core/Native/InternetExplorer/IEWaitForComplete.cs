@@ -141,6 +141,9 @@ namespace WatiN.Core.Native.InternetExplorer
             return UtilityClass.TryFuncIgnoreException(() =>
             {
                 var readyState = document.readyState;
+
+                // To prevent warnings in Mono, perform a no-op on the string.
+                readyState += string.Empty;
                 return true;
             });
         }

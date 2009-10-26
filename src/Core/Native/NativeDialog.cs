@@ -11,6 +11,7 @@ namespace WatiN.Core.Native
         #region Private members
         private string _kind = string.Empty;
         private Window _dialogWindow = null;
+        private bool isDisposed = false;
         #endregion
 
         #region INativeDialog Members
@@ -52,11 +53,24 @@ namespace WatiN.Core.Native
         /// <inheritdoc />
         public virtual void Dispose()
         {
-            if (_dialogWindow != null)
-                _dialogWindow.Dispose();
+            Dispose(true);
         }
 
         #endregion
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!isDisposed)
+            {
+                if (disposing)
+                {
+                    if (_dialogWindow != null)
+                        _dialogWindow.Dispose();
+                }
+                _dialogWindow = null;
+                isDisposed = true;
+            }
+        }
 
         protected void OnDialogDismissed(EventArgs e)
         {

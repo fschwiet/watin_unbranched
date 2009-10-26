@@ -972,7 +972,7 @@ namespace WatiN.Core.UnitTests
         public void Bug_1932065_FireEventNoWait_hangs_when_ModalWindow_opened()
         {
                 Ie.GoTo(PopUpURI);
-                Ie.ShowWindow(NativeMethods.WindowShowStyle.ShowNormal);
+                Ie.ShowWindow(WindowShowStyle.ShowNormal);
                 Ie.Button(Find.ById("modalid")).FireEventNoWait("onclick");
                 Ie.HtmlDialog(Find.First()).Close();
 

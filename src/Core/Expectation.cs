@@ -9,11 +9,22 @@ using WatiN.Core.Logging;
 
 namespace WatiN.Core
 {
-    public abstract class Expectation
+    public abstract class Expectation : IDisposable
     {
         public abstract bool IsSatisfied { get; }
         public abstract bool TimeoutReached { get; }
         internal abstract void SetObject(object objectToSet);
+
+        #region IDisposable Members
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+        #endregion
+
+        protected virtual void Dispose(bool disposing)
+        {
+        }
     }
 
     public class Expectation<TWatchable> : Expectation where TWatchable : IWatchable
@@ -24,6 +35,7 @@ namespace WatiN.Core
         TimeSpan expectedTimeout;
         bool timedOut = false;
         bool expectationSatisfied = false;
+        bool isDisposed = false;
         Predicate<TWatchable> criteriaMatched = new Predicate<TWatchable>(expectedObject => expectedObject.Exists);
 
         public Expectation()
@@ -43,9 +55,9 @@ namespace WatiN.Core
 
         public Expectation(TimeSpan timeout, Predicate<TWatchable> predicate)
         {
-            if (timeout == null)
+            if (timeout.TotalSeconds == 0)
             {
-                throw new ArgumentNullException("timeout");
+                timeout = DefaultTimeout;
             }
 
             expectedTimeout = timeout;
@@ -90,8 +102,9 @@ namespace WatiN.Core
 
         internal override void SetObject(object objectToSet)
         {
+            // Verify the object is an IWatchable before setting.
             IWatchable watchableObject = objectToSet as IWatchable;
-            if (objectToSet != null)
+            if (watchableObject != null)
             {
                 SetObjectInternal((TWatchable)objectToSet);
             }
@@ -105,6 +118,23 @@ namespace WatiN.Core
         private bool IsExpectationSatisfied()
         {
             return expectedObject != null && !expectedObject.Equals(default(TWatchable)) && criteriaMatched(expectedObject);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (!isDisposed)
+            {
+                if (disposing)
+                {
+                    if (expectedObject != null && !expectedObject.Equals(default(TWatchable)))
+                    {
+                        expectedObject.Dispose();
+                    }
+                    expectedObject = default(TWatchable);
+                    isDisposed = true;
+                }
+            }
+            base.Dispose(disposing);
         }
     }
 }

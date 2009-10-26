@@ -51,8 +51,7 @@ namespace WatiN.Core
             WatchableObjectHandler existingHandler = GetExistingHandler(typeof(TWatchable));
             if (existingHandler != null)
             {
-                existingHandler.HandleCount = 0;
-                existingHandler.Enabled = true;
+                existingHandler.Reset();
             }
         }
 
@@ -121,9 +120,11 @@ namespace WatiN.Core
             }
             else if (existingHandler != null && existingHandler.Enabled)
             {
+                // Handle the dialog with the handler. N.B. WatchableObjectHandler will
+                // dispose of the IWatchable object by default. It also will catch any
+                // exceptions from poorly written handler code.
                 Logger.LogAction("Handling {0} dialog with handler", watchableObject.NativeDialog.Kind);
                 existingHandler.HandleObject(watchableObject);
-                existingHandler.HandleCount++;
                 if (existingHandler.HandleOnce)
                 {
                     handlers.Remove(dialogType);

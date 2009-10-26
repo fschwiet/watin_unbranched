@@ -18,7 +18,7 @@
 
 using System;
 using NUnit.Framework;
-using WatiN.Core.DialogHandlers;
+using WatiN.Core.Dialogs;
 using WatiN.Core.UnitTests.TestUtils;
 
 namespace WatiN.Core.UnitTests.DialogHandlerTests
@@ -29,48 +29,46 @@ namespace WatiN.Core.UnitTests.DialogHandlerTests
 		[Test]
 		public void AlertDialogHandler()
 		{
-			Assert.AreEqual(0, Ie.DialogWatcher.Count, "DialogWatcher count should be zero");
+			//Assert.AreEqual(0, Ie.DialogWatcher.Count, "DialogWatcher count should be zero");
+            var alertDialogHandler = Ie.Expect<AlertDialog>();
 
-			var alertDialogHandler = new AlertDialogHandler();
-			using (new UseDialogOnce(Ie.DialogWatcher, alertDialogHandler))
-			{
-				Ie.Button(Find.ByValue("Show alert dialog")).ClickNoWait();
+            Ie.Button(Find.ByValue("Show alert dialog")).ClickNoWait();
 
-				alertDialogHandler.WaitUntilExists();
+            var alert = alertDialogHandler.Object;
 
-				var message = alertDialogHandler.Message;
-				alertDialogHandler.OKButton.Click();
+			var message = alert.Message;
+            alert.ClickOkButton();
 
-				Ie.WaitForComplete();
+			Ie.WaitForComplete();
 
-				Assert.AreEqual("This is an alert!", message, "Unexpected message");
-				Assert.IsFalse(alertDialogHandler.Exists(), "Alert Dialog should be closed.");
-			}
+			Assert.AreEqual("This is an alert!", message, "Unexpected message");
+			Assert.IsFalse(alert.Exists, "Alert Dialog should be closed.");
 		}
 
 		[Test]
+        [Ignore("Test no longer applicable with refactor")]
 		public void AlertDialogHandlerWithoutAutoCloseDialogs()
 		{
-			Assert.AreEqual(0, Ie.DialogWatcher.Count, "DialogWatcher count should be zero");
+            //Assert.AreEqual(0, Ie.DialogWatcher.Count, "DialogWatcher count should be zero");
 
-			Ie.DialogWatcher.CloseUnhandledDialogs = false;
+            //Ie.DialogWatcher.CloseUnhandledDialogs = false;
 
-			Ie.Button(Find.ByValue("Show alert dialog")).ClickNoWait();
+            //Ie.Button(Find.ByValue("Show alert dialog")).ClickNoWait();
 
-			var alertDialogHandler = new AlertDialogHandler();
+            //var alertDialogHandler = new AlertDialogHandler();
 
-			using (new UseDialogOnce(Ie.DialogWatcher, alertDialogHandler))
-			{
-				alertDialogHandler.WaitUntilExists();
+            //using (new UseDialogOnce(Ie.DialogWatcher, alertDialogHandler))
+            //{
+            //    alertDialogHandler.WaitUntilExists();
 
-				var message = alertDialogHandler.Message;
-				alertDialogHandler.OKButton.Click();
+            //    var message = alertDialogHandler.Message;
+            //    alertDialogHandler.OKButton.Click();
 
-				Ie.WaitForComplete();
+            //    Ie.WaitForComplete();
 
-				Assert.AreEqual("This is an alert!", message, "Unexpected message");
-				Assert.IsFalse(alertDialogHandler.Exists(), "Alert Dialog should be closed.");
-			}
+            //    Assert.AreEqual("This is an alert!", message, "Unexpected message");
+            //    Assert.IsFalse(alertDialogHandler.Exists(), "Alert Dialog should be closed.");
+            //}
 		}
 
 		public override Uri TestPageUri

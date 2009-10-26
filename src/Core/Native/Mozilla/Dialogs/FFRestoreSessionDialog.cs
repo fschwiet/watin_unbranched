@@ -18,8 +18,8 @@ namespace WatiN.Core.Native.Mozilla.Dialogs
             Kind = NativeDialogConstants.FireFoxRestoreSessionDialog;
             if (Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.MacOSX)
             {
-                restoreSessionButtonId = 1;
-                newSessionButtonId = 2;
+                restoreSessionButtonId = 2;
+                newSessionButtonId = 1;
             }
             else
             {
