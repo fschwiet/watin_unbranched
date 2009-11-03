@@ -639,8 +639,7 @@ namespace WatiN.Core
 
             if (logonDialogHandler != null)
             {
-                Expectation<LogonDialog> logonDialogExpectation = Expect<LogonDialog>();
-                logonDialogHandler(logonDialogExpectation.Object);
+                SetHandler<LogonDialog>(logonDialogHandler);
             }
 
             FinishInitialization(uri);
@@ -816,7 +815,7 @@ namespace WatiN.Core
 		{
 		    if (isDisposed) return;
 
-            Logger.LogDebug(Resources.IE_Dispose);
+            //Logger.LogDebug(Resources.IE_Dispose);
 
             if (closeIE && IsInternetExplorerStillAvailable())
 		    {

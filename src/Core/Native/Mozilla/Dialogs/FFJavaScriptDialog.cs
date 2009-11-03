@@ -7,7 +7,7 @@ using WatiN.Core.UtilityClasses;
 
 namespace WatiN.Core.Native.Mozilla.Dialogs
 {
-    public class FFJavaScriptDialog : NativeDialog
+    internal class FFJavaScriptDialog : NativeDialog
     {
         #region Private members
         private readonly int okButtonId = 0;

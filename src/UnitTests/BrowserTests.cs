@@ -68,17 +68,17 @@ namespace WatiN.Core.UnitTests
                             {
                                 var currentStyle = browser.GetWindowStyle();
 
-                                browser.ShowWindow(NativeMethods.WindowShowStyle.Maximize);
-                                Assert.AreEqual(NativeMethods.WindowShowStyle.Maximize.ToString(), browser.GetWindowStyle().ToString(), "Not maximized");
+                                browser.ShowWindow(WindowShowStyle.Maximize);
+                                Assert.AreEqual(WindowShowStyle.Maximize.ToString(), browser.GetWindowStyle().ToString(), "Not maximized");
 
-                                browser.ShowWindow(NativeMethods.WindowShowStyle.Restore);
+                                browser.ShowWindow(WindowShowStyle.Restore);
                                 Assert.AreEqual(currentStyle.ToString(), browser.GetWindowStyle().ToString(), "Not Restored");
 
-                                browser.ShowWindow(NativeMethods.WindowShowStyle.Minimize);
-                                Assert.AreEqual(NativeMethods.WindowShowStyle.ShowMinimized.ToString(), browser.GetWindowStyle().ToString(), "Not Minimize");
+                                browser.ShowWindow(WindowShowStyle.Minimize);
+                                Assert.AreEqual(WindowShowStyle.ShowMinimized.ToString(), browser.GetWindowStyle().ToString(), "Not Minimize");
 
-                                browser.ShowWindow(NativeMethods.WindowShowStyle.ShowNormal);
-                                Assert.AreEqual(NativeMethods.WindowShowStyle.ShowNormal.ToString(), browser.GetWindowStyle().ToString(), "Not ShowNormal");
+                                browser.ShowWindow(WindowShowStyle.ShowNormal);
+                                Assert.AreEqual(WindowShowStyle.ShowNormal.ToString(), browser.GetWindowStyle().ToString(), "Not ShowNormal");
                             });
         }
 
@@ -220,7 +220,7 @@ namespace WatiN.Core.UnitTests
             ExecuteTest(browser =>
                             {
                                 // GIVEN
-                                var oldBrowserHwnd = browser.hWnd;
+                                var oldBrowserHwnd = browser.HostWindow.Handle;
 
                                 browser.GoTo(MainURI);
                                 Assert.AreEqual(MainURI, new Uri(browser.Url));
@@ -229,7 +229,7 @@ namespace WatiN.Core.UnitTests
                                 browser.Reopen();
 
                                 // THEN
-                                Assert.AreNotSame(oldBrowserHwnd, browser.hWnd, "Reopen should create a new browser.");
+                                Assert.AreNotSame(oldBrowserHwnd, browser.HostWindow.Handle, "Reopen should create a new browser.");
                                 Assert.AreEqual("about:blank", browser.Url, "Unexpected url after reopen");
                             });
 

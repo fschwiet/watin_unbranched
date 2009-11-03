@@ -6,7 +6,7 @@ using WatiN.Core.UtilityClasses;
 
 namespace WatiN.Core.Native.Mozilla.Dialogs
 {
-    public class FFRestoreSessionDialog : NativeDialog
+    internal class FFRestoreSessionDialog : NativeDialog
     {
         #region Private members
         readonly int restoreSessionButtonId = 0;

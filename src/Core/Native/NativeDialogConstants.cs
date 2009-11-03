@@ -6,9 +6,15 @@ namespace WatiN.Core.Native
 {
     public static class NativeDialogConstants
     {
-        public static readonly string JavaScriptAlertDialog = "AlertDialog";
-        public static readonly string JavaScriptConfirmDialog = "ConfirmDialog";
-        public static readonly string FireFoxRestoreSessionDialog = "FireFoxRestoreSessionDialog";
+        internal const string JavaScriptAlertDialog = "AlertDialog";
+        internal const string JavaScriptConfirmDialog = "ConfirmDialog";
+        internal const string FireFoxRestoreSessionDialog = "FireFoxRestoreSessionDialog";
+        internal const string VBScriptOKOnlyDialog = "VBScriptOKOnlyDialog";
+        internal const string VBScriptOKCancelDialog = "VBScriptOKCancelDialog";
+        internal const string VBScriptAbortRetryIgnoreDialog = "VBScriptAbortRetryIgnoreDialog";
+        internal const string VBScriptYesNoCancelDialog = "VBScriptYesNoCancelDialog";
+        internal const string VBScriptYesNoDialog = "VBScriptYesNoDialog";
+        internal const string VBScriptRetryCancelDialog = "VBScriptRetryCancelDialog";
 
         public static readonly string TitleProperty = "TitleProperty";
         public static readonly string MessageProperty = "MessageProperty";
@@ -18,6 +24,11 @@ namespace WatiN.Core.Native
 
         public static readonly string ClickOkAction = "ClickOk";
         public static readonly string ClickCancelAction = "ClickCancel";
+        public static readonly string ClickYesAction = "ClickYes";
+        public static readonly string ClickNoAction = "ClickNo";
+        public static readonly string ClickAbortAction = "ClickAbort";
+        public static readonly string ClickRetryAction = "ClickRetry";
+        public static readonly string ClickIgnoreAction = "ClickIgnore";
         public static readonly string ClickOpenAction = "ClickOpen";
         public static readonly string ClickSaveAction = "ClickSave";
         public static readonly string ClickRestoreSessionAction = "ClickRestoreSession";

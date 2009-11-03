@@ -19,6 +19,7 @@ namespace WatiN.Core.Native.InternetExplorer
         protected override void RegisterDialogs()
         {
             RegisteredDialogTypes.Add(typeof(IEJavaScriptDialog));
+            RegisteredDialogTypes.Add(typeof(IEVBScriptDialog));
         }
     }
 }

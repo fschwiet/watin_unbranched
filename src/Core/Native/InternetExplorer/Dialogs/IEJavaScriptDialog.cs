@@ -8,7 +8,7 @@ using WatiN.Core.UtilityClasses;
 
 namespace WatiN.Core.Native.InternetExplorer.Dialogs
 {
-    public class IEJavaScriptDialog : NativeDialog
+    internal class IEJavaScriptDialog : NativeDialog
     {
         public IEJavaScriptDialog()
         {
@@ -32,7 +32,7 @@ namespace WatiN.Core.Native.InternetExplorer.Dialogs
             }
             else
             {
-                throw new ArgumentException(string.Format("Invalid property name '{0}'", propertyId), "propertyId");
+                throw new ArgumentException(string.Format("Invalid property name '{0}'", propertyId), "actionId");
             }
             return propertyValue;
         }
@@ -60,20 +60,23 @@ namespace WatiN.Core.Native.InternetExplorer.Dialogs
         public override bool WindowIsDialogInstance(Window candidateWindow)
         {
             bool windowIsDialog = false;
-            IList<Window> buttons = candidateWindow.GetChildWindows(w => w.ClassName == WindowFactory.GetWindowClassForRole(AccessibleRole.PushButton, true));
-            IList<Window> staticLabel = candidateWindow.GetChildWindows(w => w.ClassName == WindowFactory.GetWindowClassForRole(AccessibleRole.Label, true) && w.ItemId == 0xFFFF);
-            if (buttons.Count == 1 && buttons[0].ItemId == 2 && staticLabel.Count == 1)
+            if (!candidateWindow.Text.ToLower().Contains("vbscript"))
             {
-                Kind = NativeDialogConstants.JavaScriptAlertDialog;
-                windowIsDialog = true;
+                IList<Window> buttons = candidateWindow.GetChildWindows(w => w.ClassName == WindowFactory.GetWindowClassForRole(AccessibleRole.PushButton, true));
+                IList<Window> staticLabel = candidateWindow.GetChildWindows(w => w.ClassName == WindowFactory.GetWindowClassForRole(AccessibleRole.Label, true) && w.ItemId == 0xFFFF);
+                if (buttons.Count == 1 && buttons[0].ItemId == 2 && staticLabel.Count == 1)
+                {
+                    Kind = NativeDialogConstants.JavaScriptAlertDialog;
+                    windowIsDialog = true;
+                }
+                else if (buttons.Count == 2 && buttons[0].ItemId == 1 && buttons[1].ItemId == 2 && staticLabel.Count == 1)
+                {
+                    Kind = NativeDialogConstants.JavaScriptConfirmDialog;
+                    windowIsDialog = true;
+                }
+                WindowFactory.DisposeWindows(buttons);
+                WindowFactory.DisposeWindows(staticLabel);
             }
-            else if (buttons.Count == 2 && buttons[0].ItemId == 1 && buttons[1].ItemId == 2 && staticLabel.Count == 1)
-            {
-                Kind = NativeDialogConstants.JavaScriptConfirmDialog;
-                windowIsDialog = true;
-            }
-            WindowFactory.DisposeWindows(buttons);
-            WindowFactory.DisposeWindows(staticLabel);
             return windowIsDialog;
         }
         #endregion

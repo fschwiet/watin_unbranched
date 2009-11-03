@@ -19,8 +19,9 @@
 using System;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using WatiN.Core.DialogHandlers;
 using WatiN.Core.UnitTests.TestUtils;
+using WatiN.Core.Dialogs;
+using WatiN.Core.UtilityClasses;
 
 namespace WatiN.Core.UnitTests.DialogHandlerTests
 {
@@ -31,7 +32,7 @@ namespace WatiN.Core.UnitTests.DialogHandlerTests
 		public void TestOkOnly()
 		{
 			const int buttons = 0;
-			string result = GetResultFromMsgBox(buttons, VbScriptMsgBoxDialogHandler.Button.OK);
+            string result = GetResultFromMsgBox<VBScriptOkOnlyDialog>(buttons, (d) => { d.ClickOkButton(); });
 			Assert.That(result, Is.EqualTo("1"), "Unexpected return value from message box");
 		}
 
@@ -39,24 +40,24 @@ namespace WatiN.Core.UnitTests.DialogHandlerTests
 		public void TestOkCancel()
 		{
 			const int buttons = 1;
-			string result = GetResultFromMsgBox(buttons, VbScriptMsgBoxDialogHandler.Button.OK);
-			Assert.That(result, Is.EqualTo("1"), "Unexpected return value from message box");
-			
-			result = GetResultFromMsgBox(buttons, VbScriptMsgBoxDialogHandler.Button.Cancel);
-			Assert.That(result, Is.EqualTo("2"), "Unexpected return value from message box");
+            string result = GetResultFromMsgBox<VBScriptOkCancelDialog>(buttons, (d) => { d.ClickOkButton(); });
+            Assert.That(result, Is.EqualTo("1"), "Unexpected return value from message box");
+
+            result = GetResultFromMsgBox<VBScriptOkCancelDialog>(buttons, (d) => { d.ClickCancelButton(); });
+            Assert.That(result, Is.EqualTo("2"), "Unexpected return value from message box");
 		}
 
 		[Test]
 		public void TestAbortRetryIgnore()
 		{
 			const int buttons = 2;
-			string result = GetResultFromMsgBox(buttons, VbScriptMsgBoxDialogHandler.Button.Abort);
-			Assert.That(result, Is.EqualTo("3"), "Unexpected return value from message box");
-			
-			result = GetResultFromMsgBox(buttons, VbScriptMsgBoxDialogHandler.Button.Retry);
+            string result = GetResultFromMsgBox<VBScriptAbortRetryIgnoreDialog>(buttons, (d) => { d.ClickAbortButton(); });
+            Assert.That(result, Is.EqualTo("3"), "Unexpected return value from message box");
+
+            result = GetResultFromMsgBox<VBScriptAbortRetryIgnoreDialog>(buttons, (d) => { d.ClickRetryButton(); });
 			Assert.That(result, Is.EqualTo("4"), "Unexpected return value from message box");
-			
-			result = GetResultFromMsgBox(buttons, VbScriptMsgBoxDialogHandler.Button.Ignore);
+
+            result = GetResultFromMsgBox<VBScriptAbortRetryIgnoreDialog>(buttons, (d) => { d.ClickIgnoreButton(); });
 			Assert.That(result, Is.EqualTo("5"), "Unexpected return value from message box");
 		}
 
@@ -64,49 +65,48 @@ namespace WatiN.Core.UnitTests.DialogHandlerTests
 		public void TestYesNoCancel ()
 		{
 			const int buttons = 3;
-			string result = GetResultFromMsgBox(buttons, VbScriptMsgBoxDialogHandler.Button.Yes);
-			Assert.That(result, Is.EqualTo("6"), "Unexpected return value from message box");
-			
-			result = GetResultFromMsgBox(buttons, VbScriptMsgBoxDialogHandler.Button.No);
-			Assert.That(result, Is.EqualTo("7"), "Unexpected return value from message box");
-			
-			result = GetResultFromMsgBox(buttons, VbScriptMsgBoxDialogHandler.Button.Cancel);
-			Assert.That(result, Is.EqualTo("2"), "Unexpected return value from message box");
+            string result = GetResultFromMsgBox<VBScriptYesNoCancelDialog>(buttons, (d) => { d.ClickYesButton(); });
+            Assert.That(result, Is.EqualTo("6"), "Unexpected return value from message box");
+
+            result = GetResultFromMsgBox<VBScriptYesNoCancelDialog>(buttons, (d) => { d.ClickNoButton(); });
+            Assert.That(result, Is.EqualTo("7"), "Unexpected return value from message box");
+
+            result = GetResultFromMsgBox<VBScriptYesNoCancelDialog>(buttons, (d) => { d.ClickCancelButton(); });
+            Assert.That(result, Is.EqualTo("2"), "Unexpected return value from message box");
 		}
 		[Test]
 		public void TestYesNo ()
 		{
 			const int buttons = 4;
-			string result = GetResultFromMsgBox(buttons, VbScriptMsgBoxDialogHandler.Button.Yes);
-			Assert.That(result, Is.EqualTo("6"), "Unexpected return value from message box");
-			
-			result = GetResultFromMsgBox(buttons, VbScriptMsgBoxDialogHandler.Button.No);
-			Assert.That(result, Is.EqualTo("7"), "Unexpected return value from message box");
-		}
+            string result = GetResultFromMsgBox<VBScriptYesNoDialog>(buttons, (d) => { d.ClickYesButton(); });
+            Assert.That(result, Is.EqualTo("6"), "Unexpected return value from message box");
+
+            result = GetResultFromMsgBox<VBScriptYesNoDialog>(buttons, (d) => { d.ClickNoButton(); });
+            Assert.That(result, Is.EqualTo("7"), "Unexpected return value from message box");
+        }
 
 		[Test]
 		public void TestRetryCancel ()
 		{
 			const int buttons = 5;
-			string result = GetResultFromMsgBox(buttons, VbScriptMsgBoxDialogHandler.Button.Retry);
+            string result = GetResultFromMsgBox<VBScriptRetryCancelDialog>(buttons, (d) => { d.ClickRetryButton(); });
 			Assert.That(result, Is.EqualTo("4"), "Unexpected return value from message box");
-			
-			result = GetResultFromMsgBox(buttons, VbScriptMsgBoxDialogHandler.Button.Cancel);
-			Assert.That(result, Is.EqualTo("2"), "Unexpected return value from message box");
-		}
 
-		private string GetResultFromMsgBox(int buttons, VbScriptMsgBoxDialogHandler.Button buttonToPush) 
+            result = GetResultFromMsgBox<VBScriptRetryCancelDialog>(buttons, (d) => { d.ClickCancelButton(); });
+            Assert.That(result, Is.EqualTo("2"), "Unexpected return value from message box");
+        }
+
+		private string GetResultFromMsgBox<T>(int buttons, Action<T> dialogDismissalDelegate) where T : VBScriptMsgBoxDialog
 		{
 			Ie.TextField("msgBoxButtons").TypeText(buttons.ToString());
-			var handler = new VbScriptMsgBoxDialogHandler(buttonToPush);
-			using(new UseDialogOnce(Ie.DialogWatcher, handler ))
-			{
-				Ie.Button("vbScriptMsgBox").ClickNoWait();
-				handler.WaitUntilHandled(10);
+            Ie.SetHandler<T>(dialogDismissalDelegate);
 
-                Assert.That(handler.HasHandledDialog, "Should have handled dialog");
-				return Ie.TextField("msgBoxReturnValue").Value;
-			}
+            Ie.Button("vbScriptMsgBox").ClickNoWait();
+            bool handled = TryFuncUntilTimeOut.Try<bool>(TimeSpan.FromSeconds(10), () => { return Ie.HandlerExecutedCount<T>() > 0; });
+
+            Assert.That(handled, "Should have handled dialog");
+            Ie.ClearHandler<T>();
+			return Ie.TextField("msgBoxReturnValue").Value;
 		}
 
 	    public override Uri TestPageUri

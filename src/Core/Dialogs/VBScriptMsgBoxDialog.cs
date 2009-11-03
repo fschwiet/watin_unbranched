@@ -7,10 +7,9 @@ using WatiN.Core.Logging;
 
 namespace WatiN.Core.Dialogs
 {
-    [Handleable(NativeDialogConstants.JavaScriptAlertDialog)]
-    public class AlertDialog : Dialog
+    public class VBScriptMsgBoxDialog : Dialog
     {
-        internal AlertDialog(INativeDialog nativeDialog)
+        internal VBScriptMsgBoxDialog(INativeDialog nativeDialog)
             : base(nativeDialog)
         {
         }
@@ -25,10 +24,10 @@ namespace WatiN.Core.Dialogs
             get { return NativeDialog.GetProperty(NativeDialogConstants.MessageProperty).ToString(); }
         }
 
-        public void ClickOkButton()
+        protected void ClickButton(string buttonActionId, string buttonDescription)
         {
-            Logger.LogAction("Clicking OK button on {0} dialog", NativeDialog.Kind);
-            NativeDialog.PerformAction(NativeDialogConstants.ClickOkAction, null);
+            Logger.LogAction("Clicking {0} button on {1} dialog", buttonDescription, NativeDialog.Kind);
+            NativeDialog.PerformAction(buttonActionId, null);
         }
     }
 }

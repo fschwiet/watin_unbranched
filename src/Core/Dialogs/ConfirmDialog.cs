@@ -7,6 +7,7 @@ using WatiN.Core.Logging;
 
 namespace WatiN.Core.Dialogs
 {
+    [Handleable(NativeDialogConstants.JavaScriptConfirmDialog)]
     public class ConfirmDialog : AlertDialog
     {
         internal ConfirmDialog(INativeDialog nativeDialog)

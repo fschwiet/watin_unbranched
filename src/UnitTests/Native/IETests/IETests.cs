@@ -29,6 +29,7 @@ using WatiN.Core.Exceptions;
 using WatiN.Core.Native.InternetExplorer;
 using WatiN.Core.Logging;
 using WatiN.Core.UnitTests.TestUtils;
+using WatiN.Core.Dialogs;
 
 namespace WatiN.Core.UnitTests.IETests
 {
@@ -138,27 +139,27 @@ namespace WatiN.Core.UnitTests.IETests
         }
 
         // TODO: move to BrowserTests when HTMLDialogs are supported by FireFox
-        [Test]
+        [Test, Ignore("Test is no longer valid. DialogWatcher is not refcounted")]
         public void DocumentShouldBeDisposedSoHTMLDialogGetsDisposedAndReferenceCountIsOK()
         {
-            DialogWatcher dialogWatcher;
-            int ReferenceCount;
+            //DialogWatcher dialogWatcher;
+            //int ReferenceCount;
 
-            using (var ie = new IE(MainURI))
-            {
-                ReferenceCount = ie.DialogWatcher.ReferenceCount;
+            //using (var ie = new IE(MainURI))
+            //{
+            //    ReferenceCount = ie.DialogWatcher.ReferenceCount;
 
-                ie.Button("popupid").Click();
+            //    ie.Button("popupid").Click();
 
-                using (Document document = ie.HtmlDialog(Find.ByIndex(0)))
-                {
-                    Assert.AreEqual(ReferenceCount + 1, ie.DialogWatcher.ReferenceCount, "DialogWatcher reference count");
-                }
+            //    using (Document document = ie.HtmlDialog(Find.ByIndex(0)))
+            //    {
+            //        Assert.AreEqual(ReferenceCount + 1, ie.DialogWatcher.ReferenceCount, "DialogWatcher reference count");
+            //    }
 
-                dialogWatcher = ie.DialogWatcher;
-            }
+            //    dialogWatcher = ie.DialogWatcher;
+            //}
 
-            Assert.AreEqual(ReferenceCount - 1, dialogWatcher.ReferenceCount, "DialogWatcher reference count should be zero after test");
+            //Assert.AreEqual(ReferenceCount - 1, dialogWatcher.ReferenceCount, "DialogWatcher reference count should be zero after test");
         }
 
         [Test]
@@ -167,19 +168,17 @@ namespace WatiN.Core.UnitTests.IETests
             FailIfIEWindowExists("main", "NewIEWithUrlAndLogonDialogHandler");
 
             var url = MainURI.AbsoluteUri;
-            var logon = new LogonDialogHandler("y", "z");
+            var logon = new Action<LogonDialog>((d) => { d.UserName = "y"; d.Password = "z"; d.ClickOkButton(); });
 
             using (var ie = new IE(url, logon))
             {
                 Assert.AreEqual(MainURI, new Uri(ie.Url));
-                Assert.IsTrue(ie.DialogWatcher.Contains(logon));
-                Assert.AreEqual(1, ie.DialogWatcher.Count);
+                Assert.IsTrue(ie.HandlerIsEnabled<LogonDialog>());
 
                 using (var ie1 = new IE(url, logon))
                 {
                     Assert.AreEqual(MainURI, new Uri(ie1.Url));
-                    Assert.IsTrue(ie.DialogWatcher.Contains(logon));
-                    Assert.AreEqual(1, ie.DialogWatcher.Count);
+                    Assert.IsTrue(ie.HandlerIsEnabled<LogonDialog>());
                 }
             }
 
@@ -194,7 +193,7 @@ namespace WatiN.Core.UnitTests.IETests
             {
                 using (var ie2 = new IE())
                 {
-                    Assert.AreEqual(ie1.ProcessID, ie2.ProcessID);
+                    Assert.AreEqual(ie1.HostWindow.ProcessId, ie2.HostWindow.ProcessId);
                 }
             }
         }
@@ -207,7 +206,7 @@ namespace WatiN.Core.UnitTests.IETests
                 using (var ie2 = new IE(true))
                 {
                     Assert.IsNotNull(ie2, "create ie in new process returned null");
-                    Assert.AreNotEqual(ie1.ProcessID, ie2.ProcessID, "process id problem");
+                    Assert.AreNotEqual(ie1.HostWindow.ProcessId, ie2.HostWindow.ProcessId, "process id problem");
                 }
             }
         }
@@ -266,7 +265,7 @@ namespace WatiN.Core.UnitTests.IETests
             using (var ie = new IE(url))
             {
                 Assert.AreEqual(MainURI, new Uri(ie.Url));
-                Assert.AreEqual(0, ie.DialogWatcher.Count, "DialogWatcher count should be zero");
+                Assert.AreEqual(0, ie.GetHandlerCount(typeof(Dialog), false), "DialogWatcher count should be zero");
             }
 
             Assert.IsFalse(IsIEWindowOpen("main"), "Internet Explorer should be closed by IE.Dispose");
@@ -279,13 +278,13 @@ namespace WatiN.Core.UnitTests.IETests
         {
             FailIfIEWindowExists("main", "ReopenWithUrlAndLogonDialogHandler");
 
-            var logon = new LogonDialogHandler("y", "z");
+            var logon = new Action<LogonDialog>((d) => { d.UserName = "y"; d.Password = "z"; d.ClickOkButton(); });
 
             using (var ie1 = new IE())
             {
                 using (var ie2 = new IE())
                 {
-                    Assert.AreEqual(ie1.ProcessID, ie2.ProcessID, "process id problem");
+                    Assert.AreEqual(ie1.HostWindow.ProcessId, ie2.HostWindow.ProcessId, "process id problem");
 
                     Assert.AreEqual("about:blank", ie2.Url);
                     var oldIEObj = ie2.InternetExplorer;
@@ -293,11 +292,11 @@ namespace WatiN.Core.UnitTests.IETests
                     ie2.Reopen(MainURI, logon, true);
                     Assert.AreNotSame(oldIEObj, ie2.InternetExplorer, "Reopen should create a new browser.");
 
-                    Assert.AreNotEqual(ie1.ProcessID, ie2.ProcessID, "process id problem");
+                    Assert.AreNotEqual(ie1.HostWindow.ProcessId, ie2.HostWindow.ProcessId, "process id problem");
 
                     Assert.AreEqual(MainURI, new Uri(ie2.Url));
-                    Assert.IsTrue(ie2.DialogWatcher.Contains(logon));
-                    Assert.AreEqual(1, ie2.DialogWatcher.Count);
+                    Assert.IsTrue(ie2.HandlerIsEnabled<LogonDialog>());
+                    Assert.AreEqual(1, ie2.GetHandlerCount(typeof(Dialog), false));
                 }
             }
 
@@ -382,7 +381,7 @@ namespace WatiN.Core.UnitTests.IETests
 
             using (var ie = new IE(MainURI))
             {
-                hwnd = ie.hWnd.ToString();
+                hwnd = ie.HostWindow.Handle.ToString();
                 Assert.IsTrue(IE.Exists(Find.By("hwnd", hwnd)), "hwnd of ie instance should be found");
             }
 
@@ -604,7 +603,7 @@ namespace WatiN.Core.UnitTests.IETests
             // GIVEN
             using(var ie = new IE())
             {
-                var processId = ie.ProcessID;
+                var processId = ie.HostWindow.ProcessId;
 
                 // WHEN
                 var process = Process.GetProcessById(processId);

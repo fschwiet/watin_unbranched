@@ -15,11 +15,13 @@ namespace WatiN.Core.Dialogs
         public string UserName
         {
             get { return NativeDialog.GetProperty(NativeDialogConstants.UserNameProperty).ToString(); }
+            set { NativeDialog.PerformAction(NativeDialogConstants.SetUserNameAction, new object[] { value }); }
         }
 
         public string Password
         {
             get { return NativeDialog.GetProperty(NativeDialogConstants.PasswordProperty).ToString(); }
+            set { NativeDialog.PerformAction(NativeDialogConstants.SetPasswordAction, new object[] { value }); }
         }
 
         public void ClickOkButton()
@@ -27,9 +29,14 @@ namespace WatiN.Core.Dialogs
             NativeDialog.PerformAction(NativeDialogConstants.ClickOkAction, null);
         }
 
+        public void ClickCancelButton()
+        {
+            NativeDialog.PerformAction(NativeDialogConstants.ClickCancelAction, null);
+        }
+
         public void SetUserName(string userName)
         {
-            NativeDialog.PerformAction(NativeDialogConstants.UserNameProperty, new object[] { userName });
+            NativeDialog.PerformAction(NativeDialogConstants.SetUserNameAction, new object[] { userName });
         }
 
         public void SetPassword(string password)

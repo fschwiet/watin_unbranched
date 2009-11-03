@@ -15,6 +15,7 @@ namespace WatiN.Core.Dialogs
         public string FileName
         {
             get { return NativeDialog.GetProperty(NativeDialogConstants.FileNameProperty).ToString(); }
+            set { NativeDialog.PerformAction(NativeDialogConstants.SetFileNameAction, new object[] { value }); }
         }
 
         public void ClickOpen()

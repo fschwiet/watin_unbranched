@@ -35,7 +35,6 @@ namespace WatiN.Core
     public abstract class Browser : DomContainer 
     {
         private static readonly Dictionary<Type, IAttachTo> AttachToHelpers = new Dictionary<Type, IAttachTo>();
-        private Dictionary<Type, IWatcher> watchers;
 
         static Browser()
         {
@@ -305,15 +304,6 @@ namespace WatiN.Core
         {
             get { return NativeBrowser.HostWindow; }
         }
-        //public override IntPtr hWnd
-        //{
-        //    get { return NativeBrowser.HostWindow.Handle; }
-        //}
-
-        //public override int ProcessID
-        //{
-        //    get { return NativeBrowser.HostWindow.ProcessId; }
-        //}
 
         /// <inheritdoc />
         public override INativeDocument OnGetNativeDocument()
@@ -386,79 +376,7 @@ namespace WatiN.Core
             AttachToHelpers.Add(browserType, attachToHelper);
         }
 
-        /// <inheritdoc />
-        public override void SetHandler<TWatchable>(Action<TWatchable> action)
-        {
-            IWatcher watcher = GetWatcher(typeof(TWatchable), true);
-            watcher.SetHandler(action);
-        }
-
-        /// <inheritdoc />
-        public override void ClearHandler<TWatchable>()
-        {
-            IWatcher watcher = GetWatcher(typeof(TWatchable), false);
-            if (watcher != null)
-                watcher.ClearHandler<TWatchable>();
-        }
-
-        /// <inheritdoc />
-        public override void ResetHandler<TWatchable>()
-        {
-            IWatcher watcher = GetWatcher(typeof(TWatchable), false);
-            if (watcher != null)
-                watcher.ResetHandler<TWatchable>();
-        }
-
-        /// <inheritdoc />
-        public override Expectation<TWatchable> Expect<TWatchable>()
-        {
-            return Expect<TWatchable>(Expectation<TWatchable>.DefaultTimeout);
-        }
-
-        /// <inheritdoc />
-        public override Expectation<TWatchable> Expect<TWatchable>(TimeSpan timeout)
-        {
-            IWatcher watcher = GetWatcher(typeof(TWatchable), true);
-            return watcher.Expect<TWatchable>(timeout);
-        }
-
-        private IWatcher GetWatcher(Type watchableType, bool createIfAbsent)
-        {
-            if (watchers == null)
-                watchers = new Dictionary<Type, IWatcher>();
-
-            Type baseWatchableType = GetBaseWatchableType(watchableType);
-
-            IWatcher watcher;
-            if (!watchers.TryGetValue(baseWatchableType, out watcher) && createIfAbsent)
-            {
-                watcher = CreateWatcher(baseWatchableType);
-                watchers.Add(baseWatchableType, watcher);
-            }
-
-            return watcher;
-        }
-
-        private Type GetBaseWatchableType(Type watchableType)
-        {
-            Type baseWatchableType = typeof(object);
-
-            if (typeof(Dialog).IsAssignableFrom(watchableType))
-                baseWatchableType = typeof(Dialog);
-
-            //else if (typeof(InfoBar).IsAssignableFrom(watchableType))
-            //    baseWatchableType = typeof(InfoBar);
-
-            //else if (typeof(Page).IsAssignableFrom(watchableType))
-            //    baseWatchableType = typeof(Page);
-
-            else
-                throw new NotSupportedException("Unsupported watcher type.");
-
-            return baseWatchableType;
-        }
-
-        private IWatcher CreateWatcher(Type watchableType)
+        protected override IWatcher CreateWatcher(Type watchableType)
         {
             if (typeof(Dialog).IsAssignableFrom(watchableType))
                 return new DialogWatcher(NativeBrowser.NativeDialogManager, watchableType);

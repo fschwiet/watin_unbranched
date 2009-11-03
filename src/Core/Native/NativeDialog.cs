@@ -6,7 +6,7 @@ using WatiN.Core.UtilityClasses;
 
 namespace WatiN.Core.Native
 {
-    public abstract class NativeDialog : INativeDialog
+    internal abstract class NativeDialog : INativeDialog
     {
         #region Private members
         private string _kind = string.Empty;

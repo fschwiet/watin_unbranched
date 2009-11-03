@@ -12,50 +12,59 @@ namespace WatiN.Core
         private bool handlerEnabled = true;
         private int timesHandled = 0;
 
-        public bool HandleOnce
+        protected WatchableObjectHandler()
+        {
+        }
+
+        internal bool HandleOnce
         {
             get { return handleObjectOnce; }
             set { handleObjectOnce = value; }
         }
 
-        public bool Enabled
+        internal bool Enabled
         {
             get { return handlerEnabled; }
             set { handlerEnabled = value; }
         }
 
-        public int HandleCount
+        internal int HandleCount
         {
             get { return timesHandled; }
-            protected set { timesHandled = value; }
+            set { timesHandled = value; }
         }
 
-        public abstract void HandleObject(object objectToHandle);
+        internal abstract void HandleObject(object objectToHandle);
 
-        public void Reset()
+        internal void Reset()
         {
             handlerEnabled = true;
             timesHandled = 0;
         }
     }
 
-    public class WatchableObjectHandler<TWatchable> : WatchableObjectHandler where TWatchable : IWatchable
+    public sealed class WatchableObjectHandler<TWatchable> : WatchableObjectHandler where TWatchable : IWatchable
     {
         private Action<TWatchable> _handlerAction;
         private bool autoDisposeObject = true;
 
-        public WatchableObjectHandler(Action<TWatchable> handlerAction)
+        internal WatchableObjectHandler(Action<TWatchable> handlerAction)
             : this(handlerAction, true)
         {
         }
 
-        public WatchableObjectHandler(Action<TWatchable> handlerAction, bool automaticallyDisposeWatchedObject)
+        internal WatchableObjectHandler(Action<TWatchable> handlerAction, bool automaticallyDisposeWatchedObject)
         {
             _handlerAction = handlerAction;
             autoDisposeObject = automaticallyDisposeWatchedObject;
         }
 
-        public override void HandleObject(object objectToHandle)
+        internal Action<TWatchable> HandlerAction
+        {
+            get { return _handlerAction; }
+        }
+
+        internal override void HandleObject(object objectToHandle)
         {
             // Verify the object is an IWatchable before setting.
             IWatchable watchableObject = objectToHandle as IWatchable;
@@ -65,7 +74,7 @@ namespace WatiN.Core
                 TWatchable castObject = (TWatchable)objectToHandle;
                 try
                 {
-                    HandleObjectInternal((TWatchable)castObject);
+                    HandleObjectInternal(castObject);
                     HandleCount++;
                 }
                 catch (Exception ex)

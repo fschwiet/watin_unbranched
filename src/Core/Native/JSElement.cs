@@ -366,7 +366,7 @@ namespace WatiN.Core.Native
             this.FireEvent("submit", null);
         }
 
-        public void SetFileUploadFile(DialogWatcher dialogWatcher, string fileName)
+        public void SetFileUploadFile(string fileName)
         {
             fileName = fileName.Replace(@"\", @"\\");
             this.SetAttributeValue("value", fileName);

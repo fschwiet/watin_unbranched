@@ -95,7 +95,7 @@ namespace WatiN.Core.UnitTests
         {
             public INativeDocument ReturnNativeDocument { get; set; }
 
-            public override IntPtr hWnd
+            public override WatiN.Core.Native.Windows.Window HostWindow
             {
                 get { throw new NotImplementedException(); }
             }
@@ -113,6 +113,11 @@ namespace WatiN.Core.UnitTests
             public override void WaitForComplete(int waitForCompleteTimeOut)
             {
                 //                waitForCompleteTimeOut()
+            }
+
+            protected override IWatcher CreateWatcher(Type watchableType)
+            {
+                throw new NotImplementedException();
             }
         }
 	}

@@ -37,27 +37,18 @@ namespace WatiN.Core
 	{
         private readonly Window dialogHostWindow;
         private IEDialogManager hostWindowDialogManager;
-        private Dictionary<Type, IWatcher> watchers;
-
-        public override Window HostWindow
-        {
-            get { return dialogHostWindow; }
-        }
-        //public override IntPtr hWnd
-        //{
-        //    get { return _dialogWindow.Handle; }
-        //}
-
-        //public override int ProcessID
-        //{
-        //    get { return _dialogWindow.ProcessId; }
-        //}
 
 		public HtmlDialog(Window dialogWindow)
 		{
             dialogHostWindow = dialogWindow;
             hostWindowDialogManager = new IEDialogManager(dialogHostWindow, WindowEnumerationMethod.WindowManagementApi);
 		}
+
+        /// <inheritdoc />
+        public override Window HostWindow
+        {
+            get { return dialogHostWindow; }
+        }
 
 		protected override void Dispose(bool disposing)
 		{
@@ -105,79 +96,7 @@ namespace WatiN.Core
 			return value;
 		}
 
-        /// <inheritdoc />
-        public override void SetHandler<TWatchable>(Action<TWatchable> action)
-        {
-            IWatcher watcher = GetWatcher(typeof(TWatchable), true);
-            watcher.SetHandler(action);
-        }
-
-        /// <inheritdoc />
-        public override void ClearHandler<TWatchable>()
-        {
-            IWatcher watcher = GetWatcher(typeof(TWatchable), false);
-            if (watcher != null)
-                watcher.ClearHandler<TWatchable>();
-        }
-
-        /// <inheritdoc />
-        public override void ResetHandler<TWatchable>()
-        {
-            IWatcher watcher = GetWatcher(typeof(TWatchable), false);
-            if (watcher != null)
-                watcher.ResetHandler<TWatchable>();
-        }
-
-        /// <inheritdoc />
-        public override Expectation<TWatchable> Expect<TWatchable>()
-        {
-            return Expect<TWatchable>(Expectation<TWatchable>.DefaultTimeout);
-        }
-
-        /// <inheritdoc />
-        public override Expectation<TWatchable> Expect<TWatchable>(TimeSpan timeout)
-        {
-            IWatcher watcher = GetWatcher(typeof(TWatchable), true);
-            return watcher.Expect<TWatchable>(timeout);
-        }
-
-        private IWatcher GetWatcher(Type watchableType, bool createIfAbsent)
-        {
-            if (watchers == null)
-                watchers = new Dictionary<Type, IWatcher>();
-
-            Type baseWatchableType = GetBaseWatchableType(watchableType);
-
-            IWatcher watcher;
-            if (!watchers.TryGetValue(baseWatchableType, out watcher) && createIfAbsent)
-            {
-                watcher = CreateWatcher(baseWatchableType);
-                watchers.Add(baseWatchableType, watcher);
-            }
-
-            return watcher;
-        }
-
-        private Type GetBaseWatchableType(Type watchableType)
-        {
-            Type baseWatchableType = typeof(object);
-
-            if (typeof(Dialog).IsAssignableFrom(watchableType))
-                baseWatchableType = typeof(Dialog);
-
-            //else if (typeof(InfoBar).IsAssignableFrom(watchableType))
-            //    baseWatchableType = typeof(InfoBar);
-
-            //else if (typeof(Page).IsAssignableFrom(watchableType))
-            //    baseWatchableType = typeof(Page);
-
-            else
-                throw new NotSupportedException("Unsupported watcher type.");
-
-            return baseWatchableType;
-        }
-
-        private IWatcher CreateWatcher(Type watchableType)
+        protected override IWatcher CreateWatcher(Type watchableType)
         {
             if (typeof(Dialog).IsAssignableFrom(watchableType))
                 return new DialogWatcher(hostWindowDialogManager, watchableType);

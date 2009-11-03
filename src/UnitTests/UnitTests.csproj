@@ -190,15 +190,12 @@
     <Compile Include="ControlTests.cs" />
     <Compile Include="ComponentExtensionsTests.cs" />
     <Compile Include="PageTests.cs" />
-    <Compile Include="DialogHandlerTests\CloseIEDialogHandlerTests.cs" />
-    <Compile Include="DialogHandlerTests\DialogHandlerHelperTests.cs" />
     <Compile Include="IdHinterTests.cs" />
     <Compile Include="Native\ChromeTests\ChromeBrowserTestManager.cs" />
     <Compile Include="Native\ChromeTests\ChromeTests.cs" />
     <Compile Include="ActionTests\HighlightActionTests.cs" />
     <Compile Include="NativeElementFinderTests.cs" />
     <Compile Include="Native\JSElementCollectionBaseTests.cs" />
-    <Compile Include="Native\Windows\NativeMethodsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -268,43 +265,16 @@
     <Compile Include="DefaultSettingsTests.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DialogHandlerTests\AlertAndConfirmDialogHandlerTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="DialogHandlerTests\AlertDialogHandlerTests.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DialogHandlerTests\ConfirmDialogHandlerTests.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DialogHandlerTests\DialogWatcherTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DialogHandlerTests\FileDownloadHandlerTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DialogHandlerTests\LogonDialogHandlerTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="DialogHandlerTests\ModalPopupExtenderTests.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DialogHandlerTests\PromptDialogHandlerTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DialogHandlerTests\ReturnJavaDialogHandlerTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DialogHandlerTests\SecurityDialogHandlerTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DialogHandlerTests\SimpleJavaDialogHandlerTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="DialogHandlerTests\VbScriptMsgBoxHandlerTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DialogHandlerTests\WinButtonTests.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DivTests.cs">
@@ -463,6 +433,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Native\Windows\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

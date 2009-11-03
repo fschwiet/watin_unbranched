@@ -22,6 +22,7 @@ using System.Text.RegularExpressions;
 using NUnit.Framework;
 using WatiN.Core.Exceptions;
 using WatiN.Core.UnitTests.TestUtils;
+using WatiN.Core.Dialogs;
 
 namespace WatiN.Core.UnitTests
 {
@@ -291,13 +292,11 @@ namespace WatiN.Core.UnitTests
         {
             Ie.GoTo(TestEventsURI);
 
-            var confirm = new ConfirmDialogHandler();
-            using (new UseDialogOnce(Ie.DialogWatcher, confirm))
+            using (var confirm = Ie.Expect<ConfirmDialog>(TimeSpan.FromSeconds(5)))
             {
                 Ie.SelectList(Find.ById("selectList")).Option(Find.ByValue("2")).SelectNoWait();
 
-                confirm.WaitUntilExists();
-                confirm.OKButton.Click();
+                confirm.Object.ClickOkButton();
             }
         }
 

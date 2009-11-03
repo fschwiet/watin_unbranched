@@ -191,6 +191,14 @@
     <Compile Include="Composite.cs" />
     <Compile Include="Body.cs" />
     <Compile Include="DescriptionAttribute.cs" />
+    <Compile Include="HandleableAttribute.cs" />
+    <Compile Include="Dialogs\VBScriptAbortRetryIgnoreDialog.cs" />
+    <Compile Include="Dialogs\VBScriptRetryCancelDialog.cs" />
+    <Compile Include="Dialogs\VBScriptYesNoCancelDialog.cs" />
+    <Compile Include="Dialogs\VBScriptMsgBoxDialog.cs" />
+    <Compile Include="Dialogs\VBScriptYesNoDialog.cs" />
+    <Compile Include="Dialogs\VBScriptOkCancelDialog.cs" />
+    <Compile Include="Dialogs\VBScriptOkOnlyDialog.cs" />
     <Compile Include="Exceptions\ElementExceptionBase.cs" />
     <Compile Include="Expectation.cs" />
     <Compile Include="FindByAttribute.cs" />
@@ -211,6 +219,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Native\Chrome\ChromeDialogManager.cs" />
+    <Compile Include="Native\InternetExplorer\Dialogs\IEVBScriptDialog.cs" />
     <Compile Include="Native\NativeDialog.cs" />
     <Compile Include="Native\NativeDialogDismissedEventArgs.cs" />
     <Compile Include="Native\DialogManager.cs" />

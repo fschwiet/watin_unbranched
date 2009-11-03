@@ -80,6 +80,11 @@ namespace WatiN.Core.UnitTests.Native
             }
         }
 
+        public override void LaunchHostProcess(string url)
+        {
+            return;
+        }
+
         /// <summary>
         /// Gets the name of the browser variable.
         /// </summary>
