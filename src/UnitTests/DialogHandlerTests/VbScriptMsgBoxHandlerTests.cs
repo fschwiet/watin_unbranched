@@ -98,6 +98,7 @@ namespace WatiN.Core.UnitTests.DialogHandlerTests
 
 		private string GetResultFromMsgBox<T>(int buttons, Action<T> dialogDismissalDelegate) where T : VBScriptMsgBoxDialog
 		{
+            //IE only test. Do not attempt with FireFox (does not understand VBScript).
 			Ie.TextField("msgBoxButtons").TypeText(buttons.ToString());
             Ie.SetHandler<T>(dialogDismissalDelegate);
 

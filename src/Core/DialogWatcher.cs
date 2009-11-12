@@ -68,7 +68,16 @@ namespace WatiN.Core
             {
                 ClearHandler<TWatchable>();
             }
-            handlers.Add(typeof(TWatchable), new WatchableObjectHandler<TWatchable>(action));
+            WatchableObjectHandler<TWatchable> newHandler = new WatchableObjectHandler<TWatchable>(action);
+
+            // If there exists an expectation, disable the handler.
+            Expectation existingExpectation = GetExistingExpectation(typeof(TWatchable));
+            if (existingExpectation != null)
+            {
+                newHandler.Enabled = false;
+            }
+
+            handlers.Add(typeof(TWatchable), newHandler);
             Logger.LogInfo("Handler set for watchable type {0}.", typeof(TWatchable).Name);
         }
 
@@ -150,6 +159,12 @@ namespace WatiN.Core
             }
             return expectation;
         }
+
+        /// <inheritdoc/>
+        public bool IsExpecting<TWatchable>() where TWatchable : IWatchable
+        {
+            return GetExistingExpectation(typeof(TWatchable)) != null;
+        }
         #endregion
 
         private void manager_DialogFound(object sender, NativeDialogFoundEventArgs e)
@@ -167,7 +182,7 @@ namespace WatiN.Core
             Type dialogType = watchableObject.GetType();
             Expectation existingExpectation = GetExistingExpectation(dialogType);
             WatchableObjectHandler existingHandler = GetExistingHandler(dialogType);
-            if (existingExpectation != null)
+            if (existingExpectation != null && !existingExpectation.TimeoutReached)
             {
                 // Once the expectation is met, we can remove it from the list of
                 // pending expectations.

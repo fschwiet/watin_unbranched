@@ -30,19 +30,22 @@ namespace WatiN.Core.UnitTests.DialogHandlerTests
 		public void AlertDialogHandler()
 		{
 			//Assert.AreEqual(0, Ie.DialogWatcher.Count, "DialogWatcher count should be zero");
-            var alertDialogHandler = Ie.Expect<AlertDialog>();
+            ExecuteTest(browser =>
+                {
+                    var alertDialogHandler = browser.Expect<AlertDialog>();
 
-            Ie.Button(Find.ByValue("Show alert dialog")).ClickNoWait();
+                    browser.Button(Find.ByValue("Show alert dialog")).ClickNoWait();
 
-            var alert = alertDialogHandler.Object;
+                    var alert = alertDialogHandler.Object;
 
-			var message = alert.Message;
-            alert.ClickOkButton();
+                    var message = alert.Message;
+                    alert.ClickOkButton();
 
-			Ie.WaitForComplete();
+                    browser.WaitForComplete();
 
-			Assert.AreEqual("This is an alert!", message, "Unexpected message");
-			Assert.IsFalse(alert.Exists, "Alert Dialog should be closed.");
+                    Assert.AreEqual("This is an alert!", message, "Unexpected message");
+                    Assert.IsFalse(alert.Exists, "Alert Dialog should be closed.");
+                });
 		}
 
 		[Test]

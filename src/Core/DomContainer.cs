@@ -138,8 +138,8 @@ namespace WatiN.Core
         /// </summary>
         /// <typeparam name="TWatchable">An object implementing the <see cref="IWatchable"/> interface.</typeparam>
         /// <param name="action">An <see cref="System.Action&lt;T&gt;"/> delegate to handle the object.</param>
-        /// <remarks>Will overwrite any existing handler for the watchable type. To replace the existing
-        /// handler, use ReplaceHandler.</remarks>
+        /// <remarks>Will overwrite any existing handler for the watchable type. To capture the existing
+        /// handler for later restoration, use ReplaceHandler.</remarks>
         public virtual void SetHandler<TWatchable>(Action<TWatchable> action) where TWatchable : IWatchable
         {
             IWatcher watcher = GetWatcher(typeof(TWatchable), true);
@@ -215,6 +215,26 @@ namespace WatiN.Core
         }
 
         /// <summary>
+        /// Gets a value indicating whether or not a handler is exists for the given watchable type.
+        /// </summary>
+        /// <typeparam name="TWatchable">An object implementing the <see cref="IWatchable"/> interface.</typeparam>
+        /// <returns>true if a handler for the type exists, false otherwise</returns>
+        public virtual bool HandlerExists<TWatchable>() where TWatchable : IWatchable
+        {
+            bool exists = false;
+            IWatcher watcher = GetWatcher(typeof(TWatchable), false);
+            if (watcher != null)
+            {
+                WatchableObjectHandler<TWatchable> handler = watcher.GetHandler<TWatchable>();
+                if (handler != null)
+                {
+                    exists = true;
+                }
+            }
+            return exists;
+        }
+
+        /// <summary>
         /// Gets a value indicating the number of times a handler has been executed for the given watchable type.
         /// </summary>
         /// <typeparam name="TWatchable">An object implementing the <see cref="IWatchable"/> interface.</typeparam>
@@ -278,6 +298,17 @@ namespace WatiN.Core
         {
             IWatcher watcher = GetWatcher(typeof(TWatchable), true);
             return watcher.Expect<TWatchable>(timeout);
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether a watchable object is being expected.
+        /// </summary>
+        /// <typeparam name="TWatchable">An object implementing the <see cref="IWatchable"/> interface.</typeparam>
+        /// <returns>true if the watcher is expecting the watchable type; false otherwise.</returns>
+        public virtual bool IsExpecting<TWatchable>() where TWatchable : IWatchable
+        {
+            IWatcher watcher = GetWatcher(typeof(TWatchable), true);
+            return watcher.IsExpecting<TWatchable>();
         }
 
         private IWatcher GetWatcher(Type watchableType, bool createIfAbsent)

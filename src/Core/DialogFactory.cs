@@ -20,24 +20,41 @@ namespace WatiN.Core
             {
                 if (exportedType.IsSubclassOf(typeof(Dialog)))
                 {
-                    object[] attributes = exportedType.GetCustomAttributes(typeof(HandleableAttribute), false);
-                    if (attributes.Length > 0)
+                    RegisterDialogType(exportedType, true);
+                }
+            }
+        }
+
+        public static void RegisterDialogType(Type dialogType)
+        {
+            RegisterDialogType(dialogType, false);
+        }
+
+        private static void RegisterDialogType(Type dialogType, bool precheckedForDialogSubclass)
+        {
+            // External or user-defined Types need to be checked that they descend from Dialog. 
+            if (!precheckedForDialogSubclass && !dialogType.IsSubclassOf(typeof(Dialog)))
+            {
+                throw new WatiNException(string.Format("Type '{0}' is not descended from Dialog", dialogType.Name));
+            }
+
+            // Register classes that have an attribute of Handleable, with a unique Identifier.
+            object[] attributes = dialogType.GetCustomAttributes(typeof(HandleableAttribute), false);
+            if (attributes.Length > 0)
+            {
+                HandleableAttribute attribute = attributes[0] as HandleableAttribute;
+                if (attribute != null && !string.IsNullOrEmpty(attribute.Identifier))
+                {
+                    ConstructorInfo ctor = dialogType.GetConstructor(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance, Type.DefaultBinder, new Type[] { typeof(INativeDialog) }, null);
+                    if (_dialogConstructors.ContainsKey(attribute.Identifier))
                     {
-                        HandleableAttribute attribute = attributes[0] as HandleableAttribute;
-                        if (attribute != null && !string.IsNullOrEmpty(attribute.Identifier))
-                        {
-                            ConstructorInfo ctor = exportedType.GetConstructor(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance, Type.DefaultBinder, new Type[] { typeof(INativeDialog) }, null);
-                            if (_dialogConstructors.ContainsKey(attribute.Identifier))
-                            {
-                                throw new WatiNException(string.Format("Duplicate dialog kind for '{0}'", attribute.Identifier));
-                            }
-                            if (ctor == null)
-                            {
-                                throw new WatiNException(string.Format("No constructor with parameter INativeDialog found for '{0}'", attribute.Identifier));
-                            }
-                            _dialogConstructors.Add(attribute.Identifier, ctor);
-                        }
+                        throw new WatiNException(string.Format("Duplicate dialog kind for '{0}'", attribute.Identifier));
                     }
+                    if (ctor == null)
+                    {
+                        throw new WatiNException(string.Format("No constructor with parameter INativeDialog found for '{0}'", attribute.Identifier));
+                    }
+                    _dialogConstructors.Add(attribute.Identifier, ctor);
                 }
             }
         }

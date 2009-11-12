@@ -189,6 +189,8 @@
     <Compile Include="ControlCollectionTests.cs" />
     <Compile Include="ControlTests.cs" />
     <Compile Include="ComponentExtensionsTests.cs" />
+    <Compile Include="DialogWatcherTests.cs" />
+    <Compile Include="ExpectationTests.cs" />
     <Compile Include="PageTests.cs" />
     <Compile Include="IdHinterTests.cs" />
     <Compile Include="Native\ChromeTests\ChromeBrowserTestManager.cs" />

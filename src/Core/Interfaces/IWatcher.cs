@@ -84,5 +84,12 @@ namespace WatiN.Core.Interfaces
         /// <remarks>Expecting a watchable object to appear will suspend processing of any registered handlers for
         /// that object type. To resume automatic handling, you must call ResetHandler for the object type.</remarks>
         Expectation<TWatchable> Expect<TWatchable>(TimeSpan timeout, Predicate<TWatchable> predicate) where TWatchable : IWatchable;
+
+        /// <summary>
+        /// Gets a value indicating whether a watchable object is being expected.
+        /// </summary>
+        /// <typeparam name="TWatchable">An object implementing the <see cref="WatiN.Core.Interfaces.IWatchable"/> interface.</typeparam>
+        /// <returns>true if the watcher is expecting the watchable type; false otherwise.</returns>
+        bool IsExpecting<TWatchable>() where TWatchable : IWatchable;
     }
 }

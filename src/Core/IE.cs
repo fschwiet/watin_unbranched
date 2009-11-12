@@ -815,7 +815,7 @@ namespace WatiN.Core
 		{
 		    if (isDisposed) return;
 
-            //Logger.LogDebug(Resources.IE_Dispose);
+            Logger.LogDebug(Resources.IE_Dispose);
 
             if (closeIE && IsInternetExplorerStillAvailable())
 		    {
