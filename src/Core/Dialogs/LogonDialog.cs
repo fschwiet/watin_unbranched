@@ -5,6 +5,7 @@ using WatiN.Core.Native;
 
 namespace WatiN.Core.Dialogs
 {
+    [Handleable(NativeDialogConstants.LogonDialog)]
     public class LogonDialog : Dialog
     {
         internal LogonDialog(INativeDialog nativeDialog)

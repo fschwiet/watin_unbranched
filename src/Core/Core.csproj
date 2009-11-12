@@ -219,7 +219,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Native\Chrome\ChromeDialogManager.cs" />
+    <Compile Include="Native\InternetExplorer\Dialogs\IELogonDialog.cs" />
     <Compile Include="Native\InternetExplorer\Dialogs\IEVBScriptDialog.cs" />
+    <Compile Include="Native\Mozilla\Dialogs\FFLogonDialog.cs" />
     <Compile Include="Native\NativeDialog.cs" />
     <Compile Include="Native\NativeDialogDismissedEventArgs.cs" />
     <Compile Include="Native\DialogManager.cs" />

@@ -13,6 +13,7 @@ namespace WatiN.Core.Native.Windows
         internal abstract int ChildCount { get; }
         internal abstract bool SupportsActions { get; }
 
+        internal abstract bool SetFocus();
         internal abstract void DoAction(int actionIndex);
         internal abstract IList<AssistiveTechnologyObject> GetChildrenByRole(AccessibleRole matchingRole, bool visibleChildrenOnly, bool recursiveSearch);
     }

@@ -19,6 +19,7 @@ namespace WatiN.Core.Native.Mozilla
         protected override void RegisterDialogs()
         {
             RegisteredDialogTypes.Add(typeof(FFJavaScriptDialog));
+            RegisteredDialogTypes.Add(typeof(FFLogonDialog));
         }
     }
 }

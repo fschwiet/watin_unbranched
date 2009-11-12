@@ -15,6 +15,7 @@ namespace WatiN.Core.Native
         internal const string VBScriptYesNoCancelDialog = "VBScriptYesNoCancelDialog";
         internal const string VBScriptYesNoDialog = "VBScriptYesNoDialog";
         internal const string VBScriptRetryCancelDialog = "VBScriptRetryCancelDialog";
+        internal const string LogonDialog = "LogonDialog";
 
         public static readonly string TitleProperty = "TitleProperty";
         public static readonly string MessageProperty = "MessageProperty";

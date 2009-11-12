@@ -105,6 +105,7 @@ namespace WatiN.Core.Native.Windows.Microsoft
             AlertLow = 0x04000000,
             AlertMedium = 0x08000000,
             AlertHigh = 0x10000000,
+            Protected = 0x20000000,
             Valid = 0x1fffffff
         }
 
@@ -139,6 +140,10 @@ namespace WatiN.Core.Native.Windows.Microsoft
                 {
                     MsaaAccessibleRole msaaRole = (MsaaAccessibleRole)_rawObject.get_accRole(_objectIndex);
                     baseRole = ConvertMsaaRoleToAccessibleRole(msaaRole);
+                    if (baseRole == AccessibleRole.Text && StateSet.Contains(AccessibleState.Protected))
+                    {
+                        baseRole = AccessibleRole.PasswordText;
+                    }
                 }
                 return baseRole;
             }
@@ -157,6 +162,28 @@ namespace WatiN.Core.Native.Windows.Microsoft
         internal override bool SupportsActions
         {
             get { return !string.IsNullOrEmpty(_rawObject.get_accDefaultAction(_objectIndex)); }
+        }
+
+        internal override bool SetFocus()
+        {
+            bool focusSet = false;
+            try
+            {
+                _rawObject.accSelect(1, 0);
+                focusSet = true;
+            }
+            catch (Exception)
+            {
+                // If an exception occurs while trying to select the object,
+                // bail for now.
+            }
+            return focusSet;
+        }
+
+        internal override void DoAction(int actionIndex)
+        {
+            // Note: actionIndex is ignored for MS Windows systems
+            _rawObject.accDoDefaultAction(_objectIndex);
         }
 
         internal override IList<AssistiveTechnologyObject> GetChildrenByRole(AccessibleRole matchingRole, bool visibleChildrenOnly, bool recursiveSearch)
@@ -194,12 +221,6 @@ namespace WatiN.Core.Native.Windows.Microsoft
                 }
             }
             return childList;
-        }
-
-        internal override void DoAction(int actionIndex)
-        {
-            // Note: actionIndex is ignored for MS Windows systems
-            _rawObject.accDoDefaultAction(_objectIndex);
         }
 
         private IList<AccessibleState> ConvertMsaaStateToAccessibleStateSet(MsaaAccessibleState msaaAccessibleState)
@@ -255,6 +276,9 @@ namespace WatiN.Core.Native.Windows.Microsoft
 
             if ((msaaAccessibleState & MsaaAccessibleState.MultiSelectable) == MsaaAccessibleState.MultiSelectable)
                 accessibleStateSet.Add(AccessibleState.MultiSelectable);
+
+            if ((msaaAccessibleState & MsaaAccessibleState.Protected) == MsaaAccessibleState.Protected)
+                accessibleStateSet.Add(AccessibleState.Protected);
 
             return accessibleStateSet;
         }

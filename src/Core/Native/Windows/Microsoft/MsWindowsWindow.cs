@@ -278,45 +278,59 @@ namespace WatiN.Core.Native.Windows.Microsoft
 
         public override void SendKeystrokes(string keystrokes)
         {
-            foreach (var c in keystrokes)
+            if (ChildEnumerationMethod == WindowEnumerationMethod.AssistiveTechnologyApi)
             {
-                System.Threading.Thread.Sleep(50);
-                List<MsWindowsNativeMethods.INPUT> keySequence = new List<MsWindowsNativeMethods.INPUT>();
-                MsWindowsNativeMethods.INPUT keyDown = new MsWindowsNativeMethods.INPUT();
-                keyDown.type = MsWindowsNativeMethods.InputType.Keyboard;
-                keyDown.ki.wVk = Convert.ToInt16(char.ToUpper(c));
-                keyDown.ki.dwFlags = MsWindowsNativeMethods.KeyEventFlags.None;
-                keyDown.ki.time = 0;
-                keyDown.ki.wScan = 0;
-                keyDown.ki.dwExtraInfo = IntPtr.Zero;
-
-                MsWindowsNativeMethods.INPUT keyUp = new MsWindowsNativeMethods.INPUT();
-                keyUp.type = MsWindowsNativeMethods.InputType.Keyboard;
-                keyUp.ki.wVk = Convert.ToInt16(char.ToUpper(c));
-                keyUp.ki.dwFlags = MsWindowsNativeMethods.KeyEventFlags.KeyUp;
-                keyUp.ki.time = 0;
-                keyUp.ki.wScan = 0;
-                keyUp.ki.dwExtraInfo = IntPtr.Zero;
-
-                keySequence.Add(keyDown);
-                keySequence.Add(keyUp);
-
-                if (c >= 'A' && c <= 'Z')
+                if (AccessibleObject != null)
                 {
-                    MsWindowsNativeMethods.INPUT shiftKeyDown = new MsWindowsNativeMethods.INPUT();
-                    shiftKeyDown.type = MsWindowsNativeMethods.InputType.Keyboard;
-                    shiftKeyDown.ki.wVk = (short)MsWindowsNativeMethods.VK.Shift;
-
-                    MsWindowsNativeMethods.INPUT shiftKeyUp = new MsWindowsNativeMethods.INPUT();
-                    shiftKeyUp.type = MsWindowsNativeMethods.InputType.Keyboard;
-                    shiftKeyUp.ki.wVk = (short)MsWindowsNativeMethods.VK.Shift;
-                    shiftKeyUp.ki.dwFlags = MsWindowsNativeMethods.KeyEventFlags.KeyUp;
-
-                    keySequence.Insert(0, shiftKeyDown);
-                    keySequence.Add(shiftKeyUp);
+                    AccessibleObject.SetFocus();
                 }
-                SetFocus();
-                MsWindowsNativeMethods.SendInput((uint)keySequence.Count, keySequence.ToArray(), Marshal.SizeOf(keySequence[0]));
+                foreach (var c in keystrokes)
+                {
+                    List<MsWindowsNativeMethods.INPUT> keySequence = new List<MsWindowsNativeMethods.INPUT>();
+                    MsWindowsNativeMethods.INPUT keyDown = new MsWindowsNativeMethods.INPUT();
+                    keyDown.type = MsWindowsNativeMethods.InputType.Keyboard;
+                    keyDown.ki.wVk = Convert.ToInt16(char.ToUpper(c));
+                    keyDown.ki.dwFlags = MsWindowsNativeMethods.KeyEventFlags.None;
+                    keyDown.ki.time = 0;
+                    keyDown.ki.wScan = 0;
+                    keyDown.ki.dwExtraInfo = IntPtr.Zero;
+
+                    MsWindowsNativeMethods.INPUT keyUp = new MsWindowsNativeMethods.INPUT();
+                    keyUp.type = MsWindowsNativeMethods.InputType.Keyboard;
+                    keyUp.ki.wVk = Convert.ToInt16(char.ToUpper(c));
+                    keyUp.ki.dwFlags = MsWindowsNativeMethods.KeyEventFlags.KeyUp;
+                    keyUp.ki.time = 0;
+                    keyUp.ki.wScan = 0;
+                    keyUp.ki.dwExtraInfo = IntPtr.Zero;
+
+                    keySequence.Add(keyDown);
+                    keySequence.Add(keyUp);
+
+                    if (c >= 'A' && c <= 'Z')
+                    {
+                        MsWindowsNativeMethods.INPUT shiftKeyDown = new MsWindowsNativeMethods.INPUT();
+                        shiftKeyDown.type = MsWindowsNativeMethods.InputType.Keyboard;
+                        shiftKeyDown.ki.wVk = (short)MsWindowsNativeMethods.VK.Shift;
+
+                        MsWindowsNativeMethods.INPUT shiftKeyUp = new MsWindowsNativeMethods.INPUT();
+                        shiftKeyUp.type = MsWindowsNativeMethods.InputType.Keyboard;
+                        shiftKeyUp.ki.wVk = (short)MsWindowsNativeMethods.VK.Shift;
+                        shiftKeyUp.ki.dwFlags = MsWindowsNativeMethods.KeyEventFlags.KeyUp;
+
+                        keySequence.Insert(0, shiftKeyDown);
+                        keySequence.Add(shiftKeyUp);
+                    }
+                    SetFocus();
+                    MsWindowsNativeMethods.SendInput((uint)keySequence.Count, keySequence.ToArray(), Marshal.SizeOf(keySequence[0]));
+                }
+            }
+            else
+            {
+                foreach (var c in keystrokes)
+                {
+                    System.Threading.Thread.Sleep(50);
+                    MsWindowsNativeMethods.SendMessage(new HandleRef(null, _handle), MsWindowsNativeMethods.WM_CHAR, new IntPtr(Convert.ToInt64(c)), IntPtr.Zero);
+                }
             }
         }
 

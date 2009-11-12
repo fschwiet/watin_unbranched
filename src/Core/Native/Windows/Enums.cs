@@ -207,6 +207,7 @@ namespace WatiN.Core.Native.Windows
         SelectableText,
         IsDefault,
         Visited,
-        LastDefined = Visited
+        Protected,
+        LastDefined = Protected
     }
 }

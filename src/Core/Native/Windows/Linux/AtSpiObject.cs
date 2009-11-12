@@ -63,6 +63,11 @@ namespace WatiN.Core.Native.Windows.Linux
             return childObjectList;
         }
 
+        internal override bool SetFocus()
+        {
+            return AtSpi.Instance.SetFocus(_accessibleObject);
+        }
+
         internal override void DoAction(int actionIndex)
         {
             AtSpi.Instance.PerformAction(_accessibleObject, actionIndex);
@@ -100,10 +105,6 @@ namespace WatiN.Core.Native.Windows.Linux
         #endregion
 
         #region Public methods
-        public bool SetFocus()
-        {
-            return AtSpi.Instance.SetFocus(_accessibleObject);
-        }
 
         public void SetText(string text)
         {

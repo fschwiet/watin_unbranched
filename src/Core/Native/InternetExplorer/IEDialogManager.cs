@@ -20,6 +20,7 @@ namespace WatiN.Core.Native.InternetExplorer
         {
             RegisteredDialogTypes.Add(typeof(IEJavaScriptDialog));
             RegisteredDialogTypes.Add(typeof(IEVBScriptDialog));
+            RegisteredDialogTypes.Add(typeof(IELogonDialog));
         }
     }
 }

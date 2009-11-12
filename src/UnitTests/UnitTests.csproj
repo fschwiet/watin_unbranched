@@ -189,6 +189,7 @@
     <Compile Include="ControlCollectionTests.cs" />
     <Compile Include="ControlTests.cs" />
     <Compile Include="ComponentExtensionsTests.cs" />
+    <Compile Include="DialogHandlerTests\LogonDialogHandlerTests.cs" />
     <Compile Include="DialogWatcherTests.cs" />
     <Compile Include="ExpectationTests.cs" />
     <Compile Include="PageTests.cs" />
