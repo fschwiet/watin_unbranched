@@ -95,6 +95,11 @@ namespace WatiN.Core.Native.InternetExplorer
             IEUtils.RunScript(scriptCode, language, htmlDocument.parentWindow);
         }
 
+        public int RunScriptMaximumLength
+        {
+            get { return int.MaxValue; }
+        }
+
         public string JavaScriptVariableName
         {
             get { return "document"; }

@@ -18,6 +18,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Text.RegularExpressions;
 using WatiN.Core.Constraints;
 using WatiN.Core.Exceptions;
@@ -409,9 +410,52 @@ namespace WatiN.Core
 		/// </summary>
 		/// <param name="scriptCode">The script code.</param>
 		/// <param name="language">The language.</param>
-        public virtual void RunScript(string scriptCode, string language)
+		public virtual void RunScript(string scriptCode, string language)
 		{
-		    NativeDocument.RunScript(scriptCode, language);
+			if (scriptCode.Length > NativeDocument.RunScriptMaximumLength)
+			{
+				NativeDocument.RunScript("_watinChunkJS='';", language);
+
+				const string head = "_watinChunkJS+=\"";
+				const string tail = "\";";
+
+				const int insertSize = 1024;
+				const int worstCaseEncodingLengthOfInsert = 1024 * 6;
+
+				StringBuilder scriptChunk = new StringBuilder();
+
+				int maxSizeToInsertInto = NativeDocument.RunScriptMaximumLength - worstCaseEncodingLengthOfInsert - tail.Length;
+
+				int stringPosition = 0;
+
+				while (stringPosition < scriptCode.Length)
+				{
+					scriptChunk.Append(head);
+
+					while (scriptChunk.Length < maxSizeToInsertInto
+						   && stringPosition < scriptCode.Length)
+					{
+						int amountToWrite = Math.Min(insertSize, scriptCode.Length - stringPosition);
+
+						JavascriptStringEncoder.JsonStringEncodeWithinDoubleParenthesis(scriptChunk,
+																						scriptCode.Substring(stringPosition, amountToWrite));
+
+						stringPosition += amountToWrite;
+					}
+
+					scriptChunk.Append(tail);
+
+					NativeDocument.RunScript(scriptChunk.ToString(), language);
+
+					scriptChunk.Length = 0;
+				}
+
+				RunScript("eval(_watinChunkJS);_watinChunkJS=null;", "javascript");
+			}
+			else
+			{
+				NativeDocument.RunScript(scriptCode, language);
+			}
 		}
 
 		/// <summary>

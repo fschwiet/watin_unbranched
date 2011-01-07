@@ -16,6 +16,7 @@
 
 #endregion Copyright
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using WatiN.Core.Exceptions;
@@ -115,6 +116,11 @@ namespace WatiN.Core.Native.Mozilla
             {
                 throw new RunScriptException(e);
             }
+        }
+
+        public int RunScriptMaximumLength
+        {
+            get { return 20000; } // A 100037 char script was observed passing on FF 3.6.8
         }
 
         public string JavaScriptVariableName

@@ -83,6 +83,8 @@ namespace WatiN.Core.Native
         /// </param>
         void RunScript(string scriptCode, string language);
 
+        int RunScriptMaximumLength { get; }
+
         /// <summary>
         /// Gets the value for the corresponding <paramref name="propertyName"/>.
         /// </summary>

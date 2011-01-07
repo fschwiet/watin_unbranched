@@ -16,6 +16,8 @@
 
 #endregion Copyright
 
+using System;
+
 namespace WatiN.Core.Native.Chrome
 {
     using System.Collections.Generic;
@@ -158,7 +160,14 @@ namespace WatiN.Core.Native.Chrome
         /// </param>
         public void RunScript(string scriptCode, string language)
         {
+            // if there is a maximum size that RunScript can support,  
+            // set RunScriptMaximumLength to that value
             throw new System.NotImplementedException();
+        }
+
+        public int RunScriptMaximumLength
+        {
+            get { return int.MaxValue; }  // not verified
         }
 
         /// <summary>
