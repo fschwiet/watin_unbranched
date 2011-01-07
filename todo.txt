@@ -3,8 +3,6 @@ Core Constraint:
   
 Core\Document.cs
 	
-        
-        public virtual string Eval(string javaScriptCode) uses  JavascriptStringEncoder.Encode(javaScriptCode)
 
 
         public TElement FindByCssSelector<TElement>(string cssSelector) where TElement : Element
@@ -15,9 +13,28 @@ Core\Document.cs
         }
         
         
+++  src\Core\Constraints\jQuerySelector\CssClassConstraint.cs   
+	src\Core\Constraints\jQuerySelector\CssSelectorConstraint.cs
+	src\Core\Constraints\jQuerySelector\Resources\jquery-1.4.2.js
+	src\Core\Constraints\jQuerySelector\ScriptLoader.cs
+
+
+++  UnitTests\jQuerySelectorTests\*
+
+UnitTests\TestUtils\BaseWatiNTest.cs
+
+    private static string GetHtmlTestFilesLocation()
+    changed to  public static Uri GetHtmlTestFilesLocation(string pathRelativeToTestProject)
+
+
+
+
+
+THE FOLLOWING CHANGES ARE NO LONGER RELEVANT:
+
 Core\Native\Mozilla\FireFoxClientPort.cs  
 
-        (modifiedCloseFireFoxProcess, before check on Process == null happened outside the () => {}.)
+        (modified CloseFireFoxProcess, before check on Process == null happened outside the () => {}.)
  
         private void CloseFireFoxProcess()    
         {
@@ -32,17 +49,3 @@ Core\Native\Mozilla\FireFoxClientPort.cs
                   Process.Kill();
               });
         }
-        
-        
-++  src\Core\UtilityClasses\JavascriptStringEncoder.cs
-
-
-
-
-++  UnitTests\jQuerySelectorTests\*
-
-UnitTests\TestUtils\BaseWatiNTest.cs
-
-    private static string GetHtmlTestFilesLocation()
-    changed to  public static Uri GetHtmlTestFilesLocation(string pathRelativeToTestProject)
-
