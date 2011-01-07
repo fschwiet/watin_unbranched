@@ -167,30 +167,36 @@ namespace WatiN.Core.UnitTests
 		{
 		    ExecuteTest(browser =>
             {
-		                        var result = browser.Eval("2+5");
-		                        Assert.That(result, Is.EqualTo("7"));
+                var result = browser.Eval("2+5");
+                Assert.That(result, Is.EqualTo("7"));
 
-		                        result = browser.Eval("'te' + 'st'");
-		                        Assert.That(result, Is.EqualTo("test"));
+                result = browser.Eval("'te' + 'st'");
+                Assert.That(result, Is.EqualTo("test"));
 
+                result = browser.Eval(@"'the cat\
+in the hat'");
+                Assert.That(result, Is.EqualTo(@"the catin the hat"));
 
-		                        try
-		                        {
-		                            browser.Eval("a+1");
-		                            Assert.Fail("Expected JavaScriptException");
-		                        }
-		                        catch (JavaScriptException){}
+                result = browser.Eval(@"'te'
++ 'st'");
+                Assert.That(result, Is.EqualTo("test"));
 
-		                        // Make sure a valid eval after a failed eval executes OK.
-                                var documentVariableName = browser.NativeDocument.JavaScriptVariableName;
-                                result = browser.Eval(documentVariableName + ".getElementById('last').innerHTML = 'java script has run';4+4;");
+                try
+                {
+                    browser.Eval("a+1");
+                    Assert.Fail("Expected JavaScriptException");
+                }
+                catch (JavaScriptException){}
 
-                                Assert.AreEqual("8", result);
-                                Assert.That(browser.Div("last").Text, Is.EqualTo("java script has run"));
+                // Make sure a valid eval after a failed eval executes OK.
+                var documentVariableName = browser.NativeDocument.JavaScriptVariableName;
+                result = browser.Eval(documentVariableName + ".getElementById('last').innerHTML = 'java script has run';4+4;");
 
-		                        browser.GoTo(TestPageUri);
-		                    }
-            );
+                Assert.AreEqual("8", result);
+                Assert.That(browser.Div("last").Text, Is.EqualTo("java script has run"));
+
+                browser.GoTo(TestPageUri);
+            });
 		}
 
 
